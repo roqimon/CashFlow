@@ -504,7 +504,7 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
 <div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txModalTitle" style="margin:0">Rincian Transaksi</h3><button class="icon-btn" data-action="close-modal" type="button">×</button></div><div id="txDetail"></div><div id="txEdit" style="display:none" class="form-grid"></div><div class="dialog-actions" id="detailActions"><button class="ghost danger" data-action="delete-tx" type="button">Hapus</button><button class="ghost" data-action="edit-tx" type="button">Edit</button><button class="ghost" data-action="close-modal" type="button">Back</button></div><div class="dialog-actions" id="editActions" style="display:none"><button class="ghost danger" data-action="cancel-edit" type="button">Batal</button><button class="primary" data-action="save-edit" type="button">Simpan</button></div></div></div>
 <div class="modal" id="manualModal"><div class="sheet"><div class="row"><h3 style="margin:0">Input Manual</h3><button class="icon-btn" data-action="close-manual" type="button">×</button></div><div class="source-seg" id="manSourceSeg"><button data-source="personal" class="active" type="button">💵 Pribadi</button><button data-source="st" type="button">📋 ST</button></div><div class="form-grid" style="margin-top:8px"><label>Nama<input id="manTitle" placeholder="Nama transaksi"></label><label>Nominal<input id="manAmount" placeholder="50000"></label><label>Tipe<select id="manType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label>Kategori<select id="manCategory" style="margin-bottom:4px"></select><input id="manCategoryNew" style="display:none" placeholder="Nama kategori baru"></label><label>Ikon<input id="manIcon" maxlength="3" placeholder="🔑"></label><label>Catatan<input id="manNote" placeholder="Opsional"></label></div><div class="dialog-actions"><button class="ghost" data-action="close-manual" type="button">Batal</button><button class="primary" data-action="save-manual" type="button">Simpan</button></div></div></div>
 <div class="modal" id="settingsModal"><div class="sheet"><div class="row"><h3 style="margin:0">Pengaturan</h3><button class="icon-btn" data-action="close-settings" type="button">×</button></div><p class="muted">Data tersimpan lokal di peramban. Ekspor data secara berkala untuk cadangan.</p><section class="theme-panel"><div class="row"><div><strong>Tema aplikasi</strong><p class="muted">Pilih terang, gelap, atau ikuti pengaturan HP.</p></div><span class="theme-badge" id="themeLabel">Sistem</span></div><div class="seg theme-seg" id="themeSeg"><button data-theme-mode="system" type="button">Sistem</button><button data-theme-mode="light" type="button">Terang</button><button data-theme-mode="dark" type="button">Gelap</button></div></section><div style="margin-top:10px"><label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700">Gemini Vision AI (API Key)<input id="geminiApiKeyInput" type="password" placeholder="Masukkan Gemini API Key" style="height:38px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 12px;font-size:13px"></label></div><div class="native-hint" id="nativeHint">Agar tampil tanpa URL bar dan navigasi peramban, pasang aplikasi ke layar utama. Jika tombol Pasang tidak muncul, gunakan menu peramban lalu pilih Tambahkan ke layar utama.</div><button class="primary" id="installBtn" data-action="install-pwa" type="button" style="display:none;width:100%;margin:10px 0">Pasang di HP</button><button class="primary" data-action="force-update" type="button" style="width:100%;margin:8px 0;background:var(--green);font-size:13.5px">🔄 Perbarui Tampilan Aplikasi</button><div class="grid2"><button class="ghost" data-action="export-json" type="button">Ekspor JSON</button><button class="ghost" data-action="import-json" type="button">Impor JSON</button><button class="ghost" data-action="export-csv" type="button">Ekspor CSV</button><button class="ghost" data-action="reload-sample" type="button">Muat data contoh</button><button class="ghost danger" data-action="clear-data" type="button" style="grid-column:span 2">Hapus semua data</button></div><textarea id="exportText" readonly placeholder="Hasil ekspor muncul di sini" style="margin-top:12px"></textarea><div class="dialog-actions"><button class="ghost" data-action="close-settings" type="button">Tutup</button><button class="primary" data-action="copy-export" type="button">Salin</button></div></div></div>
-<input type="file" id="receiptFileInput" accept="image/*" capture="environment" style="display:none">
+<input type="file" id="receiptFileInput" accept="image/*" style="display:none">
 <input type="file" id="importJsonFileInput" accept=".json,application/json" style="display:none">
 <div class="modal" id="categoryModal" aria-hidden="true"><div class="sheet category-sheet" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle"><div class="row"><div><h3 id="categoryEditTitle" style="margin:0">Kategori</h3><p id="categoryEditSubtitle" class="muted" style="margin:3px 0 0;font-size:12px">Isi nama kategori, ikon, tipe, kode, dan catatan.</p></div><button class="icon-btn" id="categoryEditClose" type="button">×</button></div><input type="hidden" id="catEditOld"><div class="form-grid" style="margin-top:12px"><label>Kode<input id="catEditCode" placeholder="Kode pintasan (opsional)"></label><label>Nama kategori<input id="catEditName" placeholder="Nama kategori"></label><label>Ikon<input id="catEditIcon" maxlength="3" placeholder="🔑"></label><label>Tipe<select id="catEditType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label class="wide">Catatan<input id="catEditNote" placeholder="Opsional"></label></div><div class="emoji-picker cat-edit-picker" id="catEditIconPicker"></div><div class="dialog-actions"><button class="ghost" id="categoryEditCancel" type="button">Batal</button><button class="primary" id="categoryEditSave" type="button">Simpan</button></div></div></div>
 <div class="modal confirm-modal" id="confirmModal" aria-hidden="true"><div class="sheet confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="confirm-icon" id="confirmIcon">!</div><h3 id="confirmTitle">Konfirmasi</h3><p id="confirmMessage">Lanjutkan tindakan ini?</p><div class="dialog-actions confirm-actions"><button class="ghost" id="confirmCancel" type="button">Batal</button><button class="primary" id="confirmOk" type="button">Ya, lanjutkan</button></div></div></div>
@@ -516,7 +516,7 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20260927.3').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20260927.4').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key';
 let page='home', txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all'}, txPeriod='monthly', txOffset=0, reportPeriod='monthly', reportOffset=0, chartType='donut', reportType='expense', reportSource='all', manualSource='personal', stMode=localStorage.getItem('aruskas_st_mode')==='true', selectedId='', selectMode=false, selectSet=new Set(), pageStack=[], lastHomeSwipeAt=0, exitSwipeRequested=false;
 const palette=['#1f8a5b','#f4a62a','#3094d4','#7c65d8','#8d572f','#e55a6b','#8bbf3d','#5ca6a6'];
@@ -528,7 +528,7 @@ function at(days,h,m){const d=new Date();d.setDate(d.getDate()+days);d.setHours(
 function sc(o={}){const amt=parseAmount(o.amount)||Number(o.amount)||0;return {id:o.id||id(),code:norm(o.code),title:o.title||'Transaksi',category:o.category||'Lainnya',type:o.type||'expense',icon:o.icon||icon(o.category,o.type),amount:amt,note:o.note||o.comment||'',showHome:o.showHome!==false}}
 function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
 const sample=[tx({title:'Kopi Kenangan',amount:25000,type:'expense',category:'Makan',icon:'☕',rawInput:'kopi 25',shortcutCode:'kopi',createdAt:at(0,9,15)}),tx({title:'Nasi Padang',amount:25000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'nasi padang 25',createdAt:at(0,12,30)}),tx({title:'Gaji Bulanan',amount:5000000,type:'income',category:'Pemasukan',icon:'💰',rawInput:'gaji 5jt',shortcutCode:'gaji',createdAt:at(-1,8,0)}),tx({title:'GoFood',amount:23000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'gofood 23',createdAt:at(-1,13,45)}),tx({title:'Gojek',amount:18000,type:'expense',category:'Transport',icon:'🚙',rawInput:'gojek 18',createdAt:at(-1,17,12)}),tx({title:'Beli Bensin',amount:50000,type:'expense',category:'Transport',icon:'⛽',rawInput:'bensin 50',shortcutCode:'bensin',createdAt:at(-5,10,20)}),tx({title:'Belanja Bulanan',amount:320000,type:'expense',category:'Belanja',icon:'🛍️',rawInput:'belanja bulanan 320',createdAt:at(-8,15,20)})];
-function boot(){const curSc=getSC();const legacyCodes=['api','server','jurnal','honor'];const hasLegacySc=curSc.some(s=>legacyCodes.includes(norm(s.code))||/honor/i.test(s.title));if(!curSc.length&&!localStorage.getItem('aruskas_cleared'))saveSC(defaultShortcuts);else if(hasLegacySc){const cleaned=curSc.filter(s=>!legacyCodes.includes(norm(s.code))&&!/honor/i.test(s.title));saveSC(cleaned.length?cleaned:defaultShortcuts);}const curTx=getTX();if(!curTx.length&&!localStorage.getItem('aruskas_cleared'))saveTX(sample);else if(curTx.some(t=>['honor','api','server','jurnal'].includes(t.shortcutCode)||/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)||/honor proyek/i.test(t.title))){const cleanedTx=curTx.filter(t=>!['honor','api','server','jurnal'].includes(t.shortcutCode)&&!/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)&&!/honor proyek/i.test(t.title));saveTX(cleanedTx.length?cleanedTx:sample);}$('rangeStart').value=dateInput(startMonth(new Date()));$('rangeEnd').value=dateInput(new Date());if($('txRangeStart'))$('txRangeStart').value=dateInput(startMonth(new Date()));if($('txRangeEnd'))$('txRangeEnd').value=dateInput(new Date());buildFuzzyCache();bootFixCatMem();buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));initCatSelect($('manCategory'),'manCategoryNew','manType','manIcon');initCatSelect($('scCategory'),'scCategoryNew','scType','scIcon');}
+function boot(){const curSc=getSC();const legacyCodes=['api','server','jurnal','honor'];const hasLegacySc=curSc.some(s=>legacyCodes.includes(norm(s.code))||/honor/i.test(s.title));if(!curSc.length&&!localStorage.getItem('aruskas_cleared'))saveSC(defaultShortcuts);else if(hasLegacySc){const cleaned=curSc.filter(s=>!legacyCodes.includes(norm(s.code))&&!/honor/i.test(s.title));saveSC(cleaned.length?cleaned:defaultShortcuts);}const curTx=getTX();if(!curTx.length&&!localStorage.getItem('aruskas_cleared'))saveTX(sample);else if(curTx.some(t=>['honor','api','server','jurnal'].includes(t.shortcutCode)||/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)||/honor proyek/i.test(t.title))){const cleanedTx=curTx.filter(t=>!['honor','api','server','jurnal'].includes(t.shortcutCode)&&!/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)&&!/honor proyek/i.test(t.title));saveTX(cleanedTx.length?cleanedTx:sample);}const memT=getTitleMem();if(memT&&memT['siang']&&/udang/i.test(memT['siang'])){delete memT['siang'];localStorage.setItem(KEY_TITLEMEM,JSON.stringify(memT))}const curTxns=getTX();let txDirty=false;curTxns.forEach(t=>{if(/siang/i.test(t.rawInput)&&/udang/i.test(t.title)){t.title='Siang';t.category='Makan';t.icon='🍽️';txDirty=true}});if(txDirty)saveTX(curTxns);$('rangeStart').value=dateInput(startMonth(new Date()));$('rangeEnd').value=dateInput(new Date());if($('txRangeStart'))$('txRangeStart').value=dateInput(startMonth(new Date()));if($('txRangeEnd'))$('txRangeEnd').value=dateInput(new Date());buildFuzzyCache();bootFixCatMem();buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));initCatSelect($('manCategory'),'manCategoryNew','manType','manIcon');initCatSelect($('scCategory'),'scCategoryNew','scType','scIcon');}
 function getDeletedCats(){try{return new Set(JSON.parse(localStorage.getItem(KEY_CATDEL)||'[]'))}catch{return new Set}}
 function saveDeletedCats(set){localStorage.setItem(KEY_CATDEL,JSON.stringify([...set].filter(Boolean).sort()))}
 function isCatDeleted(cat){return getDeletedCats().has(String(cat||'').trim())}
@@ -586,7 +586,7 @@ function learnTitle(rawInput,title){const clean=rawInput.toLowerCase().trim().re
 function suggestCategory(input){const mem=getCatMem();const words=input.toLowerCase().trim().split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w));const suggestions=[];const seen=new Set();words.forEach(w=>{if(mem[w]&&!seen.has(mem[w])){seen.add(mem[w]);suggestions.push({keyword:w,category:mem[w]})}});return suggestions}
 function parseAmount(x){let raw=String(x||'').toLowerCase().replace(/rp|idr/g,'').replace(/\s+/g,'');const sm=raw.match(/(juta|jt|m|ribu|rb|k)$/);const suf=sm?sm[1]:'';let nt=suf?raw.slice(0,-suf.length):raw;let v;if(nt.includes(','))v=parseFloat(nt.replace(/\./g,'').replace(',','.'));else if(/^\d{1,3}(\.\d{3})+$/.test(nt))v=parseInt(nt.replace(/\./g,''),10);else if(nt.includes('.'))v=parseFloat(nt);else v=parseInt(nt,10);if(!isFinite(v)||v<=0)return null;if(['juta','jt','m'].includes(suf))return Math.round(v*1e6);if(['ribu','rb','k'].includes(suf))return Math.round(v*1e3);return v<1000?Math.round(v*1000):Math.round(v)}
 const INCOME_RULES=[['Gaji',['gaji','salary','upah','pendapatan']],['Honor',['honor','fee','bayaran','kompensasi']],['Bonus',['bonus','thr','hadiah','reward']],['Masuk',['masuk','transfer','income','pemasukan','terima']]];
-const EXPENSE_RULES=[['Makan',['nasi','makan','ayam','mie','mi ','bakso','soto','gofood','grabfood','martabak','padang','rawon','lele','bebek','gorengan','pecel','bubur','siomay','batagor','nasi goreng','ayam goreng','ayam geprek','geprek','rendang','gudeg','sayur','lalapan','pempek','tekwan','empek','lontong','ketupat','roti','pisang goreng','tahu','tempe','capcay','fu yung','yamin','bakmi','kwetiau','mie ayam','udang','cumi','gurame','nila','bandeng','kakap','tuna','kepiting','sate','coto','bubur ayam','bubur manado','gado','salad','burger','pizza','kentang','french','hotdog','sandwich','kebab','shawarma','ramen','udon','soba','taco','burrito','pasta','spaghetti','risol','risoles','pastel','lumpia','cimol','cilok','bala-bala','combro','misro','serabi','apem','putu','ketan','cireng','seblak','sop','sop buntut','soto betawi','soto lamongan','soto madura','soto bandung','coto makassar','konro','sop iga','iga','daging','sapi','kambing','sosis','ham','bebek crispy','bebek goreng','bebek bakar','lele penyet','penyet','sate taichan','taichan','sate padang','sate madura','sate maranggi','sate kambing','sate ayam','sate usus','sate telur','sate kulit','gepuk','empal','dendeng','abon','gulai','kari','opor','balado','rujak','rujak buah','martabak manis','martabak telur','terang bulan','singkong','ubi','talas','nasi kebuli','nasi briyani','nasi kuning','nasi uduk','nasi liwet','nasi campur','nasi ulam','nasi tim','nasi bakar','nasi kucing','nasi rames']],['Jajan',['jajan','snack','cemilan','camilan','kopi','coffee','cafe','kafe','latte','americano','espresso','teh','tea','es teh','es kopi','boba','bubble tea','yogurt','ice cream','es krim','coklat','cokelat','cendol','es cendol','es doger','es teler','es campur','es buah','cincau','kolang','kolak','bika ambon','kue','kue cubit','kue lapis','mochi','pancake','waffle','cupcakes','muffin','brownies','tiramisu','pudding','pisang ijo','pisang molen','roti john','roti canai','donat','croissant','bagel','pastry','cake','tart','pie','puding','agar','jelly']],['Transport',['gojek','grab','bensin','tol','parkir','ojek','taxi','taksi','kereta','bus','angkot','ojol','transport','rental','rental mobil','sewa mobil','bbm','pertamax','pertalite','solar','shell','bp','spbu','tiket','tiket kapal','kapal','kapal laut','pesawat','airport','cuci mobil','cuci','taksi online','travel','shuttle','kereta api','ka','stasiun','bandara','pelabuhan','ekspedisi','cargo','kurir','pengiriman','ongkir','ongkos kirim','express']],['Belanja',['belanja','baju','sepatu','toko','market','indomaret','alfamart','mall','shopee','tokopedia','tiktok shop','lazada','blibli','pakaian','fashion','skincare','makeup','kosmetik','parfum','tas','dompet','aksesoris','perhiasan','jam tangan','kacamata']],['Rumah',['rumah','kost','kos','kontrakan','sewa rumah','sewa kontrakan','air','listrik','gas','wifi','internet','cicilan','kredit','pajak','iuran','rt','rw','keamanan','sampah','laundry','setrika','pembantu','asisten']],['Tagihan',['tagihan','bayar','cicilan','hutang','utang','kredit','pinjaman','angsuran','premi','asuransi','bpjs','kesehatan','pendidikan','kuliah','sekolah','kursus','bimbel','les']],['Digital',['api','server','hosting','domain','token','openai','claude','software','subscription','langganan','aplikasi','app','premium','member','cloud','storage','database']],['Akademik',['jurnal','publikasi','seminar','konferensi','buku','riset','kuliah','sekolah','pendidikan','kursus','bimbel','les','spp','uang kuliah','ukd','ukts','sppk']],['Kesehatan',['dokter','obat','medis','rumah sakit','rs','klinik','puskesmas','apotek','vaksin','checkup','laboratorium','fisioterapi','terapi','perawatan','gigi','kacamata','lensa kontak','herbal','suplemen','vitamin']],['Investasi',['investasi','saham','stock','reksadana','mutual fund','etf','crypto','bitcoin','ethereum','deposito','obligasi','emas','gold','tanah','properti','apartemen','unit link','sukuk','p2p','p2p lending','bbca','bbri','tlkm','unvr','icbp','bbni','bmri','bca','mandiri','telkom','astra','smgr','antm','pgas','cpin','jpnn','mdka','ptba','itmg','adhi','wika','wskt','pwon','bsde','lpkr','dmnd','brpt','erwg','towa','amrt','aces','bbtn','bjtm','bgtg','sidom','excl','isat','fren','link','qqq','spy','vti','vt','vwo','arkk','xlk','xlf','xle','xlv','xlp','xli','aapl','appl','googl','goog','msft','amzn','tsla','nvda','meta','nflx','amd','intel','intc','brk','jpm','bac','gs','wfc','ms','c','v','ma','pypl','sq','shop','coin','snap','uber','lyft','abnb','roku','spot','twlo','docu','zom','pdd','baba','nvo','lly','unh','jnj','pfe','mrna','moderna','pfizer','astrazeneca']]];
+const EXPENSE_RULES=[['Makan',['nasi','makan','ayam','mie','mi ','bakso','soto','gofood','grabfood','martabak','padang','rawon','lele','bebek','gorengan','pecel','bubur','siomay','batagor','nasi goreng','ayam goreng','ayam geprek','geprek','rendang','gudeg','sayur','lalapan','pempek','tekwan','empek','lontong','ketupat','roti','pisang goreng','tahu','tempe','capcay','fu yung','yamin','bakmi','kwetiau','mie ayam','udang','cumi','gurame','nila','bandeng','kakap','tuna','kepiting','sate','coto','bubur ayam','bubur manado','gado','salad','burger','pizza','kentang','french','hotdog','sandwich','kebab','shawarma','ramen','udon','soba','taco','burrito','pasta','spaghetti','risol','risoles','pastel','lumpia','cimol','cilok','bala-bala','combro','misro','serabi','apem','putu','ketan','cireng','seblak','sop','sop buntut','soto betawi','soto lamongan','soto madura','soto bandung','coto makassar','konro','sop iga','iga','daging','sapi','kambing','sosis','ham','bebek crispy','bebek goreng','bebek bakar','lele penyet','penyet','sate taichan','taichan','sate padang','sate madura','sate maranggi','sate kambing','sate ayam','sate usus','sate telur','sate kulit','gepuk','empal','dendeng','abon','gulai','kari','opor','balado','rujak','rujak buah','martabak manis','martabak telur','terang bulan','singkong','ubi','talas','nasi kebuli','nasi briyani','nasi kuning','nasi uduk','nasi liwet','nasi campur','nasi ulam','nasi tim','nasi bakar','nasi kucing','nasi rames','siang','makan siang','sarapan','sarapan pagi','pagi','makan pagi','malam','makan malam','lunch','dinner','breakfast','supper','snack','cemilan','minum','minuman','jus','lauk']],['Jajan',['jajan','snack','cemilan','camilan','kopi','coffee','cafe','kafe','latte','americano','espresso','teh','tea','es teh','es kopi','boba','bubble tea','yogurt','ice cream','es krim','coklat','cokelat','cendol','es cendol','es doger','es teler','es campur','es buah','cincau','kolang','kolak','bika ambon','kue','kue cubit','kue lapis','mochi','pancake','waffle','cupcakes','muffin','brownies','tiramisu','pudding','pisang ijo','pisang molen','roti john','roti canai','donat','croissant','bagel','pastry','cake','tart','pie','puding','agar','jelly']],['Transport',['gojek','grab','bensin','tol','parkir','ojek','taxi','taksi','kereta','bus','angkot','ojol','transport','rental','rental mobil','sewa mobil','bbm','pertamax','pertalite','solar','shell','bp','spbu','tiket','tiket kapal','kapal','kapal laut','pesawat','airport','cuci mobil','cuci','taksi online','travel','shuttle','kereta api','ka','stasiun','bandara','pelabuhan','ekspedisi','cargo','kurir','pengiriman','ongkir','ongkos kirim','express']],['Belanja',['belanja','baju','sepatu','toko','market','indomaret','alfamart','mall','shopee','tokopedia','tiktok shop','lazada','blibli','pakaian','fashion','skincare','makeup','kosmetik','parfum','tas','dompet','aksesoris','perhiasan','jam tangan','kacamata']],['Rumah',['rumah','kost','kos','kontrakan','sewa rumah','sewa kontrakan','air','listrik','gas','wifi','internet','cicilan','kredit','pajak','iuran','rt','rw','keamanan','sampah','laundry','setrika','pembantu','asisten']],['Tagihan',['tagihan','bayar','cicilan','hutang','utang','kredit','pinjaman','angsuran','premi','asuransi','bpjs','kesehatan','pendidikan','kuliah','sekolah','kursus','bimbel','les']],['Digital',['api','server','hosting','domain','token','openai','claude','software','subscription','langganan','aplikasi','app','premium','member','cloud','storage','database']],['Akademik',['jurnal','publikasi','seminar','konferensi','buku','riset','kuliah','sekolah','pendidikan','kursus','bimbel','les','spp','uang kuliah','ukd','ukts','sppk']],['Kesehatan',['dokter','obat','medis','rumah sakit','rs','klinik','puskesmas','apotek','vaksin','checkup','laboratorium','fisioterapi','terapi','perawatan','gigi','kacamata','lensa kontak','herbal','suplemen','vitamin']],['Investasi',['investasi','saham','stock','reksadana','mutual fund','etf','crypto','bitcoin','ethereum','deposito','obligasi','emas','gold','tanah','properti','apartemen','unit link','sukuk','p2p','p2p lending','bbca','bbri','tlkm','unvr','icbp','bbni','bmri','bca','mandiri','telkom','astra','smgr','antm','pgas','cpin','jpnn','mdka','ptba','itmg','adhi','wika','wskt','pwon','bsde','lpkr','dmnd','brpt','erwg','towa','amrt','aces','bbtn','bjtm','bgtg','sidom','excl','isat','fren','link','qqq','spy','vti','vt','vwo','arkk','xlk','xlf','xle','xlv','xlp','xli','aapl','appl','googl','goog','msft','amzn','tsla','nvda','meta','nflx','amd','intel','intc','brk','jpm','bac','gs','wfc','ms','c','v','ma','pypl','sq','shop','coin','snap','uber','lyft','abnb','roku','spot','twlo','docu','zom','pdd','baba','nvo','lly','unh','jnj','pfe','mrna','moderna','pfizer','astrazeneca']]];
 function inferType(t){t=t.toLowerCase();if(/^\+/.test(t)||['gaji','honor','bonus','thr','pemasukan','transfer masuk','bayaran','upah','fee','refund'].some(w=>t.includes(w)))return'income';return'expense'}
 function inferCat(t,type){t=t.toLowerCase();const rules=type==='income'?INCOME_RULES:EXPENSE_RULES;const words=t.split(/\s+/);for(const r of rules){if(r[1].some(w=>words.includes(w)))return r[0]}return (rules.find(r=>r[1].some(w=>t.includes(w)))||['Lainnya'])[0]}
 function levenshtein(a,b){if(!a.length)return b.length;if(!b.length)return a.length;const m=[];for(let i=0;i<=b.length;i++)m[i]=[i];for(let j=0;j<=a.length;j++)m[0][j]=j;for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)m[i][j]=b[i-1]===a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1],m[i][j-1],m[i-1][j])+1;return m[b.length][a.length]}
@@ -596,9 +596,9 @@ function convertSpokenIndonesianNumbers(text){if(!text)return'';let str=String(t
 function sanitizeBankNotificationText(raw){if(!raw)return'';let text=String(raw).trim();const amountMatch=text.match(/(?:rp\.?|idr)\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?|\d+)/i);let amountStr='';if(amountMatch){const cleanNum=amountMatch[1].replace(/\./g,'').replace(/,/g,'.');amountStr=Math.round(parseFloat(cleanNum))}let merchant='';const toMatch=text.match(/(?:ke|di|merchant|toko|kepada)\s+([A-Za-z0-9\s&'-]+?)(?=\s+(?:via|ref|berhasil|sukses|pada|sebesar|rp|tgl|tanggal|\d{2}\/)|\s*$)/i);if(toMatch&&toMatch[1])merchant=toMatch[1].trim();if(!merchant){const qrisMatch=text.match(/qris\s+(?:rp[\s\d.,]+)?\s*(?:di|ke)\s+([A-Za-z0-9\s&'-]+?)(?=\s+(?:via|berhasil|sukses|ref|\d{2}\/)|\s*$)/i);if(qrisMatch&&qrisMatch[1])merchant=qrisMatch[1].trim()}if(merchant&&amountStr){merchant=merchant.replace(/\b(?:pt|cv|tbk|rek|rekening|berhasil|sukses)\b/gi,'').trim();return`${merchant} ${amountStr}`}return raw}
 function processBatchInput(raw,parseInputFn){if(!raw)return{isBatch:false,items:[],failed:[]};const rawStr=String(raw).trim();if(!/[,;\n]/.test(rawStr))return{isBatch:false,items:[],failed:[]};const chunks=rawStr.split(/[,;\n]+/).map(s=>s.trim()).filter(Boolean);if(chunks.length<=1)return{isBatch:false,items:[],failed:[]};const items=[],failed=[];for(const chunk of chunks){const res=parseInputFn(chunk);if(res&&res.ok&&res.item)items.push(res.item);else failed.push(chunk)}return{isBatch:true,items,failed}}
 function parseDateInfo(rawText){if(!rawText)return{hasDate:false,isRange:false,date:null,note:'',cleanText:''};let str=String(rawText);const now=new Date(),curYear=now.getFullYear();const rangeMatch=str.match(/\b(\d{1,2})-(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/);if(rangeMatch){const d1=parseInt(rangeMatch[1],10),d2=parseInt(rangeMatch[2],10),m=parseInt(rangeMatch[3],10);let y=rangeMatch[4]?parseInt(rangeMatch[4],10):curYear;if(y<100)y+=2000;const startDate=new Date(y,m-1,d1,12,0,0);const note=`Periode: ${d1}-${d2}/${m}/${y}`;const cleanText=str.replace(rangeMatch[0],'').replace(/\s+/g,' ').trim();return{hasDate:true,isRange:true,date:startDate.toISOString(),note,cleanText}}const singleMatch=str.match(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/);if(singleMatch){const d=parseInt(singleMatch[1],10),m=parseInt(singleMatch[2],10);let y=singleMatch[3]?parseInt(singleMatch[3],10):curYear;if(y<100)y+=2000;const dt=new Date(y,m-1,d,12,0,0);const cleanText=str.replace(singleMatch[0],'').replace(/\s+/g,' ').trim();return{hasDate:true,isRange:false,date:dt.toISOString(),note:'',cleanText}}return{hasDate:false,isRange:false,date:null,note:'',cleanText:str.trim()}}
-function smartInferCat(input,type,existingCats=[],previousTx=[]){const t=String(input||'').toLowerCase().trim(),words=t.split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w));for(const cat of existingCats){if(t.includes(cat.toLowerCase()))return cat}if(previousTx&&previousTx.length){const catFreq={};for(const tx of previousTx){if(!tx.category||tx.category==='Lainnya')continue;const txWords=(tx.title+' '+(tx.note||'')).toLowerCase().split(/\s+/);const matchCount=words.filter(w=>txWords.includes(w)).length;if(matchCount>0)catFreq[tx.category]=(catFreq[tx.category]||0)+matchCount}let bestCat=null,maxCount=0;for(const[c,count]of Object.entries(catFreq)){if(count>maxCount){maxCount=count;bestCat=c}}if(bestCat)return bestCat}if(/mobil|motor|bensin|tol|parkir|ojol|grab|gojek|sewa|rental/i.test(t)){const trans=existingCats.find(c=>/transport|kendaraan|rental/i.test(c));return trans||'Transport'}if(/makan|nasi|kopi|kafe|cafe|ayam|roti|jajan/i.test(t)){const makan=existingCats.find(c=>/makan|kuliner|f&b|food/i.test(c));return makan||'Makan'}const rules=type==='income'?INCOME_RULES:EXPENSE_RULES;for(const r of rules){if(r[1].some(w=>words.includes(w)))return r[0]}return(rules.find(r=>r[1].some(w=>t.includes(w)))||['Lainnya'])[0]}
+function smartInferCat(input,type,existingCats=[],previousTx=[]){const t=String(input||'').toLowerCase().trim(),words=t.split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w));for(const cat of existingCats){if(t.includes(cat.toLowerCase()))return cat}if(previousTx&&previousTx.length){const catFreq={};for(const tx of previousTx){if(!tx.category||tx.category==='Lainnya')continue;const txWords=(tx.title+' '+(tx.note||'')).toLowerCase().split(/\s+/);const matchCount=words.filter(w=>txWords.includes(w)).length;if(matchCount>0)catFreq[tx.category]=(catFreq[tx.category]||0)+matchCount}let bestCat=null,maxCount=0;for(const[c,count]of Object.entries(catFreq)){if(count>maxCount){maxCount=count;bestCat=c}}if(bestCat)return bestCat}if(/mobil|motor|bensin|tol|parkir|ojol|grab|gojek|sewa|rental/i.test(t)){const trans=existingCats.find(c=>/transport|kendaraan|rental/i.test(c));return trans||'Transport'}if(/makan|nasi|kopi|kafe|cafe|ayam|roti|jajan|siang|sarapan|malam|lunch|dinner|breakfast|kuliner/i.test(t)){const makan=existingCats.find(c=>/makan|kuliner|f&b|food/i.test(c));return makan||'Makan'}const rules=type==='income'?INCOME_RULES:EXPENSE_RULES;for(const r of rules){if(r[1].some(w=>words.includes(w)))return r[0]}return(rules.find(r=>r[1].some(w=>t.includes(w)))||['Lainnya'])[0]}
 function matchShortcut(inputWork,shortcuts){if(!inputWork||!shortcuts||!shortcuts.length)return null;const sorted=[...shortcuts].filter(s=>s&&s.code).sort((a,b)=>b.code.length-a.code.length);const clean=inputWork.trim();for(const s of sorted){const code=s.code.toLowerCase().trim();if(!code)continue;const escaped=code.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const regexWord=new RegExp(`^${escaped}(?:\\s+(.*)|$)`,'i');const mWord=clean.match(regexWord);if(mWord)return{shortcut:s,remainder:(mWord[1]||'').trim()};const regexDirectDigit=new RegExp(`^${escaped}(\\d+.*)$`,'i');const mDigit=clean.match(regexDirectDigit);if(mDigit)return{shortcut:s,remainder:mDigit[1].trim()}}return null}
-function parseInput(input){const raw=String(input||'').trim();if(!raw)return{ok:false,msg:'Input masih kosong.'};let isST=false,rawWork=raw;if(/^st\s+/i.test(rawWork)){isST=true;rawWork=rawWork.replace(/^st\s+/i,'').trim();if(!getActiveSTSession())return{ok:false,msg:'Belum ada sesi ST aktif. Buat sesi di menu Pintasan.'}}const dateInfo=parseDateInfo(rawWork);let parsedDate=dateInfo.hasDate?dateInfo.date:null;let parsedDateNote=dateInfo.note||'';if(dateInfo.hasDate){rawWork=dateInfo.cleanText}const scMatch=matchShortcut(rawWork,getSC());if(scMatch){const s=scMatch.shortcut,rem=scMatch.remainder;const remMatches=[...rem.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const amMatch=remMatches[0]||null;const typedAmount=amMatch?parseAmount(amMatch[0]):null;const amount=typedAmount||Number(s.amount)||0;if(!amount)return{ok:false,msg:'Tambahkan nominal. Contoh: '+s.code+' 25, atau isi nilai nominal di menu Pintasan.'};const noteExtra=(amMatch?(rem.slice(0,amMatch.index)+' '+rem.slice(amMatch.index+amMatch[0].length)):rem).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();const note=[s.note,noteExtra,parsedDateNote].filter(Boolean).join(' · ');const item=tx({title:s.title,amount,type:s.type,category:s.category,icon:s.icon,note,rawInput:raw,shortcutCode:s.code,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,true)}}const matches=[...rawWork.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const am=matches[0]||null,typedAmount=am?parseAmount(am[0]):null;const without=(am?(rawWork.slice(0,am.index)+' '+rawWork.slice(am.index+am[0].length)):rawWork).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();let first=norm((without.split(' ')[0]||''));if(!am)return{ok:false,msg:'Tambahkan nominal. Contoh: kopi 25 atau makan 30.'};const amount=typedAmount;if(!amount)return{ok:false,msg:'Nominal belum terbaca. Coba tulis 25, 50rb, atau 5jt.'};const catShortcut=findCatRecordByCode(first);if(catShortcut){const tail=without.split(' ').slice(1).join(' ').trim();const note=[catShortcut.note,tail,parsedDateNote].filter(Boolean).join(' · ');const item=tx({title:title(tail)||catShortcut.name,amount,type:catShortcut.type,category:catShortcut.name,icon:catShortcut.icon,note,rawInput:raw,shortcutCode:catShortcut.code,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,true)}}const memCat=getCatMem();const memKey=first||'';if(memCat[memKey]){const type=inferType(rawWork),category=memCat[memKey];const titleMem=getTitleMem();const memTitle=titleMem[memKey]||title(without);const item=tx({title:memTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,false)}}const memKeys=Object.keys(memCat);let fuzzyMemMatch=null,fuzzyMemDist=3;for(const k of memKeys){const d=levenshtein(first,k);if(d>0&&d<fuzzyMemDist){fuzzyMemDist=d;fuzzyMemMatch=k}}if(fuzzyMemMatch){const type=inferType(rawWork),category=memCat[fuzzyMemMatch];const titleMem=getTitleMem();const memTitle=titleMem[fuzzyMemMatch]||title(without);const item=tx({title:memTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,false)}}const hasNumber=/\d/.test(first);if(first.length>2&&!hasNumber){const fuzz=fuzzyFirst(first);if(fuzz){const corrected=rawWork.replace(first,fuzz);const corrType=inferType(corrected),corrCat=smartInferCat(corrected,corrType,getCatList(),getTX());const correctedTitle=title(fuzz);const item=tx({title:correctedTitle||'Transaksi',amount,type:corrType,category:corrCat,icon:icon(corrCat,corrType),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,false)}}}const type=inferType(rawWork), category=smartInferCat(rawWork,type,getCatList(),getTX());const item=tx({title:title(without||'Transaksi'),amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,false)}}
+function parseInput(input){const raw=String(input||'').trim();if(!raw)return{ok:false,msg:'Input masih kosong.'};let isST=false,rawWork=raw;if(/^st\s+/i.test(rawWork)){isST=true;rawWork=rawWork.replace(/^st\s+/i,'').trim();if(!getActiveSTSession())return{ok:false,msg:'Belum ada sesi ST aktif. Buat sesi di menu Pintasan.'}}const dateInfo=parseDateInfo(rawWork);let parsedDate=dateInfo.hasDate?dateInfo.date:null;let parsedDateNote=dateInfo.note||'';if(dateInfo.hasDate){rawWork=dateInfo.cleanText}const scMatch=matchShortcut(rawWork,getSC());if(scMatch){const s=scMatch.shortcut,rem=scMatch.remainder;const remMatches=[...rem.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const amMatch=remMatches[0]||null;const typedAmount=amMatch?parseAmount(amMatch[0]):null;const amount=typedAmount||Number(s.amount)||0;if(!amount)return{ok:false,msg:'Tambahkan nominal. Contoh: '+s.code+' 25, atau isi nilai nominal di menu Pintasan.'};const noteExtra=(amMatch?(rem.slice(0,amMatch.index)+' '+rem.slice(amMatch.index+amMatch[0].length)):rem).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();const note=[s.note,noteExtra,parsedDateNote].filter(Boolean).join(' · ');const item=tx({title:s.title,amount,type:s.type,category:s.category,icon:s.icon,note,rawInput:raw,shortcutCode:s.code,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,true)}}const matches=[...rawWork.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const am=matches[0]||null,typedAmount=am?parseAmount(am[0]):null;if(!am)return{ok:false,msg:'Tambahkan nominal. Contoh: kopi 25 atau makan 30.'};const amount=typedAmount;if(!amount)return{ok:false,msg:'Nominal belum terbaca. Coba tulis 25, 50rb, atau 5jt.'};const without=(rawWork.slice(0,am.index)+' '+rawWork.slice(am.index+am[0].length)).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();const userTitle=title(without||'Transaksi');let first=norm((without.split(' ')[0]||''));const catShortcut=findCatRecordByCode(first);if(catShortcut){const tail=without.split(' ').slice(1).join(' ').trim();const note=[catShortcut.note,tail,parsedDateNote].filter(Boolean).join(' · ');const item=tx({title:tail?title(tail):catShortcut.name,amount,type:catShortcut.type,category:catShortcut.name,icon:catShortcut.icon,note,rawInput:raw,shortcutCode:catShortcut.code,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,true)}}const type=inferType(rawWork);const memCat=getCatMem();const fullKey=without.toLowerCase().trim();let category=null;if(memCat[fullKey]){category=memCat[fullKey];}else if(first&&memCat[first]){category=memCat[first];}else{category=smartInferCat(rawWork,type,getCatList(),getTX());}const item=tx({title:userTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',createdAt:parsedDate||new Date().toISOString()});return{ok:true,item,msg:fmt(item,false)}}
 function applyFuzzy(input,suggestion){const raw=input.trim();const m=[...raw.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const am=m[0];const without=(raw.slice(0,am.index)+' '+raw.slice(am.index+am[0].length)).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();const tail=without.split(' ').slice(1).join(' ').trim();const correctedInput=`${suggestion} ${am[0]}${tail?' '+tail:''}`;const el=page==='add'?$('focusInput'):$('quickInput');el.value=correctedInput;pratinjau(el.id,el.id==='quickInput'?'quickPreview':'focusPreview')}window.applyFuzzy=applyFuzzy;
 function fmt(t,from){return `${t.icon} ${t.title} · ${t.category} · ${t.type==='income'?'+':'-'} ${money(t.amount)}${from?' · Pintasan '+t.shortcutCode:''}${t.source==='st'?' · 📋 ST':''}`}
 function sum(arr){return arr.reduce((a,t)=>{t.type==='income'?a.income+=t.amount:a.expense+=t.amount;return a},{income:0,expense:0})}
@@ -783,33 +783,77 @@ function initVoiceInput(){
   const rec=new SpeechRec();
   rec.lang='id-ID';
   rec.continuous=false;
-  rec.interimResults=false;
-  rec.onstart=()=>setListeningState(true);
+  rec.interimResults=true;
+  rec.maxAlternatives=1;
+
+  rec.onstart=()=>{
+    setListeningState(true);
+    const box=$(page==='add'?'focusPreview':'quickPreview');
+    if(box){
+      box.className='pratinjau';
+      box.style.display='block';
+      box.innerHTML='🎙️ <strong>Mendengarkan suara...</strong> Silakan bicara (contoh: <em>"makan siang 35 ribu"</em>)';
+    }
+  };
+
   rec.onresult=(e)=>{
-    setListeningState(false);
     if(!e.results||!e.results[0]||!e.results[0][0])return;
     const raw=e.results[0][0].transcript;
-    console.log('[ArusKas] Voice input raw:', raw);
     const converted=convertSpokenIndonesianNumbers(raw);
     const targetInputId=page==='add'?'focusInput':'quickInput';
     const input=$(targetInputId);
     if(input) input.value=converted;
-    if(converted.trim()) addFrom(targetInputId, converted);
+    pratinjau(targetInputId, targetInputId==='quickInput'?'quickPreview':'focusPreview');
+
+    if(e.results[0].isFinal){
+      setListeningState(false);
+      if(converted.trim()) addFrom(targetInputId, converted);
+    }
   };
+
   rec.onerror=(e)=>{
     console.warn('[ArusKas] Voice input error:', e.error);
     setListeningState(false);
+    const box=$(page==='add'?'focusPreview':'quickPreview');
+    let errMsg='Input suara terhenti: '+(e.error||'error');
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      errMsg='Izin mikrofon ditolak / diblokir. Izinkan akses mikrofon di setelan browser dan buka via HTTPS.';
+      alert(errMsg);
+    }else if(e.error==='no-speech'){
+      errMsg='Tidak ada suara terdeteksi. Silakan coba lagi dan bicara lebih dekat ke mikrofon.';
+    }else if(e.error==='network'){
+      errMsg='Koneksi internet bermasalah. Pengenalan suara memerlukan koneksi internet aktif.';
+    }else if(e.error==='audio-capture'){
+      errMsg='Mikrofon tidak terdeteksi pada perangkat Anda.';
+      alert(errMsg);
+    }
+    if(box){
+      box.className='pratinjau bad';
+      box.style.display='block';
+      box.innerHTML='⚠️ '+esc(errMsg);
+    }
   };
+
   rec.onend=()=>setListeningState(false);
   return rec;
 }
+
 function toggleVoiceInput(){
+  const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if(!isSecure){
+    alert('Input suara memerlukan koneksi aman (HTTPS).\n\nJika membuka di HP melalui Wi-Fi (alamat IP HTTP http://10.x.x.x:3000), Google Chrome otomatis memblokir akses mikrofon demi keamanan browser.\n\nSolusi: Buka via HTTPS di GitHub Pages (https://roqimon.github.io/CashFlow/) atau gunakan localhost.');
+    return;
+  }
   const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SpeechRec){
-    alert('Browser ini belum mendukung input suara. Gunakan Google Chrome atau browser Chromium di HP/Laptop.');
+    alert('Browser ini belum mendukung Speech Recognition. Gunakan Google Chrome pada HP Android atau Laptop.');
     return;
   }
   if(!recognition) recognition=initVoiceInput();
+  if(!recognition){
+    alert('Gagal menginisialisasi mikrofon pada perangkat ini.');
+    return;
+  }
   if(isListening){
     try{recognition.stop()}catch(e){}
     setListeningState(false);
@@ -819,7 +863,9 @@ function toggleVoiceInput(){
     }catch(e){
       console.warn('[ArusKas] Speech start retry:', e);
       recognition=initVoiceInput();
-      try{recognition.start()}catch(err){}
+      try{recognition.start()}catch(err){
+        alert('Gagal memulai mikrofon: '+(err.message||err));
+      }
     }
   }
 }
@@ -857,22 +903,39 @@ function setScanningState(scanning){
   ['scanBtn','scanBtnFocus'].forEach(id=>{const b=$(id);if(b)b.classList.toggle('scanning',scanning)});
 }
 
-async function scanReceiptWithGemini(file){
-  if(!file)return;
+function handleScanBtnClick(){
   const apiKey=getGeminiApiKey();
   if(!apiKey){
-    alert('Silakan masukkan Gemini API Key di menu Pengaturan.');
+    const userKey=prompt('Fitur scan foto struk memerlukan Gemini API Key (gratis dari Google AI Studio: https://aistudio.google.com/app/apikey).\n\nMasukkan Gemini API Key Anda:');
+    if(userKey&&userKey.trim()){
+      setGeminiApiKey(userKey.trim());
+      if($('geminiApiKeyInput')) $('geminiApiKeyInput').value=userKey.trim();
+    }else{
+      openModalLayer('settingsModal');
+      setTimeout(()=>$('geminiApiKeyInput')?.focus(),200);
+      return;
+    }
+  }
+  $('receiptFileInput')?.click();
+}
+
+async function scanReceiptWithGemini(file){
+  if(!file)return;
+  let apiKey=getGeminiApiKey();
+  if(!apiKey){
+    handleScanBtnClick();
     return;
   }
   setScanningState(true);
   const previewBox=$(page==='add'?'focusPreview':'quickPreview');
   if(previewBox){
+    previewBox.style.display='block';
     previewBox.className='pratinjau';
-    previewBox.innerHTML='⏳ Sedang menganalisa foto struk via Gemini AI...';
+    previewBox.innerHTML='⏳ Sedang menganalisa foto struk / nota via Gemini AI...';
   }
   try{
     const base64Data=await compressImage(file, 1024, 0.8);
-    const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    let url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     const payload={
       contents:[{
         parts:[
@@ -887,18 +950,29 @@ async function scanReceiptWithGemini(file){
         ]
       }]
     };
-    const res=await fetch(url,{
+    let res=await fetch(url,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
+    if(!res.ok&&res.status===404){
+      url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      res=await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+    }
     if(!res.ok){
       const errBody=await res.text();
+      if(res.status===400||res.status===403){
+        throw new Error('Gemini API Key tidak valid atau kuota habis. Silakan periksa di menu Pengaturan.');
+      }
       throw new Error(`API error ${res.status}: ${errBody}`);
     }
     const data=await res.json();
     const candidateText=data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if(!candidateText) throw new Error('Tidak ada respon teks dari model.');
+    if(!candidateText) throw new Error('Tidak ada respon teks dari model Gemini.');
     let cleanJson=candidateText.trim();
     if(cleanJson.startsWith('```')){
       cleanJson=cleanJson.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
@@ -917,7 +991,7 @@ async function scanReceiptWithGemini(file){
       if(amount<=0) return;
       const type=it.type==='income'?'income':'expense';
       let cat=String(it.category||'').trim();
-      if(!cat) cat=smartInferCat(cleanTitle, amount, type);
+      if(!cat) cat=smartInferCat(cleanTitle, type, getCatList(), getTX());
       cat=activeCategory(cat, type);
       const catIcon=icon(cat, type);
       const src=stMode?'st':'personal';
@@ -948,6 +1022,7 @@ async function scanReceiptWithGemini(file){
       saveTX(arr);
       render();
       if(previewBox){
+        previewBox.style.display='block';
         previewBox.className='pratinjau';
         previewBox.innerHTML=`⚡ <strong>${countSaved} transaksi berhasil disimpan langsung dari foto</strong>. Ubah jika diperlukan.`;
       }
@@ -957,9 +1032,11 @@ async function scanReceiptWithGemini(file){
   }catch(err){
     console.error('[ArusKas] Scan receipt error:', err);
     if(previewBox){
+      previewBox.style.display='block';
       previewBox.className='pratinjau bad';
       previewBox.innerHTML=`❌ Gagal memproses struk: ${esc(err.message||err)}`;
     }
+    alert('Gagal memproses struk: '+(err.message||err));
   }finally{
     setScanningState(false);
   }
@@ -1071,8 +1148,8 @@ $('stToggle')?.addEventListener('click',()=>{if(!getActiveSTSession()&&!stMode){
 $('stToggleFocus')?.addEventListener('click',()=>{if(!getActiveSTSession()&&!stMode){toast('Buat sesi ST dulu di menu Pintasan');return}stMode=!stMode;localStorage.setItem('aruskas_st_mode',stMode);updateSTToggle()});
 $('voiceBtn')?.addEventListener('click', toggleVoiceInput);
 $('voiceBtnFocus')?.addEventListener('click', toggleVoiceInput);
-$('scanBtn')?.addEventListener('click', ()=>$('receiptFileInput')?.click());
-$('scanBtnFocus')?.addEventListener('click', ()=>$('receiptFileInput')?.click());
+$('scanBtn')?.addEventListener('click', handleScanBtnClick);
+$('scanBtnFocus')?.addEventListener('click', handleScanBtnClick);
 $('receiptFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){scanReceiptWithGemini(e.target.files[0]);e.target.value='';}});
 $('importJsonFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){importJsonData(e.target.files[0]);e.target.value='';}});
 $('geminiApiKeyInput')?.addEventListener('input', e=>setGeminiApiKey(e.target.value));
