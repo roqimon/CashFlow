@@ -510,13 +510,14 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
 <div class="modal confirm-modal" id="confirmModal" aria-hidden="true"><div class="sheet confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="confirm-icon" id="confirmIcon">!</div><h3 id="confirmTitle">Konfirmasi</h3><p id="confirmMessage">Lanjutkan tindakan ini?</p><div class="dialog-actions confirm-actions"><button class="ghost" id="confirmCancel" type="button">Batal</button><button class="primary" id="confirmOk" type="button">Ya, lanjutkan</button></div></div></div>
 <div class="modal" id="settleModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true"><div class="row"><h3 style="margin:0">Settlement ST</h3><button class="icon-btn" id="settleClose" type="button">×</button></div><div id="settleContent"></div><div class="dialog-actions"><button class="ghost" id="settleCancel" type="button">Batal</button><button class="primary" id="settleConfirm" type="button">Konfirmasi & Tutup</button></div></div></div>
 <div class="modal" id="editDepositModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true"><div class="row"><h3 style="margin:0">Edit Deposit</h3><button class="icon-btn" data-action="close-edit-deposit" type="button">×</button></div><p class="muted" id="editSessionLabel" style="margin:8px 0 12px;font-size:13px"></p><div class="form-grid"><label class="wide">Nilai Deposit Baru<input type="text" id="editSessionDeposit" inputmode="numeric" placeholder="Nominal deposit"></label></div><div class="dialog-actions"><button class="ghost" data-action="cancel-edit-deposit" type="button">Batal</button><button class="primary" data-action="save-edit-deposit" type="button">Simpan</button></div><input type="hidden" id="editSessionId"><input type="hidden" id="editSessionDepositOld"></div></div>
+<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true"><div class="row"><h3 style="margin:0">Foto Bukti Transaksi</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Struk" style="max-height:200px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:10px;display:block"></div><div id="scanAiSection" style="display:flex;flex-direction:column;gap:6px"><label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700">Gemini Vision AI<div style="display:flex;gap:6px"><input id="scanApiKeyInput" type="password" placeholder="Masukkan Gemini API Key" style="flex:1;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 12px;font-size:13px"><button class="primary" id="scanAnalyzeBtn" type="button" style="white-space:nowrap;padding:0 14px;min-height:38px;font-size:12.5px">🤖 Scan AI</button></div></label><small class="muted" style="font-size:11px">Dapatkan API Key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--green)">aistudio.google.com</a></small></div><div style="margin:12px 0 8px;text-align:center;position:relative"><span style="background:var(--surface);padding:0 8px;color:var(--muted);font-size:11px;position:relative;z-index:1">ATAU INPUT MANUAL CEPAT</span><hr style="border:0;border-top:1px solid var(--line);position:absolute;top:50%;left:0;right:0;margin:0"></div><div class="form-grid" id="scanManualSection"><label>Nama / Tempat<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45000"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label></div><div class="dialog-actions" style="margin-top:12px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20260927.4').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20260927.5').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key';
 let page='home', txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all'}, txPeriod='monthly', txOffset=0, reportPeriod='monthly', reportOffset=0, chartType='donut', reportType='expense', reportSource='all', manualSource='personal', stMode=localStorage.getItem('aruskas_st_mode')==='true', selectedId='', selectMode=false, selectSet=new Set(), pageStack=[], lastHomeSwipeAt=0, exitSwipeRequested=false;
 const palette=['#1f8a5b','#f4a62a','#3094d4','#7c65d8','#8d572f','#e55a6b','#8bbf3d','#5ca6a6'];
@@ -785,6 +786,7 @@ function initVoiceInput(){
   rec.continuous=false;
   rec.interimResults=true;
   rec.maxAlternatives=1;
+  let recognizedText='';
 
   rec.onstart=()=>{
     setListeningState(true);
@@ -797,18 +799,19 @@ function initVoiceInput(){
   };
 
   rec.onresult=(e)=>{
-    if(!e.results||!e.results[0]||!e.results[0][0])return;
-    const raw=e.results[0][0].transcript;
+    let interim='', finalStr='';
+    for(let i=0;i<e.results.length;++i){
+      if(e.results[i].isFinal) finalStr+=e.results[i][0].transcript+' ';
+      else interim+=e.results[i][0].transcript+' ';
+    }
+    const raw=(finalStr||interim).trim();
+    if(!raw) return;
+    recognizedText=raw;
     const converted=convertSpokenIndonesianNumbers(raw);
     const targetInputId=page==='add'?'focusInput':'quickInput';
     const input=$(targetInputId);
     if(input) input.value=converted;
     pratinjau(targetInputId, targetInputId==='quickInput'?'quickPreview':'focusPreview');
-
-    if(e.results[0].isFinal){
-      setListeningState(false);
-      if(converted.trim()) addFrom(targetInputId, converted);
-    }
   };
 
   rec.onerror=(e)=>{
@@ -817,56 +820,81 @@ function initVoiceInput(){
     const box=$(page==='add'?'focusPreview':'quickPreview');
     let errMsg='Input suara terhenti: '+(e.error||'error');
     if(e.error==='not-allowed'||e.error==='service-not-allowed'){
-      errMsg='Izin mikrofon ditolak / diblokir. Izinkan akses mikrofon di setelan browser dan buka via HTTPS.';
+      errMsg='Izin mikrofon ditolak atau diblokir.';
+      if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
+        errMsg+='\n\nCatatan: Browser HP otomatis memblokir mikrofon pada HTTP IP lokal. Silakan gunakan versi HTTPS di: https://roqimon.github.io/CashFlow/';
+      }
       alert(errMsg);
     }else if(e.error==='no-speech'){
       errMsg='Tidak ada suara terdeteksi. Silakan coba lagi dan bicara lebih dekat ke mikrofon.';
     }else if(e.error==='network'){
-      errMsg='Koneksi internet bermasalah. Pengenalan suara memerlukan koneksi internet aktif.';
+      errMsg='Koneksi internet bermasalah. Fitur suara memerlukan koneksi internet aktif.';
     }else if(e.error==='audio-capture'){
       errMsg='Mikrofon tidak terdeteksi pada perangkat Anda.';
       alert(errMsg);
     }
-    if(box){
+    if(box&&errMsg){
       box.className='pratinjau bad';
       box.style.display='block';
       box.innerHTML='⚠️ '+esc(errMsg);
     }
   };
 
-  rec.onend=()=>setListeningState(false);
+  rec.onend=()=>{
+    setListeningState(false);
+    const targetInputId=page==='add'?'focusInput':'quickInput';
+    const input=$(targetInputId);
+    const val=(input?input.value:'')||recognizedText;
+    if(val&&val.trim()){
+      addFrom(targetInputId, val.trim());
+    }
+  };
+
   return rec;
 }
 
-function toggleVoiceInput(){
-  const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if(!isSecure){
-    alert('Input suara memerlukan koneksi aman (HTTPS).\n\nJika membuka di HP melalui Wi-Fi (alamat IP HTTP http://10.x.x.x:3000), Google Chrome otomatis memblokir akses mikrofon demi keamanan browser.\n\nSolusi: Buka via HTTPS di GitHub Pages (https://roqimon.github.io/CashFlow/) atau gunakan localhost.');
-    return;
-  }
+async function toggleVoiceInput(){
   const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SpeechRec){
-    alert('Browser ini belum mendukung Speech Recognition. Gunakan Google Chrome pada HP Android atau Laptop.');
+    alert('Browser ini belum mendukung Speech Recognition bawaan.\n\nTips:\n• Jika menggunakan iPhone/iPad: Anda bisa menggunakan tombol Mikrofon (Dikte) pada keyboard HP saat mengetik di kotak transaksi.\n• Jika menggunakan Android: Buka di aplikasi Google Chrome.');
     return;
   }
-  if(!recognition) recognition=initVoiceInput();
-  if(!recognition){
-    alert('Gagal menginisialisasi mikrofon pada perangkat ini.');
-    return;
-  }
-  if(isListening){
+
+  if(isListening&&recognition){
     try{recognition.stop()}catch(e){}
     setListeningState(false);
-  }else{
+    return;
+  }
+
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
     try{
-      recognition.start();
-    }catch(e){
-      console.warn('[ArusKas] Speech start retry:', e);
-      recognition=initVoiceInput();
-      try{recognition.start()}catch(err){
-        alert('Gagal memulai mikrofon: '+(err.message||err));
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      stream.getTracks().forEach(t=>t.stop());
+    }catch(err){
+      console.warn('[ArusKas] getUserMedia check:', err);
+      if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError'){
+        let msg='Izin mikrofon ditolak.\n\nSilakan izinkan akses mikrofon di Pengaturan Browser Anda.';
+        if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
+          msg+='\n\nCatatan: Browser HP otomatis memblokir mikrofon pada HTTP IP lokal. Silakan buka versi HTTPS di: https://roqimon.github.io/CashFlow/';
+        }
+        alert(msg);
+        return;
       }
     }
+  }
+
+  try{
+    if(recognition){try{recognition.abort()}catch(e){}}
+    recognition=initVoiceInput();
+    if(!recognition){
+      alert('Gagal menginisialisasi mikrofon.');
+      return;
+    }
+    recognition.start();
+  }catch(err){
+    console.error('[ArusKas] recognition start error:', err);
+    setListeningState(false);
+    alert('Gagal memulai mikrofon: '+(err.message||err));
   }
 }
 
@@ -903,35 +931,59 @@ function setScanningState(scanning){
   ['scanBtn','scanBtnFocus'].forEach(id=>{const b=$(id);if(b)b.classList.toggle('scanning',scanning)});
 }
 
+let currentReceiptFile=null;
 function handleScanBtnClick(){
-  const apiKey=getGeminiApiKey();
-  if(!apiKey){
-    const userKey=prompt('Fitur scan foto struk memerlukan Gemini API Key (gratis dari Google AI Studio: https://aistudio.google.com/app/apikey).\n\nMasukkan Gemini API Key Anda:');
-    if(userKey&&userKey.trim()){
-      setGeminiApiKey(userKey.trim());
-      if($('geminiApiKeyInput')) $('geminiApiKeyInput').value=userKey.trim();
-    }else{
-      openModalLayer('settingsModal');
-      setTimeout(()=>$('geminiApiKeyInput')?.focus(),200);
-      return;
-    }
+  const fileInput=$('receiptFileInput');
+  if(fileInput){
+    fileInput.value='';
+    fileInput.click();
   }
-  $('receiptFileInput')?.click();
 }
 
-async function scanReceiptWithGemini(file){
-  if(!file)return;
-  let apiKey=getGeminiApiKey();
+async function handleReceiptFileSelected(file){
+  if(!file) return;
+  currentReceiptFile=file;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=$('scanPreviewImg');
+    if(img) img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+
+  const catSel=$('scanManualCategory');
+  if(catSel) populateCatSelect(catSel,'Makan');
+
+  const apiKey=getGeminiApiKey();
+  const apiKeyInput=$('scanApiKeyInput');
+  if(apiKeyInput) apiKeyInput.value=apiKey;
+
+  openModalLayer('scanModal');
+
+  if(apiKey){
+    await executeReceiptAiScan(file, apiKey);
+  } else {
+    const statusBox=$('scanStatusBox');
+    if(statusBox){
+      statusBox.className='pratinjau';
+      statusBox.innerHTML='📷 <strong>Foto struk berhasil diambil!</strong> Masukkan Gemini API Key untuk scan otomatis dengan AI, atau ketik nominal langsung di bawah:';
+    }
+  }
+}
+
+async function executeReceiptAiScan(file, apiKey){
+  if(!file) file=currentReceiptFile;
+  if(!apiKey) apiKey=$('scanApiKeyInput')?.value.trim()||getGeminiApiKey();
   if(!apiKey){
-    handleScanBtnClick();
+    alert('Silakan masukkan Gemini API Key terlebih dahulu.');
+    $('scanApiKeyInput')?.focus();
     return;
   }
+  setGeminiApiKey(apiKey);
   setScanningState(true);
-  const previewBox=$(page==='add'?'focusPreview':'quickPreview');
-  if(previewBox){
-    previewBox.style.display='block';
-    previewBox.className='pratinjau';
-    previewBox.innerHTML='⏳ Sedang menganalisa foto struk / nota via Gemini AI...';
+  const statusBox=$('scanStatusBox');
+  if(statusBox){
+    statusBox.className='pratinjau';
+    statusBox.innerHTML='⏳ <strong>Sedang menganalisa foto struk via Gemini AI...</strong>';
   }
   try{
     const base64Data=await compressImage(file, 1024, 0.8);
@@ -983,7 +1035,7 @@ async function scanReceiptWithGemini(file){
 
     const arr=getTX();
     const nowIso=new Date().toISOString();
-    let countSaved=0;
+    let countSaved=0, firstSaved=null;
     items.forEach(it=>{
       const rawTitle=String(it.title||'Nota').trim();
       const cleanTitle=sanitizeBankNotificationText(rawTitle);
@@ -1015,31 +1067,66 @@ async function scanReceiptWithGemini(file){
       arr.unshift(newItem);
       learnCategory(cleanTitle, cat);
       learnTitle(cleanTitle, newItem.title);
+      if(!firstSaved) firstSaved=newItem;
       countSaved++;
     });
 
     if(countSaved>0){
       saveTX(arr);
       render();
-      if(previewBox){
-        previewBox.style.display='block';
-        previewBox.className='pratinjau';
-        previewBox.innerHTML=`⚡ <strong>${countSaved} transaksi berhasil disimpan langsung dari foto</strong>. Ubah jika diperlukan.`;
+      if(statusBox){
+        statusBox.className='pratinjau';
+        statusBox.innerHTML=`⚡ <strong>${countSaved} transaksi berhasil disimpan!</strong> (${firstSaved.title}: ${money(firstSaved.amount)})`;
       }
+      setTimeout(()=>closeModalLayer('scanModal'), 1400);
     } else {
       throw new Error('Nominal transaksi dalam struk tidak terbaca.');
     }
   }catch(err){
     console.error('[ArusKas] Scan receipt error:', err);
-    if(previewBox){
-      previewBox.style.display='block';
-      previewBox.className='pratinjau bad';
-      previewBox.innerHTML=`❌ Gagal memproses struk: ${esc(err.message||err)}`;
+    if(statusBox){
+      statusBox.className='pratinjau bad';
+      statusBox.innerHTML=`❌ Gagal memproses struk via AI: ${esc(err.message||err)}<br><small>Gunakan form manual di bawah untuk menyimpan langsung.</small>`;
     }
-    alert('Gagal memproses struk: '+(err.message||err));
   }finally{
     setScanningState(false);
   }
+}
+
+const scanReceiptWithGemini=executeReceiptAiScan;
+
+function saveScanManualTransaction(){
+  const titleVal=$('scanManualTitle')?.value.trim()||'Nota Struk';
+  const amountVal=parseAmount($('scanManualAmount')?.value)||Number($('scanManualAmount')?.value)||0;
+  const catVal=$('scanManualCategory')?.value||'Makan';
+  if(!amountVal||amountVal<=0){
+    alert('Masukkan nominal transaksi.');
+    $('scanManualAmount')?.focus();
+    return;
+  }
+  const type=inferType(titleVal);
+  const src=stMode?'st':'personal';
+  const sessId=src==='st'?getActiveSTSession()?.id:null;
+  const reimb=(src==='st'&&type==='expense')?'pending':null;
+  const item=tx({
+    title:titleVal,
+    amount:amountVal,
+    type:type,
+    category:catVal,
+    icon:icon(catVal,type),
+    note:'Foto Struk',
+    source:src,
+    stSessionId:sessId,
+    reimburseStatus:reimb,
+    rawInput:'foto: '+titleVal,
+    createdAt:new Date().toISOString()
+  });
+  const arr=getTX();
+  arr.unshift(item);
+  saveTX(arr);
+  render();
+  closeModalLayer('scanModal');
+  alert(`Transaksi berhasil dicatat: ${item.title} - ${money(item.amount)}`);
 }
 
 async function importJsonData(file){
@@ -1114,7 +1201,7 @@ document.addEventListener('mousedown',e=>{const txBtn=e.target.closest('[data-tx
 document.addEventListener('mouseup',()=>{clearTimeout(longPressTimer)});
 document.addEventListener('mousemove',e=>{if(e.movementX||e.movementY)clearTimeout(longPressTimer)});
 document.addEventListener('click',async e=>{if(e.target.id==='confirmCancel'){resolveConfirm(false);return}if(e.target.id==='confirmOk'){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){const tid=txBtn.dataset.txId;const cb=e.target.closest('.tx-cb');const shouldSelect=cb?cb.checked:!selectSet.has(tid);if(shouldSelect)selectSet.add(tid);else selectSet.delete(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,start:null,end:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
-const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){openModalLayer('settingsModal');renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}if(a==='close-settings'){closeModalLayer('settingsModal');}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='force-update'){try{if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){openModalLayer('settingsModal');renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}if(a==='close-settings'){closeModalLayer('settingsModal');}if(a==='close-scan-modal'){closeModalLayer('scanModal');}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='force-update'){try{if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){saveTX([]);saveSC([]);saveCatRecords([]);localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
@@ -1150,7 +1237,9 @@ $('voiceBtn')?.addEventListener('click', toggleVoiceInput);
 $('voiceBtnFocus')?.addEventListener('click', toggleVoiceInput);
 $('scanBtn')?.addEventListener('click', handleScanBtnClick);
 $('scanBtnFocus')?.addEventListener('click', handleScanBtnClick);
-$('receiptFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){scanReceiptWithGemini(e.target.files[0]);e.target.value='';}});
+$('receiptFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){handleReceiptFileSelected(e.target.files[0]);e.target.value='';}});
+$('scanAnalyzeBtn')?.addEventListener('click', ()=>{const k=$('scanApiKeyInput')?.value.trim();if(k)setGeminiApiKey(k);executeReceiptAiScan(currentReceiptFile,k);});
+$('scanManualSaveBtn')?.addEventListener('click', saveScanManualTransaction);
 $('importJsonFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){importJsonData(e.target.files[0]);e.target.value='';}});
 $('geminiApiKeyInput')?.addEventListener('input', e=>setGeminiApiKey(e.target.value));
 $('geminiApiKeyInput')?.addEventListener('change', e=>setGeminiApiKey(e.target.value));
