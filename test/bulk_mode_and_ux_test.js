@@ -97,6 +97,16 @@ pages.forEach(p => {
 });
 console.log('✔ All 5 pages and navigation buttons verified');
 
+console.log('--- Test 7: App Update Indicators & Banners ---');
+assert.ok(html.includes('id="updateSuccessBanner"'), 'updateSuccessBanner element exists');
+assert.ok(html.includes('id="closeUpdateBanner"'), 'closeUpdateBanner button exists');
+assert.ok(html.includes('id="appVersionDetails"'), 'appVersionDetails card exists');
+assert.ok(html.includes('id="appVersionBadge"'), 'appVersionBadge badge exists');
+assert.ok(html.includes('id="updateStatusText"'), 'updateStatusText description exists');
+assert.ok(html.includes('Ringkasan dan input cepat · v12'), 'Home subtitle contains version indicator');
+assert.ok(html.includes('checkUpdateNotice()'), 'checkUpdateNotice function is executed');
+console.log('✔ Update indicators, banner, and version badges verified');
+
 console.log('\n=======================================');
 console.log('All Bulk Mode & UX verification tests PASSED!');
 console.log('=======================================');
