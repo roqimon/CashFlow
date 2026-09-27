@@ -399,6 +399,70 @@ const infer2 = smartInferCat('bayar digital 50rb', 'expense', userCats, userHist
 assert.strictEqual(infer2, 'Digital');
 console.log('✔ smartInferCat passed');
 
+console.log('--- Step 6: Testing matchShortcut ---');
+function matchShortcut(inputWork, shortcuts) {
+  if (!inputWork || !shortcuts || !shortcuts.length) return null;
+  const sorted = [...shortcuts].filter(s => s && s.code).sort((a,b) => b.code.length - a.code.length);
+  const clean = inputWork.trim();
+
+  for (const s of sorted) {
+    const code = s.code.toLowerCase().trim();
+    if (!code) continue;
+
+    const escaped = code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regexWord = new RegExp(`^${escaped}(?:\\s+(.*)|$)`, 'i');
+    const mWord = clean.match(regexWord);
+    if (mWord) {
+      return {
+        shortcut: s,
+        remainder: (mWord[1] || '').trim()
+      };
+    }
+
+    const regexDirectDigit = new RegExp(`^${escaped}(\\d+.*)$`, 'i');
+    const mDigit = clean.match(regexDirectDigit);
+    if (mDigit) {
+      return {
+        shortcut: s,
+        remainder: mDigit[1].trim()
+      };
+    }
+  }
+  return null;
+}
+
+const testShortcuts = [
+  { code: 'kopi', title: 'Kopi Kenangan', amount: 15000, category: 'Makan', type: 'expense', icon: '☕' },
+  { code: 'kopi susu', title: 'Kopi Susu Tetangga', amount: 20000, category: 'Makan', type: 'expense', icon: '☕' },
+  { code: 'bensin', title: 'Bensin Motor', amount: 0, category: 'Transport', type: 'expense', icon: '⛽' }
+];
+
+// Test multi-word shortcut match
+const m1 = matchShortcut('kopi susu 25rb', testShortcuts);
+assert.ok(m1);
+assert.strictEqual(m1.shortcut.code, 'kopi susu');
+assert.strictEqual(m1.remainder, '25rb');
+
+// Test single-word shortcut without space before digits
+const m2 = matchShortcut('kopi25', testShortcuts);
+assert.ok(m2);
+assert.strictEqual(m2.shortcut.code, 'kopi');
+assert.strictEqual(m2.remainder, '25');
+
+// Test shortcut without nominal using default amount
+const m3 = matchShortcut('kopi', testShortcuts);
+assert.ok(m3);
+assert.strictEqual(m3.shortcut.code, 'kopi');
+assert.strictEqual(m3.remainder, '');
+
+// Test shortcut with custom amount and note
+const m4 = matchShortcut('Kopi 30 di kantor', testShortcuts);
+assert.ok(m4);
+assert.strictEqual(m4.shortcut.code, 'kopi');
+assert.strictEqual(m4.remainder, '30 di kantor');
+
+console.log('✔ matchShortcut passed');
+
 console.log('\n=======================================');
 console.log('All Lazy Input Suite helper tests PASS!');
 console.log('=======================================');
@@ -409,6 +473,7 @@ if (typeof module !== 'undefined' && module.exports) {
     sanitizeBankNotificationText,
     processBatchInput,
     parseDateInfo,
-    smartInferCat
+    smartInferCat,
+    matchShortcut
   };
 }
