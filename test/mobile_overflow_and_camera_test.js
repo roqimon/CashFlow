@@ -14,21 +14,25 @@ assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))!important
 assert.ok(html.includes('.report-summary{margin-top:12px!important;width:100%!important;max-width:100%!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important'), 'report summary must use repeat(3, minmax(0,1fr))');
 console.log('✔ Report period tabs and summary grid responsive');
 
-console.log('--- Test 3: Camera Label & File Input ---');
-assert.ok(html.includes('<label class="icon-btn" id="scanBtn" for="receiptFileInput"'), 'scanBtn must be native label for receiptFileInput');
-assert.ok(html.includes('<label class="icon-btn" id="scanBtnFocus" for="receiptFileInput"'), 'scanBtnFocus must be native label for receiptFileInput');
-assert.ok(html.includes('id="receiptFileInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"'), 'receiptFileInput must use accessible sr-only positioning instead of display:none');
-console.log('✔ Camera label and accessible file input verified');
+console.log('--- Test 3: Photo Choice Modal & Hardware Camera Input ---');
+assert.ok(html.includes('id="photoChoiceModal"'), 'photoChoiceModal must exist');
+assert.ok(html.includes('id="btnTakePhoto"'), 'btnTakePhoto must exist in photo choice modal');
+assert.ok(html.includes('id="btnPickGallery"'), 'btnPickGallery must exist in photo choice modal');
+assert.ok(html.includes('id="cameraDirectInput" accept="image/*" capture="environment"'), 'cameraDirectInput must use capture=environment to trigger real camera');
+assert.ok(html.includes('id="galleryFileInput" accept="image/*"'), 'galleryFileInput must accept images');
+assert.ok(html.includes('id="receiptFileInput" accept="image/*"'), 'receiptFileInput compatibility element must exist');
+console.log('✔ Photo choice modal and direct camera input verified');
 
 console.log('--- Test 4: Mic & Speech API Secure Context Handling ---');
 assert.ok(html.includes('window.isSecureContext'), 'voice input must check isSecureContext');
+assert.ok(html.includes('id="voiceNoticeModal"'), 'voiceNoticeModal must exist');
 assert.ok(html.includes('https://roqimon.github.io/CashFlow/'), 'voice input must provide direct HTTPS fallback link');
 console.log('✔ Mic and secure context guidance verified');
 
 console.log('--- Test 5: Service Worker Cache Version Bump ---');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v11'"), 'sw.js must be bumped to v11');
-assert.ok(html.includes('sw.js?v=20260927.6'), 'index.html must register sw.js?v=20260927.6');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v12'"), 'sw.js must be bumped to v12');
+assert.ok(html.includes('sw.js?v=20260927.7'), 'index.html must register sw.js?v=20260927.7');
 console.log('✔ Service Worker cache version verified');
 
 console.log('\n=======================================');
