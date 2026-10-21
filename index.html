@@ -706,6 +706,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.s
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1';
 const defaultPockets=[
   {id:'pocket-dapur',name:'Dapur & Belanja',icon:'🛒',amount:2500000,color:'#1f8a5b',categories:['makan','belanja','dapur','sayur','buah','beras','lauk']},
+  {id:'pocket-transport',name:'Bensin & Kendaraan',icon:'⛽',amount:800000,color:'#0284c7',categories:['transport','bensin','pertalite','pertamax','solar','cuci','servis','parkir','tol','kendaraan','motor','mobil','gojek','grab']},
   {id:'pocket-anak',name:'Kebutuhan Anak & Sekolah',icon:'🎓',amount:1500000,color:'#3094d4',categories:['sekolah','pendidikan','anak','susu','buku','kursus','spp']},
   {id:'pocket-tagihan',name:'Tagihan & Rumah',icon:'💡',amount:1000000,color:'#f4a62a',categories:['tagihan','listrik','air','internet','wifi','pulsa','gas','rumah']},
   {id:'pocket-jajan',name:'Jajan & Santai',icon:'☕',amount:800000,color:'#e55a6b',categories:['jajan','kopi','nongkrong','snack','hiburan','nonton','liburan']},
@@ -722,7 +723,17 @@ function getPockets(){
       return [];
     }
     const arr=JSON.parse(raw);
-    return Array.isArray(arr)&&arr.length?arr:defaultPockets;
+    if(Array.isArray(arr)&&arr.length){
+      if(!arr.some(p=>p.id==='pocket-transport')&&!localStorage.getItem('aruskas_pockets_cleared')){
+        const defTransport=defaultPockets.find(p=>p.id==='pocket-transport');
+        if(defTransport){
+          arr.splice(1,0,defTransport);
+          savePockets(arr);
+        }
+      }
+      return arr;
+    }
+    return defaultPockets;
   }catch(e){
     return defaultPockets;
   }
