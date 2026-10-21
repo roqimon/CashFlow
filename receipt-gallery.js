@@ -30,9 +30,9 @@
     return filter(receipts, transactions, { start, end, category, query });
   }
   function buildReportSharePlan(mode, receipts, transactions, { from = '', to = '' } = {}) {
-    const includeList = mode !== 'receipts';
-    const needsPhotos = mode === 'both' || mode === 'receipts';
-    const valid = ['list', 'both', 'receipts'].includes(mode) && /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to) && from <= to;
+    const includeList = mode !== 'receipts' && mode !== 'pdf';
+    const needsPhotos = mode === 'both' || mode === 'receipts' || mode === 'pdf';
+    const valid = ['list', 'both', 'receipts', 'pdf'].includes(mode) && /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to) && from <= to;
     if (!valid) return { includeList, receiptIds: [], transactionIds: [], valid: false };
     const start = new Date(`${from}T00:00:00`);
     const end = new Date(`${to}T23:59:59.999`);
