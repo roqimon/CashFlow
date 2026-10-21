@@ -762,7 +762,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <strong style="font-size:15px;letter-spacing:-.02em">Pos anggaran</strong>
               <p class="muted" id="budgetSummaryText" style="margin:2px 0 0;font-size:12px">Ringkasan pos pengeluaran</p>
             </div>
-            <div style="display:flex;gap:8px;align-items:center"><button class="text-btn" data-action="sweep-pocket-modal" type="button" style="font-size:12px;font-weight:800;color:var(--green);background:rgba(31,138,91,0.08);padding:4px 10px;border-radius:8px">🧹 Alokasikan Sisa</button><button class="text-btn" data-action="manage-pockets" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Atur pos</button></div>
+            <div style="display:flex;gap:8px;align-items:center"><button class="text-btn" data-action="sweep-pocket-modal" type="button" style="font-size:12px;font-weight:800;color:var(--green);background:rgba(31,138,91,0.08);padding:4px 10px;border-radius:8px">🧹 Alokasikan Sisa</button><button class="text-btn" data-action="manage-pockets" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Lihat semua</button></div>
           </div>
           <div id="budgetPocketList" style="display:grid;gap:8px"></div>
         </section>
@@ -1972,15 +1972,21 @@ function renderBudgetPockets(){
   if(!container)return;
   const pockets=getPockets();
   if(!pockets.length){
-    container.innerHTML='<div class="empty">Belum ada pos anggaran. Ketuk "Atur Pos" untuk membuat.</div>';
+    container.innerHTML='<div class="empty">Belum ada pos anggaran. Ketuk "+ Pos Baru" di Pengaturan untuk membuat.</div>';
     return;
   }
   const tx=getTX();
   const now=new Date();
   let totalPlafond=0;
-  container.innerHTML=pockets.map(p=>{
+  pockets.forEach(p=>{
+    totalPlafond+=calculatePocketUsage(p,now,tx).amount;
+  });
+
+  const MAX_HOME_POCKETS = 3;
+  const shownPockets = pockets.slice(0, MAX_HOME_POCKETS);
+
+  let pocketCardsHtml = shownPockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
-    totalPlafond+=usage.amount;
     let barColor=p.color||'#1f8a5b';
     let statusBadge='';
     if(usage.isOver){
@@ -1990,7 +1996,7 @@ function renderBudgetPockets(){
       statusBadge=`<span style="color:var(--muted);font-size:11.5px">Sisa <strong>${short(usage.remaining)}</strong></span>`;
     }
     const safePercent=Math.min(100,usage.percent);
-    return `<div class="mini-box" style="padding:10px 12px;border-radius:16px;background:var(--surface2)">
+    return `<div class="mini-box" data-edit-pocket="${esc(p.id)}" role="button" tabindex="0" title="Ketuk untuk ubah pos anggaran ini" style="padding:10px 12px;border-radius:16px;background:var(--surface2);cursor:pointer;transition:transform .12s ease">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <div style="display:flex;align-items:center;gap:9px">
           <span class="pocket-icon">${renderIcon(p.icon||'❓')}</span>
@@ -2010,6 +2016,15 @@ function renderBudgetPockets(){
       </div>
     </div>`;
   }).join('');
+
+  if(pockets.length > MAX_HOME_POCKETS){
+    pocketCardsHtml += `<button class="ghost" data-action="manage-pockets" type="button" style="width:100%;min-height:38px;font-size:12px;font-weight:800;border:1px dashed var(--line);background:var(--surface);margin-top:2px;display:flex;align-items:center;justify-content:center;gap:6px">
+      <span>Lihat Semua Pos (${pockets.length})</span>
+      <span style="font-size:14px">›</span>
+    </button>`;
+  }
+
+  container.innerHTML = pocketCardsHtml;
 
   const summary=$('budgetSummaryText');
   if(summary){
@@ -2062,7 +2077,7 @@ function renderHome(arr){
   $('expenseTotal').textContent=money(s.expense);
   $('homePeriod').textContent=new Date().toLocaleDateString('id-ID',{month:'long',year:'numeric'});
   $('txCount').textContent=arr.length+' transaksi';
-  $('homeTxList').innerHTML=arr.slice(0,10).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
+  $('homeTxList').innerHTML=arr.slice(0,7).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
   const totals=catTotals(a,'expense');
   const visibleCats=getCatList().filter(c=>!['Gaji','Honor','Bonus','Masuk'].includes(c));
   const fallback=(visibleCats.length?visibleCats:['Lainnya']).slice(0,3).map(c=>({category:c,total:0,count:0,icon:icon(c,'expense')}));
@@ -3093,8 +3108,58 @@ function toast(msg,action){return} // Notifikasi toast dinonaktifkan agar aplika
 let confirmResolve=null;function confirmBox({title='Konfirmasi',message='Lanjutkan tindakan ini?',okText='Lanjutkan',cancelText='Batal',tone='danger'}={}){closeFancySelects();$('confirmTitle').textContent=title;$('confirmMessage').textContent=message;$('confirmOk').textContent=okText;$('confirmCancel').textContent=cancelText;$('confirmIcon').textContent=tone==='danger'?'!':'✓';$('confirmIcon').classList.toggle('safe',tone!=='danger');$('confirmOk').classList.toggle('danger-ok',tone==='danger');openModalLayer('confirmModal');return new Promise(resolve=>{confirmResolve=resolve})}
 function resolveConfirm(ok){if(!confirmResolve)return;closeModalLayer('confirmModal');const resolve=confirmResolve;confirmResolve=null;resolve(!!ok)}
 
-function getGeminiApiKey(){return localStorage.getItem(KEY_GEMINI_API)||(window.__APP_CONFIG__&&window.__APP_CONFIG__.GEMINI_API_KEY)||''}
-function setGeminiApiKey(val){localStorage.setItem(KEY_GEMINI_API,String(val||'').trim())}
+function getGeminiApiKeys(){
+  const custom = localStorage.getItem(KEY_GEMINI_API) || '';
+  const fromConfig = Array.isArray(window.__APP_CONFIG__?.GEMINI_API_KEYS)
+    ? window.__APP_CONFIG__.GEMINI_API_KEYS
+    : (window.__APP_CONFIG__?.GEMINI_API_KEY ? [window.__APP_CONFIG__.GEMINI_API_KEY] : []);
+  const rawList = custom ? custom.split(/[\n,]+/).map(k=>k.trim()).filter(Boolean) : fromConfig;
+  return Array.from(new Set(rawList.map(k=>k.trim()).filter(Boolean)));
+}
+
+function getGeminiApiKey(){
+  const keys = getGeminiApiKeys();
+  return keys[0] || '';
+}
+
+function setGeminiApiKey(val){
+  localStorage.setItem(KEY_GEMINI_API, String(val||'').trim());
+}
+
+async function callGeminiWithRollingKeys(payload){
+  const keys = getGeminiApiKeys();
+  if(!keys.length){
+    throw new Error('Kunci Gemini API belum diisi');
+  }
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
+  let lastError = null;
+
+  for(let i = 0; i < keys.length; i++){
+    const apiKey = keys[i];
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify(payload)
+      });
+      if(res.ok){
+        return await res.json();
+      }
+      const errText = await res.text();
+      lastError = new Error(`Gemini API (${i+1}/${keys.length}) error (${res.status}): ${errText}`);
+      console.warn('[ArusKas] Gemini key failed:', i + 1, res.status, errText);
+      if(i < keys.length - 1){
+        console.info('[ArusKas] Auto-rolling ke Gemini API Key berikutnya...', i + 2);
+        continue;
+      }
+    } catch(networkErr){
+      lastError = networkErr;
+      console.warn('[ArusKas] Gemini fetch network error with key', i + 1, networkErr);
+      if(i < keys.length - 1) continue;
+    }
+  }
+  throw lastError || new Error('Semua Gemini API Key gagal diproses.');
+}
 
 function saveDirectTransaction(txData){
   const cleanTitle=cleanSpeechDuplicates(txData.title||'Transaksi');
@@ -3153,21 +3218,11 @@ Tugas Anda:
 Format nominal adalah angka bulat tanpa tanda baca (misal: 200rb atau dua ratus ribu -> 200000).
 Kembalikan HANYA format JSON valid.`;
 
-  const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
   const payload={
     contents:[{parts:[{text:prompt}]}],
     generationConfig:{responseMimeType:'application/json',temperature:0.1}
   };
-  const res=await fetch(url,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
-    body:JSON.stringify(payload)
-  });
-  if(!res.ok){
-    const errText=await res.text();
-    throw new Error(`Gemini error (${res.status}): ${errText}`);
-  }
-  const data=await res.json();
+  const data=await callGeminiWithRollingKeys(payload);
   const candidateText=data.candidates?.[0]?.content?.parts?.[0]?.text;
   if(!candidateText) throw new Error('Respon AI kosong');
   let cleanJson=candidateText.trim();
@@ -3621,7 +3676,6 @@ async function executeReceiptAiScan(file, apiKey){
     const activePocketsInfo=pList.length?pList.map(p=>`${p.name} (id: ${p.id})`).join(', '):'Belum ada pos khusus';
     const activeST=getActiveSTSession();
     const activeSTInfo=activeST?`Tersedia Sesi Dinas: ${activeST.label} (id: ${activeST.id})`:'Tidak ada sesi dinas aktif';
-    const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
     const payload={
       contents:[{
         parts:[
@@ -3643,15 +3697,7 @@ async function executeReceiptAiScan(file, apiKey){
         maxOutputTokens:256
       }
     };
-    const res=await fetch(url,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
-      body:JSON.stringify(payload)
-    });
-    if(!res.ok){
-      throw new Error('Gagal membaca nota secara otomatis.');
-    }
-    const data=await res.json();
+    const data=await callGeminiWithRollingKeys(payload);
     const candidateText=data.candidates?.[0]?.content?.parts?.[0]?.text;
     if(!candidateText) throw new Error('Rincian nota belum terbaca.');
     let cleanJson=candidateText.trim();
