@@ -31,8 +31,8 @@ console.log('✔ Mic and secure context guidance verified');
 
 console.log('--- Test 5: Service Worker Cache Version Bump ---');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v12'"), 'sw.js must be bumped to v12');
-assert.ok(html.includes('sw.js?v=20260927.7'), 'index.html must register sw.js?v=20260927.7');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v13'"), 'sw.js must be bumped to v13');
+assert.ok(html.includes('sw.js?v=20261021.1'), 'index.html must register sw.js?v=20261021.1');
 console.log('✔ Service Worker cache version verified');
 
 console.log('\n=======================================');
