@@ -71,40 +71,64 @@ assert.strictEqual(getAddClickAction(), 'chat', 'Should fall back to chat on inv
 
 console.log('✔ getAddClickAction logic verified');
 
-console.log('--- Test 4: Trigger Add Action Routing ---');
+console.log('--- Test 4: Trigger Add Action Routing Across All Pages ---');
+const triggerFnCode = extractFunction(html, 'triggerAddAction');
+assert.ok(triggerFnCode, 'triggerAddAction must be extractable');
+
+let page = 'home';
 let navigatedTo = '';
 let voiceToggled = false;
 let photoChoiceOpened = false;
 
-const triggerFnCode = extractFunction(html, 'triggerAddAction');
-assert.ok(triggerFnCode, 'triggerAddAction must be extractable');
-
-const triggerAddAction = new Function('getAddClickAction', 'navigate', 'toggleVoiceInput', 'openPhotoChoice', '$',
-  `return (${triggerFnCode});`
+const triggerAddAction = new Function('getAddClickAction', 'navigate', 'toggleVoiceInput', 'openPhotoChoice', '$', 'getPage',
+  `return (function(action){
+    var page = getPage();
+    var fn = (${triggerFnCode});
+    return fn(action);
+  });`
 )(
   getAddClickAction,
-  (p) => { navigatedTo = p; },
+  (p) => { navigatedTo = p; page = p; },
   () => { voiceToggled = true; },
   () => { photoChoiceOpened = true; },
-  (id) => ({ focus: () => {} })
+  (id) => ({ focus: () => {} }),
+  () => page
 );
 
-// Test chat
+// Test 4.1: From settings page with voice action -> must navigate to home first, then trigger voice
+page = 'settings';
 navigatedTo = '';
-triggerAddAction('chat');
-assert.strictEqual(navigatedTo, 'add', 'chat action should navigate to add page');
-
-// Test voice
 voiceToggled = false;
 triggerAddAction('voice');
-assert.strictEqual(voiceToggled, true, 'voice action should call toggleVoiceInput');
+assert.strictEqual(navigatedTo, 'home', 'Voice from settings must navigate back to home');
+assert.strictEqual(voiceToggled, true, 'Voice input must be triggered');
 
-// Test foto
+// Test 4.2: From report page with voice action -> must navigate to home first, then trigger voice
+page = 'report';
+navigatedTo = '';
+voiceToggled = false;
+triggerAddAction('voice');
+assert.strictEqual(navigatedTo, 'home', 'Voice from report must navigate back to home');
+assert.strictEqual(voiceToggled, true, 'Voice input must be triggered');
+
+// Test 4.3: From add page with chat action -> toggles back to home
+page = 'add';
+navigatedTo = '';
+triggerAddAction('chat');
+assert.strictEqual(navigatedTo, 'home', 'Chat from add page must toggle back to home');
+
+// Test 4.4: From home page with chat action -> navigates to add
+page = 'home';
+navigatedTo = '';
+triggerAddAction('chat');
+assert.strictEqual(navigatedTo, 'add', 'Chat from home page must navigate to add');
+
+// Test 4.5: Foto action -> opens photo choice modal
 photoChoiceOpened = false;
 triggerAddAction('foto');
-assert.strictEqual(photoChoiceOpened, true, 'foto action should call openPhotoChoice');
+assert.strictEqual(photoChoiceOpened, true, 'Foto action should open photo choice modal');
 
-console.log('✔ triggerAddAction routing verified');
+console.log('✔ triggerAddAction routing across pages verified');
 
 console.log('--- Test 5: Event Listener & Boot Hooks for Setting Toggle ---');
 assert.ok(html.includes("$('addActionModeSeg')") && html.includes("setAddClickAction"), 'addActionModeSeg must have click listener calling setAddClickAction');

@@ -3256,12 +3256,19 @@ function renderAddClickActionControls(){
 function triggerAddAction(action){
   const target=action||getAddClickAction();
   if(target==='voice'){
+    if(page!=='home'&&page!=='add'){
+      navigate('home');
+    }
     toggleVoiceInput();
   }else if(target==='foto'){
     openPhotoChoice();
   }else{
-    navigate('add');
-    setTimeout(()=>$('focusInput')?.focus(),80);
+    if(page==='add'){
+      navigate('home');
+    }else{
+      navigate('add');
+      setTimeout(()=>$('focusInput')?.focus(),80);
+    }
   }
 }
 let suppressAddClick=false;
