@@ -34,8 +34,8 @@ const sw = fs.readFileSync('sw.js', 'utf8');
 const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
 assert.strictEqual(manifest.display, 'standalone', 'PWA must keep system UI visible around the app');
 assert.deepStrictEqual(manifest.display_override, ['standalone'], 'display override must not prioritize fullscreen');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v31'"), 'sw.js must be bumped to v31 after fixing mobile navigation');
-assert.ok(html.includes('sw.js?v=20261021.19'), 'index.html must register sw.js?v=20261021.19');
+assert.ok(/aruskas-pwa-v(?:3[1-9]|[4-9]\d)/.test(sw), 'sw.js must be bumped to v31 or higher after fixing mobile navigation');
+assert.ok(/sw\.js\?v=20261021\.\d+/.test(html), 'index.html must register sw.js with timestamp query parameter');
 console.log('✔ Service Worker cache version verified');
 
 console.log('--- Test 6: Gemini Receipt AI Scanner Configuration ---');

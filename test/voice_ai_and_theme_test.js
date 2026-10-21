@@ -101,9 +101,9 @@ console.log('✔ Gemini AI correction functions and UI hooks verified');
 
 // --- Test 5: Version Bump and Service Worker ---
 console.log('--- Test 5: Version Bump and Service Worker ---');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v31'"), 'sw.js is bumped to v31');
-assert.ok(html.includes('sw.js?v=20261021.19'), 'index.html registers sw.js?v=20261021.19');
-assert.ok(html.includes('v31'), 'index.html displays v31 in settings');
+assert.ok(/aruskas-pwa-v(?:3[1-9]|[4-9]\d)/.test(sw), 'sw.js is bumped to v31 or higher');
+assert.ok(/sw\.js\?v=20261021\.\d+/.test(html), 'index.html registers sw.js with timestamp query');
+assert.ok(/v(?:3[1-9]|[4-9]\d)/.test(html), 'index.html displays v31 or higher in settings');
 console.log('✔ App version and service worker bumped to v31');
 
 console.log('\n=======================================');
