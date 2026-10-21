@@ -70,6 +70,11 @@ body { background: var(--app-bg) !important; }
 .topbar .title { color: var(--ink); font-size: clamp(29px, 6vw, 34px); font-weight: 850; letter-spacing: -.055em; line-height: 1.05; }
 .topbar .subtitle { display: block; margin-top: 7px; color: var(--muted); font-size: 12.5px; line-height: 1.3; }
 .topbar .icon-btn { background: transparent !important; color: var(--ink) !important; font-size: 25px; }
+.topbar.home-topbar { display: flex !important; justify-content: flex-end !important; align-items: center !important; margin-bottom: 6px !important; min-height: 42px; }
+.topbar.home-topbar .topbar-title-wrap, .topbar.home-topbar > div { display: none !important; }
+.topbar .icon-btn[data-action="settings"], .topbar-settings-btn { width: 42px !important; height: 42px !important; border-radius: 50% !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; background: var(--surface2) !important; border: 1px solid var(--line) !important; color: var(--ink) !important; padding: 0 !important; cursor: pointer; flex-shrink: 0; transition: transform .12s ease, background .15s ease; }
+.topbar .icon-btn[data-action="settings"]:active, .topbar-settings-btn:active { transform: scale(0.92); background: var(--surface3) !important; }
+.topbar-settings-btn svg, .topbar .icon-btn[data-action="settings"] svg { display: block; width: 22px; height: 22px; }
 .topbar .back-btn.visible { width: 32px; flex: 0 0 32px; }
 .card:not(.balance), .list, .dialog-card, .sheet { border-radius: 22px; box-shadow: 0 7px 26px rgba(118, 70, 46, .055); }
 .card:not(.balance):not(.report-period-card), .list, .dialog-card, .sheet { background: var(--card-glass) !important; border-color: var(--line) !important; }
@@ -541,4 +546,47 @@ body.keyboard-open .nav {
   .savings-home-deposit { min-width: 58px; }
   .savings-presets { gap: 4px; }
   .savings-presets button { font-size: 8px; }
+}
+
+/* Bring the home icons in line with the approved filled, high-contrast artwork. */
+.balance::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 59px;
+  right: 29px;
+  width: 38px;
+  height: 38px;
+  background: url("./icons/category/leaf.svg") center / contain no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: .2;
+  pointer-events: none;
+}
+.home-quick .quick-tool img {
+  width: 27px;
+  height: 27px;
+  filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
+}
+#homeCategories .cat-icon {
+  background: #e66c48 !important;
+  color: #fff;
+}
+#homeCategories .cat-icon .category-svg {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1) !important;
+}
+#homeCategories .cat-icon > span {
+  color: #fff;
+}
+#homeTxList .tx-item:not(:has(.amount.income)) .category-svg,
+#txList .tx-item:not(:has(.amount.income)) .category-svg {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(34%) saturate(1430%) hue-rotate(333deg) brightness(92%) contrast(91%);
+}
+#homeTxList .tx-item:has(.amount.income) .category-svg,
+#txList .tx-item:has(.amount.income) .category-svg {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(30%) saturate(622%) hue-rotate(77deg) brightness(92%);
+}
+.nav button.active[data-nav="home"] .nav-svg {
+  fill: currentColor !important;
 }
