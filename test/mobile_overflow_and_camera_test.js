@@ -52,7 +52,7 @@ console.log('✔ Mobile flexbox layout and safe render verified');
 console.log('--- Test 8: Mobile Bottom Navigation Rigid Docking & Safe Padding ---');
 assert.ok(html.includes('.nav{position:fixed!important;bottom:0!important'), 'nav must be fixed to bottom on mobile');
 assert.ok(html.includes('padding-bottom:calc(88px + env(safe-area-inset-bottom, 0px))!important'), 'screen must have clearance padding for fixed bottom nav');
-const warmCss = fs.readFileSync('warm-ui.css', 'utf8');
+const warmCss = fs.readFileSync('warm-ui.css', 'utf8').replace(/\r\n/g, '\n');
 assert.ok(warmCss.includes('position: fixed !important;\n    bottom: 0 !important;'), 'warm-ui.css must fix nav to bottom on mobile');
 assert.ok(html.includes('keyboard-open'), 'keyboard awareness must be present');
 console.log('✔ Mobile bottom navigation rigid docking & safe padding verified');
