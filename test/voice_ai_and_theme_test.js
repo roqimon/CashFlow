@@ -101,10 +101,10 @@ console.log('✔ Gemini AI correction functions and UI hooks verified');
 
 // --- Test 5: Version Bump and Service Worker ---
 console.log('--- Test 5: Version Bump and Service Worker ---');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v30'"), 'sw.js is bumped to v30');
-assert.ok(html.includes('sw.js?v=20261021.18'), 'index.html registers sw.js?v=20261021.18');
-assert.ok(html.includes('v30'), 'index.html displays v30 in settings');
-console.log('✔ App version and service worker bumped to v30');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v31'"), 'sw.js is bumped to v31');
+assert.ok(html.includes('sw.js?v=20261021.19'), 'index.html registers sw.js?v=20261021.19');
+assert.ok(html.includes('v31'), 'index.html displays v31 in settings');
+console.log('✔ App version and service worker bumped to v31');
 
 console.log('\n=======================================');
 console.log('All Voice Stutter, AI Correction & Theme Tests PASSED!');

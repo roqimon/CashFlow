@@ -34,8 +34,8 @@ const sw = fs.readFileSync('sw.js', 'utf8');
 const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
 assert.strictEqual(manifest.display, 'standalone', 'PWA must keep system UI visible around the app');
 assert.deepStrictEqual(manifest.display_override, ['standalone'], 'display override must not prioritize fullscreen');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v30'"), 'sw.js must be bumped to v30 after changing the cached manifest');
-assert.ok(html.includes('sw.js?v=20261021.18'), 'index.html must register sw.js?v=20261021.18');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v31'"), 'sw.js must be bumped to v31 after fixing mobile navigation');
+assert.ok(html.includes('sw.js?v=20261021.19'), 'index.html must register sw.js?v=20261021.19');
 console.log('✔ Service Worker cache version verified');
 
 console.log('--- Test 6: Gemini Receipt AI Scanner Configuration ---');
@@ -48,6 +48,14 @@ console.log('--- Test 7: Mobile Layout Flexbox & Safe Render Safeguards ---');
 assert.ok(html.includes("display:flex!important;flex-direction:column!important;overflow:hidden!important"), 'mobile phone container must use column flexbox to pin nav bar');
 assert.ok(!html.includes("else{stContainer.style.display='none'}"), 'stContainer must not be dereferenced without null check');
 console.log('✔ Mobile flexbox layout and safe render verified');
+
+console.log('--- Test 8: Mobile Bottom Navigation Rigid Docking & Safe Padding ---');
+assert.ok(html.includes('.nav{position:fixed!important;bottom:0!important'), 'nav must be fixed to bottom on mobile');
+assert.ok(html.includes('padding-bottom:calc(88px + env(safe-area-inset-bottom, 0px))!important'), 'screen must have clearance padding for fixed bottom nav');
+const warmCss = fs.readFileSync('warm-ui.css', 'utf8');
+assert.ok(warmCss.includes('position: fixed !important;\n    bottom: 0 !important;'), 'warm-ui.css must fix nav to bottom on mobile');
+assert.ok(html.includes('keyboard-open'), 'keyboard awareness must be present');
+console.log('✔ Mobile bottom navigation rigid docking & safe padding verified');
 
 console.log('\n=======================================');
 console.log('All Mobile Overflow & Camera/Mic tests PASSED!');
