@@ -92,4 +92,15 @@
 
 ## Handoff
 
+### Task 6: Revisi alur kirim WhatsApp sesuai arahan pengguna
+
+Setelah rencana awal disetujui, pengguna meminta pilihan kirim **Daftar saja**, **Daftar + nota**, atau **Nota saja** pada saat membuka dialog WhatsApp. Pemilihan foto manual diganti dengan filter tanggal di dialog; galeri tetap bisa difilter untuk mencari arsip tetapi kontrolnya disimpan dalam bagian yang dapat dibuka agar tampilan Laporan ringkas.
+
+**Files:** Modify `index.html`, `receipt-gallery.js`, `warm-ui.css`, spec, service worker; extend `test/receipt_share_test.js`.
+
+- [ ] Uji perencanaan tiga mode dan batas tanggal, lihat tes gagal sebelum helper baru dibuat.
+- [ ] Integrasikan tanggal dan tiga mode ke dialog WA; daftar memuat transaksi periode, mode foto menyiapkan semua foto di rentang tanggal, dan fallback memberi unduh per foto serta teks.
+- [ ] Periksa browser lokal pada ketiga mode dan layar ponsel; jalankan seluruh tes, cek sintaks dan diff.
+- [ ] Commit dan lakukan review keseluruhan sebelum handoff.
+
 Setelah semua task lulus, lakukan review seluruh perubahan terhadap spesifikasi, lalu laporkan commit dan hasil uji. Push/deploy hanya setelah implementasi lokal dan pemeriksaan selesai; verifikasi domain resmi bila deployment memang diminta.

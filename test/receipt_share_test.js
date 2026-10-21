@@ -1,6 +1,22 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { prepareShareFiles, shareSelectedReceipts } = require('../receipt-gallery.js');
+const { prepareShareFiles, shareSelectedReceipts, buildReportSharePlan } = require('../receipt-gallery.js');
+
+test('WhatsApp modes choose text and photos from the same date filter', () => {
+  const receipts = [
+    { id: 'r1', capturedAt: '2026-10-21T10:00:00Z', title: 'Pasar' },
+    { id: 'r2', capturedAt: '2026-10-20T10:00:00Z', title: 'Toko' }
+  ];
+  const transactions = [
+    { id: 't1', receiptId: 'r1', createdAt: '2026-10-21T10:00:00Z' },
+    { id: 't2', receiptId: 'r2', createdAt: '2026-10-20T10:00:00Z' }
+  ];
+  const dates = { from: '2026-10-21', to: '2026-10-21' };
+  assert.deepEqual(buildReportSharePlan('list', receipts, transactions, dates), { includeList: true, receiptIds: [], transactionIds: ['t1'], valid: true });
+  assert.deepEqual(buildReportSharePlan('both', receipts, transactions, dates), { includeList: true, receiptIds: ['r1'], transactionIds: ['t1'], valid: true });
+  assert.deepEqual(buildReportSharePlan('receipts', receipts, transactions, dates), { includeList: false, receiptIds: ['r1'], transactionIds: ['t1'], valid: true });
+  assert.equal(buildReportSharePlan('both', receipts, transactions, { from: '2026-10-22', to: '2026-10-21' }).valid, false);
+});
 
 test('prepares selected photos as files before a share click', async () => {
   const records = new Map([

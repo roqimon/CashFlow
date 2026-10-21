@@ -29,6 +29,21 @@
     if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return [];
     return filter(receipts, transactions, { start, end, category, query });
   }
+  function buildReportSharePlan(mode, receipts, transactions, { from = '', to = '' } = {}) {
+    const includeList = mode !== 'receipts';
+    const needsPhotos = mode === 'both' || mode === 'receipts';
+    const valid = ['list', 'both', 'receipts'].includes(mode) && /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to) && from <= to;
+    if (!valid) return { includeList, receiptIds: [], transactionIds: [], valid: false };
+    const start = new Date(`${from}T00:00:00`);
+    const end = new Date(`${to}T23:59:59.999`);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return { includeList, receiptIds: [], transactionIds: [], valid: false };
+    const transactionIds = transactions.filter(item => {
+      const date = new Date(item.createdAt).getTime();
+      return date >= start.getTime() && date <= end.getTime();
+    }).map(item => item.id);
+    const receiptIds = needsPhotos ? filterByDateInputs(receipts, transactions, { from, to }).map(item => item.id) : [];
+    return { includeList, receiptIds, transactionIds, valid: true };
+  }
   async function prepareShareFiles(ids, store = root?.ReceiptStore, FileType = File) {
     const files = [];
     for (const id of ids) {
@@ -53,7 +68,7 @@
       throw error;
     }
   }
-  const api = { filter, filterByDateInputs, prepareShareFiles, shareSelectedReceipts };
+  const api = { filter, filterByDateInputs, buildReportSharePlan, prepareShareFiles, shareSelectedReceipts };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.ReceiptGallery = api;
 })(typeof window !== 'undefined' ? window : null);

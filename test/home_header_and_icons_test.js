@@ -1,7 +1,7 @@
 const fs = require('fs');
 const assert = require('assert');
 
-console.log('=== TEST SUITE: Home Header Cleanup, Setting Navigation & Full Settings Page (v44) ===\n');
+console.log('=== TEST SUITE: Home Header Cleanup, Setting Navigation & Full Settings Page (v46) ===\n');
 
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('warm-ui.css', 'utf8').replace(/\r\n/g, '\n');
@@ -37,14 +37,14 @@ assert.ok(html.includes('data-action="clear-data"'), 'Clear all data button pres
 assert.ok(!html.includes('Masukkan Gemini API Key'), 'Gemini API Key input is removed from visible UI');
 console.log('✔ Dedicated Settings page successfully contains clean, modern configuration cards without API Key jargon!');
 
-// Test 4: Version and Service Worker Integrity (v44)
-console.log('--- Test 4: Version and Service Worker v44 ---');
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v44</span>'), 'HTML version badge bumped to v44');
-assert.ok(html.includes("u.searchParams.set('updated','v44')"), 'Force update parameter set to v44');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v44'"), 'Service worker CACHE_NAME bumped to v44');
-assert.ok(html.includes('warm-ui.css?v=20261021.26'), 'HTML warm-ui.css query bumped');
-assert.ok(sw.includes('./warm-ui.css?v=20261021.26'), 'SW warm-ui.css query bumped');
-console.log('✔ App version and Service Worker cache successfully synchronized to v44!');
+// Test 4: Version and Service Worker Integrity (v46)
+console.log('--- Test 4: Version and Service Worker v46 ---');
+assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v46</span>'), 'HTML version badge bumped to v46');
+assert.ok(html.includes("u.searchParams.set('updated','v46')"), 'Force update parameter set to v46');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v46'"), 'Service worker CACHE_NAME bumped to v46');
+assert.ok(html.includes('warm-ui.css?v=20261021.28'), 'HTML warm-ui.css query bumped');
+assert.ok(sw.includes('./warm-ui.css?v=20261021.28'), 'SW warm-ui.css query bumped');
+console.log('✔ App version and Service Worker cache successfully synchronized to v46!');
 
 // Test 5: Isolation of Settings Page (Prevent leaking across other pages)
 console.log('--- Test 5: Page Isolation & Specificity Guard ---');
