@@ -20,6 +20,21 @@
     return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
   }
 
+  function calendarDays(year, month, selectedDate = '', todayDate = '') {
+    year = Number(year);
+    month = Number(month);
+    if (!Number.isInteger(year) || year < 1 || year > 9999 || !Number.isInteger(month) || month < 0 || month > 11) return [];
+    const startOffset = (new Date(Date.UTC(year, month, 1)).getUTCDay() + 6) % 7;
+    const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    const cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+    return Array.from({ length: cellCount }, (_, index) => {
+      const day = index - startOffset + 1;
+      if (day < 1 || day > daysInMonth) return null;
+      const date = `${String(year).padStart(4, '0')}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return { date, day, selected: date === selectedDate, today: date === todayDate };
+    });
+  }
+
   function normalizeGoal(value) {
     if (!value || typeof value !== 'object') return null;
     const id = String(value.id || '').trim();
@@ -156,5 +171,5 @@
     return normalizeSavings({ goals: Array.from(goals.values()), entries: Array.from(entries.values()) });
   }
 
-  return { emptySavings, validDate, normalizeSavings, goalBalance, goalStats, upsertGoal, addEntry, mergeSavings };
+  return { emptySavings, validDate, calendarDays, normalizeSavings, goalBalance, goalStats, upsertGoal, addEntry, mergeSavings };
 });

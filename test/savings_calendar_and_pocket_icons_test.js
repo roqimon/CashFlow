@@ -33,6 +33,8 @@ assert.ok(html.includes('id="savingsCalendarGrid"'), 'goal form includes the cus
 assert.ok(html.includes('data-savings-calendar-action="today"'), 'calendar exposes a Today action');
 assert.ok(html.includes('id="savingsGoalDate" type="hidden"'), 'the saved date remains a stable date-only value');
 assert.ok(html.includes('updateSavingsCalendar()'), 'calendar updates when the month or selected date changes');
+assert.ok(html.includes('</span></button><button type="button" class="savings-date-clear"'), 'clear action is a sibling button, so the date control remains valid HTML');
+assert.ok(html.includes('panel.getBoundingClientRect().bottom-actions.getBoundingClientRect().top'), 'opening the calendar scrolls it above the sticky save actions');
 assert.ok(html.includes('id="pocketIconPreview"'), 'budget icon choice has a contained visual preview');
 assert.match(html, /#pocketIconPicker\.open\s*\{\s*display:\s*block\s*!important/s, 'the icon gallery itself does not become a narrow outer grid');
 assert.match(css, /\.pocket-icon\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1/s, 'budget icons use a fixed square box');
