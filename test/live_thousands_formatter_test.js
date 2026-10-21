@@ -145,8 +145,8 @@ assert.ok(html.includes('id="scanManualAmount" inputmode="numeric" placeholder="
 assert.ok(html.includes('id="editAmount" inputmode="numeric" placeholder="Contoh: 50.000" value="${formatThousands(t.amount)}"'), 'editAmount formatting check');
 
 // Versioning is v34
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v34</span>'), 'App version badge must be v34');
+assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v35</span>'), 'App version badge must be v35');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v34'"), 'Service worker cache name must be v34');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v35'"), 'Service worker cache name must be v35');
 
 console.log('All tests in live_thousands_formatter_test.js passed completely!');

@@ -839,7 +839,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <div style="margin-top:8px;display:grid;gap:8px" id="appVersionDetails">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <span>Versi Aplikasi</span>
-      <span id="appVersionBadge" style="font-weight:800">v34</span>
+      <span id="appVersionBadge" style="font-weight:800">v35</span>
     </div>
     <span id="updateStatusText" style="display:none"></span>
     <label style="display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:700">
@@ -1020,7 +1020,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{window.location.reload()});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.22').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.23').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -2374,14 +2374,15 @@ async function handleReceiptFileSelected(file){
 
   openModalLayer('scanModal');
 
+  const statusBox=$('scanStatusBox');
   if(apiKey){
-    await executeReceiptAiScan(file, apiKey);
+    executeReceiptAiScan(file, apiKey);
   } else {
-    const statusBox=$('scanStatusBox');
     if(statusBox){
       statusBox.className='pratinjau';
-      statusBox.innerHTML='📷 <strong>Foto struk berhasil diambil!</strong> Masukkan Gemini API Key untuk scan otomatis dengan AI, atau ketik nominal langsung di bawah:';
+      statusBox.innerHTML='📷 <strong>Foto nota terpasang.</strong> Silakan isi nominal di bawah untuk mencatat transaksi:';
     }
+    setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 200);
   }
 }
 
@@ -2389,8 +2390,12 @@ async function executeReceiptAiScan(file, apiKey){
   if(!file) file=currentReceiptFile;
   if(!apiKey) apiKey=$('scanApiKeyInput')?.value.trim()||getGeminiApiKey();
   if(!apiKey){
-    alert('Silakan masukkan Gemini API Key terlebih dahulu.');
-    $('scanApiKeyInput')?.focus();
+    const statusBox=$('scanStatusBox');
+    if(statusBox){
+      statusBox.className='pratinjau';
+      statusBox.innerHTML='📷 <strong>Foto nota terpasang.</strong> Silakan isi nominal di bawah untuk mencatat transaksi:';
+    }
+    setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 150);
     return;
   }
   setGeminiApiKey(apiKey);
@@ -2398,10 +2403,10 @@ async function executeReceiptAiScan(file, apiKey){
   const statusBox=$('scanStatusBox');
   if(statusBox){
     statusBox.className='pratinjau';
-    statusBox.innerHTML='⏳ <strong>Sedang menganalisa foto struk via Gemini AI...</strong>';
+    statusBox.innerHTML='⏳ <strong>Sedang membaca rincian nota otomatis...</strong> <small class="muted" style="display:block;margin-top:2px">Mohon tunggu 1-2 detik.</small>';
   }
   try{
-    const base64Data=await compressImage(file, 1024, 0.8);
+    const base64Data=await compressImage(file, 800, 0.7);
     const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
     const payload={
       contents:[{
@@ -2417,7 +2422,9 @@ async function executeReceiptAiScan(file, apiKey){
         ]
       }],
       generationConfig:{
-        responseMimeType:'application/json'
+        responseMimeType:'application/json',
+        temperature:0.1,
+        maxOutputTokens:256
       }
     };
     const res=await fetch(url,{
@@ -2426,23 +2433,18 @@ async function executeReceiptAiScan(file, apiKey){
       body:JSON.stringify(payload)
     });
     if(!res.ok){
-      const errBody=await res.text();
-      if(res.status===400||res.status===401||res.status===403){
-        throw new Error('Gemini API Key tidak valid atau tidak memiliki akses ke model. Silakan periksa di menu Pengaturan.');
-      }
-      if(res.status===429) throw new Error('Kuota Gemini API habis. Coba lagi setelah kuota tersedia.');
-      throw new Error(`API error ${res.status}: ${errBody}`);
+      throw new Error('Gagal membaca nota secara otomatis.');
     }
     const data=await res.json();
     const candidateText=data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if(!candidateText) throw new Error('Tidak ada respon teks dari model Gemini.');
+    if(!candidateText) throw new Error('Rincian nota belum terbaca.');
     let cleanJson=candidateText.trim();
     if(cleanJson.startsWith('```')){
       cleanJson=cleanJson.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
     }
     const parsed=JSON.parse(cleanJson);
     const items=Array.isArray(parsed)?parsed:[parsed];
-    if(!items.length) throw new Error('Tidak ada transaksi terdeteksi dalam gambar.');
+    if(!items.length) throw new Error('Tidak ada transaksi terdeteksi dalam foto.');
 
     const arr=getTX();
     const nowIso=new Date().toISOString();
@@ -2460,7 +2462,7 @@ async function executeReceiptAiScan(file, apiKey){
       const src=stMode?'st':'personal';
       const sessId=src==='st'?getActiveSTSession()?.id:null;
       const reimb=(src==='st'&&type==='expense')?'pending':null;
-      const itemNote=String(it.note||'Scan AI').trim();
+      const itemNote=String(it.note||'Foto Struk').trim();
 
       const newItem=tx({
         title:cleanTitle||'Transaksi',
@@ -2472,7 +2474,7 @@ async function executeReceiptAiScan(file, apiKey){
         source:src,
         stSessionId:sessId,
         reimburseStatus:reimb,
-        rawInput:'scan: '+cleanTitle,
+        rawInput:'foto: '+cleanTitle,
         createdAt:nowIso
       });
       arr.unshift(newItem);
@@ -2492,18 +2494,20 @@ async function executeReceiptAiScan(file, apiKey){
       }
       if(statusBox){
         statusBox.className='pratinjau';
-        statusBox.innerHTML=`⚡ <strong>${countSaved} transaksi berhasil disimpan!</strong> (${firstSaved.title}: ${money(firstSaved.amount)})`;
+        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat!</strong><span class="muted" style="display:block;margin-top:2px">${firstSaved.title}: ${money(firstSaved.amount)}</span>`;
       }
-      setTimeout(()=>closeModalLayer('scanModal'), 1400);
+      toast(`✅ Berhasil dicatat: ${firstSaved.title} (${money(firstSaved.amount)})`);
+      setTimeout(()=>closeModalLayer('scanModal'), 1100);
     } else {
       throw new Error('Nominal transaksi dalam struk tidak terbaca.');
     }
   }catch(err){
-    console.error('[ArusKas] Scan receipt error:', err);
+    console.warn('[ArusKas] Scan receipt fallback:', err);
     if(statusBox){
-      statusBox.className='pratinjau bad';
-      statusBox.innerHTML=`❌ Gagal memproses struk via AI: ${esc(err.message||err)}<br><small>Gunakan form manual di bawah untuk menyimpan langsung.</small>`;
+      statusBox.className='pratinjau';
+      statusBox.innerHTML='📝 <strong>Nota belum terbaca otomatis.</strong> Silakan masukkan nominal di bawah untuk mencatat langsung:';
     }
+    setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 150);
   }finally{
     setScanningState(false);
   }
@@ -2787,7 +2791,7 @@ if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');i
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){openModalLayer('settingsModal');renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}if(a==='close-settings'){closeModalLayer('settingsModal');}if(a==='close-scan-modal'){closeModalLayer('scanModal');}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
-if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v34');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v35');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
