@@ -12,6 +12,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="format-detection" content="telephone=no" />
   <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png" />
@@ -728,7 +730,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       grid-template-columns: none !important;
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261021.32" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261021.35" />
 </head>
 <body>
 <div class="shell">
@@ -954,7 +956,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v55</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v59</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1610,7 +1612,7 @@ function norm(x){return String(x||'').trim().toLowerCase().replace(/\s+/g,'-')} 
 function formatThousands(val){if(val===null||val===undefined)return'';let digits=String(val).replace(/\D/g,'');if(!digits)return'';digits=digits.replace(/^0+(?=\d)/,'');return digits.replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 function unformatThousands(val){if(typeof val==='number')return val;const s=String(val||'').trim();if(!s)return 0;if(/[a-z]/i.test(s))return parseAmount(s)||0;const digits=s.replace(/\D/g,'');return digits?parseInt(digits,10):0}
 function computeNewCursorPos(oldVal,newVal,oldCursorPos){const digitsBefore=oldVal.slice(0,oldCursorPos).replace(/\D/g,'').length;if(digitsBefore===0)return 0;let count=0;for(let i=0;i<newVal.length;i++){if(/\d/.test(newVal[i]))count++;if(count===digitsBefore)return i+1}return newVal.length}
-const THOUSANDS_INPUT_SELECTOR='#pocketFormAmount,#manAmount,#scAmount,#scanManualAmount,#editAmount,#savingsGoalTarget,#savingsEntryAmount,#editSessionDeposit,#stNewSessionDeposit,[data-thousands],.thousands-input';
+const THOUSANDS_INPUT_SELECTOR='#pocketFormAmount,#manAmount,#scAmount,#scanManualAmount,#editAmount,#savingsGoalTarget,#savingsEntryAmount,#sweepAmount,#editSessionDeposit,#stNewSessionDeposit,[data-thousands],.thousands-input';
 function initThousandsFormatter(){document.addEventListener('input',e=>{const el=e.target;if(!el||!el.matches||!el.matches(THOUSANDS_INPUT_SELECTOR))return;const oldVal=el.value;const oldPos=el.selectionStart||0;const formatted=formatThousands(oldVal);if(oldVal!==formatted){el.value=formatted;const newPos=computeNewCursorPos(oldVal,formatted,oldPos);try{el.setSelectionRange(newPos,newPos)}catch(_){}}});document.addEventListener('keydown',e=>{const el=e.target;if(!el||!el.matches||!el.matches(THOUSANDS_INPUT_SELECTOR))return;if(el.selectionStart!==el.selectionEnd)return;const pos=el.selectionStart;const val=el.value;if(e.key==='Backspace'&&pos>0){if(val[pos-1]==='.'){e.preventDefault();const newVal=val.slice(0,Math.max(0,pos-2))+val.slice(pos);const formatted=formatThousands(newVal);el.value=formatted;const newPos=computeNewCursorPos(newVal,formatted,Math.max(0,pos-2));try{el.setSelectionRange(newPos,newPos)}catch(_){}}}else if(e.key==='Delete'&&pos<val.length){if(val[pos]==='.'){e.preventDefault();const newVal=val.slice(0,pos)+val.slice(pos+2);const formatted=formatThousands(newVal);el.value=formatted;const newPos=computeNewCursorPos(newVal,formatted,pos);try{el.setSelectionRange(newPos,newPos)}catch(_){}}}})}
 function short(v){v=Number(v)||0;const s=v<0?'-':'';v=Math.abs(v);if(v>=1e6)return s+'Rp '+(v/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+' jt';if(v>=1e3)return s+'Rp '+(v/1e3).toLocaleString('id-ID',{maximumFractionDigits:1})+' rb';return s+money(v)}
 function title(x){return String(x||'').trim().replace(/\s+/g,' ').split(' ').filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1).toLowerCase()).join(' ')}
@@ -2631,7 +2633,7 @@ function saveSavingsEntry(event){
 /* =========================================================
    FITUR SWEEP / ALOKASIKAN SISA POS KE TABUNGAN
    ========================================================= */
-function openSweepPocketModal(preselectedPocketId=''){
+function openSweepPocketModal(preselectedPocketId='',preferredDestination=''){
   const pockets = getPockets();
   const tx = getTX();
   const now = new Date();
@@ -2644,13 +2646,6 @@ function openSweepPocketModal(preselectedPocketId=''){
   const err = $('sweepError');
   if(err) err.hidden = true;
 
-  if(!activeGoals.length){
-    toast('Buat minimal satu tujuan tabungan aktif terlebih dahulu.');
-    openSavingsGoalForm();
-    return;
-  }
-
-  // Hitung sisa semua pos
   let totalSurplus = 0;
   const pocketSurplusList = [];
   pockets.forEach(p => {
@@ -2665,11 +2660,8 @@ function openSweepPocketModal(preselectedPocketId=''){
   if(!pocketSurplusList.length){
     toast('Belum ada sisa pos yang bisa dipindahkan bulan ini.');
     return;
-  } else {
-    pSel.innerHTML = pocketSurplusList.map(item => {
-      return `<option value="${esc(item.pocket.id)}" data-sisa="${item.sisa}">${esc(item.pocket.icon||'•')} ${esc(item.pocket.name)} (Sisa ${short(item.sisa)})</option>`;
-    }).join('');
   }
+  pSel.innerHTML=pocketSurplusList.map(item=>`<option value="${esc(item.pocket.id)}" data-sisa="${item.sisa}">${esc(item.pocket.name)} (Sisa ${short(item.sisa)})</option>`).join('');
 
   if(preselectedPocketId && pocketSurplusList.some(item => item.pocket.id === preselectedPocketId)){
     pSel.value = preselectedPocketId;
@@ -2679,10 +2671,25 @@ function openSweepPocketModal(preselectedPocketId=''){
     const stats = savingsCore.goalStats(data, g.id);
     return `<option value="${esc(g.id)}">${esc(g.name)} (Target: ${short(stats.targetAmount)}, Sisa butuh: ${short(stats.remaining)})</option>`;
   }).join('');
+  const destinationType=$('sweepDestinationType');
+  const targetPocketSel=$('sweepDestinationPocketSelect');
+  const targetPockets=pockets.filter(p=>p.id!==pSel.value);
+  targetPocketSel.innerHTML=targetPockets.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} (Jatah ${short(Number(p.amount)||0)})</option>`).join('');
+  destinationType.querySelector('option[value="savings"]').disabled=!activeGoals.length;
+  destinationType.querySelector('option[value="pocket"]').disabled=!targetPockets.length;
+  const destination=preferredDestination||(activeGoals.length?'savings':'pocket');
+  if((destination==='savings'&&!activeGoals.length)||(destination==='pocket'&&!targetPockets.length)){
+    toast('Tambahkan tujuan tabungan atau pos anggaran lain terlebih dahulu.');
+    return;
+  }
+  destinationType.value=destination;
 
   refreshFancySelect(pSel);
   refreshFancySelect(gSel);
+  refreshFancySelect(targetPocketSel);
+  refreshFancySelect(destinationType);
 
+  updateSweepDestinationFields();
   updateSweepPocketSelectedInfo();
   $('sweepAmount').value = '';
   $('sweepNote').value = '';
@@ -2700,22 +2707,32 @@ function updateSweepPocketSelectedInfo(){
   if(hint){
     hint.innerHTML = `Sisa yang bisa dipindahkan: <strong>${money(sisa)}</strong>`;
   }
+  const targetSel=$('sweepDestinationPocketSelect'),oldTarget=targetSel.value,targets=getPockets().filter(p=>p.id!==sel.value);
+  targetSel.innerHTML=targets.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} (Jatah ${short(Number(p.amount)||0)})</option>`).join('');
+  if(targets.some(p=>p.id===oldTarget))targetSel.value=oldTarget;
+  refreshFancySelect(targetSel);
+  const pocketOption=$('sweepDestinationType').querySelector('option[value="pocket"]');pocketOption.disabled=!targets.length;
+  if($('sweepDestinationType').value==='pocket'&&!targets.length&&getSavings().goals.some(g=>g.status==='active')){$('sweepDestinationType').value='savings';refreshFancySelect($('sweepDestinationType'));updateSweepDestinationFields()}
   updateSweepPreview();
 }
+function updateSweepDestinationFields(){const type=$('sweepDestinationType').value;$('sweepGoalField').hidden=type!=='savings';$('sweepDestinationPocketField').hidden=type!=='pocket';$('sweepSaveBtn').textContent=type==='pocket'?'Pindahkan ke pos':'Pindahkan ke tabungan';updateSweepPreview()}
 
 function updateSweepPreview(){
   const preview=$('sweepPreview');
   if(!preview)return;
   const pocket=$('sweepPocketSelect')?.selectedOptions?.[0]?.textContent?.replace(/ \(Sisa .+\)$/,'')||'pos';
-  const goal=$('sweepGoalSelect')?.selectedOptions?.[0]?.textContent?.replace(/ \(Target:.+\)$/,'')||'tabungan';
+  const type=$('sweepDestinationType')?.value||'savings';
+  const goal=type==='pocket'?($('sweepDestinationPocketSelect')?.selectedOptions?.[0]?.textContent?.replace(/ \(Jatah .+\)$/,'')||'pos lain'):($('sweepGoalSelect')?.selectedOptions?.[0]?.textContent?.replace(/ \(Target:.+\)$/,'')||'tabungan');
   const amount=Number(($('sweepAmount')?.value||'').replace(/\D/g,''))||0;
-  preview.textContent=amount>0?`${money(amount)} dari ${pocket} ke ${goal}. Ini mengurangi sisa pos, tanpa menambah pengeluaran bulanan.`:'Isi nominal untuk melihat ringkasan pemindahan.';
+  preview.textContent=amount>0?`${money(amount)} dari ${pocket} ke ${goal}. Perpindahan ini tidak menambah pengeluaran bulanan.`:'Isi nominal atau pilih “Sisa seluruh” untuk mengisi jumlah maksimal.';
 }
 
 function saveSweepPocket(event){
   event.preventDefault();
   const pocketId = $('sweepPocketSelect')?.value;
+  const destinationType=$('sweepDestinationType')?.value||'savings';
   const goalId = $('sweepGoalSelect')?.value;
+  const destinationPocketId=$('sweepDestinationPocketSelect')?.value;
   const raw = $('sweepAmount')?.value || '';
   const amount = Number(raw.replace(/\D/g,'')) || parseAmount(raw) || 0;
   const note = $('sweepNote')?.value.trim();
@@ -2726,16 +2743,21 @@ function saveSweepPocket(event){
   const pocket = pockets.find(p => p.id === pocketId);
   const data = getSavings();
   const goal = data.goals.find(g => g.id === goalId);
+  const destinationPocket=pockets.find(p=>p.id===destinationPocketId);
 
   if(!pocket){
     if(error){ error.textContent = 'Pilih pos anggaran.'; error.hidden = false; }
     return;
   }
-  if(!goal || goal.status!=='active'){
+  if(destinationType==='savings'&&(!goal || goal.status!=='active')){
     if(error){ error.textContent = 'Pilih tujuan tabungan.'; error.hidden = false; }
     return;
   }
-  if(!amount || amount <= 0){
+  if(destinationType==='pocket'&&(!destinationPocket||destinationPocket.id===pocket.id)){
+    if(error){error.textContent='Pilih pos anggaran lain sebagai tujuan.';error.hidden=false}
+    return;
+  }
+  if(!Number.isSafeInteger(amount) || amount <= 0){
     if(error){ error.textContent = 'Nominal alokasi harus lebih dari Rp 0.'; error.hidden = false; }
     return;
   }
@@ -2749,21 +2771,19 @@ function saveSweepPocket(event){
   }
 
   try{
-    // Perpindahan antarkantong adalah alokasi, bukan pengeluaran baru.
-    const updatedSavings = savingsCore.addEntry(data, {
-      id: id(),
-      goalId: goal.id,
-      type: 'deposit',
-      amount: amount,
-      date: dateVal,
-      note: note ? `Dari sisa pos ${pocket.name} · ${note}` : `Dari sisa pos ${pocket.name}`,
-      sourcePocketId: pocket.id
-    });
-    saveSavings(updatedSavings);
+    if(destinationType==='savings'){
+      const updatedSavings = savingsCore.addEntry(data, {id:id(),goalId:goal.id,type:'deposit',amount,date:dateVal,note:note?`Dari sisa pos ${pocket.name} · ${note}`:`Dari sisa pos ${pocket.name}`,sourcePocketId:pocket.id});
+      saveSavings(updatedSavings);
+    }else{
+      const transfers=getPocketTransfers();
+      transfers.push({id:id(),fromPocketId:pocket.id,toPocketId:destinationPocket.id,amount,date:dateVal,note,createdAt:new Date().toISOString()});
+      savePocketTransfers(transfers);
+    }
 
     closeModalLayer('sweepPocketModal');
+    closeModalLayer('pocketActionsModal');
     render();
-    toast(`Berhasil memindahkan ${short(amount)} ke tabungan ${goal.name}!`);
+    toast(destinationType==='savings'?`Berhasil memindahkan ${short(amount)} ke tabungan ${goal.name}!`:`Berhasil memindahkan ${short(amount)} ke pos ${destinationPocket.name}!`);
   } catch(err){
     if(error){
       error.textContent = err.message || 'Gagal mengalokasikan dana.';
@@ -3211,7 +3231,7 @@ function downloadFile(content, fileName, contentType) {
   }
 }
 async function exportData(format){
-  const data={transactions:getTX(),shortcuts:getSC(),categories:getCatRecords(),pockets:getPockets(),savings:getSavings(),exportedAt:new Date().toISOString()};
+  const data={transactions:getTX(),shortcuts:getSC(),categories:getCatRecords(),pockets:getPockets(),pocketTransfers:getPocketTransfers(),savings:getSavings(),exportedAt:new Date().toISOString()};
   const dStr=dateInput(new Date());
   if(format==='json'){
     try{
@@ -4548,18 +4568,20 @@ document.addEventListener('click',async e=>{
     if(ep){openPocketEdit(ep.dataset.editPocket);return}
     const dp=e.target.closest('[data-del-pocket]');
     if(dp){deletePocket(dp.dataset.delPocket);return}
+    const pocketCard=e.target.closest('[data-pocket-actions]');if(pocketCard&&!e.target.closest('[data-action],[data-edit-pocket],[data-del-pocket]')){openPocketActions(pocketCard.dataset.pocketActions);return}
 const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,start:null,end:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
     if(a==='sweep-pocket-modal'){openSweepPocketModal(escBtn.dataset.pocketId||'');return}
+if(a==='close-pocket-actions'){closeModalLayer('pocketActionsModal');return}if(a==='edit-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openPocketEdit(pocketId);return}if(a==='transfer-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openSweepPocketModal(pocketId);return}
 if(a==='close-sweep-modal'){closeModalLayer('sweepPocketModal');return}
 if(a==='manage-pockets'){openPocketManager();return}
     if(a==='close-pocket-manager'){closeModalLayer('pocketManageModal');return}
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){cancelReceiptScan();}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-csv'){$('importCsvFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
-if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v52');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){populatePocketOptions($('manPocketSelect'),'');refreshFancySelect($('manPocketSelect'));openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
-if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, foto nota, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){try{await window.ReceiptStore.clear()}catch(error){alert('Foto nota belum berhasil dihapus: '+(error.message||error));return}saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
+if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v59');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){populatePocketOptions($('manPocketSelect'),'');refreshFancySelect($('manPocketSelect'));openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);savePocketTransfers([]);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, perpindahan antarpos, tujuan tabungan, riwayat setor, foto nota, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){try{await window.ReceiptStore.clear()}catch(error){alert('Foto nota belum berhasil dihapus: '+(error.message||error));return}saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
 $('txPeriodSeg').addEventListener('click',e=>{const b=e.target.closest('[data-tx-period]');if(!b)return;txPeriod=b.dataset.txPeriod;txOffset=0;document.querySelectorAll('#txPeriodSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});$('txPeriodSelect').addEventListener('change',e=>{txOffset=Number(e.target.value);render()});$('txRangeStart').addEventListener('change',render);$('txRangeEnd').addEventListener('change',render);$('typeFilter').addEventListener('click',e=>{const b=e.target.closest('[data-type]');if(!b)return;txFilter.type=b.dataset.type;document.querySelectorAll('#typeFilter button').forEach(x=>x.classList.toggle('active',x===b));render()});
@@ -4697,6 +4719,8 @@ $('savingsGoalSourceUseAllBtn')?.addEventListener('click',()=>{
   else toast('Tabungan ini belum memiliki saldo.');
 });
 $('sweepPocketSelect')?.addEventListener('change',updateSweepPocketSelectedInfo);
+$('sweepDestinationType')?.addEventListener('change',updateSweepDestinationFields);
+$('sweepDestinationPocketSelect')?.addEventListener('change',updateSweepPreview);
 $('sweepGoalSelect')?.addEventListener('change',updateSweepPreview);
 $('sweepAmount')?.addEventListener('input',updateSweepPreview);
 $('sweepMaxBtn')?.addEventListener('click',()=>{
@@ -4738,7 +4762,7 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v52');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v59');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');

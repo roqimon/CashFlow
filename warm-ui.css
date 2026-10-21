@@ -156,10 +156,11 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .budget-home-head strong { font-size: 17px; letter-spacing: -.03em; }
 .budget-home-head .text-btn { flex: none; font-size: 12px; color: var(--green2); }
 .budget-home-summary { margin: 5px 0 11px; font-size: 11.5px; line-height: 1.5; }
-.budget-home-transfer { width: 100%; min-height: 43px; margin-bottom: 10px; padding: 0 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--accent-soft); color: var(--green2); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 850; text-align: left; }
-.budget-home-transfer span { font-size: 20px; line-height: 1; }
 #budgetPocketList { min-width: 0; }
-.home-pocket-card { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); }
+.home-pocket-card { display: block; width: 100%; min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); color: var(--ink); text-align: left; font: inherit; cursor: pointer; transition: border-color .16s ease,transform .16s ease,box-shadow .16s ease; }
+.home-pocket-card:hover { border-color: var(--pocket-accent); box-shadow: 0 5px 16px rgba(24,38,30,.07); }
+.home-pocket-card:active { transform: scale(.99); }
+.home-pocket-card:focus-visible { outline: 3px solid color-mix(in srgb,var(--pocket-accent),transparent 65%); outline-offset: 2px; }
 .home-pocket-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .home-pocket-head .pocket-icon { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 13px; background: var(--accent-soft); }
 .home-pocket-name { min-width: 0; flex: 1; display: grid; gap: 2px; }
@@ -171,24 +172,29 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .home-pocket-progress span { display: block; height: 100%; border-radius: inherit; background: var(--pocket-accent); }
 .home-pocket-card.is-over .home-pocket-progress span { background: var(--danger); }
 .home-pocket-numbers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
-.home-pocket-numbers div { min-width: 0; display: grid; gap: 2px; }
-.home-pocket-numbers span { color: var(--muted); font-size: 10.5px; }
+.home-pocket-numbers > span { min-width: 0; display: grid; gap: 2px; }
+.home-pocket-numbers > span > span { color: var(--muted); font-size: 10.5px; }
 .home-pocket-numbers strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; }
-.home-pocket-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 13px; }
-.home-pocket-actions button { min-width: 0; min-height: 42px; padding: 0 9px; font-size: 11.5px; }
-.home-pocket-actions button:only-child { grid-column: 1 / -1; }
 .sweep-sheet { width: min(440px,calc(100vw - 24px)); max-height: min(720px,calc(100dvh - 26px)); overflow-y: auto; }
 .sweep-summary-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 14px 0; padding: 13px 15px; border-radius: 16px; background: var(--accent-soft); }
 .sweep-summary-card span { color: var(--muted); font-size: 12px; }
 .sweep-summary-card strong { color: var(--green2); font-size: 17px; white-space: nowrap; }
 .sweep-form-fields { display: grid; gap: 12px; }
 .sweep-form-fields label { min-width: 0; display: grid; gap: 6px; font-size: 12px; font-weight: 750; color: var(--ink); }
+.sweep-form-fields label[hidden] { display: none !important; }
 .sweep-form-fields select, .sweep-form-fields input { min-height: 46px; width: 100%; min-width: 0; }
 .sweep-available { margin: -7px 2px 0; color: var(--muted); font-size: 11.5px; }
 .sweep-available strong { color: var(--green2); }
 .sweep-amount-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
 .sweep-amount-row button { min-height: 46px; white-space: nowrap; font-size: 11.5px; }
 .sweep-preview { margin: 14px 0 2px; padding: 10px 12px; border-radius: 13px; background: var(--surface2); color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+.pocket-action-choice { display: grid; gap: 10px; margin-top: 16px; }
+.pocket-action-choice button { width: 100%; min-height: 66px; padding: 11px 15px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 16px; text-align: left; }
+.pocket-action-choice button span { font-size: 12px; font-weight: 650; opacity: .8; }
+.pocket-action-choice button strong { font-size: 13px; white-space: nowrap; }
+.pocket-action-choice button:disabled { opacity: .48; cursor: not-allowed; }
+.home-pocket-progress { display: block; }
+@media(max-width:440px){.pocket-manage-item > div:first-child{flex-wrap:wrap;align-items:flex-start!important}.pocket-manage-item > div:first-child > div:first-child{flex:1 1 100%!important}.pocket-manage-item > div:first-child > div:last-child{margin-left:auto;flex-wrap:wrap;justify-content:flex-end;max-width:100%}}
 @media(max-width:380px){.home-pocket-card{padding:12px}.home-pocket-numbers{gap:5px}.home-pocket-numbers strong{font-size:10.5px}#homeCategories .cat-card{gap:8px}}
 
 /* Transaction period, search, filters and grouped history. */

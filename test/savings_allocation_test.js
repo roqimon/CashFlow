@@ -82,9 +82,12 @@ test('Savings Allocation & Sweep Feature Test Suite', async (t) => {
     assert.equal(savingsCore.goalBalance(savings, 'goal-darurat'), 200000, 'Dana Darurat balance increased');
   });
 
-  await t.test('4. Version bump is v52', () => {
+  await t.test('4. App and service worker versions stay in sync', () => {
     const sw = fs.readFileSync(path.join(__dirname, '../sw.js'), 'utf8');
-    assert.ok(html.includes('appVersionBadge" style="font-weight:800">v52<'), 'index.html has v52');
-    assert.ok(sw.includes('aruskas-pwa-v52'), 'sw.js has v52');
+    const appVersion=html.match(/id="appVersionBadge"[^>]*>v(\d+)</)?.[1];
+    const cacheVersion=sw.match(/aruskas-pwa-v(\d+)/)?.[1];
+    assert.ok(appVersion, 'index.html exposes an app version');
+    assert.ok(cacheVersion, 'sw.js exposes a cache version');
+    assert.equal(appVersion,cacheVersion,'app and service worker versions match');
   });
 });
