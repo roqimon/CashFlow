@@ -1,7 +1,7 @@
 const fs = require('fs');
 const assert = require('assert');
 
-console.log('=== TEST SUITE: Home Header Cleanup & Modern Icons (v38) ===\n');
+console.log('=== TEST SUITE: Home Header Cleanup, Setting Navigation & Full Settings Page (v40) ===\n');
 
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('warm-ui.css', 'utf8');
@@ -10,36 +10,41 @@ const sw = fs.readFileSync('sw.js', 'utf8');
 // Test 1: Redundant Home Header Cleanup
 console.log('--- Test 1: Redundant Home Header Elements & Dynamic Toggle ---');
 assert.ok(html.includes('class="topbar home-topbar"'), 'Header starts with home-topbar class');
-assert.ok(html.includes('class="topbar-title-wrap"'), 'Title & Subtitle wrapped in topbar-title-wrap');
 assert.ok(html.includes(".classList.toggle('home-topbar',p==='home')"), 'navigate() dynamically toggles home-topbar class');
-assert.ok(css.includes('.topbar.home-topbar .topbar-title-wrap'), 'CSS hides title wrap on home-topbar');
-assert.ok(css.includes('.topbar.home-topbar'), 'CSS configures home-topbar flex alignment');
-console.log('✔ Home header redundant text successfully hidden on Home page!');
+assert.ok(css.includes('.topbar.home-topbar { display: none !important; }'), 'CSS hides topbar completely on home page');
+console.log('✔ Home header redundant text & button successfully hidden on Home page!');
 
-// Test 2: Modern SVG Settings Icon in Topbar
-console.log('--- Test 2: Modern SVG Settings Icon ---');
-assert.ok(html.includes('class="icon-btn topbar-settings-btn"'), 'Settings button uses modern icon button class');
-assert.ok(html.includes('aria-label="Pengaturan"'), 'Settings button has accessible aria-label');
-assert.ok(html.includes('<svg class="topbar-svg"'), 'Settings button contains clean modern SVG icon instead of raw unicode text');
-assert.ok(css.includes('.topbar-settings-btn'), 'CSS styles topbar-settings-btn cleanly');
-console.log('✔ Modern SVG settings icon verified!');
+// Test 2: Modern SVG Settings Icon in Bottom Navigation
+console.log('--- Test 2: Setting Bottom Navigation Button & Gear SVG ---');
+assert.ok(html.includes('<button data-nav="settings" type="button" aria-label="Setting">'), 'Setting bottom nav button exists');
+assert.ok(html.includes('<span class="nav-label">Setting</span>'), 'Nav label is Setting');
+assert.ok(html.includes('d="M19.4 15a1.65 1.65 0 0 0 .33 1.82'), 'Setting nav button contains modern gear SVG icon');
+assert.ok(!html.includes('class="icon-btn topbar-settings-btn"'), 'Topbar setting button is removed from header as setting is now in bottom nav');
+console.log('✔ Modern SVG setting navigation icon verified!');
 
-// Test 3: Modern SVG Report Icon in Bottom Navigation
-console.log('--- Test 3: Modern SVG Report Icon ---');
-assert.ok(html.includes('<button data-nav="report" type="button" aria-label="Laporan">'), 'Report navigation button exists');
-assert.ok(html.includes('M21.21 15.89A10 10 0 1 1 8 2.83'), 'Report icon uses modern Lucide pie chart SVG path');
-assert.ok(html.includes('M22 12A10 10 0 0 0 12 2v10z'), 'Pie slice SVG path present');
-console.log('✔ Modern SVG report navigation icon verified!');
+// Test 3: Dedicated Full Settings Page with All Cards Integrated
+console.log('--- Test 3: Dedicated Full Settings Page ---');
+assert.ok(html.includes('data-page="settings"'), 'Settings page exists');
+assert.ok(html.includes('data-legacy-page="shortcut"'), 'Legacy shortcut page alias exists');
+assert.ok(html.includes('id="themeSeg"'), 'Theme selector card present on settings page');
+assert.ok(html.includes('id="pocketManager"'), 'Pocket manager card present on settings page');
+assert.ok(html.includes('id="shortcutForm"'), 'Shortcut form present on settings page');
+assert.ok(html.includes('id="catManager"'), 'Category manager card present on settings page');
+assert.ok(html.includes('data-action="export-csv"'), 'Export CSV button present on settings page');
+assert.ok(html.includes('id="geminiApiKeyInput"'), 'Gemini API key input present on settings page');
+assert.ok(html.includes('data-action="reload-sample"'), 'Reload sample button present on settings page');
+assert.ok(html.includes('data-action="clear-data"'), 'Clear all data button present on settings page');
+console.log('✔ Dedicated Settings page successfully contains all configuration cards!');
 
-// Test 4: Version and Service Worker Integrity (v38)
-console.log('--- Test 4: Version and Service Worker v38 ---');
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v38</span>'), 'HTML version badge bumped to v38');
-assert.ok(html.includes("u.searchParams.set('updated','v38')"), 'Force update parameter set to v38');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v38'"), 'Service worker CACHE_NAME bumped to v38');
-assert.ok(html.includes('warm-ui.css?v=20261021.18'), 'HTML warm-ui.css query bumped');
-assert.ok(sw.includes('./warm-ui.css?v=20261021.18'), 'SW warm-ui.css query bumped');
-console.log('✔ App version and Service Worker cache successfully synchronized to v38!');
+// Test 4: Version and Service Worker Integrity (v40)
+console.log('--- Test 4: Version and Service Worker v40 ---');
+assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v40</span>'), 'HTML version badge bumped to v40');
+assert.ok(html.includes("u.searchParams.set('updated','v40')"), 'Force update parameter set to v40');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v40'"), 'Service worker CACHE_NAME bumped to v40');
+assert.ok(html.includes('warm-ui.css?v=20261021.20'), 'HTML warm-ui.css query bumped');
+assert.ok(sw.includes('./warm-ui.css?v=20261021.20'), 'SW warm-ui.css query bumped');
+console.log('✔ App version and Service Worker cache successfully synchronized to v40!');
 
 console.log('\n=======================================');
-console.log('All Home Header & Modern Icons Tests PASSED! 🎉');
+console.log('All Setting Navigation & Page Tests PASSED! 🎉');
 console.log('=======================================');

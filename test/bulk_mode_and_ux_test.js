@@ -90,11 +90,12 @@ assert.ok(html.includes('openModalLayer(\'voiceNoticeModal\')'), 'Opens voiceNot
 console.log('✔ Voice input modal and security checks verified');
 
 console.log('--- Test 6: All Pages & Navigation Integrity ---');
-const pages = ['home', 'transactions', 'add', 'report', 'shortcut'];
+const pages = ['home', 'transactions', 'add', 'report', 'settings'];
 pages.forEach(p => {
   assert.ok(html.includes(`data-page="${p}"`), `Page ${p} must exist in HTML`);
   assert.ok(html.includes(`data-nav="${p}"`), `Nav button for ${p} must exist`);
 });
+assert.ok(html.includes('data-legacy-page="shortcut"'), 'Legacy shortcut page alias must exist');
 console.log('✔ All 5 pages and navigation buttons verified');
 
 console.log('--- Test 7: App Update Indicators & Banners ---');

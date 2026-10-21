@@ -70,7 +70,7 @@ body { background: var(--app-bg) !important; }
 .topbar .title { color: var(--ink); font-size: clamp(29px, 6vw, 34px); font-weight: 850; letter-spacing: -.055em; line-height: 1.05; }
 .topbar .subtitle { display: block; margin-top: 7px; color: var(--muted); font-size: 12.5px; line-height: 1.3; }
 .topbar .icon-btn { background: transparent !important; color: var(--ink) !important; font-size: 25px; }
-.topbar.home-topbar { display: flex !important; justify-content: flex-end !important; align-items: center !important; margin-bottom: 6px !important; min-height: 42px; }
+.topbar.home-topbar { display: none !important; }
 .topbar.home-topbar .topbar-title-wrap, .topbar.home-topbar > div { display: none !important; }
 .topbar .icon-btn[data-action="settings"], .topbar-settings-btn { width: 42px !important; height: 42px !important; border-radius: 50% !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; background: var(--surface2) !important; border: 1px solid var(--line) !important; color: var(--ink) !important; padding: 0 !important; cursor: pointer; flex-shrink: 0; transition: transform .12s ease, background .15s ease; }
 .topbar .icon-btn[data-action="settings"]:active, .topbar-settings-btn:active { transform: scale(0.92); background: var(--surface3) !important; }
@@ -95,10 +95,10 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .nav button { color: var(--muted) !important; border-radius: 17px; }
 .nav button .nav-label { color: var(--muted) !important; font-weight: 650 !important; }
 .nav .nav-svg-wrap { width: 34px; height: 32px; }
-.nav .nav-svg { width: 23px; height: 23px; stroke-width: 2.15; }
+.nav .nav-svg { width: 23px; height: 23px; stroke-width: 2.55; }
 .nav button.active:not(.add) { background: var(--accent-soft) !important; color: var(--green2) !important; }
 .nav button.active .nav-svg-wrap { background: transparent !important; transform: none; }
-.nav button.active .nav-svg { stroke: var(--green2) !important; stroke-width: 2.3; transform: none; }
+.nav button.active .nav-svg { stroke: var(--green2) !important; stroke-width: 2.75; transform: none; }
 .nav button.active .nav-label { color: var(--green2) !important; font-weight: 850 !important; }
 .nav .add { width: 58px !important; height: 58px !important; min-height: 58px !important; border-radius: 50% !important; background: linear-gradient(150deg,#c76543,#9d402a) !important; box-shadow: 0 8px 19px rgba(147, 63, 38, .26) !important; color: #fff !important; transform: translateY(-16px) !important; }
 .nav .add .nav-add-svg { width: 29px; height: 29px; }
@@ -589,4 +589,31 @@ body.keyboard-open .nav {
 }
 .nav button.active[data-nav="home"] .nav-svg {
   fill: currentColor !important;
+}
+.home-quick .input-row .quick-input-shell {
+  position: relative;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.home-quick .quick-input-shell #quickInput {
+  grid-column: auto;
+  padding-left: 56px !important;
+}
+.quick-input-icon {
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  bottom: 6px;
+  left: 7px;
+  display: grid;
+  width: 40px;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff;
+  pointer-events: none;
+}
+.quick-input-icon img {
+  width: 21px;
+  height: 21px;
+  filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
 }
