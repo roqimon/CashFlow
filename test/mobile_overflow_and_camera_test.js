@@ -26,7 +26,7 @@ console.log('✔ Photo choice modal and direct camera input verified');
 console.log('--- Test 4: Mic & Speech API Secure Context Handling ---');
 assert.ok(html.includes('window.isSecureContext'), 'voice input must check isSecureContext');
 assert.ok(html.includes('id="voiceNoticeModal"'), 'voiceNoticeModal must exist');
-assert.ok(html.includes('https://roqimon.github.io/CashFlow/'), 'voice input must provide direct HTTPS fallback link');
+assert.ok(html.includes('https://kas.bisabaca.web.id/'), 'voice input must provide direct HTTPS fallback link');
 console.log('✔ Mic and secure context guidance verified');
 
 console.log('--- Test 5: Service Worker Cache Version Bump ---');

@@ -27,6 +27,7 @@
     const targetAmount = Number(value.targetAmount);
     const targetDate = value.targetDate ? String(value.targetDate) : null;
     const iconKey = ICON_KEYS.has(value.iconKey) ? value.iconKey : 'general';
+    const customIcon = String(value.customIcon || '').trim().slice(0, 24);
     const status = GOAL_STATUSES.has(value.status) ? value.status : 'active';
     if (!id || !name || !Number.isSafeInteger(targetAmount) || targetAmount <= 0) return null;
     if (targetDate && !validDate(targetDate)) return null;
@@ -36,6 +37,7 @@
       targetAmount,
       targetDate,
       iconKey,
+      customIcon,
       status,
       createdAt: String(value.createdAt || new Date().toISOString()),
       updatedAt: value.updatedAt ? String(value.updatedAt) : null,

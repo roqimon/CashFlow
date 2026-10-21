@@ -486,6 +486,12 @@ body.keyboard-open .nav {
 .savings-presets button { display: grid; min-width: 0; min-height: 70px; align-content: center; justify-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 14px; padding: 6px 3px; background: var(--surface); color: var(--ink); font-size: 9px; font-weight: 750; }
 .savings-presets button.active { border-color: var(--green); background: var(--accent-soft); color: var(--green2); }
 .savings-presets img { width: 28px; height: 28px; object-fit: contain; }
+.savings-icon-choice { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 9px; margin: 0 0 13px; }
+.savings-icon-choice > span { color: var(--muted); font-size: 11px; font-weight: 750; }
+.savings-icon-trigger { display: flex; min-height: 46px; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 14px; padding: 5px 11px 5px 6px; background: var(--surface); color: var(--ink); font-size: 11px; font-weight: 800; }
+.savings-icon-trigger .savings-art { width: 34px; height: 34px; padding: 5px; border-radius: 10px; background: var(--accent-soft); }
+.savings-icon-picker.emoji-picker.open { max-height: min(40vh,330px) !important; margin: 0 0 13px; padding: 8px !important; border: 1px solid var(--line); background: var(--surface); }
+.savings-icon-picker .icon-grid button { min-height: 58px; }
 .savings-form-grid { grid-template-columns: 1fr !important; gap: 11px; margin-top: 4px; }
 .savings-form-grid label { min-height: 0 !important; gap: 6px; color: var(--ink); font-size: 12px; }
 .savings-form-grid label input { min-height: 48px; font-size: 15px; }

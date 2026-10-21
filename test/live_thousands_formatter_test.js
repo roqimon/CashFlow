@@ -144,9 +144,9 @@ assert.ok(html.includes('id="scAmount" inputmode="numeric" placeholder="Contoh: 
 assert.ok(html.includes('id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000"'), 'scanManualAmount placeholder check');
 assert.ok(html.includes('id="editAmount" inputmode="numeric" placeholder="Contoh: 50.000" value="${formatThousands(t.amount)}"'), 'editAmount formatting check');
 
-// Versioning is v33
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v33</span>'), 'App version badge must be v33');
+// Versioning is v34
+assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v34</span>'), 'App version badge must be v34');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v33'"), 'Service worker cache name must be v33');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v34'"), 'Service worker cache name must be v34');
 
 console.log('All tests in live_thousands_formatter_test.js passed completely!');
