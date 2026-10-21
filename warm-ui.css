@@ -85,8 +85,7 @@ body { background: var(--app-bg) !important; }
 .input:focus, .search:focus, input:focus, select:focus, textarea:focus { border-color: var(--green) !important; box-shadow: 0 0 0 3px rgba(182, 83, 55, .14) !important; }
 .income { color: var(--olive) !important; }
 .expense { color: var(--expense) !important; }
-.category-svg { display: block; width: 26px; height: 26px; object-fit: contain; filter: brightness(0) saturate(100%) invert(24%) sepia(22%) saturate(626%) hue-rotate(330deg) brightness(89%); }
-html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(10%) saturate(350%) hue-rotate(340deg); }
+.category-svg { display: block; width: 26px; height: 26px; object-fit: contain; filter: none; }
 .icon .category-svg, .cat-icon .category-svg { margin: 0; }
 .icon { background: #f7e6d9; border-radius: 50% !important; }
 
@@ -427,7 +426,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
 .icon-grid button { box-sizing: border-box; overflow: hidden; }
 #shortcutForm #iconPicker .icon-grid button { width: 100% !important; min-height: 65px !important; aspect-ratio: auto !important; }
 .icon-grid button.active { border: 2px solid var(--green) !important; background: var(--accent-soft) !important; }
-.icon-grid img { width: 23px !important; height: 23px !important; object-fit: contain; border: 0 !important; background: transparent !important; padding: 0 !important; filter: brightness(0) saturate(100%) invert(24%) sepia(22%) saturate(626%) hue-rotate(330deg) brightness(89%); }
+.icon-grid img { width: 23px !important; height: 23px !important; object-fit: contain; border: 0 !important; background: transparent !important; padding: 0 !important; filter: none; }
 .icon-grid span { display: block; max-width: 100%; color: var(--ink); font-size: 9px; font-weight: 650; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Semantic flow colors are paired with labels and arrows for quick recognition. */
@@ -439,7 +438,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
 .tx-item .amount.expense { color: var(--expense) !important; }
 .tx-item .amount.income, .breakdown-card .amount.income { color: var(--income) !important; }
 .tx-item:has(.amount.income) .icon { background: var(--income-soft) !important; }
-.tx-item:has(.amount.income) .category-svg, .shortcut-item[data-flow="income"] .category-svg { filter: brightness(0) saturate(100%) invert(40%) sepia(30%) saturate(622%) hue-rotate(77deg) brightness(92%); }
+.tx-item:has(.amount.income) .category-svg, .shortcut-item[data-flow="income"] .category-svg { filter: none; }
 #txList .date-net.minus { color: var(--expense) !important; }
 #txList .date-net.surplus { color: var(--income) !important; }
 .tx-summary { gap: 9px !important; padding: 0 !important; background: none !important; }
@@ -803,24 +802,24 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
 }
 #homeCategories .cat-icon {
-  background: #e66c48 !important;
-  color: #fff;
+  background: var(--category-icon-bg, #f7e6d9) !important;
+  color: var(--ink);
 }
 #homeCategories .cat-icon .category-svg {
   width: 24px;
   height: 24px;
-  filter: brightness(0) invert(1) !important;
+  filter: none !important;
 }
 #homeCategories .cat-icon > span {
-  color: #fff;
+  color: var(--ink);
 }
 #homeTxList .tx-item:not(:has(.amount.income)) .category-svg,
 #txList .tx-item:not(:has(.amount.income)) .category-svg {
-  filter: brightness(0) saturate(100%) invert(36%) sepia(34%) saturate(1430%) hue-rotate(333deg) brightness(92%) contrast(91%);
+  filter: none;
 }
 #homeTxList .tx-item:has(.amount.income) .category-svg,
 #txList .tx-item:has(.amount.income) .category-svg {
-  filter: brightness(0) saturate(100%) invert(40%) sepia(30%) saturate(622%) hue-rotate(77deg) brightness(92%);
+  filter: none;
 }
 .nav button.active[data-nav="home"] .nav-svg {
   fill: currentColor !important;
