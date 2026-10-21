@@ -75,6 +75,7 @@
       amount,
       date,
       note: String(value.note || '').trim().slice(0, 280),
+      sourcePocketId: type === 'deposit' ? String(value.sourcePocketId || '').trim() : '',
       createdAt: String(value.createdAt || new Date().toISOString()),
     };
   }
@@ -156,6 +157,7 @@
       amount,
       date,
       note: String(input.note || '').trim().slice(0, 280),
+      sourcePocketId: input.type === 'deposit' ? String(input.sourcePocketId || '').trim() : '',
       createdAt: String(input.createdAt || new Date().toISOString()),
     };
     return { goals: data.goals, entries: [...data.entries, entry] };
@@ -171,5 +173,13 @@
     return normalizeSavings({ goals: Array.from(goals.values()), entries: Array.from(entries.values()) });
   }
 
-  return { emptySavings, validDate, calendarDays, normalizeSavings, goalBalance, goalStats, upsertGoal, addEntry, mergeSavings };
+  function pocketAllocated(savings, pocketId, targetDate = new Date()) {
+    if (!pocketId) return 0;
+    const date = new Date(targetDate);
+    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    return normalizeSavings(savings).entries.reduce((total, entry) =>
+      total + (entry.type === 'deposit' && entry.sourcePocketId === pocketId && entry.date.startsWith(month) ? entry.amount : 0), 0);
+  }
+
+  return { emptySavings, validDate, calendarDays, normalizeSavings, goalBalance, goalStats, upsertGoal, addEntry, mergeSavings, pocketAllocated };
 });
