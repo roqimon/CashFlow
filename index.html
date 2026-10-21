@@ -612,7 +612,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       grid-template-columns: none !important;
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261021.25" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261021.26" />
 </head>
 <body>
 <div class="shell">
@@ -798,22 +798,21 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
-        <!-- 5. Pencadangan Data (HANYA CSV) -->
+        <!-- 5. Pencadangan Data -->
         <section class="card settings-card">
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#eaf8f4;color:var(--green)">📥</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pencadangan Data</strong>
-              <small class="muted" style="font-size:11.5px">Unduh riwayat transaksi ke format CSV untuk Excel atau Google Sheets</small>
+              <small class="muted" style="font-size:11.5px">Cadangkan data dan foto nota untuk perangkat ini</small>
             </div>
           </div>
           <button class="primary" data-action="export-csv" type="button" style="width:100%;min-height:44px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             <span>Unduh Riwayat Transaksi (CSV)</span>
           </button>
-          <!-- Compatibility hooks for test suite & fallbacks (hidden from user) -->
-          <button data-action="export-json" type="button" style="display:none" aria-hidden="true"></button>
-          <button data-action="import-json" type="button" style="display:none" aria-hidden="true"></button>
+          <p class="muted" style="font-size:11.5px;line-height:1.4;margin:8px 0 12px">CSV hanya memuat transaksi, tanpa foto nota.</p>
+          <div class="receipt-backup-actions"><button class="ghost" data-action="export-json" type="button">Cadangkan data dan foto (JSON)</button><button class="ghost" data-action="import-json" type="button">Pulihkan cadangan JSON</button></div>
         </section>
 
         <!-- 6. Info Aplikasi & Pembaruan Sistem (Hapus Masalah API Key Gemini) -->
@@ -822,7 +821,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v43</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v44</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1060,13 +1059,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./savings-core.js?v=20261021.2"></script>
 <script src="./receipt-store.js?v=20261021.1"></script>
 <script src="./receipt-gallery.js?v=20261021.3"></script>
+<script src="./receipt-backup.js?v=20261021.1"></script>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{window.location.reload()});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.30').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.31').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -2225,18 +2225,27 @@ function downloadFile(content, fileName, contentType) {
       document.body.removeChild(a);
       URL.revokeObjectURL(a.href);
     }, 150);
+    return true;
   } catch(e) {
     console.error('Download error:', e);
+    return false;
   }
 }
-function exportData(format){
+async function exportData(format){
   const data={transactions:getTX(),shortcuts:getSC(),categories:getCatRecords(),pockets:getPockets(),savings:getSavings(),exportedAt:new Date().toISOString()};
   const dStr=dateInput(new Date());
   if(format==='json'){
-    const jsonStr=JSON.stringify(data,null,2);
-    if($('exportText'))$('exportText').value=jsonStr;
-    downloadFile(jsonStr, 'aruskas_backup_' + dStr + '.json', 'application/json');
-    toast('Cadangan data berhasil diunduh.');
+    try{
+      const backup=await window.ReceiptBackup.buildReceiptBackup(data);
+      const jsonStr=JSON.stringify(backup);
+      const size=new Blob([jsonStr]).size;
+      if(size>10*1024*1024){
+        const ok=await confirmBox({title:'Cadangan berukuran besar',message:`Berkas berisi ${backup.receipts.length} foto nota dan berukuran sekitar ${(size/1048576).toFixed(1)} MB. Lanjutkan unduh?`,okText:'Unduh cadangan',tone:'safe'});
+        if(!ok)return;
+      }
+      if(!downloadFile(jsonStr, 'aruskas_backup_' + dStr + '.json', 'application/json'))throw new Error('Browser menolak unduhan.');
+      alert(`Unduhan cadangan data dan ${backup.receipts.length} foto nota dimulai.`);
+    }catch(error){console.error('[ArusKas] Backup error:',error);alert('Cadangan belum berhasil dibuat: '+(error.message||error))}
   }else{
     const rows=[['tanggal','waktu','tipe','sumber','sesi_st','upd','status_reimburse','kategori','nama','nominal','ikon','catatan','shortcut','raw_input'],...data.transactions.map(t=>{const d=new Date(t.createdAt);return [d.toLocaleDateString('id-ID'),d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),t.type,t.source||'personal',t.stSessionId?getSessionLabel(t.stSessionId):'',t.updFlag?'YA':'',t.reimburseStatus||'',t.category,t.title,t.amount,t.icon,t.note,t.shortcutCode,t.rawInput]})];
     const csvStr=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
@@ -2938,9 +2947,13 @@ async function saveScanManualTransaction(){
 async function importJsonData(file){
   if(!file)return;
   try{
+    if(file.size>10*1024*1024){
+      const proceed=await confirmBox({title:'Cadangan berukuran besar',message:`Berkas berukuran sekitar ${(file.size/1048576).toFixed(1)} MB. Memulihkannya memerlukan ruang penyimpanan di perangkat ini. Lanjutkan?`,okText:'Baca berkas',tone:'safe'});
+      if(!proceed)return;
+    }
     const text=await file.text();
     const data=JSON.parse(text);
-    let txList=[], scList=[], catList=[], pocketList=[], savingsData=null;
+    let txList=[], scList=[], catList=[], pocketList=[], receiptList=[], savingsData=null;
     if(Array.isArray(data)){
       txList=data;
     }else if(typeof data==='object'&&data!==null){
@@ -2948,26 +2961,29 @@ async function importJsonData(file){
       if(Array.isArray(data.shortcuts)) scList=data.shortcuts;
       if(Array.isArray(data.categories)) catList=data.categories;
       if(Array.isArray(data.pockets)) pocketList=data.pockets;
+      if(Array.isArray(data.receipts)) receiptList=data.receipts;
+      else if(data.receipts!=null)throw new Error('Format daftar foto nota tidak sesuai.');
       if(data.savings&&typeof data.savings==='object'&&!Array.isArray(data.savings)) savingsData=data.savings;
     }
     const savingsCount=savingsData?(Array.isArray(savingsData.goals)?savingsData.goals.length:0):0;
     const savingsEntryCount=savingsData?(Array.isArray(savingsData.entries)?savingsData.entries.length:0):0;
-    if(!txList.length&&!scList.length&&!catList.length&&!pocketList.length&&!savingsCount&&!savingsEntryCount){
+    if(!txList.length&&!scList.length&&!catList.length&&!pocketList.length&&!savingsCount&&!savingsEntryCount&&!receiptList.length){
       alert('Format berkas JSON tidak sesuai atau data kosong.');
       return;
     }
     const ok=await confirmBox({
       title:'Impor Data Cadangan?',
-      message:`Ditemukan ${txList.length} transaksi, ${scList.length} pintasan, ${catList.length} kategori, ${pocketList.length} pos anggaran, dan ${savingsCount} tujuan tabungan. Data cadangan akan digabungkan. Lanjutkan?`,
+      message:`Ditemukan ${txList.length} transaksi, ${receiptList.length} foto nota, ${scList.length} pintasan, ${catList.length} kategori, ${pocketList.length} pos anggaran, dan ${savingsCount} tujuan tabungan. Data cadangan akan digabungkan. Lanjutkan?`,
       okText:'Impor Sekarang',
       tone:'safe'
     });
     if(!ok)return;
+    if(receiptList.length)await window.ReceiptBackup.restoreReceiptBackup(receiptList);
     if(txList.length){
       const curTx=getTX();
       const map=new Map(curTx.map(t=>[t.id, t]));
       txList.forEach(t=>{if(t&&t.id) map.set(t.id, tx(t))});
-      saveTX(Array.from(map.values()).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)));
+      if(!saveTX(Array.from(map.values()).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))))throw new Error('Ruang penyimpanan transaksi tidak cukup.');
     }
     if(scList.length){
       const curSc=getSC();
@@ -2986,6 +3002,7 @@ async function importJsonData(file){
     }
     if(savingsData&&(savingsCount||savingsEntryCount))saveSavings(savingsCore.mergeSavings(getSavings(),savingsData));
     render();
+    alert(`Cadangan dipulihkan: ${txList.length} transaksi dan ${receiptList.length} foto nota.`);
     
   }catch(err){
     console.error('[ArusKas] Import error:', err);
@@ -3311,8 +3328,8 @@ if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');i
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){cancelReceiptScan();}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
-if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v43');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
-if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
+if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v44');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, foto nota, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){try{await window.ReceiptStore.clear()}catch(error){alert('Foto nota belum berhasil dihapus: '+(error.message||error));return}saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
 $('txPeriodSeg').addEventListener('click',e=>{const b=e.target.closest('[data-tx-period]');if(!b)return;txPeriod=b.dataset.txPeriod;txOffset=0;document.querySelectorAll('#txPeriodSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});$('txPeriodSelect').addEventListener('change',e=>{txOffset=Number(e.target.value);render()});$('txRangeStart').addEventListener('change',render);$('txRangeEnd').addEventListener('change',render);$('typeFilter').addEventListener('click',e=>{const b=e.target.closest('[data-type]');if(!b)return;txFilter.type=b.dataset.type;document.querySelectorAll('#typeFilter button').forEach(x=>x.classList.toggle('active',x===b));render()});
@@ -3441,7 +3458,7 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v43');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v44');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');

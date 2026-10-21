@@ -238,6 +238,8 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 #receiptShareFallbackList{display:grid;gap:8px;max-height:45vh;overflow-y:auto}
 #receiptShareFallbackList button{min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);font-size:12px;font-weight:750;text-align:left;padding:8px 12px;overflow-wrap:anywhere}
 .receipt-gallery-selection button:disabled,.receipt-photo-actions button:disabled{opacity:.55;cursor:default}
+.receipt-backup-actions{display:grid;grid-template-columns:1fr;gap:8px}
+.receipt-backup-actions button{min-height:42px;padding:8px 12px;font-size:12px;font-weight:750}
 @media(min-width:700px){.receipt-gallery-fields{grid-template-columns:200px minmax(0,1fr)}.receipt-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .report-chart-card { text-align: left !important; padding: 17px !important; }
 .report-chart-card .report-header-row h3, .page[data-page="report"] .section-head h3 { font-size: 18px !important; letter-spacing: -.03em; }
