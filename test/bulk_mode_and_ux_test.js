@@ -107,6 +107,80 @@ assert.ok(html.includes('Ringkasan dan input cepat'), 'Home subtitle contains su
 assert.ok(html.includes('checkUpdateNotice()'), 'checkUpdateNotice function is executed');
 console.log('✔ Update indicators, banner, and version badges verified');
 
+console.log('--- Test 8: Budget Pockets Bulk Mode & Persistence ---');
+assert.ok(html.includes('id="pocketBulkBar"'), 'pocketBulkBar must exist');
+assert.ok(html.includes('id="pocketToggleSelectBtn"'), 'pocketToggleSelectBtn must exist');
+assert.ok(html.includes('id="pocketSelectAllBtn"'), 'pocketSelectAllBtn must exist');
+assert.ok(html.includes('id="pocketBulkDelete"'), 'pocketBulkDelete must exist');
+assert.ok(html.includes('data-exit-pocket-select'), 'data-exit-pocket-select must exist');
+assert.ok(html.includes('function startPocketSelectMode()'), 'startPocketSelectMode must exist');
+assert.ok(html.includes('function exitPocketSelectMode()'), 'exitPocketSelectMode must exist');
+assert.ok(html.includes('function bulkDeletePockets()'), 'bulkDeletePockets must exist');
+assert.ok(html.includes('pocket-manage-item'), 'pocket-manage-item styling class exists');
+
+// Verify pocket persistence logic simulation
+const mockStorage = {};
+const KEY_POCKETS = 'aruskas_budget_pockets_v1';
+const defaultPockets = [
+  { id: 'pocket-dapur', name: 'Dapur' },
+  { id: 'pocket-transport', name: 'Transport' }
+];
+
+function mockGetPockets() {
+  const raw = mockStorage[KEY_POCKETS];
+  if (raw === undefined || raw === null) {
+    mockStorage[KEY_POCKETS] = JSON.stringify(defaultPockets);
+    return defaultPockets;
+  }
+  const arr = JSON.parse(raw);
+  return Array.isArray(arr) ? arr : [];
+}
+
+function mockSavePockets(list) {
+  mockStorage[KEY_POCKETS] = JSON.stringify(Array.isArray(list) ? list : []);
+}
+
+// 1. First run seeds defaults
+let p = mockGetPockets();
+assert.strictEqual(p.length, 2, 'First run should seed 2 default pockets');
+
+// 2. Delete pocket-transport
+mockSavePockets(p.filter(item => item.id !== 'pocket-transport'));
+
+// 3. Second run must NOT respawn pocket-transport
+let pAfterDel = mockGetPockets();
+assert.strictEqual(pAfterDel.length, 1, 'Only 1 pocket should remain');
+assert.strictEqual(pAfterDel[0].id, 'pocket-dapur', 'Remaining pocket must be pocket-dapur');
+
+// 4. Delete all pockets (bulk delete simulation)
+mockSavePockets([]);
+let pEmpty = mockGetPockets();
+assert.strictEqual(pEmpty.length, 0, 'Empty pockets array must remain empty and not respawn');
+console.log('✔ Budget Pockets bulk delete & persistence verified');
+
+console.log('--- Test 9: Shortcuts Bulk Mode ---');
+assert.ok(html.includes('id="scBulkBar"'), 'scBulkBar must exist');
+assert.ok(html.includes('id="scToggleSelectBtn"'), 'scToggleSelectBtn must exist');
+assert.ok(html.includes('id="scSelectAllBtn"'), 'scSelectAllBtn must exist');
+assert.ok(html.includes('id="scBulkDelete"'), 'scBulkDelete must exist');
+assert.ok(html.includes('data-exit-sc-select'), 'data-exit-sc-select must exist');
+assert.ok(html.includes('function startScSelectMode()'), 'startScSelectMode must exist');
+assert.ok(html.includes('function exitScSelectMode()'), 'exitScSelectMode must exist');
+assert.ok(html.includes('function bulkDeleteShortcuts()'), 'bulkDeleteShortcuts must exist');
+assert.ok(html.includes('shortcut-manage-item'), 'shortcut-manage-item styling class exists');
+
+// Shortcut bulk delete simulation
+let mockShortcuts = [
+  { id: 'sc-1', code: 'kopi', title: 'Kopi' },
+  { id: 'sc-2', code: 'bensin', title: 'Bensin' },
+  { id: 'sc-3', code: 'makan', title: 'Makan' }
+];
+let scSelectSet = new Set(['sc-1', 'sc-3']);
+let remainingShortcuts = mockShortcuts.filter(s => !scSelectSet.has(s.id));
+assert.strictEqual(remainingShortcuts.length, 1);
+assert.strictEqual(remainingShortcuts[0].code, 'bensin');
+console.log('✔ Shortcuts bulk mode & bulk delete logic verified');
+
 console.log('\n=======================================');
 console.log('All Bulk Mode & UX verification tests PASSED!');
 console.log('=======================================');

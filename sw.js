@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aruskas-pwa-v18';
+const CACHE_NAME = 'aruskas-pwa-v19';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
