@@ -1,6 +1,46 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { prepareShareFiles, shareSelectedReceipts, buildReportSharePlan } = require('../receipt-gallery.js');
+const { prepareShareFiles, shareSelectedReceipts, buildReportSharePlan, buildReceiptPdf } = require('../receipt-gallery.js');
+const { create: createPdf } = require('../receipt-pdf.js');
+
+test('creates a readable PDF document containing one page per receipt image', async () => {
+  const originalDocument = global.document;
+  const originalCreateImageBitmap = global.createImageBitmap;
+  global.createImageBitmap = async () => ({ width: 2, height: 3, close() {} });
+  global.document = { createElement: () => ({
+    width: 0, height: 0,
+    getContext: () => ({ fillStyle: '', fillRect() {}, drawImage() {} }),
+    toBlob: callback => callback(new Blob([new Uint8Array([255, 216, 255, 217])], { type: 'image/jpeg' }))
+  }) };
+  try {
+    const pdf = await createPdf([
+      { title: 'Pasar', capturedAt: '2026-10-01T10:00:00Z', image: new Blob(['receipt']) },
+      { title: 'Toko', capturedAt: '2026-10-31T10:00:00Z', image: new Blob(['receipt']) }
+    ]);
+    const contents = Buffer.from(await pdf.arrayBuffer()).toString('latin1');
+    assert.equal(pdf.type, 'application/pdf');
+    assert.match(contents, /%PDF-1\.4/);
+    assert.match(contents, /\/Count 2/);
+    assert.match(contents, /\(Pasar\)/);
+    assert.match(contents, /\(Toko\)/);
+    assert.match(contents, /startxref\n\d+\n%%EOF$/);
+  } finally {
+    global.document = originalDocument;
+    global.createImageBitmap = originalCreateImageBitmap;
+  }
+});
+
+test('builds one PDF page per selected receipt and labels each with title and date', async () => {
+  const records = new Map([
+    ['r-1', { id: 'r-1', title: 'Pasar', capturedAt: '2026-10-01T10:00:00Z', blob: new Blob(['first'], { type: 'image/jpeg' }) }],
+    ['r-2', { id: 'r-2', title: 'Toko', capturedAt: '2026-10-31T10:00:00Z', blob: new Blob(['second'], { type: 'image/jpeg' }) }]
+  ]);
+  const pdf = await buildReceiptPdf(['r-1', 'r-2'], { get: async id => records.get(id) }, { create: async pages => pages });
+  assert.equal(pdf.length, 2);
+  assert.deepEqual(pdf.map(page => page.title), ['Pasar', 'Toko']);
+  assert.deepEqual(pdf.map(page => page.date), ['1 Oktober 2026', '31 Oktober 2026']);
+  assert.deepEqual(pdf.map(page => page.image.type), ['image/jpeg', 'image/jpeg']);
+});
 
 test('WhatsApp modes choose text and photos from the same date filter', () => {
   const receipts = [
@@ -15,6 +55,7 @@ test('WhatsApp modes choose text and photos from the same date filter', () => {
   assert.deepEqual(buildReportSharePlan('list', receipts, transactions, dates), { includeList: true, receiptIds: [], transactionIds: ['t1'], valid: true });
   assert.deepEqual(buildReportSharePlan('both', receipts, transactions, dates), { includeList: true, receiptIds: ['r1'], transactionIds: ['t1'], valid: true });
   assert.deepEqual(buildReportSharePlan('receipts', receipts, transactions, dates), { includeList: false, receiptIds: ['r1'], transactionIds: ['t1'], valid: true });
+  assert.deepEqual(buildReportSharePlan('pdf', receipts, transactions, dates), { includeList: false, receiptIds: ['r1'], transactionIds: ['t1'], valid: true });
   assert.equal(buildReportSharePlan('both', receipts, transactions, { from: '2026-10-22', to: '2026-10-21' }).valid, false);
 });
 

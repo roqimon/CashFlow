@@ -54,6 +54,19 @@
     }
     return files;
   }
+  async function buildReceiptPdf(ids, store = root?.ReceiptStore, pdfApi = root?.ReceiptPdf) {
+    const pages = [];
+    for (const id of ids) {
+      const record = await store.get(id);
+      if (!record?.blob) continue;
+      const captured = new Date(record.capturedAt);
+      const date = Number.isNaN(captured.getTime()) ? 'Tanggal tidak tersedia' : captured.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      pages.push({ id, title: record.title || 'Nota', date, capturedAt: record.capturedAt || '', image: record.blob });
+    }
+    if (!pages.length) throw new Error('Tidak ada foto nota yang bisa dimasukkan ke PDF.');
+    if (!pdfApi || typeof pdfApi.create !== 'function') throw new Error('Pembuat PDF belum tersedia.');
+    return pdfApi.create(pages);
+  }
   async function shareSelectedReceipts(files, text, navigatorApi = root?.navigator) {
     if (!files?.length || !navigatorApi || typeof navigatorApi.share !== 'function') return 'unsupported';
     if (typeof navigatorApi.canShare === 'function') {
@@ -68,7 +81,7 @@
       throw error;
     }
   }
-  const api = { filter, filterByDateInputs, buildReportSharePlan, prepareShareFiles, shareSelectedReceipts };
+  const api = { filter, filterByDateInputs, buildReportSharePlan, prepareShareFiles, buildReceiptPdf, shareSelectedReceipts };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.ReceiptGallery = api;
 })(typeof window !== 'undefined' ? window : null);
