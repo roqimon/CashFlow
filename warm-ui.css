@@ -183,8 +183,11 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .sweep-form-fields label { min-width: 0; display: grid; gap: 6px; font-size: 12px; font-weight: 750; color: var(--ink); }
 .sweep-form-fields label[hidden] { display: none !important; }
 .sweep-form-fields select, .sweep-form-fields input { min-height: 46px; width: 100%; min-width: 0; }
-.sweep-available { margin: -7px 2px 0; color: var(--muted); font-size: 11.5px; }
+.sweep-available { width: 100%; min-height: 46px; margin: -7px 0 0; padding: 9px 12px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--muted); display: flex; align-items: center; justify-content: space-between; gap: 10px; font: inherit; font-size: 11.5px; text-align: left; cursor: pointer; }
 .sweep-available strong { color: var(--green2); }
+.sweep-available-action { flex: none; color: var(--green2); font-size: 10.5px; font-weight: 800; }
+.sweep-available:hover { border-color: var(--green2); }
+.sweep-available:focus-visible { outline: 3px solid color-mix(in srgb,var(--green2),transparent 72%); outline-offset: 2px; }
 .sweep-amount-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
 .sweep-amount-row button { min-height: 46px; white-space: nowrap; font-size: 11.5px; }
 .sweep-preview { margin: 14px 0 2px; padding: 10px 12px; border-radius: 13px; background: var(--surface2); color: var(--muted); font-size: 11.5px; line-height: 1.45; }
@@ -952,3 +955,38 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .destination-chip.active .category-svg {
   filter: brightness(0) invert(1) !important;
 }
+
+/* Report date picker, unclipped period menu, and percentage legend. */
+.page[data-page="report"] .report-period-card{overflow:visible!important;position:relative;}
+.page[data-page="report"] .report-period-card:has(.period-main .select-shell.open){z-index:30;}
+.page[data-page="report"] .period-main .select-shell.open{z-index:31;}
+.page[data-page="report"] .report-period-card:has(#reportCalendarPanel:not([hidden])){z-index:20;}
+.page[data-page="report"] .period-main{position:relative;z-index:1;}
+.page[data-page="report"] .report-period-card:has(.period-main .select-shell.open) .period-main{z-index:32;}
+.report-range-trigger{width:100%;min-height:54px;display:flex;align-items:center;gap:11px;padding:9px 13px;border:1px solid var(--line);border-radius:15px;background:var(--surface);color:var(--ink);text-align:left;}
+.report-range-icon{width:34px;height:34px;display:grid;place-items:center;flex:none;border-radius:11px;background:var(--accent-soft);color:var(--green2);font-size:19px;}
+.report-range-copy{min-width:0;display:grid;gap:3px;flex:1;}
+.report-range-copy strong{font-size:13px;line-height:1.25;}
+.report-range-copy small{font-size:11px;color:var(--muted);}
+.report-range-chevron{color:var(--green2);font-size:17px;}
+.report-range-calendar{grid-column:1/-1;width:100%;padding:12px;border:1px solid var(--line);border-radius:17px;background:var(--surface);box-shadow:0 12px 30px rgba(27,48,37,.09);}
+.report-range-calendar[hidden]{display:none!important;}
+.report-calendar-shortcuts{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;}
+.report-calendar-shortcuts button,.report-calendar-footer button{flex:none;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:var(--button-bg);color:var(--ink);font-size:11px;font-weight:750;}
+.report-calendar-heading{display:flex;align-items:center;justify-content:space-between;margin:2px 0 8px;}
+.report-calendar-heading strong{font-size:13px;text-transform:capitalize;}
+.report-calendar-heading button{width:34px;height:34px;border:1px solid var(--line);border-radius:11px;background:var(--button-bg);color:var(--green2);font-size:20px;}
+#reportCalendarGrid{grid-auto-rows:minmax(36px,auto);}
+.report-calendar-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;color:var(--muted);font-size:11px;}
+.page[data-page="report"] .report-chart-card{margin-top:12px;}
+.page[data-page="report"] .report-chart-card .chart-stage{min-height:0;padding:12px 2px;}
+.report-donut-layout{width:100%;display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);align-items:center;gap:10px;}
+.page[data-page="report"] .report-donut-layout .chart-svg{width:100%!important;height:auto;aspect-ratio:1;}
+.report-donut-legend{display:grid;gap:3px;min-width:0;}
+.report-donut-legend-item{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;column-gap:6px;row-gap:2px;width:100%;padding:6px 2px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;color:var(--ink);}
+.report-donut-dot{width:9px;height:9px;border-radius:50%;background:var(--donut-color);grid-row:1/3;}
+.report-donut-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:700;}
+.report-donut-legend-item strong{font-size:11px;color:var(--green2);}
+.report-donut-legend-item small{grid-column:2/4;color:var(--muted);font-size:10px;}
+.page[data-page="report"] .report-chart-card #shareWaBtn{margin:12px 0 2px!important;}
+@media(max-width:390px){.report-donut-layout{grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:7px}.report-donut-legend-item{column-gap:4px;padding:5px 0}.report-donut-name,.report-donut-legend-item strong{font-size:10px}.report-donut-legend-item small{font-size:9px}}

@@ -37,6 +37,31 @@ test('budget usage subtracts transfers without adding them to expenses', () => {
   assert.equal(destination.remaining,95000);
 });
 
+test('tapping available remainder fills the transfer amount and scrolls to it', () => {
+  const start=html.indexOf('function useAllSweepRemainder(');
+  const end=html.indexOf('\nfunction updateSweepPocketSelectedInfo(',start);
+  assert.ok(start>=0&&end>start,'remainder autofill helper exists');
+  let scrollOptions=null,focusOptions=null,previewUpdated=false;
+  const amount={value:'',scrollIntoView:options=>{scrollOptions=options},focus:options=>{focusOptions=options}};
+  const source={selectedOptions:[{dataset:{sisa:'2500000'}}]};
+  const context={
+    $:id=>id==='sweepPocketSelect'?source:id==='sweepAmount'?amount:null,
+    formatThousands:value=>String(value).replace(/\B(?=(\d{3})+(?!\d))/g,'.'),
+    updateSweepPreview:()=>{previewUpdated=true}
+  };
+  vm.createContext(context);
+  vm.runInContext(`${html.slice(start,end)};this.useAllSweepRemainder=useAllSweepRemainder`,context);
+  assert.equal(context.useAllSweepRemainder(),true);
+  assert.equal(amount.value,'2.500.000');
+  assert.equal(scrollOptions.behavior,'smooth');
+  assert.equal(scrollOptions.block,'center');
+  assert.equal(focusOptions.preventScroll,true);
+  assert.equal(previewUpdated,true);
+  assert.match(html,/id="sweepPocketAvailableHint"[^>]*aria-label="[^\"]*seluruh sisa yang bisa dipindahkan/);
+  assert.match(html,/sweepPocketAvailableHint'\)\?\.addEventListener\('click',useAllSweepRemainder\)/);
+  assert.match(html,/sweepMaxBtn'\)\?\.addEventListener\('click',useAllSweepRemainder\)/);
+});
+
 test('home shows five recent transactions and five monthly expense categories with share', () => {
   const start=html.indexOf('function renderHome(arr)');
   const end=html.indexOf('\nfunction savingsIconHtml(',start);
