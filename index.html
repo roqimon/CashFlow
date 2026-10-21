@@ -1397,6 +1397,8 @@ function generateCustomWhatsAppRecap(opts){
   const selectedPocketIds=Array.isArray(opts.selectedPocketIds)&&opts.selectedPocketIds.length?opts.selectedPocketIds:null;
   const pockets=selectedPocketIds?allPockets.filter(p=>selectedPocketIds.includes(p.id)):allPockets;
 
+  const fRp = (num) => 'Rp ' + Math.abs(Number(num)||0).toLocaleString('id-ID');
+
   const sections=[];
   sections.push('*LAPORAN ARUS KAS*\nPeriode: '+periodLabel);
 
@@ -1408,18 +1410,19 @@ function generateCustomWhatsAppRecap(opts){
     const netIcon=net>=0?'🟢':'🔴';
     sections.push(
       '*Ringkasan Arus Kas*\n' +
-      '• Pemasukan: '+money(inc)+'\n' +
-      '• Pengeluaran: '+money(exp)+'\n' +
-      '• Saldo: '+netIcon+' '+(net>=0?'+':'')+money(net)
+      '• Pemasukan: '+fRp(inc)+'\n' +
+      '• Pengeluaran: '+fRp(exp)+'\n' +
+      '• Saldo: '+netIcon+' '+(net>=0?'+':'-')+fRp(net)
     );
   }
 
   if(opts.includePockets!==false&&pockets.length>0){
     const pocketLines=pockets.map(p=>{
       const usage=calculatePocketUsage(p,targetDate,txList);
-      const icon=usage.isOver?'⚠️':'✅';
-      const sisa=usage.isOver?('Lebih '+money(usage.overAmount)):('Sisa '+money(usage.remaining));
-      return '• '+(p.icon||'•')+' '+p.name+': '+money(usage.spent)+' / '+money(usage.amount)+' ('+icon+' '+sisa+')';
+      const icon=usage.isOver?'⚠️ Lebih':'Sisa';
+      const diff=usage.isOver?usage.overAmount:usage.remaining;
+      return (p.icon||'•')+' '+p.name+'\n' +
+             '  Pakai: '+fRp(usage.spent)+' / '+fRp(usage.amount)+' ('+icon+' '+fRp(diff)+')';
     });
 
     sections.push(
@@ -1433,8 +1436,9 @@ function generateCustomWhatsAppRecap(opts){
     const limit=opts.topCategoriesLimit||5;
     const topCats=cats.slice(0,limit);
     if(topCats.length>0){
-      const catLines=topCats.map((c,idx)=>{
-        return '• '+(c.icon||'•')+' '+c.category+': '+money(c.total);
+      const catLines=topCats.map(c=>{
+        const ico = c.icon && c.icon !== '•' ? c.icon + ' ' : '';
+        return '• '+ico+c.category+': '+fRp(c.total);
       });
       sections.push(
         '*Pengeluaran per Kategori*\n' +
@@ -1451,7 +1455,7 @@ function generateCustomWhatsAppRecap(opts){
     if(incomeTx.length>0){
       const incLines=incomeTx.map(t=>{
         const d=new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-        return '• '+d+' '+t.title+': +'+money(t.amount);
+        return '• '+d+' '+t.title+': +'+fRp(t.amount);
       });
       txSections.push('Pemasukan ('+incomeTx.length+'):\n'+incLines.join('\n'));
     }
@@ -1461,7 +1465,7 @@ function generateCustomWhatsAppRecap(opts){
       const expSlice=expenseTx.slice(0,maxExp);
       const expLines=expSlice.map(t=>{
         const d=new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-        return '• '+d+' '+t.title+': -'+money(t.amount);
+        return '• '+d+' '+t.title+': -'+fRp(t.amount);
       });
       let expText='Pengeluaran ('+expenseTx.length+'):\n'+expLines.join('\n');
       if(expenseTx.length>maxExp){
