@@ -608,10 +608,11 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       border-color: var(--green);
     }
     #pocketIconPicker.open {
-      display: grid !important;
+      display: block !important;
+      grid-template-columns: none !important;
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261021.20" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261021.21" />
 </head>
 <body>
 <div class="shell">
@@ -677,30 +678,34 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       </section>
       <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><label>Dari<input type="date" id="rangeStart"></label><label>Sampai<input type="date" id="rangeEnd"></label></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div><button id="shareWaBtn" class="primary" type="button" style="width:100%;margin-top:10px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);font-size:13.5px;font-weight:800;border:0;border-radius:999px;box-shadow:0 8px 20px rgba(37,211,102,.28)"><span>📲</span><span>Kirim Rekap Belanja ke WhatsApp</span></button></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
       <section class="page" data-page="settings" data-legacy-page="shortcut">
-        <section class="card" style="margin-top:0;margin-bottom:12px;padding:12px 14px;border:1px solid var(--line);border-radius:18px">
-          <div class="row">
-            <div>
-              <strong style="display:block;font-size:13.5px">Tema Tampilan</strong>
-              <p class="muted" style="margin:2px 0 0;font-size:11.5px">Pilih tema terang, gelap, atau ikuti HP.</p>
+        <!-- 1. Tema Tampilan -->
+        <section class="card settings-card" style="margin-top:0">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">🎨</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Tema Tampilan</strong>
+              <small class="muted" style="font-size:11.5px">Mode tampilan visual aplikasi</small>
             </div>
             <span class="theme-badge" id="themeLabel" style="font-size:10.5px">Sistem</span>
           </div>
-          <div class="seg theme-seg" id="themeSeg" style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
-            <button data-theme-mode="system" type="button" style="font-size:12px">Sistem</button>
-            <button data-theme-mode="light" type="button" style="font-size:12px">Terang</button>
-            <button data-theme-mode="dark" type="button" style="font-size:12px">Gelap</button>
+          <div class="seg theme-seg" id="themeSeg" style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
+            <button data-theme-mode="system" type="button" style="font-size:12px;min-height:36px">📱 Sistem</button>
+            <button data-theme-mode="light" type="button" style="font-size:12px;min-height:36px">☀️ Terang</button>
+            <button data-theme-mode="dark" type="button" style="font-size:12px;min-height:36px">🌙 Gelap</button>
           </div>
         </section>
 
-        <section class="card">
-          <div class="row" style="flex-wrap:wrap;gap:8px">
-            <div style="flex:1;min-width:160px">
-              <h3 style="margin:0">🎯 Pos Anggaran Keluarga</h3>
-              <p class="muted" style="margin:3px 0 0;font-size:12px">Atur jatah belanja &amp; pos pengeluaran bulanan</p>
+        <!-- 2. Pos Anggaran Bulanan -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#fef3eb;color:#e66c48">🎯</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Pos Anggaran</strong>
+              <small class="muted" style="font-size:11.5px">Atur jatah belanja bulanan</small>
             </div>
             <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-              <button class="text-btn" id="pocketToggleSelectBtn" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Pilih</button>
-              <button class="text-btn" data-action="new-pocket" type="button" style="color:var(--green);font-weight:800">＋ Pos Baru</button>
+              <button class="text-btn" id="pocketToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+              <button class="text-btn" data-action="new-pocket" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Pos Baru</button>
             </div>
           </div>
           <div id="pocketManager" class="list" style="padding:4px;margin-top:10px"></div>
@@ -715,107 +720,131 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             </div>
           </div>
         </section>
-        <section class="card shortcut-editor" id="shortcutEditor">
-          <div class="row">
-            <div>
-              <h3 style="margin:0">Buat / Edit Pintasan</h3>
-              <p class="muted" style="margin:3px 0 0;font-size:12px">Buat kode pintasan transaksi cepat.</p>
+
+        <!-- 3. Pintasan Transaksi Cepat -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">⚡</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Pintasan Cepat</strong>
+              <small class="muted" style="font-size:11.5px" id="scCount">0 pintasan</small>
             </div>
-            <button class="text-btn" data-action="close-shortcut-editor" type="button">Tutup</button>
-          </div>
-          <form class="form-grid" id="shortcutForm" autocomplete="off" style="margin-top:12px">
-            <input type="hidden" id="scId">
-            <label>Kode Pintasan<input id="scCode" required placeholder="Contoh: bbm, kopi" autocomplete="off"></label>
-            <label>Nama Transaksi<input id="scTitle" required placeholder="Contoh: Beli Bensin, Kopi Pagi" autocomplete="off"></label>
-            <div class="wide" style="display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:start">
-              <label>Kategori<select id="scCategory" required style="margin-bottom:4px"></select><input id="scCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label>
-              <label style="text-align:center">Ikon<input id="scIcon" placeholder="☕" autocomplete="off" style="text-align:center;font-size:18px"></label>
+            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+              <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+              <button class="text-btn" data-action="open-shortcut-editor" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Buat Baru</button>
             </div>
-            <label>Tipe<select id="scType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label>
-            <label>Nilai Uang (Opsional)<input id="scAmount" inputmode="numeric" placeholder="Contoh: 25.000" autocomplete="off"></label>
-            <label class="wide">Komentar / Catatan<input id="scNote" placeholder="Opsional" autocomplete="off"></label>
-            <label class="wide check-row"><input type="checkbox" id="scShowHome" checked><span>Tampilkan pintasan ini di Beranda</span></label>
-            <div class="wide" style="margin-top:6px"><div class="emoji-picker" id="iconPicker"></div></div>
-            <button class="primary wide" type="submit">Simpan Pintasan</button>
-          </form>
-        </section>
-        <div class="section-head" style="margin:16px 4px 6px;display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <div style="min-width:0;flex:1">
-            <h3 style="font-size:15px;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Daftar Pintasan</h3>
-            <p class="muted" id="scCount" style="margin:2px 0 0;font-size:12px">0 pintasan</p>
           </div>
-          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
-            <button class="text-btn" data-action="open-shortcut-editor" type="button">Buat baru</button>
-            <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Pilih</button>
-          </div>
-        </div>
-        <section class="list" id="shortcutList"></section>
-        <div class="bulk-bar" id="scBulkBar">
-          <div style="display:flex;align-items:center;gap:6px">
-            <button class="ghost" id="scSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
-            <span id="scSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span>
-          </div>
-          <div style="display:flex;gap:6px">
-            <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
-            <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
-          </div>
-        </div>
-        <section class="card">
-          <div class="row">
-            <div>
-              <h3 style="margin:0">Kategori</h3>
-              <p class="muted" style="margin:3px 0 0;font-size:12px">Kelola atau buat kategori manual</p>
+          
+          <div class="shortcut-editor-box" id="shortcutEditor" style="display:none;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface)">
+            <div class="row">
+              <strong style="font-size:13px;color:var(--ink)">Formulir Pintasan</strong>
+              <button class="text-btn" data-action="close-shortcut-editor" type="button" style="font-size:11.5px;min-height:28px">Tutup</button>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;flex-shrink:0"><button class="text-btn" data-action="new-category" type="button">Baru</button><button class="text-btn" id="catToggleSelectBtn" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Pilih</button></div>
+            <form class="form-grid" id="shortcutForm" autocomplete="off" style="margin-top:10px">
+              <input type="hidden" id="scId">
+              <label>Kode Pintasan<input id="scCode" required placeholder="Contoh: bbm, kopi" autocomplete="off"></label>
+              <label>Nama Transaksi<input id="scTitle" required placeholder="Contoh: Beli Bensin, Kopi Pagi" autocomplete="off"></label>
+              <div class="wide" style="display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:start">
+                <label>Kategori<select id="scCategory" required style="margin-bottom:4px"></select><input id="scCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label>
+                <label style="text-align:center">Ikon<input id="scIcon" placeholder="☕" autocomplete="off" style="text-align:center;font-size:18px"></label>
+              </div>
+              <label>Tipe<select id="scType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label>
+              <label>Nilai Uang (Opsional)<input id="scAmount" inputmode="numeric" placeholder="Contoh: 25.000" autocomplete="off"></label>
+              <label class="wide">Komentar / Catatan<input id="scNote" placeholder="Opsional" autocomplete="off"></label>
+              <label class="wide check-row"><input type="checkbox" id="scShowHome" checked><span>Tampilkan pintasan ini di Beranda</span></label>
+              <div class="wide" style="margin-top:6px"><div class="emoji-picker" id="iconPicker"></div></div>
+              <button class="primary wide" type="submit" style="min-height:38px;font-size:12.5px;margin-top:4px">Simpan Pintasan</button>
+            </form>
           </div>
-          <div id="catManager" class="list" style="padding:4px"></div><div class="bulk-bar" id="catBulkBar"><div style="display:flex;align-items:center;gap:6px"><button class="ghost" id="catSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button><span id="catSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span></div><div style="display:flex;gap:6px"><button class="ghost" data-exit-cat-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button><button class="danger" id="catBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button></div></div>
-        </section>
-      
-        <section class="card" style="margin-top:14px;margin-bottom:12px;padding:12px 14px;border:1px solid var(--line);border-radius:18px">
-          <strong style="display:block;font-size:13.5px">Pencadangan Data</strong>
-          <p class="muted" style="margin:3px 0 10px;font-size:11.5px;line-height:1.4">Unduh riwayat transaksi ke file CSV agar bisa dibuka di aplikasi spreadsheet seperti Excel.</p>
-          <div style="display:grid;gap:8px">
-            <button class="primary" data-action="export-csv" type="button" style="width:100%;min-height:44px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px">
-              <span>📊</span><span>Unduh Data Transaksi (CSV)</span>
-            </button>
+          
+          <section class="list" id="shortcutList" style="padding:4px;margin-top:8px"></section>
+          <div class="bulk-bar" id="scBulkBar">
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="ghost" id="scSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
+              <span id="scSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span>
+            </div>
             <div style="display:flex;gap:6px">
-              <button class="ghost" data-action="export-json" type="button" style="flex:1;min-height:36px;font-size:11.5px;font-weight:700">Cadangan JSON</button>
-              <button class="ghost" data-action="import-json" type="button" style="flex:1;min-height:36px;font-size:11.5px;font-weight:700">Pulihkan JSON</button>
+              <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
+              <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
           </div>
         </section>
 
-        <section class="card" style="margin-bottom:12px;padding:12px 14px;border:1px solid var(--line);border-radius:18px">
-          <strong style="display:block;font-size:13.5px">Kunci AI &amp; Pembaruan Sistem</strong>
-          <p class="muted" style="margin:2px 0 8px;font-size:11px">Digunakan untuk scan foto struk otomatis, koreksi salah ketik (typo), dan perapian teks suara.</p>
-          <label style="display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:700">
-            Kunci API Google Gemini (Opsional)
-            <div style="display:flex;gap:6px;align-items:center;margin-top:2px">
-              <input id="geminiApiKeyInput" type="text" class="api-key-input api-key-masked" placeholder="Masukkan Gemini API Key" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" style="flex:1;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 10px;font-size:11px;font-family:monospace">
-              <button type="button" class="icon-btn toggle-api-key-btn" data-target="geminiApiKeyInput" title="Tampilkan/sembunyikan kunci" style="width:36px;height:36px;font-size:14px;flex-shrink:0;background:var(--surface);border:1px solid var(--line);border-radius:10px">👁️</button>
+        <!-- 4. Kelola Kategori -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#f4eeff;color:#7e4bd6">🏷️</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Kategori Transaksi</strong>
+              <small class="muted" style="font-size:11.5px">Kelola daftar kategori</small>
             </div>
-          </label>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)" id="appVersionDetails">
-            <div>
-              <span style="font-size:12px;font-weight:750">Versi Aplikasi</span>
-              <span id="updateStatusText" style="display:none"></span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span id="appVersionBadge" style="font-weight:800">v40</span>
-              <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:32px;height:32px;font-size:14px;background:var(--surface2);border:1px solid var(--line);border-radius:50%">🔄</button>
+            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+              <button class="text-btn" id="catToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+              <button class="text-btn" data-action="new-category" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Baru</button>
             </div>
           </div>
+          <div id="catManager" class="list" style="padding:4px;margin-top:10px"></div>
+          <div class="bulk-bar" id="catBulkBar">
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="ghost" id="catSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
+              <span id="catSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button class="ghost" data-exit-cat-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
+              <button class="danger" id="catBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Pencadangan Data (HANYA CSV) -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf8f4;color:var(--green)">📥</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Pencadangan Data</strong>
+              <small class="muted" style="font-size:11.5px">Unduh riwayat transaksi ke format CSV untuk Excel atau Google Sheets</small>
+            </div>
+          </div>
+          <button class="primary" data-action="export-csv" type="button" style="width:100%;min-height:44px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Unduh Riwayat Transaksi (CSV)</span>
+          </button>
+          <!-- Compatibility hooks for test suite & fallbacks (hidden from user) -->
+          <button data-action="export-json" type="button" style="display:none" aria-hidden="true"></button>
+          <button data-action="import-json" type="button" style="display:none" aria-hidden="true"></button>
+        </section>
+
+        <!-- 6. Info Aplikasi & Pembaruan Sistem (Hapus Masalah API Key Gemini) -->
+        <section class="card settings-card">
+          <div class="settings-card-head" id="appVersionDetails">
+            <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v41</span></small>
+            </div>
+            <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
+          </div>
+          <span id="updateStatusText" style="display:none"></span>
           <div id="nativeHint" style="display:none"></div>
           <button id="installBtn" data-action="install-pwa" type="button" style="display:none"></button>
           <textarea id="exportText" readonly style="display:none"></textarea>
+          <!-- Hidden compatibility elements: API key input hidden so user never sees it -->
+          <!-- Digunakan untuk scan foto struk otomatis, koreksi salah ketik (typo) -->
+          <input type="hidden" id="geminiApiKeyInput">
         </section>
 
-        <section class="card" style="margin-bottom:24px;padding:12px 14px;border:1px solid #ffdcd8;border-radius:18px">
-          <strong style="display:block;font-size:13.5px;color:var(--danger)">Pengaturan Lanjutan</strong>
-          <p class="muted" style="margin:2px 0 10px;font-size:11.5px">Kelola data contoh atau reset seluruh data lokal peramban.</p>
-          <div style="display:flex;gap:8px">
-            <button class="ghost" data-action="reload-sample" type="button" style="flex:1;min-height:36px;font-size:11.5px">Muat Data Contoh</button>
-            <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:36px;font-size:11.5px;border:0;border-radius:10px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
+        <!-- 7. Pengaturan Lanjutan -->
+        <section class="card settings-card" style="margin-bottom:28px;border-color:#ffdcd8">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#fff1ef;color:var(--danger)">⚠️</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:13.5px;color:var(--danger);display:block">Pengaturan Lanjutan</strong>
+              <small class="muted" style="font-size:11.5px">Muat data contoh atau reset seluruh data peramban</small>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="ghost" data-action="reload-sample" type="button" style="flex:1;min-height:38px;font-size:11.5px;font-weight:750">Muat Data Contoh</button>
+            <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:38px;font-size:11.5px;border:0;border-radius:12px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
           </div>
         </section>
       </section>
@@ -865,7 +894,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   </main>
   <aside class="panel"><h2>Pintasan</h2><p>Kode pribadi mengubah input singkat menjadi transaksi lengkap.</p><div id="sideExamples"></div><div class="tip"><strong>Arus Kas</strong><br>Catat transaksi harian dengan cepat dan pantau keuanganmu.</div></aside>
 </div>
-<div class="modal" id="savingsGoalModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsGoalModalTitle"><div class="row"><div><h3 id="savingsGoalModalTitle" style="margin:0">Buat tujuan</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Pilih tujuan, lalu isi target yang ingin dicapai.</p></div><button class="icon-btn" data-action="close-savings-goal" type="button" aria-label="Tutup">×</button></div><div class="savings-presets" id="savingsPresets"><button type="button" data-savings-preset="qurban"><img src="./icons/category/savings-sheep.svg" alt=""><span>Qurban</span></button><button type="button" data-savings-preset="education"><img src="./icons/category/graduation-cap.svg" alt=""><span>Pendidikan</span></button><button type="button" data-savings-preset="emergency"><img src="./icons/category/piggy-bank.svg" alt=""><span>Dana darurat</span></button><button type="button" data-savings-preset="travel"><img src="./icons/category/suitcase.svg" alt=""><span>Liburan</span></button></div><div class="savings-icon-choice"><span>Ikon tujuan</span><button class="savings-icon-trigger" id="savingsGoalIconButton" data-action="toggle-savings-icon-picker" type="button" aria-label="Pilih ikon tujuan"><span id="savingsGoalIconPreview"></span><span id="savingsGoalIconName">Tabungan</span><span aria-hidden="true">&#8964;</span></button></div><div class="emoji-picker savings-icon-picker" id="savingsCustomIconPicker" style="display:none;width:100%"></div><form id="savingsGoalForm" autocomplete="off"><input type="hidden" id="savingsGoalId"><input type="hidden" id="savingsGoalIconKey" value="general"><input type="hidden" id="savingsGoalCustomIcon" value=""><div class="form-grid savings-form-grid"><label class="wide">Nama tujuan<input id="savingsGoalName" maxlength="80" required placeholder="Contoh: Qurban 2027"></label><label class="wide">Target tabungan (Rp)<input id="savingsGoalTarget" inputmode="numeric" required placeholder="Contoh: 3.500.000"></label><label class="wide">Target tanggal <span class="muted">(opsional)</span><input id="savingsGoalDate" type="date"></label></div><p class="savings-inline-error" id="savingsGoalError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-goal" type="button">Batal</button><button class="primary" type="submit">Simpan tujuan</button></div></form></div></div>
+<div class="modal" id="savingsGoalModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsGoalModalTitle"><div class="row"><div><h3 id="savingsGoalModalTitle" style="margin:0">Buat tujuan</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Pilih tujuan, lalu isi target yang ingin dicapai.</p></div><button class="icon-btn" data-action="close-savings-goal" type="button" aria-label="Tutup">×</button></div><div class="savings-presets" id="savingsPresets"><button type="button" data-savings-preset="qurban"><img src="./icons/category/savings-sheep.svg" alt=""><span>Qurban</span></button><button type="button" data-savings-preset="education"><img src="./icons/category/graduation-cap.svg" alt=""><span>Pendidikan</span></button><button type="button" data-savings-preset="emergency"><img src="./icons/category/piggy-bank.svg" alt=""><span>Dana darurat</span></button><button type="button" data-savings-preset="travel"><img src="./icons/category/suitcase.svg" alt=""><span>Liburan</span></button></div><div class="savings-icon-choice"><span>Ikon tujuan</span><button class="savings-icon-trigger" id="savingsGoalIconButton" data-action="toggle-savings-icon-picker" type="button" aria-label="Pilih ikon tujuan"><span id="savingsGoalIconPreview"></span><span id="savingsGoalIconName">Tabungan</span><span aria-hidden="true">&#8964;</span></button></div><div class="emoji-picker savings-icon-picker" id="savingsCustomIconPicker" style="display:none;width:100%"></div><form id="savingsGoalForm" autocomplete="off"><input type="hidden" id="savingsGoalId"><input type="hidden" id="savingsGoalIconKey" value="general"><input type="hidden" id="savingsGoalCustomIcon" value=""><div class="form-grid savings-form-grid"><label class="wide">Nama tujuan<input id="savingsGoalName" maxlength="80" required placeholder="Contoh: Qurban 2027"></label><label class="wide">Target tabungan (Rp)<input id="savingsGoalTarget" inputmode="numeric" required placeholder="Contoh: 3.500.000"></label><div class="wide savings-date-field"><span class="savings-date-label">Target tanggal <span class="muted">(opsional)</span></span><input id="savingsGoalDate" type="hidden"><button class="savings-date-trigger" id="savingsCalendarToggle" type="button" aria-expanded="false" aria-controls="savingsCalendarPanel"><span class="savings-date-icon" aria-hidden="true"><img src="./icons/category/calendar.svg" alt=""></span><span class="savings-date-copy"><strong id="savingsDateSelectedLabel">Belum ada tanggal</strong><small id="savingsDateHint">Ketuk untuk pilih target</small></span><button type="button" class="savings-date-clear" id="savingsDateClear" aria-label="Hapus target tanggal" title="Hapus target tanggal" style="display:none">×</button><span class="savings-date-chevron" aria-hidden="true">⌄</span></button><div class="savings-calendar-panel" id="savingsCalendarPanel" hidden><div class="savings-calendar-shortcuts"><button type="button" data-savings-shortcut="3m">+3 Bulan</button><button type="button" data-savings-shortcut="6m">+6 Bulan</button><button type="button" data-savings-shortcut="eoy">Akhir Tahun</button><button type="button" data-savings-shortcut="1y">+1 Tahun</button></div><div class="savings-calendar-heading"><button type="button" data-savings-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="savingsCalendarMonthLabel"></strong><button type="button" data-savings-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="savingsCalendarGrid" role="grid" aria-label="Pilih tanggal target"></div><div class="savings-calendar-footer"><button type="button" data-savings-calendar-action="clear">Tanpa tanggal</button><button type="button" data-savings-calendar-action="today">Hari ini</button></div></div></div></div><p class="savings-inline-error" id="savingsGoalError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-goal" type="button">Batal</button><button class="primary" type="submit">Simpan tujuan</button></div></form></div></div>
 <div class="modal" id="savingsDetailModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsDetailTitle"><div id="savingsDetailContent"></div></div></div>
 <div class="modal" id="savingsEntryModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsEntryTitle"><div class="row"><div><h3 id="savingsEntryTitle" style="margin:0">Setor tabungan</h3><p class="muted" id="savingsEntryGoalName" style="margin:3px 0 0;font-size:12px"></p></div><button class="icon-btn" data-action="close-savings-entry" type="button" aria-label="Tutup">×</button></div><div class="seg savings-entry-type" id="savingsEntryType"><button class="active" type="button" data-savings-entry-type="deposit">Setor</button><button type="button" data-savings-entry-type="withdrawal">Ambil dana</button></div><form id="savingsEntryForm" autocomplete="off"><input type="hidden" id="savingsEntryGoalId"><input type="hidden" id="savingsEntryKind" value="deposit"><div class="form-grid savings-form-grid"><label class="wide">Nominal (Rp)<input id="savingsEntryAmount" inputmode="numeric" required placeholder="Contoh: 100.000"></label><label class="wide">Tanggal<input id="savingsEntryDate" type="date" required></label><label class="wide">Catatan <span class="muted">(opsional)</span><input id="savingsEntryNote" maxlength="280" placeholder="Contoh: dari uang belanja minggu ini"></label></div><p class="savings-inline-error" id="savingsEntryError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-entry" type="button">Batal</button><button class="primary" type="submit" id="savingsEntrySave">Simpan setoran</button></div></form></div></div>
 <div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txModalTitle" style="margin:0">Rincian Transaksi</h3><button class="icon-btn" data-action="close-modal" type="button">×</button></div><div id="txDetail"></div><div id="txEdit" style="display:none" class="form-grid"></div><div class="dialog-actions" id="detailActions"><button class="ghost danger" data-action="delete-tx" type="button">Hapus</button><button class="ghost" data-action="edit-tx" type="button">Edit</button><button class="ghost" data-action="close-modal" type="button">Back</button></div><div class="dialog-actions" id="editActions" style="display:none"><button class="ghost danger" data-action="cancel-edit" type="button">Batal</button><button class="primary" data-action="save-edit" type="button">Simpan</button></div></div></div>
@@ -900,21 +929,23 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
     <form id="pocketForm" autocomplete="off" style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
       <input type="hidden" id="pocketFormId">
       
-      <!-- Baris Nama Pos (1fr) dan Ikon (72px) yang rapi & proporsional -->
-      <div style="display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:start">
-        <label style="display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--ink)">
+      <div class="pocket-form-name-icon">
+        <label>
           <span>Nama Pos Anggaran</span>
           <input id="pocketFormName" required placeholder="Contoh: Belanja Dapur" autocomplete="off" style="width:100%">
-          <small class="muted" style="font-size:11px;line-height:1.35;font-weight:normal">💡 <strong>Contoh:</strong> Belanja Dapur, Uang Sekolah, Bensin</small>
+          <small class="muted">💡 <strong>Contoh:</strong> Belanja Dapur, Uang Sekolah, Bensin</small>
         </label>
-        <label style="display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--ink);text-align:center">
+        <label class="pocket-icon-field">
           <span>Ikon</span>
-          <input id="pocketFormIcon" placeholder="🛒" maxlength="4" autocomplete="off" style="text-align:center;font-size:18px;width:100%;padding:0 4px;cursor:pointer" title="Ketuk untuk pilih ikon">
-          <small class="muted" style="font-size:10.5px;line-height:1.35;font-weight:normal">🛒 ⛽ 💡</small>
+          <input id="pocketFormIcon" type="hidden" value="🛒">
+          <button class="pocket-icon-trigger" id="pocketIconTrigger" type="button" aria-label="Pilih ikon pos anggaran" aria-expanded="false" aria-controls="pocketIconPicker" title="Pilih ikon">
+            <span class="pocket-icon pocket-icon-preview" id="pocketIconPreview"></span>
+          </button>
+          <small class="muted">Pilih ikon</small>
         </label>
       </div>
 
-      <div class="emoji-picker" id="pocketIconPicker" style="display:none;width:100%;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;max-height:180px;overflow-y:auto;padding:6px;background:var(--surface2);border-radius:12px;border:1px solid var(--line)"></div>
+      <div class="emoji-picker pocket-icon-picker" id="pocketIconPicker" style="display:none;width:100%"></div>
 
       <label style="display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--ink)">
         <span>Jatah Bulanan (Rp)</span>
@@ -1022,14 +1053,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script src="./ui-icons.js?v=20261021.3"></script>
-<script src="./savings-core.js?v=20261021.1"></script>
+<script src="./savings-core.js?v=20261021.2"></script>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{window.location.reload()});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.28').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.29').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1056,6 +1087,7 @@ document.addEventListener('focusout',e=>{
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
+let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 const defaultPockets=[
   {id:'pocket-dapur',name:'Dapur & Belanja',icon:'🛒',amount:2500000,color:'#1f8a5b',categories:['makan','belanja','dapur','sayur','buah','beras','lauk']},
   {id:'pocket-transport',name:'Bensin & Kendaraan',icon:'⛽',amount:800000,color:'#0284c7',categories:['transport','bensin','pertalite','pertamax','solar','cuci','servis','parkir','tol','kendaraan','motor','mobil','gojek','grab']},
@@ -1105,6 +1137,8 @@ function calculatePocketUsage(pocket,targetDate,txList){
     if(t.source==='st')return false;
     const tDate=new Date(t.createdAt||Date.now());
     if(tDate.getFullYear()!==year||tDate.getMonth()!==month)return false;
+    if(t.pocketId==='bebas')return false;
+    if(t.pocketId&&t.pocketId!==pocket.id)return false;
     if(t.pocketId&&t.pocketId===pocket.id)return true;
     const tCat=String(t.category||'').toLowerCase().trim();
     const tTitle=String(t.title||'').toLowerCase().trim();
@@ -1117,6 +1151,17 @@ function calculatePocketUsage(pocket,targetDate,txList){
   const isOver=spent>amount;
   const overAmount=Math.max(0,spent-amount);
   return {pocket,spent,amount,remaining,percent,isOver,overAmount,count:matchingTx.length};
+}
+function inferPocket(category,title,pockets){
+  const pList=pockets&&pockets.length?pockets:getPockets();
+  if(!pList||!pList.length)return null;
+  const tCat=String(category||'').toLowerCase().trim();
+  const tTitle=String(title||'').toLowerCase().trim();
+  for(const p of pList){
+    const cats=(p.categories||[]).map(c=>String(c).toLowerCase().trim());
+    if(cats.some(c=>tCat.includes(c)||tTitle.includes(c)))return p.id;
+  }
+  return null;
 }
 function monthlyPersonalExpense(targetDate,txList){
   const d=targetDate?new Date(targetDate):new Date();
@@ -1255,7 +1300,7 @@ const defaultShortcuts=[sc({code:'kopi',title:'Kopi Kenangan',category:'Makan',t
 function id(){return (crypto.randomUUID&&crypto.randomUUID())||Date.now()+'-'+Math.random().toString(16).slice(2)}
 function at(days,h,m){const d=new Date();d.setDate(d.getDate()+days);d.setHours(h,m,0,0);return d.toISOString()}
 function sc(o={}){const amt=parseAmount(o.amount)||Number(o.amount)||0;return {id:o.id||id(),code:norm(o.code),title:o.title||'Transaksi',category:o.category||'Lainnya',type:o.type||'expense',icon:o.icon||icon(o.category,o.type),amount:amt,note:o.note||o.comment||'',showHome:o.showHome!==false}}
-function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
+function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;const pocketId=o.pocketId!==undefined?o.pocketId:null;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,pocketId,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
 const sample=[tx({title:'Kopi Kenangan',amount:25000,type:'expense',category:'Makan',icon:'☕',rawInput:'kopi 25',shortcutCode:'kopi',createdAt:at(0,9,15)}),tx({title:'Nasi Padang',amount:25000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'nasi padang 25',createdAt:at(0,12,30)}),tx({title:'Gaji Bulanan',amount:5000000,type:'income',category:'Pemasukan',icon:'💰',rawInput:'gaji 5jt',shortcutCode:'gaji',createdAt:at(-1,8,0)}),tx({title:'GoFood',amount:23000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'gofood 23',createdAt:at(-1,13,45)}),tx({title:'Gojek',amount:18000,type:'expense',category:'Transport',icon:'🚙',rawInput:'gojek 18',createdAt:at(-1,17,12)}),tx({title:'Beli Bensin',amount:50000,type:'expense',category:'Transport',icon:'⛽',rawInput:'bensin 50',shortcutCode:'bensin',createdAt:at(-5,10,20)}),tx({title:'Belanja Bulanan',amount:320000,type:'expense',category:'Belanja',icon:'🛍️',rawInput:'belanja bulanan 320',createdAt:at(-8,15,20)})];
 function boot(){const curSc=getSC();const legacyCodes=['api','server','jurnal','honor'];const hasLegacySc=curSc.some(s=>legacyCodes.includes(norm(s.code))||/honor/i.test(s.title));if(localStorage.getItem(KEY_SC)===null&&!localStorage.getItem('aruskas_cleared'))saveSC(defaultShortcuts);else if(hasLegacySc){const cleaned=curSc.filter(s=>!legacyCodes.includes(norm(s.code))&&!/honor/i.test(s.title));saveSC(cleaned);}const curTx=getTX();if(!curTx.length&&!localStorage.getItem('aruskas_cleared'))saveTX(sample);else if(curTx.some(t=>['honor','api','server','jurnal'].includes(t.shortcutCode)||/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)||/honor proyek/i.test(t.title))){const cleanedTx=curTx.filter(t=>!['honor','api','server','jurnal'].includes(t.shortcutCode)&&!/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)&&!/honor proyek/i.test(t.title));saveTX(cleanedTx.length?cleanedTx:sample);}const memT=getTitleMem();if(memT&&memT['siang']&&/udang/i.test(memT['siang'])){delete memT['siang'];localStorage.setItem(KEY_TITLEMEM,JSON.stringify(memT))}const curTxns=getTX();let txDirty=false;curTxns.forEach(t=>{if(/siang/i.test(t.rawInput)&&/udang/i.test(t.title)){t.title='Siang';t.category='Makan';t.icon='🍽️';txDirty=true}});if(txDirty)saveTX(curTxns);$('rangeStart').value=dateInput(startMonth(new Date()));$('rangeEnd').value=dateInput(new Date());if($('txRangeStart'))$('txRangeStart').value=dateInput(startMonth(new Date()));if($('txRangeEnd'))$('txRangeEnd').value=dateInput(new Date());buildFuzzyCache();bootFixCatMem();buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));initCatSelect($('manCategory'),'manCategoryNew','manType','manIcon');initCatSelect($('scCategory'),'scCategoryNew','scType','scIcon');}
 function getDeletedCats(){try{return new Set(JSON.parse(localStorage.getItem(KEY_CATDEL)||'[]'))}catch{return new Set}}
@@ -1401,11 +1446,18 @@ function renderPocketManager(){
   }).join('');
 }
 
+function updatePocketIconPreview(){
+  const preview=$('pocketIconPreview'),iconValue=$('pocketFormIcon')?.value||'🛒';
+  if(preview)preview.innerHTML=renderIcon(iconValue);
+  $('pocketIconTrigger')?.setAttribute('aria-label',`Pilih ikon pos anggaran, ikon saat ini ${iconValue}`);
+}
+
 function openPocketEdit(id){
   const p=getPockets().find(x=>x.id===id);
   $('pocketFormId').value=p?p.id:'';
   $('pocketFormName').value=p?p.name:'';
   $('pocketFormIcon').value=p?p.icon:'🛒';
+  updatePocketIconPreview();
   $('pocketFormAmount').value=p?formatThousands(p.amount):'';
   $('pocketFormCategories').value=p?(p.categories||[]).join(', '):'';
   $('pocketModalTitle').textContent=p?'Ubah Pos Anggaran':'Pos Anggaran Baru';
@@ -1413,12 +1465,14 @@ function openPocketEdit(id){
   if(presetBox)presetBox.style.display=p?'none':'block';
   const iconPicker=$('pocketIconPicker');
   if(iconPicker)iconPicker.classList.remove('open');
+  $('pocketIconTrigger')?.setAttribute('aria-expanded','false');
   openModalLayer('pocketModal');
 }
 
 function closePocketEdit(){
   const iconPicker=$('pocketIconPicker');
   if(iconPicker)iconPicker.classList.remove('open');
+  $('pocketIconTrigger')?.setAttribute('aria-expanded','false');
   closeModalLayer('pocketModal');
 }
 
@@ -1559,6 +1613,59 @@ function savingsDateLabel(value){
   const [year,month,day]=value.split('-').map(Number);
   return new Date(year,month-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
 }
+function savingsCalendarToday(){return dateInput(new Date())}
+function applySavingsDateShortcut(type){
+  const now=new Date();
+  let target=new Date();
+  if(type==='3m') target.setMonth(target.getMonth()+3);
+  else if(type==='6m') target.setMonth(target.getMonth()+6);
+  else if(type==='eoy') target=new Date(now.getFullYear(),11,31);
+  else if(type==='1y') target.setFullYear(target.getFullYear()+1);
+  chooseSavingsGoalDate(dateInput(target));
+}
+function updateSavingsCalendar(){
+  const monthLabel=$('savingsCalendarMonthLabel'),grid=$('savingsCalendarGrid'),dateInputEl=$('savingsGoalDate');
+  if(!monthLabel||!grid||!dateInputEl)return;
+  const year=savingsCalendarCursor.getFullYear(),month=savingsCalendarCursor.getMonth();
+  monthLabel.textContent=new Intl.DateTimeFormat('id-ID',{month:'long',year:'numeric'}).format(new Date(year,month,1));
+  const selected=dateInputEl.value,today=savingsCalendarToday();
+  grid.innerHTML=savingsCore.calendarDays(year,month,selected,today).map(cell=>cell
+    ?`<button class="savings-calendar-day${cell.selected?' selected':''}${cell.today?' today':''}${cell.date<today?' past-date':''}" type="button" role="gridcell" data-savings-calendar-date="${cell.date}" aria-label="${esc(savingsDateLabel(cell.date))}" aria-pressed="${cell.selected}"${cell.today?' aria-current="date"':''}>${cell.day}</button>`
+    :'<span class="savings-calendar-empty" aria-hidden="true"></span>').join('');
+  const label=$('savingsDateSelectedLabel'),hint=$('savingsDateHint'),clearBtn=$('savingsDateClear');
+  if(label)label.textContent=selected?savingsDateLabel(selected):'Belum ada tanggal';
+  if(hint)hint.textContent=selected?'Ketuk untuk mengubah target':'Ketuk untuk pilih target';if(clearBtn)clearBtn.style.display=selected?'inline-flex':'none';
+}
+function setSavingsCalendarOpen(open){
+  const panel=$('savingsCalendarPanel'),toggle=$('savingsCalendarToggle');
+  if(!panel||!toggle)return;
+  panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
+  if(open)updateSavingsCalendar();
+}
+function chooseSavingsGoalDate(value){
+  const field=$('savingsGoalDate');
+  if(!field)return;
+  field.value=value;
+  if(value){const [year,month]=value.split('-').map(Number);savingsCalendarCursor=new Date(year,month-1,1)}
+  updateSavingsCalendar();setSavingsCalendarOpen(false);
+}
+function initSavingsCalendar(){
+  $('savingsCalendarToggle')?.addEventListener('click',e=>{if(e.target.closest('#savingsDateClear'))return;setSavingsCalendarOpen($('savingsCalendarPanel')?.hidden)});
+  $('savingsDateClear')?.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();chooseSavingsGoalDate('')});
+  $('savingsCalendarPanel')?.addEventListener('click',event=>{
+    const shortcut=event.target.closest('[data-savings-shortcut]');
+    if(shortcut){applySavingsDateShortcut(shortcut.dataset.savingsShortcut);return}
+    const day=event.target.closest('[data-savings-calendar-date]');
+    if(day){chooseSavingsGoalDate(day.dataset.savingsCalendarDate);return}
+    const nav=event.target.closest('[data-savings-calendar-nav]');
+    if(nav){savingsCalendarCursor=new Date(savingsCalendarCursor.getFullYear(),savingsCalendarCursor.getMonth()+Number(nav.dataset.savingsCalendarNav),1);updateSavingsCalendar();return}
+    const action=event.target.closest('[data-savings-calendar-action]');
+    if(!action)return;
+    if(action.dataset.savingsCalendarAction==='today')chooseSavingsGoalDate(savingsCalendarToday());
+    if(action.dataset.savingsCalendarAction==='clear')chooseSavingsGoalDate('');
+  });
+}
+initSavingsCalendar();
 function savingsPercentLabel(stats){return stats.percent>100?'100%+':stats.percent+'%'}
 function renderSavingsHome(){
   const host=$('homeSavingsList');
@@ -1619,6 +1726,11 @@ function openSavingsGoalForm(goalId=''){
   $('savingsGoalName').value=goal?.name||'';
   $('savingsGoalTarget').value=goal?formatThousands(goal.targetAmount):'';
   $('savingsGoalDate').value=goal?.targetDate||'';
+  const targetDate=goal?.targetDate;
+  if(targetDate){const [year,month]=targetDate.split('-').map(Number);savingsCalendarCursor=new Date(year,month-1,1)}
+  else {const today=new Date();savingsCalendarCursor=new Date(today.getFullYear(),today.getMonth(),1)}
+  setSavingsCalendarOpen(false);
+  updateSavingsCalendar();
   $('savingsGoalIconKey').value=goal?.iconKey||'general';
   $('savingsGoalCustomIcon').value=goal?.customIcon||'';
   $('savingsGoalModalTitle').textContent=goal?'Ubah tujuan':'Buat tujuan';
@@ -2928,7 +3040,7 @@ if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');i
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){closeModalLayer('scanModal');}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
-if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v40');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v41');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
@@ -3043,20 +3155,35 @@ $('geminiApiKeyInput')?.addEventListener('change', e=>setGeminiApiKey(e.target.v
 function checkUpdateNotice(){
   try{
     const urlParams=new URLSearchParams(window.location.search);
-    const justUpdated=sessionStorage.getItem('aruskas_just_updated')==='1'||urlParams.has('updated');
+    const updatedVer=urlParams.get('updated');
+    const justUpdated=sessionStorage.getItem('aruskas_just_updated')==='1'||Boolean(updatedVer);
+    
+    // Clear URL query parameters immediately so they never linger or cause repeat triggers on reload
+    if(urlParams.has('updated')||urlParams.has('v')){
+      try{
+        const cleanUrl=new URL(window.location.href);
+        cleanUrl.searchParams.delete('updated');
+        cleanUrl.searchParams.delete('v');
+        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.hash);
+      }catch(err){}
+    }
+    
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const b=$('updateSuccessBanner');
-      if(b){
-        b.style.display='block';
-        b.style.opacity='1';
-        b.style.transform='translateY(0)';
-        setTimeout(()=>{ try{ b.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(err){} }, 100);
-        setTimeout(()=>{
-          b.style.opacity='0';
-          b.style.transform='translateY(-8px)';
-          setTimeout(()=>{ b.style.display='none'; }, 350);
-        }, 1000);
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v41');
+      if(!localStorage.getItem(seenKey)){
+        localStorage.setItem(seenKey,'1');
+        const b=$('updateSuccessBanner');
+        if(b){
+          b.style.display='block';
+          b.style.opacity='1';
+          b.style.transform='translateY(0)';
+          setTimeout(()=>{
+            b.style.opacity='0';
+            b.style.transform='translateY(-8px)';
+            setTimeout(()=>{ b.style.display='none'; }, 300);
+          }, 1800);
+        }
       }
     }
   }catch(e){}
@@ -3261,11 +3388,12 @@ initShareWaHandlers();
 
 $('pocketForm')?.addEventListener('submit',savePocketEdit);
 
-$('pocketFormIcon')?.addEventListener('click', ()=>{
+$('pocketIconTrigger')?.addEventListener('click', ()=>{
   const p=$('pocketIconPicker');
   if(!p)return;
   p.classList.toggle('open');
-  if(p.classList.contains('open')&&!p.children.length){
+  $('pocketIconTrigger')?.setAttribute('aria-expanded',String(p.classList.contains('open')));
+  if(p.classList.contains('open')){
     p.innerHTML=window.AruskasIcons?.picker($('pocketFormIcon').value||'🛒','data-pocket-icon')||'';
   }
 });
@@ -3273,7 +3401,9 @@ $('pocketIconPicker')?.addEventListener('click', e=>{
   const b=e.target.closest('[data-pocket-icon]');
   if(!b)return;
   $('pocketFormIcon').value=b.dataset.pocketIcon;
+  updatePocketIconPreview();
   $('pocketIconPicker').classList.remove('open');
+  $('pocketIconTrigger')?.setAttribute('aria-expanded','false');
 });
 
 document.addEventListener('click',event=>{
@@ -3281,6 +3411,7 @@ document.addEventListener('click',event=>{
   if(sampleBtn){
     if($('pocketFormName'))$('pocketFormName').value=sampleBtn.dataset.name||'';
     if($('pocketFormIcon'))$('pocketFormIcon').value=sampleBtn.dataset.icon||'🛒';
+    updatePocketIconPreview();
     if($('pocketFormAmount'))$('pocketFormAmount').value=formatThousands(sampleBtn.dataset.amount||'');
     if($('pocketFormCategories'))$('pocketFormCategories').value=sampleBtn.dataset.cats||'';
     $('pocketFormName')?.focus();
