@@ -1120,7 +1120,7 @@ async function executeReceiptAiScan(file, apiKey){
   }
   try{
     const base64Data=await compressImage(file, 1024, 0.8);
-    let url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent';
     const payload={
       contents:[{
         parts:[
@@ -1135,24 +1135,17 @@ async function executeReceiptAiScan(file, apiKey){
         ]
       }]
     };
-    let res=await fetch(url,{
+    const res=await fetch(url,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
       body:JSON.stringify(payload)
     });
-    if(!res.ok&&res.status===404){
-      url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-      res=await fetch(url,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(payload)
-      });
-    }
     if(!res.ok){
       const errBody=await res.text();
-      if(res.status===400||res.status===403){
-        throw new Error('Gemini API Key tidak valid atau kuota habis. Silakan periksa di menu Pengaturan.');
+      if(res.status===400||res.status===401||res.status===403){
+        throw new Error('Gemini API Key tidak valid atau tidak memiliki akses ke model. Silakan periksa di menu Pengaturan.');
       }
+      if(res.status===429) throw new Error('Kuota Gemini API habis. Coba lagi setelah kuota tersedia.');
       throw new Error(`API error ${res.status}: ${errBody}`);
     }
     const data=await res.json();
@@ -1344,7 +1337,7 @@ $('sourceFilter').addEventListener('click',e=>{const b=e.target.closest('[data-s
 $('reportSourceFilter').addEventListener('click',e=>{const b=e.target.closest('[data-rsource]');if(!b)return;reportSource=b.dataset.rsource;document.querySelectorAll('#reportSourceFilter button').forEach(x=>x.classList.toggle('active',x===b));render()});
 $('reportTypeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-rtype]');if(!b)return;reportType=b.dataset.rtype;document.querySelectorAll('#reportTypeSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});
 $('manSourceSeg').addEventListener('click',e=>{const b=e.target.closest('[data-source]');if(!b)return;manualSource=b.dataset.source;document.querySelectorAll('#manSourceSeg button').forEach(x=>x.classList.toggle('active',x===b))});
-$('backBtn').addEventListener('click',goBack);$('periodSeg').addEventListener('click',e=>{const b=e.target.closest('[data-period]');if(!b)return;reportPeriod=b.dataset.period;reportOffset=0;document.querySelectorAll('#periodSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});$('periodSelect').addEventListener('change',e=>{reportOffset=Number(e.target.value);render()});$('chartSeg').addEventListener('click',e=>{const b=e.target.closest('[data-chart]');if(!b)return;chartType=b.dataset.chart;document.querySelectorAll('#chartSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});$('rangeStart').addEventListener('change',render);$('rangeEnd').addEventListener('change',render);$('shortcutForm').addEventListener('submit',saveShortcut);$('scIcon').addEventListener('click',()=>{$('iconPicker').classList.toggle('open');if($('iconPicker').classList.contains('open')&&!$('iconPicker').children.length)renderIconPicker($('scIcon').value||'🔑')});
+$('backBtn').addEventListener('click',goBack);$('periodSeg').addEventListener('click',e=>{const b=e.target.closest('[data-period]');if(!b)return;reportPeriod=b.dataset.period;reportOffset=0;document.querySelectorAll('#periodSeg button').forEach(x=>x.classList.toggle('active',x===b));render()});$('periodSelect').addEventListener('change',e=>{reportOffset=Number(e.target.value);render()});$('rangeStart').addEventListener('change',render);$('rangeEnd').addEventListener('change',render);$('shortcutForm').addEventListener('submit',saveShortcut);$('scIcon').addEventListener('click',()=>{$('iconPicker').classList.toggle('open');if($('iconPicker').classList.contains('open')&&!$('iconPicker').children.length)renderIconPicker($('scIcon').value||'🔑')});
 $('scCategory').addEventListener('input',()=>{const cat=$('scCategory').value;if(cat&&!$('scIcon').value)$('scIcon').value=icon(cat,$('scType').value)});
 $('iconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-icon]');if(!b)return;$('iconPicker').querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('scIcon').value=b.dataset.icon;$('iconPicker').classList.remove('open')});$('shortcutList').addEventListener('click',async e=>{const ed=e.target.closest('[data-edit-sc]'), home=e.target.closest('[data-toggle-sc-home]'), del=e.target.closest('[data-del-sc]');if(home){saveSC(getSC().map(s=>s.id===home.dataset.toggleScHome?{...s,showHome:s.showHome===false}:s));render();return}if(ed){const s=getSC().find(x=>x.id===ed.dataset.editSc);if(s)fillSC(s)}if(del){const s=getSC().find(x=>x.id===del.dataset.delSc);const ok=await confirmBox({title:'Hapus Pintasan?',message:`Pintasan ${s?'"'+s.code+'"':'ini'} akan dihapus dari daftar input cepat.`,okText:'Hapus',tone:'danger'});if(ok){saveSC(getSC().filter(x=>x.id!==del.dataset.delSc));render()}}});
 document.getElementById('catManager').addEventListener('click',async e=>{const del=e.target.closest('[data-del-cat]');if(del){await deleteCategory(del.dataset.delCat);return}const ed=e.target.closest('[data-edit-cat]');if(ed){openCategoryEdit(ed.dataset.editCat);return}});
