@@ -221,8 +221,17 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .page[data-page="shortcut"] > .card:last-child h3 { font-size: 18px !important; letter-spacing: -.035em; }
 #pocketManager { margin-top: 12px !important; }
 #pocketManager .pocket-manage-item { background: var(--surface) !important; border-color: var(--line) !important; border-radius: 17px !important; }
-.pocket-icon { width: 28px; height: 28px; flex: 0 0 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 9px; background: var(--accent-soft); }
-.pocket-icon .category-svg { width: 19px; height: 19px; }
+.pocket-icon { box-sizing: border-box; width: 32px; min-width: 32px; max-width: 32px; height: 32px; flex: 0 0 32px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 10px; background: var(--accent-soft); line-height: 1; }
+.pocket-icon .category-svg { box-sizing: border-box; width: 20px; min-width: 20px; max-width: 20px; height: 20px; max-height: 20px; flex: 0 0 20px; object-fit: contain; margin: 0; }
+.pocket-icon > span { display: grid; width: 100%; height: 100%; place-items: center; overflow: hidden; font-size: 18px; line-height: 1; }
+.pocket-form-name-icon { display: grid; grid-template-columns: minmax(0,1fr) 72px; align-items: start; gap: 10px; }
+.pocket-form-name-icon > label { display: grid; min-width: 0; gap: 5px; color: var(--ink); font-size: 12px; font-weight: 750; }
+.pocket-form-name-icon > label small { color: var(--muted); font-size: 11px; font-weight: 400; line-height: 1.35; }
+.pocket-icon-field { justify-items: center; text-align: center; }
+.pocket-icon-trigger { display: grid; width: 54px; min-width: 54px; height: 54px; min-height: 54px !important; box-sizing: border-box; place-items: center; margin: 0 auto; padding: 5px !important; border: 1px solid var(--line) !important; border-radius: 16px !important; background: var(--surface) !important; color: var(--ink) !important; cursor: pointer; }
+.pocket-icon-trigger:focus-visible { outline: 3px solid color-mix(in srgb,var(--green) 34%,transparent); outline-offset: 2px; }
+.pocket-icon-preview { width: 40px; min-width: 40px; max-width: 40px; height: 40px; flex: 0 0 40px; border-radius: 12px; }
+.pocket-icon-preview .category-svg { width: 24px; min-width: 24px; max-width: 24px; height: 24px; max-height: 24px; flex: 0 0 24px; }
 #shortcutList { padding: 8px !important; }
 #shortcutList .shortcut-item { border-radius: 16px !important; background: var(--surface) !important; border: 1px solid var(--line) !important; margin-bottom: 8px; padding: 12px !important; }
 .shortcut-icon { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); }
@@ -243,6 +252,7 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .icon-group-title { font-weight: 850; font-size: 12px; color: var(--ink); margin: 0 2px 7px; }
 .icon-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; }
 .icon-grid button { min-width: 0; min-height: 65px; aspect-ratio: auto !important; padding: 5px 2px !important; background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 11px !important; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; }
+.icon-grid button { box-sizing: border-box; overflow: hidden; }
 #shortcutForm #iconPicker .icon-grid button { width: 100% !important; min-height: 65px !important; aspect-ratio: auto !important; }
 .icon-grid button.active { border: 2px solid var(--green) !important; background: var(--accent-soft) !important; }
 .icon-grid img { width: 23px !important; height: 23px !important; object-fit: contain; border: 0 !important; background: transparent !important; padding: 0 !important; filter: brightness(0) saturate(100%) invert(24%) sepia(22%) saturate(626%) hue-rotate(330deg) brightness(89%); }
@@ -500,6 +510,46 @@ body.keyboard-open .nav {
 .savings-form-grid { grid-template-columns: 1fr !important; gap: 11px; margin-top: 4px; }
 .savings-form-grid label { min-height: 0 !important; gap: 6px; color: var(--ink); font-size: 12px; }
 .savings-form-grid label input { min-height: 48px; font-size: 15px; }
+.savings-date-field { display: grid; min-width: 0; gap: 7px; }
+.savings-date-label { color: var(--muted); font-size: 12px; font-weight: 750; }
+.savings-date-control { display: flex; min-width: 0; align-items: center; gap: 7px; }
+.savings-date-trigger { display: flex; width: 100%; min-width: 0; min-height: 62px; flex: 1; align-items: center; gap: 11px; border: 1px solid var(--line); border-radius: 16px; padding: 9px 12px; background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; }
+.savings-date-trigger[aria-expanded="true"] { border-color: var(--green); box-shadow: 0 0 0 3px rgba(182,83,55,.1); }
+.savings-date-icon { display: grid; width: 40px; height: 40px; flex: 0 0 40px; place-items: center; border-radius: 13px; background: var(--accent-soft); }
+.savings-date-icon img { display: block; width: 23px; height: 23px; object-fit: contain; filter: brightness(0) saturate(100%) invert(24%) sepia(22%) saturate(626%) hue-rotate(330deg) brightness(89%); }
+html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94%) sepia(10%) saturate(350%) hue-rotate(340deg); }
+.savings-date-copy { display: grid; min-width: 0; flex: 1; gap: 3px; }
+.savings-date-copy strong { overflow: hidden; font-size: 13px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.savings-date-copy small { color: var(--muted); font-size: 11px; }
+.savings-date-chevron { flex: 0 0 auto; color: var(--muted); font-size: 21px; line-height: 1; }
+.savings-calendar-panel { box-sizing: border-box; margin-top: 5px; border: 1px solid var(--line); border-radius: 18px; padding: 11px; background: var(--surface); box-shadow: 0 10px 26px rgba(65,42,31,.07); }
+.savings-calendar-shortcuts { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; margin-bottom: 9px; }
+.savings-calendar-shortcuts button { min-height: 32px !important; border: 1px solid var(--line); border-radius: 10px; padding: 4px 2px; background: var(--surface2); color: var(--ink); font-size: 10.5px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: all .15s ease; }
+.savings-calendar-shortcuts button:hover, .savings-calendar-shortcuts button:active { border-color: var(--green); background: var(--accent-soft); color: var(--green2); }
+.savings-date-clear { display: inline-flex; width: 26px; height: 26px; min-height: 26px !important; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: var(--surface3); color: var(--muted); font-size: 14px; font-weight: 850; cursor: pointer; padding: 0; margin-left: auto; flex: 0 0 26px; transition: all .15s ease; }
+.savings-date-clear:hover { background: #fee2e2; color: var(--danger); }
+.savings-calendar-day.past-date { opacity: .38; }
+.savings-calendar-day.past-date:not(.selected):hover { background: transparent; border-color: transparent; }
+.savings-calendar-panel[hidden] { display: none !important; }
+.savings-calendar-heading { display: grid; grid-template-columns: 40px minmax(0,1fr) 40px; align-items: center; gap: 6px; margin-bottom: 8px; }
+.savings-calendar-heading strong { color: var(--ink); font-size: 14px; font-weight: 850; text-align: center; text-transform: capitalize; }
+.savings-calendar-heading button { width: 40px; height: 40px; min-height: 40px !important; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--green2); font-size: 24px; line-height: 1; }
+.savings-calendar-weekdays, .savings-calendar-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 4px; }
+.savings-calendar-weekdays { margin-bottom: 5px; }
+.savings-calendar-weekdays span { min-width: 0; color: var(--muted); font-size: 10px; font-weight: 800; text-align: center; }
+.savings-calendar-grid { grid-auto-rows: minmax(36px,auto); }
+.savings-calendar-day { display: grid; min-width: 0; min-height: 36px; aspect-ratio: 1 / 1; place-items: center; border: 1px solid transparent; border-radius: 12px; padding: 0; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.savings-calendar-day:active { transform: scale(.94); }
+.savings-calendar-day.today { border-color: var(--green); color: var(--green2); font-weight: 900; }
+.savings-calendar-day.selected { border-color: var(--green); background: var(--green); color: #fff; font-weight: 900; box-shadow: 0 4px 10px rgba(147,66,44,.2); }
+.savings-calendar-empty { min-width: 0; min-height: 36px; }
+.savings-calendar-footer { display: flex; justify-content: space-between; gap: 8px; margin-top: 9px; border-top: 1px solid var(--line); padding-top: 8px; }
+.savings-calendar-footer button { min-height: 38px; border: 0; border-radius: 12px; padding: 0 10px; background: transparent; color: var(--green2); font-size: 11px; font-weight: 850; }
+.savings-calendar-footer button:last-child { background: var(--accent-soft); }
+.pocket-icon-picker.emoji-picker.open { box-sizing: border-box; width: 100%; max-height: min(38vh,320px) !important; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); background: var(--surface) !important; }
+.pocket-icon-picker .icon-grid { grid-template-columns: repeat(5,minmax(0,1fr)); }
+.pocket-icon-picker .icon-grid button { min-height: 60px; }
+.pocket-icon-picker .icon-grid img { flex: 0 0 23px; }
 .savings-inline-error { margin: 9px 0 0; border-radius: 12px; padding: 9px 11px; background: var(--danger-bg); color: var(--danger); font-size: 12px; line-height: 1.4; }
 .savings-entry-type { display: grid; grid-template-columns: 1fr 1fr; margin: 13px 0; padding: 4px; border-radius: 14px; background: var(--surface3); }
 .savings-entry-type button { min-height: 39px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 800; }
@@ -546,6 +596,16 @@ body.keyboard-open .nav {
   .savings-home-deposit { min-width: 58px; }
   .savings-presets { gap: 4px; }
   .savings-presets button { font-size: 8px; }
+}
+@media (max-width: 380px) {
+  .pocket-form-name-icon { grid-template-columns: minmax(0,1fr) 62px; gap: 7px; }
+  .pocket-icon-trigger { width: 50px; min-width: 50px; height: 50px; min-height: 50px !important; }
+  .pocket-icon-picker .icon-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .savings-calendar-panel { padding: 8px; }
+  .savings-calendar-weekdays, .savings-calendar-grid { gap: 2px; }
+  .savings-calendar-grid { grid-auto-rows: minmax(34px,auto); }
+  .savings-calendar-day { min-height: 34px; border-radius: 10px; }
+  .savings-calendar-empty { min-height: 34px; }
 }
 
 /* Bring the home icons in line with the approved filled, high-contrast artwork. */
@@ -616,4 +676,35 @@ body.keyboard-open .nav {
   width: 21px;
   height: 21px;
   filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
+}
+
+/* Modern Settings Screen Styles */
+.settings-card {
+  margin-top: 10px !important;
+  margin-bottom: 0 !important;
+  padding: 14px 16px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 20px !important;
+  background: var(--card-glass) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .025) !important;
+}
+.settings-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.settings-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.page[data-page="settings"] {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
