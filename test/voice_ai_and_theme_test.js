@@ -70,7 +70,15 @@ assert.strictEqual(
   'makan siang 35000',
   'Must preserve clean non-repeated words'
 );
-console.log('✔ Speech deduplication algorithm passes all stutter edge cases');
+// Test 2b: Long sentence repetitive loop fix (Mobile continuous speech bug)
+const longSentence = 'beli ikan kepiting, udang, dan tongkol 124.500';
+const userRepetitions = Array(9).fill(longSentence).join(' ');
+assert.strictEqual(
+  context.cleanSpeechDuplicates(userRepetitions),
+  longSentence,
+  'Must collapse 9x repeated long sentence down to single clean sentence'
+);
+console.log('✔ Speech deduplication algorithm passes all stutter and long repetition cases');
 
 // --- Test 3: BBM Category Inference ---
 console.log('--- Test 3: BBM Category Inference ---');
