@@ -31,9 +31,15 @@ console.log('✔ Mic and secure context guidance verified');
 
 console.log('--- Test 5: Service Worker Cache Version Bump ---');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v15'"), 'sw.js must be bumped to v15');
-assert.ok(html.includes('sw.js?v=20261021.3'), 'index.html must register sw.js?v=20261021.3');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v16'"), 'sw.js must be bumped to v16');
+assert.ok(html.includes('sw.js?v=20261021.4'), 'index.html must register sw.js?v=20261021.4');
 console.log('✔ Service Worker cache version verified');
+
+console.log('--- Test 6: Gemini Receipt AI Scanner Configuration ---');
+assert.ok(html.includes("models/gemini-3.5-flash-lite:generateContent"), 'must use gemini-3.5-flash-lite endpoint');
+assert.ok(html.includes("window.__APP_CONFIG__.GEMINI_API_KEY"), 'must support external config API key');
+assert.ok(html.includes("responseMimeType:'application/json'"), 'must specify responseMimeType application/json');
+console.log('✔ Gemini AI receipt scanner configuration verified');
 
 console.log('\n=======================================');
 console.log('All Mobile Overflow & Camera/Mic tests PASSED!');
