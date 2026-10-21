@@ -109,7 +109,6 @@ test('ST Budget Pocket: Tanpa pos ST', () => {
     function tx(props) { return Object.assign({}, props); }
     function icon() { return '🚗'; }
     function fmt(it) { return it.title; }
-    var stMode = false;
     var INDONESIAN_STOPWORDS = new Set(['pribadi', 'belanja']);
     ${inferSlice}
     ${parseSlice}
@@ -155,7 +154,6 @@ test('ST Budget Pocket: Dengan pos ST', () => {
     function tx(props) { return Object.assign({}, props); }
     function icon() { return '🚗'; }
     function fmt(it) { return it.title; }
-    var stMode = false;
     var INDONESIAN_STOPWORDS = new Set(['pribadi', 'belanja']);
     ${inferSlice}
     ${parseSlice}
@@ -177,16 +175,14 @@ test('ST Budget Pocket: Dengan pos ST', () => {
   assert.equal(resST.item.pocketId, 'pkt-dinas');
   assert.equal(resST.item.reimburseStatus, 'pending');
 
-  // 4. stMode = true, input biasa -> source 'st', pocketId 'pkt-dinas'
-  context.stMode = true;
-  const resAutoST = context.parseInput('bbm 50rb');
-  assert.equal(resAutoST.ok, true);
-  assert.equal(resAutoST.item.source, 'st');
-  assert.equal(resAutoST.item.pocketId, 'pkt-dinas');
+  // 4. Input biasa tanpa awalan ST -> source 'personal', pocketId null (akan diinfer saat addFrom)
+  const resReg = context.parseInput('bbm 50rb');
+  assert.equal(resReg.ok, true);
+  assert.equal(resReg.item.source, 'personal');
 
-  // 5. stMode = true, tapi ada awalan 'pribadi bbm 50rb' -> override to personal!
+  // 5. Awalan 'pribadi bbm 50rb' -> explicitly personal
   const resOverride = context.parseInput('pribadi bbm 50rb');
   assert.equal(resOverride.ok, true);
   assert.equal(resOverride.item.source, 'personal');
-  assert.equal(resOverride.item.pocketId, null); // targetPocketId explicitly null for personal override
+  assert.equal(resOverride.item.pocketId, null);
 });
