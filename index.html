@@ -290,28 +290,10 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
       min-width:0!important;
       min-height:0!important;
     }
-    .nav .nav-home-ico,.nav .nav-report-ico{
-      width:40px;
-      height:40px;
-      border-radius:16px;
-      display:grid!important;
-      place-items:center;
-      font-size:27px!important;
-      line-height:1!important;
-      background:var(--accent-soft);
-      box-shadow:0 8px 18px rgba(31,138,91,.13);
-      transform:translateY(-2px);
-    }
-    .nav button.active .nav-home-ico,.nav button.active .nav-report-ico{
-      background:var(--green);
-      color:#fff;
-      box-shadow:0 10px 22px rgba(31,138,91,.26);
-    }
     @media(max-width:430px){
       .shortcut-card-simple{border-radius:18px!important;margin-bottom:8px}
       .shortcut-card-simple .shortcut-title-only strong{font-size:14.5px}
       #shortcutForm #iconPicker{grid-template-columns:repeat(6,minmax(0,1fr))!important;max-height:260px!important}
-      .nav .nav-home-ico,.nav .nav-report-ico{width:38px;height:38px;font-size:26px!important;border-radius:15px}
     }
 
 
@@ -338,35 +320,145 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
       line-height:1.2!important;
       text-align:center!important;
     }
-    .nav .nav-home-ico,.nav .nav-report-ico{
-      width:auto!important;
-      height:auto!important;
-      min-width:0!important;
-      min-height:0!important;
-      padding:0!important;
-      margin:0!important;
-      border-radius:0!important;
-      background:transparent!important;
-      box-shadow:none!important;
-      transform:none!important;
-      font-size:31px!important;
-      line-height:1!important;
+    /* Ultra Modern Clean Bottom Navigation */
+    .nav {
+      height: calc(72px + env(safe-area-inset-bottom, 0px))!important;
+      background: rgba(255, 255, 255, 0.94)!important;
+      backdrop-filter: blur(20px)!important;
+      -webkit-backdrop-filter: blur(20px)!important;
+      border-top: 1px solid rgba(22, 45, 33, 0.08)!important;
+      display: grid!important;
+      grid-template-columns: repeat(5, 1fr)!important;
+      align-items: center!important;
+      padding: 6px 6px calc(8px + env(safe-area-inset-bottom, 0px))!important;
+      box-sizing: border-box!important;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03)!important;
     }
-    .nav button.active .nav-home-ico,.nav button.active .nav-report-ico{
-      background:transparent!important;
-      box-shadow:none!important;
-      color:inherit!important;
+    html[data-theme="dark"] .nav {
+      background: rgba(18, 29, 23, 0.96)!important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08)!important;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25)!important;
+    }
+    .nav button {
+      display: flex!important;
+      flex-direction: column!important;
+      justify-content: center!important;
+      align-items: center!important;
+      gap: 3px!important;
+      color: #8c9891!important;
+      min-height: 100%!important;
+      border: 0!important;
+      background: transparent!important;
+      padding: 4px 2px!important;
+      cursor: pointer!important;
+      position: relative!important;
+      transition: color 0.16s ease, transform 0.12s ease!important;
+      -webkit-tap-highlight-color: transparent!important;
+    }
+    .nav button:active {
+      transform: scale(0.92)!important;
+    }
+    .nav-svg-wrap {
+      width: 34px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nav-svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.85;
+      display: block;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), stroke-width 0.2s ease;
+    }
+    .nav button .nav-label {
+      font-size: 11px!important;
+      font-weight: 700!important;
+      letter-spacing: -0.015em!important;
+      line-height: 1.1!important;
+      color: #8c9891!important;
+      transition: color 0.18s ease, font-weight 0.18s ease!important;
+    }
+    /* Active State */
+    .nav button.active {
+      color: var(--green)!important;
+    }
+    .nav button.active .nav-svg-wrap {
+      background: rgba(31, 138, 91, 0.12);
+      transform: translateY(-2px);
+    }
+    html[data-theme="dark"] .nav button.active .nav-svg-wrap {
+      background: rgba(65, 201, 137, 0.16);
+    }
+    .nav button.active .nav-svg {
+      stroke-width: 2.25;
+      transform: scale(1.06);
+      stroke: var(--green)!important;
+    }
+    .nav button.active .nav-label {
+      font-weight: 850!important;
+      color: var(--green)!important;
+    }
+    /* Center Floating Add Button */
+    .nav .add {
+      width: 50px!important;
+      height: 50px!important;
+      min-height: 50px!important;
+      border-radius: 50%!important;
+      justify-self: center!important;
+      background: linear-gradient(135deg, #279f69 0%, #176d49 100%)!important;
+      color: #ffffff!important;
+      box-shadow: 0 10px 24px rgba(31, 138, 91, 0.38)!important;
+      display: flex!important;
+      align-items: center!important;
+      justify-content: center!important;
+      transform: translateY(-13px)!important;
+      padding: 0!important;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease!important;
+    }
+    .nav .add:hover {
+      box-shadow: 0 14px 30px rgba(31, 138, 91, 0.48)!important;
+      transform: translateY(-15px) scale(1.05)!important;
+    }
+    .nav .add:active {
+      transform: translateY(-9px) scale(0.92)!important;
+      box-shadow: 0 6px 16px rgba(31, 138, 91, 0.28)!important;
+    }
+    .nav .add .nav-add-svg {
+      width: 26px;
+      height: 26px;
+      stroke: #ffffff!important;
+      stroke-width: 2.5;
+      display: block;
     }
     @media(max-width:430px){
-      .nav .nav-home-ico,.nav .nav-report-ico{
-        width:auto!important;
-        height:auto!important;
-        font-size:30px!important;
-        border-radius:0!important;
-      }
       #exampleChips button{
         font-size:12px!important;
         padding:8px 11px!important;
+      }
+      .nav button .nav-label {
+        font-size: 10px!important;
+      }
+      .nav-svg-wrap {
+        width: 30px;
+        height: 28px;
+      }
+      .nav-svg {
+        width: 20px;
+        height: 20px;
+      }
+      .nav .add {
+        width: 46px!important;
+        height: 46px!important;
+        min-height: 46px!important;
+        transform: translateY(-11px)!important;
+      }
+      .nav .add .nav-add-svg {
+        width: 24px;
+        height: 24px;
       }
     }
 
@@ -493,7 +585,47 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
       <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><label>Dari<input type="date" id="rangeStart"></label><label>Sampai<input type="date" id="rangeEnd"></label></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
       <section class="page" data-page="shortcut"><section class="card"><div class="row"><div><h3 style="margin:0">📋 Sesi ST</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Kelola sesi Surat Tugas</p></div><button class="text-btn" data-action="new-session" type="button">＋ Sesi Baru</button></div><div id="stSessionManager"></div><div class="st-new-session-form" id="stNewSessionForm" style="display:none;flex-direction:column;gap:8px"><input id="stNewSessionInput" placeholder="Nama sesi ST"><input id="stNewSessionDeposit" inputmode="numeric" placeholder="Deposit dari perusahaan"><button class="primary" id="stNewSessionSave" type="button" style="min-height:42px;padding:0 16px">Simpan Sesi & Deposit</button></div></section><section class="card"><div class="row"><div><h3 style="margin:0">Pintasan</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Buat kode pintasan transaksi.</p></div><button class="text-btn" data-action="new-shortcut" type="button">Baru</button></div><form class="form-grid" id="shortcutForm" style="margin-top:12px"><input type="hidden" id="scId"><label>Kode<input id="scCode" required placeholder="Kode pintasan"></label><label>Nama<input id="scTitle" required placeholder="Nama transaksi"></label><label>Kategori<select id="scCategory" required style="margin-bottom:4px"></select><input id="scCategoryNew" style="display:none" placeholder="Nama kategori baru"></label><label>Ikon<input id="scIcon" placeholder="☕"></label><label>Tipe<select id="scType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label>Nilai uang<input id="scAmount" inputmode="decimal" placeholder="Nominal (opsional)"></label><label class="wide">Komentar<input id="scNote" placeholder="Opsional"></label><label class="wide check-row"><input type="checkbox" id="scShowHome" checked><span>Tampilkan pintasan ini di Beranda</span></label><div class="wide" style="margin-top:6px"><div class="emoji-picker" id="iconPicker"></div></div><button class="primary wide" type="submit">Simpan Pintasan</button></form></section><section class="card"><div class="row"><div><h3 style="margin:0">Kategori</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Kelola atau buat kategori manual</p></div><button class="text-btn" data-action="new-category" type="button">Baru</button></div><div id="catManager" class="list" style="padding:4px"></div></section><section class="list" id="shortcutList"></section></section>
     </section>
-    <nav class="nav" id="nav"><button class="active" data-nav="home" type="button"><span class="nav-ico nav-home-ico">🏠</span><span>Beranda</span></button><button data-nav="transactions" type="button"><span class="nav-ico">☷</span><span>Transaksi</span></button><button class="add" data-nav="add" type="button"><span class="nav-ico">＋</span></button><button data-nav="report" type="button"><span class="nav-ico nav-report-ico">📊</span><span>Laporan</span></button><button data-nav="shortcut" type="button"><span class="nav-ico">⚡</span><span>Pintasan</span></button></nav>
+    <nav class="nav" id="nav">
+      <button class="active" data-nav="home" type="button" aria-label="Beranda">
+        <span class="nav-svg-wrap">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5L12 3l9 7.5V20a1.5 1.5 0 0 1-1.5 1.5H15v-6a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v6H4.5A1.5 1.5 0 0 1 3 20v-9.5z"/>
+          </svg>
+        </span>
+        <span class="nav-label">Beranda</span>
+      </button>
+      <button data-nav="transactions" type="button" aria-label="Transaksi">
+        <span class="nav-svg-wrap">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="3"/>
+            <path d="M7 8h10M7 12h7M7 16h5"/>
+          </svg>
+        </span>
+        <span class="nav-label">Transaksi</span>
+      </button>
+      <button class="add" data-nav="add" type="button" aria-label="Tambah Transaksi">
+        <svg class="nav-add-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+      <button data-nav="report" type="button" aria-label="Laporan">
+        <span class="nav-svg-wrap">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10M12 20V4M6 20v-6M3 20h18"/>
+          </svg>
+        </span>
+        <span class="nav-label">Laporan</span>
+      </button>
+      <button data-nav="shortcut" type="button" aria-label="Pintasan">
+        <span class="nav-svg-wrap">
+          <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </span>
+        <span class="nav-label">Pintasan</span>
+      </button>
+    </nav>
   </main>
   <aside class="panel"><h2>Pintasan</h2><p>Kode pribadi mengubah input singkat menjadi transaksi lengkap.</p><div id="sideExamples"></div><div class="tip"><strong>Arus Kas</strong><br>Catat transaksi harian dengan cepat dan pantau keuanganmu.</div></aside>
 </div>
@@ -517,7 +649,7 @@ select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.1').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.2').then(reg=>{reg.update();reg.onupdatefound=()=>{const w=reg.installing;if(w)w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}}).catch(()=>{})})} 
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key';
 let page='home', txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all'}, txPeriod='monthly', txOffset=0, reportPeriod='monthly', reportOffset=0, chartType='donut', reportType='expense', reportSource='all', manualSource='personal', stMode=localStorage.getItem('aruskas_st_mode')==='true', selectedId='', selectMode=false, selectSet=new Set(), pageStack=[], lastHomeSwipeAt=0, exitSwipeRequested=false;
 const palette=['#1f8a5b','#f4a62a','#3094d4','#7c65d8','#8d572f','#e55a6b','#8bbf3d','#5ca6a6'];
