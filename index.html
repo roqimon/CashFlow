@@ -1398,7 +1398,7 @@ function generateCustomWhatsAppRecap(opts){
   const pockets=selectedPocketIds?allPockets.filter(p=>selectedPocketIds.includes(p.id)):allPockets;
 
   const sections=[];
-  sections.push('📊 *LAPORAN ARUS KAS KELUARGA*\n📅 *Periode:* '+periodLabel);
+  sections.push('*LAPORAN ARUS KAS*\nPeriode: '+periodLabel);
 
   if(opts.includeSummary!==false){
     const sumData=opts.summary||(typeof sum==='function'?sum(txList):{income:0,expense:0});
@@ -1406,48 +1406,25 @@ function generateCustomWhatsAppRecap(opts){
     const exp=sumData.expense||0;
     const net=typeof sumData.net==='number'?sumData.net:(inc-exp);
     const netIcon=net>=0?'🟢':'🔴';
-    const netStatus=net>=0?'Surplus / Hemat':'Defisit / Kurang';
-    const pctExpense=inc>0?Math.round((exp/inc)*100):0;
-    const ratioHint=inc>0?' ('+pctExpense+'% dari pemasukan)':'';
     sections.push(
-      '💰 *Ringkasan Arus Kas:*\n' +
-      '• Pemasukan     : 🟢 *'+money(inc)+'*\n' +
-      '• Pengeluaran   : 🔴 *'+money(exp)+'*'+ratioHint+'\n' +
-      '  ───────────────────\n' +
-      '• Saldo Bersih  : '+netIcon+' *'+(net>=0?'+':'')+money(net)+'* _('+netStatus+')_\n' +
-      '• Total Catatan : '+txList.length+' transaksi'
+      '*Ringkasan Arus Kas*\n' +
+      '• Pemasukan: '+money(inc)+'\n' +
+      '• Pengeluaran: '+money(exp)+'\n' +
+      '• Saldo: '+netIcon+' '+(net>=0?'+':'')+money(net)
     );
   }
 
   if(opts.includePockets!==false&&pockets.length>0){
-    let totalPlafond=0;
-    let totalSpent=0;
     const pocketLines=pockets.map(p=>{
       const usage=calculatePocketUsage(p,targetDate,txList);
-      totalPlafond+=usage.amount;
-      totalSpent+=usage.spent;
-      const pct=usage.amount>0?Math.round((usage.spent/usage.amount)*100):0;
-      const statusIcon=usage.isOver?'⚠️':'✅';
-      const sisaText=usage.isOver
-        ?('Lebih '+money(usage.overAmount)+' ('+pct+'%)')
-        :('Sisa '+money(usage.remaining)+' ('+pct+'% terpakai)');
-      return (p.icon||'•')+' *'+p.name+'*\n' +
-             '   Terpakai: '+money(usage.spent)+' / '+money(usage.amount)+'\n' +
-             '   Status  : '+statusIcon+' '+sisaText;
+      const icon=usage.isOver?'⚠️':'✅';
+      const sisa=usage.isOver?('Lebih '+money(usage.overAmount)):('Sisa '+money(usage.remaining));
+      return '• '+(p.icon||'•')+' '+p.name+': '+money(usage.spent)+' / '+money(usage.amount)+' ('+icon+' '+sisa+')';
     });
 
-    const totalRemaining=totalPlafond-totalSpent;
-    const overallStatus=totalSpent>totalPlafond
-      ?('⚠️ *Overbudget Keseluruhan:* Lebih '+money(totalSpent-totalPlafond))
-      :('✅ *Sisa Uang Jatah Total:* '+money(totalRemaining));
-
     sections.push(
-      '🎯 *Pos Anggaran & Jatah Belanja:*\n' +
-      pocketLines.join('\n\n') + '\n' +
-      '  ───────────────────\n' +
-      '💳 *Total Pengeluaran Pos:* '+money(totalSpent)+'\n' +
-      '🎯 *Total Jatah Bulanan :* '+money(totalPlafond)+'\n' +
-      overallStatus
+      '*Pos Anggaran*\n' +
+      pocketLines.join('\n')
     );
   }
 
@@ -1456,13 +1433,11 @@ function generateCustomWhatsAppRecap(opts){
     const limit=opts.topCategoriesLimit||5;
     const topCats=cats.slice(0,limit);
     if(topCats.length>0){
-      const grandTotal=cats.reduce((acc,c)=>acc+c.total,0)||1;
       const catLines=topCats.map((c,idx)=>{
-        const pct=Math.round((c.total/grandTotal)*100);
-        return (idx+1)+'. '+(c.icon||'•')+' *'+c.category+'*: '+money(c.total)+' ('+pct+'%)';
+        return '• '+(c.icon||'•')+' '+c.category+': '+money(c.total);
       });
       sections.push(
-        '🏷️ *Pengeluaran per Kategori (Top '+topCats.length+'):*\n' +
+        '*Pengeluaran per Kategori*\n' +
         catLines.join('\n')
       );
     }
@@ -1476,37 +1451,37 @@ function generateCustomWhatsAppRecap(opts){
     if(incomeTx.length>0){
       const incLines=incomeTx.map(t=>{
         const d=new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-        return '• '+d+' · '+t.title+' : +'+money(t.amount);
+        return '• '+d+' '+t.title+': +'+money(t.amount);
       });
-      txSections.push('🟢 *Pemasukan ('+incomeTx.length+'):*\n'+incLines.join('\n'));
+      txSections.push('Pemasukan ('+incomeTx.length+'):\n'+incLines.join('\n'));
     }
 
     if(expenseTx.length>0){
-      const maxExp=12;
+      const maxExp=15;
       const expSlice=expenseTx.slice(0,maxExp);
       const expLines=expSlice.map(t=>{
         const d=new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-        return '• '+d+' · '+t.title+' : -'+money(t.amount);
+        return '• '+d+' '+t.title+': -'+money(t.amount);
       });
-      let expText='🔴 *Pengeluaran ('+expenseTx.length+'):*\n'+expLines.join('\n');
+      let expText='Pengeluaran ('+expenseTx.length+'):\n'+expLines.join('\n');
       if(expenseTx.length>maxExp){
-        expText+='\n_...dan '+(expenseTx.length-maxExp)+' pengeluaran lainnya._';
+        expText+='\n...dan '+(expenseTx.length-maxExp)+' lainnya.';
       }
       txSections.push(expText);
     }
 
     if(txSections.length>0){
-      sections.push('🧾 *Rincian Transaksi:*\n'+txSections.join('\n\n'));
+      sections.push('*Daftar Transaksi*\n'+txSections.join('\n\n'));
     }
   }
 
   if(opts.customNote&&String(opts.customNote).trim()){
-    sections.push('📝 *Catatan:*\n'+String(opts.customNote).trim());
+    sections.push('*Catatan:* '+String(opts.customNote).trim());
   }
 
-  sections.push('_Dicatat rapi & hemat via ArusKas_\nhttps://kas.bisabaca.web.id/');
+  sections.push('_ArusKas (https://kas.bisabaca.web.id/)_');
 
-  return sections.join('\n━━━━━━━━━━━━━━━━━━━━\n');
+  return sections.join('\n\n');
 }
 function getShareWaPrefs(){
   try{
