@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aruskas-pwa-v23';
+const CACHE_NAME = 'aruskas-pwa-v24';
 const ICON_NAMES = 'airplane apple-logo baby bank barbell basket bicycle book book-open bowl-food bread briefcase buildings bus calendar camera car chart-line-up cloud coffee coins cooking-pot credit-card currency-circle-dollar desktop device-mobile drop film-strip first-aid first-aid-kit fish fork-knife game-controller gas-pump gift globe hamburger hand-coins hand-heart hands-praying heart house house-line laptop leaf lightning map-pin microphone money motorcycle music-notes paint-brush park paw-print person-simple-run phone piggy-bank pill popcorn question receipt receipt-x shield-check shopping-bag shopping-cart sneaker squares-four storefront student suitcase sun t-shirt train users-three wallet wifi-high'.split(' ');
 const APP_SHELL = ['./', './index.html', './manifest.json', './warm-ui.css?v=20261021.7', './ui-icons.js?v=20261021.3', './icons/icon-192.png', './icons/icon-512.png', ...ICON_NAMES.map(name => `./icons/category/${name}.svg`)];
 

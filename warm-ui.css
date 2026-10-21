@@ -26,6 +26,9 @@ html[data-theme="light"], body[data-theme="light"] {
   --dropdown-bg: #fffcf8;
   --shadow: 0 12px 34px rgba(117, 65, 43, .09);
   --olive: #60774f;
+  --income: #3f704b;
+  --income-soft: #e8f2e8;
+  --expense-soft: #fae8dd;
 }
 html[data-theme="dark"], body[data-theme="dark"] {
   --green: #db8a68;
@@ -52,6 +55,9 @@ html[data-theme="dark"], body[data-theme="dark"] {
   --chart-value: #fff5ed;
   --dropdown-bg: #302620;
   --olive: #acc397;
+  --income: #add5aa;
+  --income-soft: #273e31;
+  --expense-soft: #513328;
 }
 body { background: var(--app-bg) !important; }
 .screen { background: var(--screen-bg) !important; padding-inline: 16px !important; }
@@ -236,6 +242,67 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .icon-grid button.active { border: 2px solid var(--green) !important; background: var(--accent-soft) !important; }
 .icon-grid img { width: 23px !important; height: 23px !important; object-fit: contain; border: 0 !important; background: transparent !important; padding: 0 !important; filter: brightness(0) saturate(100%) invert(24%) sepia(22%) saturate(626%) hue-rotate(330deg) brightness(89%); }
 .icon-grid span { display: block; max-width: 100%; color: var(--ink); font-size: 9px; font-weight: 650; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Semantic flow colors are paired with labels and arrows for quick recognition. */
+.balance .grid2 small::before { display: inline-grid; place-items: center; width: 17px; height: 17px; margin-right: 5px; border-radius: 50%; font-size: 12px; font-weight: 900; }
+.balance .grid2 > div:first-child small::before { content: "↑"; background: #d9f0d7; color: #315b3b; }
+.balance .grid2 > div:last-child small::before { content: "↓"; background: #ffdfcc; color: #a7442f; }
+.balance #incomeTotal { color: #e0f4da !important; }
+.balance #expenseTotal { color: #ffe1cc !important; }
+.tx-item .amount.expense { color: var(--expense) !important; }
+.tx-item .amount.income, .breakdown-card .amount.income { color: var(--income) !important; }
+.tx-item:has(.amount.income) .icon { background: var(--income-soft) !important; }
+.tx-item:has(.amount.income) .category-svg, .shortcut-item[data-flow="income"] .category-svg { filter: brightness(0) saturate(100%) invert(40%) sepia(30%) saturate(622%) hue-rotate(77deg) brightness(92%); }
+#txList .date-net.minus { color: var(--expense) !important; }
+#txList .date-net.surplus { color: var(--income) !important; }
+.tx-summary { gap: 9px !important; padding: 0 !important; background: none !important; }
+.tx-summary-cell { min-height: 80px; padding: 12px !important; border: 1px solid transparent; border-radius: 17px; }
+.tx-summary-cell:first-child { background: var(--expense-soft); color: var(--expense); }
+.tx-summary-cell:last-child { background: var(--income-soft); color: var(--income); border-left: 0 !important; }
+.tx-summary-cell small { color: inherit !important; opacity: .82; }
+.expense-mark { background: #f7d1be; color: var(--expense); }
+.income-mark { background: #cde4c9; color: #315e3e; }
+#typeFilter [data-type="expense"].active, #reportTypeSeg [data-rtype="expense"].active { background: var(--expense) !important; color: #fff !important; }
+#typeFilter [data-type="income"].active, #reportTypeSeg [data-rtype="income"].active { background: var(--income) !important; color: #fff !important; }
+.page[data-page="report"] .report-summary .mini-box:has(#reportIncome) { background: var(--income-soft) !important; border-color: #bfd7bd !important; }
+.page[data-page="report"] .report-summary .mini-box:has(#reportIncome) span,
+.page[data-page="report"] .report-summary .mini-box:has(#reportIncome) strong { color: var(--income) !important; }
+.shortcut-item[data-flow="income"] .shortcut-icon { background: var(--income-soft); }
+
+/* Focused add screen. Samples teach the two flows without changing parser behavior. */
+.page[data-page="add"] .focus-entry { margin-top: 14px; padding: 22px 18px 18px !important; text-align: left; }
+.focus-kicker { color: var(--green2); font-size: 11px; font-weight: 900; letter-spacing: .13em; }
+.focus-entry h2 { margin: 8px 0 6px; color: var(--ink); font-size: clamp(25px,6vw,30px); line-height: 1.1; letter-spacing: -.05em; }
+.focus-lead { max-width: 34ch; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.42; }
+.focus-examples { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin: 20px 0 21px; }
+.focus-example { display: flex; align-items: center; gap: 9px; min-width: 0; min-height: 86px; padding: 11px 10px; border: 1px solid; border-radius: 17px; text-align: left; cursor: pointer; }
+.focus-example span:last-child { min-width: 0; }
+.focus-example strong { display: block; font-size: 13px; line-height: 1.1; }
+.focus-example small { display: block; margin-top: 5px; font-size: 10.5px; line-height: 1.2; }
+.focus-example-arrow { display: grid; place-items: center; flex: 0 0 29px; width: 29px; height: 29px; border-radius: 50%; font-size: 21px; font-weight: 800; }
+.example-expense { background: var(--expense-soft); border-color: #efc9b5; color: var(--expense); }
+.example-expense .focus-example-arrow { background: #f5cfbd; }
+.example-income { background: var(--income-soft); border-color: #c7ddc3; color: var(--income); }
+.example-income .focus-example-arrow { background: #cce4c9; }
+.focus-input-label { display: block; margin-bottom: 8px; color: var(--ink); font-size: 13px; font-weight: 850; }
+.focus-entry #focusInput { width: 100%; height: 58px; padding: 0 15px; text-align: left; font-size: 15px; }
+.focus-entry #focusPreview { margin: 11px 0 0; border: 1px solid var(--line); border-radius: 16px; padding: 11px 12px; background: var(--surface); color: var(--ink); }
+.focus-entry #focusPreview[data-type="expense"] { border-color: #efc9b5; background: var(--expense-soft); }
+.focus-entry #focusPreview[data-type="income"] { border-color: #c7ddc3; background: var(--income-soft); }
+.focus-preview-row { display: flex; align-items: center; gap: 10px; }
+.focus-preview-icon { display: grid; place-items: center; flex: 0 0 37px; width: 37px; height: 37px; border-radius: 11px; background: var(--surface); }
+.focus-preview-icon .category-svg { width: 22px; height: 22px; }
+.focus-preview-copy { min-width: 0; flex: 1; }
+.focus-preview-copy small { display: block; color: var(--muted); font-size: 10px; font-weight: 800; }
+.focus-preview-copy strong { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--ink); font-size: 12px; }
+.focus-preview-amount { color: var(--expense); font-size: 12px; white-space: nowrap; }
+#focusPreview[data-type="income"] .focus-preview-amount { color: var(--income); }
+.focus-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 15px; }
+.focus-tool { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 53px; border: 1px solid var(--line); border-radius: 15px; background: var(--button-bg); color: var(--ink); font-size: 13px; font-weight: 800; }
+.focus-tool img { width: 22px; height: 22px; filter: brightness(0) saturate(100%) invert(36%) sepia(26%) saturate(742%) hue-rotate(334deg) brightness(92%); }
+.focus-save { width: 100%; min-height: 57px !important; margin-top: 12px; font-size: 15px !important; }
+.focus-manual { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 47px; margin-top: 6px; border: 0; background: transparent; color: var(--green2); font-size: 13px; font-weight: 800; }
+.focus-example:active, .focus-tool:active, .focus-save:active { transform: scale(.98); }
 
 :where(button,a,input,select,textarea):focus-visible { outline: 3px solid #d99974 !important; outline-offset: 2px; }
 @media (max-width: 430px) {
