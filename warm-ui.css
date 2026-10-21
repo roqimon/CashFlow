@@ -389,7 +389,7 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .page[data-page="report"] .chart-svg { width: min(100%,240px) !important; height: 240px; }
 .page[data-page="report"] .chart-label { fill: var(--muted); }
 .page[data-page="report"] .chart-value { fill: var(--ink); font-size: 15px; }
-.page[data-page="report"] #shareWaBtn { width: 100%; margin: 16px 0 25px !important; }
+.page[data-page="report"] #shareWaBtn { width: 100%; margin: 16px 0 42px !important; }
 #breakdown { display: grid; gap: 8px; }
 #breakdown .breakdown-card { display: block; width: 100%; min-height: 86px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 17px; background: var(--card-glass); text-align: left; box-shadow: none; }
 #breakdown .breakdown-card-top { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 10px; }
