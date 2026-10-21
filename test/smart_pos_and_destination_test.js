@@ -14,7 +14,7 @@ assert.ok(html.includes("t.pocketId&&t.pocketId!==pocket.id") || html.includes("
 console.log('--- Test 2: inferPocket helper exists ---');
 assert.ok(html.includes('function inferPocket('), 'inferPocket function must exist');
 
-// Test 3: Simulation test of pocket deduction logic
+// Test 3: Simulation of pocket deduction logic
 console.log('--- Test 3: Simulation of pocket deduction logic ---');
 function simulateCalculatePocketUsage(pocket, targetDate, txList) {
   const d = targetDate ? new Date(targetDate) : new Date();
@@ -60,4 +60,11 @@ assert.strictEqual(resDapur.spent, 175000, 'Dapur must only count 75k + 100k (50
 assert.strictEqual(resDapur.count, 2, 'Dapur must have exactly 2 transactions');
 console.log('✔ Pocket calculation logic correctly excludes bebas and isolated pocketIds!');
 
-console.log('\nAll Task 1 tests passed successfully!');
+// Test 4: Gemini prompt injects pockets and ST session
+console.log('--- Test 4: Gemini prompt injects pockets and ST session ---');
+assert.ok(html.includes('activePocketsInfo'), 'aiCorrectTransactionText must format active pockets info for Gemini');
+assert.ok(html.includes('activeSTInfo'), 'aiCorrectTransactionText must format active ST info for Gemini');
+assert.ok(html.includes('"pocketId"'), 'aiCorrectTransactionText prompt must ask for pocketId');
+console.log('✔ Gemini prompt structure verified for Pockets and ST classification!');
+
+console.log('\nAll Task 1 & 2 tests passed successfully!');
