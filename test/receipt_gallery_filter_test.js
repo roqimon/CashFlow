@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { filter } = require('../receipt-gallery.js');
+const { filter, filterByDateInputs } = require('../receipt-gallery.js');
 
 const receipts = [
   { id: 'r-old', capturedAt: '2026-09-03T10:00:00Z', title: 'Toko Lama', categoryNames: ['Belanja'], transactionIds: ['t-old'] },
@@ -29,4 +29,16 @@ test('one multi-transaction photo appears once and matches categories and names'
 test('a photo remains searchable after its transaction was deleted', () => {
   assert.deepEqual(filter(receipts, transactions, { ...october, category: 'Kesehatan', query: 'apotek' }).map(r => r.id), ['r-orphan']);
   assert.deepEqual(filter(receipts, transactions, { ...october, category: 'Belanja', query: 'apotek' }), []);
+});
+
+test('a chosen date range determines every photo to share without individual selection', () => {
+  const visible = filterByDateInputs(receipts, transactions, {
+    from: '2026-10-20', to: '2026-10-20', category: '', query: ''
+  });
+  assert.deepEqual(visible.map(receipt => receipt.id), ['r-multi']);
+});
+
+test('date filter rejects reversed or incomplete ranges', () => {
+  assert.deepEqual(filterByDateInputs(receipts, transactions, { from: '2026-10-22', to: '2026-10-20' }), []);
+  assert.deepEqual(filterByDateInputs(receipts, transactions, { from: '2026-10-20', to: '' }), []);
 });

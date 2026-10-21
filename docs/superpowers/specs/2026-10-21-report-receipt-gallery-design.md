@@ -35,15 +35,15 @@ Menghapus satu transaksi tidak otomatis menghapus foto yang mungkin dipakai tran
 
 Bagian **Nota Tersimpan** tampil di menu Laporan, terpisah dari grafik dan rekap WhatsApp. Daftar memakai thumbnail, judul, tanggal, dan jumlah transaksi terkait, diurutkan terbaru. Status kosong membedakan belum ada foto tersimpan dengan hasil filter kosong. Ketuk kartu untuk membuka foto penuh dan rincian terkait. Tampilan ponsel menjaga teks serta tombol tetap terbaca tanpa gulir horizontal.
 
-Filter bawaan mengikuti periode Laporan yang aktif. Pengguna dapat mengganti cakupan galeri ke **Semua tanggal** tanpa mengubah grafik Laporan. Filter tambahan: kategori transaksi dan pencarian nama toko/transaksi; keduanya bisa dipakai bersama. Satu nota hasil beberapa transaksi tampil sekali; nota cocok bila sedikitnya satu transaksi terkait memenuhi kategori dan pencarian, sementara periode didasarkan pada tanggal foto dicatat. Metadata arsip tetap dapat dicari bila transaksi terkait sudah dihapus. Perubahan filter memperbarui hitungan hasil dan mengosongkan pilihan foto yang tak lagi tampak.
+Filter bawaan mengikuti periode Laporan yang aktif. Pengguna dapat memilih rentang **Dari tanggal** sampai **Sampai tanggal** secara inklusif, atau mengganti cakupan galeri ke **Semua tanggal** tanpa mengubah grafik Laporan. Filter tambahan: kategori transaksi dan pencarian nama toko/transaksi; keduanya bisa dipakai bersama. Satu nota hasil beberapa transaksi tampil sekali; nota cocok bila sedikitnya satu transaksi terkait memenuhi kategori dan pencarian, sementara periode didasarkan pada tanggal foto dicatat. Metadata arsip tetap dapat dicari bila transaksi terkait sudah dihapus. Perubahan filter memperbarui hitungan hasil.
 
-Pengguna dapat memilih beberapa nota dari hasil filter, melihat jumlah terpilih, membatalkan pilihan, dan memulai berbagi. Pratinjau satu nota juga menyediakan tindakan berbagi dan unduh.
+Permintaan terbaru pengguna mengganti pemilihan manual: semua nota yang cocok dengan rentang tanggal serta filter kategori/pencarian yang sedang tampil menjadi lingkup berbagi. Tombol menyebut jumlah foto sebelum membuka lembar berbagi. Pratinjau satu nota juga menyediakan tindakan berbagi dan unduh.
 
 ## Berbagi ke WhatsApp dan fallback
 
-Aplikasi menyiapkan `File` gambar terpilih sebelum tombol berbagi diaktifkan. Pada klik pengguna, aplikasi memeriksa `navigator.canShare({files})` lalu memanggil `navigator.share({files, text})` secara langsung agar syarat interaksi pengguna terpenuhi. Sistem menampilkan daftar tujuan; pengguna memilih WhatsApp. Pesan pendek menyebut jumlah nota dan periode, tanpa memuat data keuangan tambahan yang tidak dipilih. Pembatalan lembar berbagi tidak dilaporkan sebagai pengiriman berhasil.
+Aplikasi menyiapkan `File` semua gambar hasil filter sebelum tombol berbagi diaktifkan. Pada klik pengguna, aplikasi memeriksa `navigator.canShare({files})` lalu memanggil `navigator.share({files, text})` secara langsung agar syarat interaksi pengguna terpenuhi. Sistem menampilkan daftar tujuan; pengguna memilih WhatsApp. Pesan pendek menyebut jumlah nota dan periode, tanpa memuat data keuangan tambahan. Pembatalan lembar berbagi tidak dilaporkan sebagai pengiriman berhasil.
 
-Jika browser/perangkat tidak mendukung berbagi file sebanyak yang dipilih, antarmuka menjelaskan batasnya dan menyediakan tombol unduh untuk setiap foto terpilih agar pengguna bisa melampirkannya manual di WhatsApp. Tiap unduhan tetap dimulai dari klik pengguna sehingga browser tidak memblokir rentetan unduhan otomatis. Tautan `wa.me`/`api.whatsapp.com` tidak dipakai untuk foto karena mekanisme itu hanya mengisi teks, bukan lampiran lokal. Bila batas tujuan tertentu menolak sejumlah file, pengguna dapat mengurangi pilihan dan mencoba lagi.
+Jika browser/perangkat tidak mendukung berbagi file sebanyak hasil filter, antarmuka menjelaskan batasnya dan menyediakan tombol unduh untuk setiap foto hasil filter agar pengguna bisa melampirkannya manual di WhatsApp. Tiap unduhan tetap dimulai dari klik pengguna sehingga browser tidak memblokir rentetan unduhan otomatis. Tautan `wa.me`/`api.whatsapp.com` tidak dipakai untuk foto karena mekanisme itu hanya mengisi teks, bukan lampiran lokal. Bila batas tujuan tertentu menolak sejumlah file, pengguna dapat mempersempit rentang tanggal lalu mencoba lagi.
 
 ## Cadangan, pemulihan, dan privasi
 
@@ -55,7 +55,7 @@ Foto tidak diberi URL publik. Foto tetap lokal hingga pengguna memilih tujuan da
 
 - Uji penyimpanan foto manual dan scan AI, termasuk satu scan yang menghasilkan beberapa transaksi, kegagalan penyimpanan, serta batal scan.
 - Uji penyaringan periode, semua tanggal, kategori, dan pencarian, termasuk satu nota dengan beberapa transaksi dan hasil kosong.
-- Uji pilihan beberapa nota, berbagi file lewat mock Web Share API, pembatalan, dan fallback saat `canShare` menolak.
+- Uji rentang tanggal inklusif sebagai lingkup berbagi beberapa nota, berbagi file lewat mock Web Share API, pembatalan, dan fallback saat `canShare` menolak.
 - Uji edit/duplikasi/hapus transaksi, hapus foto, serta hapus semua data agar tautan tidak rusak.
 - Uji ekspor/impor cadangan baru dan cadangan lama; CSV tetap jelas tanpa foto.
 - Periksa tampilan Laporan pada lebar ponsel dan desktop, serta versi cache PWA agar aset baru termuat.

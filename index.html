@@ -612,7 +612,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       grid-template-columns: none !important;
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261021.24" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261021.25" />
 </head>
 <body>
 <div class="shell">
@@ -1049,7 +1049,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
     </div>
   </div>
 </div>
-<div class="modal" id="receiptPhotoModal" aria-hidden="true"><div class="sheet receipt-photo-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptPhotoTitle"><div class="row"><div><h3 id="receiptPhotoTitle" style="margin:0">Foto Nota</h3><p class="muted" id="receiptPhotoDate" style="margin:3px 0 0;font-size:12px"></p></div><button class="icon-btn" id="receiptPhotoClose" type="button" aria-label="Tutup foto nota">×</button></div><img id="receiptPhotoFull" alt="Foto nota tersimpan"><div id="receiptPhotoTransactions"></div><div class="receipt-photo-actions"><button class="ghost" id="receiptPhotoDownload" type="button">Unduh foto</button><button class="primary" id="receiptPhotoShare" type="button">Bagikan foto</button></div><button class="text-btn receipt-photo-delete" id="receiptPhotoDelete" type="button">Hapus foto nota</button></div></div>
+<div class="modal" id="receiptPhotoModal" aria-hidden="true"><div class="sheet receipt-photo-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptPhotoTitle"><div class="row"><div><h3 id="receiptPhotoTitle" style="margin:0">Foto Nota</h3><p class="muted" id="receiptPhotoDate" style="margin:3px 0 0;font-size:12px"></p></div><button class="icon-btn" id="receiptPhotoClose" type="button" aria-label="Tutup foto nota">×</button></div><img id="receiptPhotoFull" alt="Foto nota tersimpan"><div id="receiptPhotoTransactions"></div><div class="receipt-photo-actions"><button class="ghost" id="receiptPhotoDownload" type="button">Unduh foto</button><button class="primary" id="receiptPhotoShare" type="button" disabled>Bagikan ke WhatsApp</button></div><button class="text-btn receipt-photo-delete" id="receiptPhotoDelete" type="button">Hapus foto nota</button></div></div>
+<div class="modal" id="receiptShareFallbackModal" aria-hidden="true"><div class="sheet receipt-share-fallback-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptShareFallbackTitle"><div class="row"><h3 id="receiptShareFallbackTitle" style="margin:0">Simpan foto untuk WhatsApp</h3><button class="icon-btn" id="receiptShareFallbackClose" type="button" aria-label="Tutup">×</button></div><p class="muted">Browser ini belum dapat membagikan semua foto hasil filter langsung. Unduh tiap foto, lalu lampirkan dari WhatsApp.</p><div id="receiptShareFallbackList"></div></div></div>
 <div class="modal" id="photoChoiceModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:380px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">📷</div><h3 style="margin:0 0 6px;font-size:18px">Pilih Sumber Foto</h3><p class="muted" style="margin:0 0 18px;font-size:12.5px;line-height:1.4">Ambil foto struk langsung dengan kamera HP atau pilih dari galeri.</p><div style="display:grid;gap:10px"><button class="primary" id="btnTakePhoto" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><span>📸</span><span>Ambil Foto (Kamera Langsung)</span></button><button class="ghost" id="btnPickGallery" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface2);border:1px solid var(--line)"><span>🖼️</span><span>Pilih dari Galeri / File</span></button><button class="ghost" id="btnCancelPhotoChoice" type="button" style="min-height:42px;font-size:13px;font-weight:700">Batal</button></div></div></div>
 <div class="modal" id="voiceNoticeModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:390px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">🎙️</div><h3 style="margin:0 0 6px;font-size:18px">Fitur Suara di HP</h3><p class="muted" style="margin:0 0 16px;font-size:12.5px;line-height:1.45">Browser HP membatasi akses mikrofon web pada jaringan <strong>HTTP lokal</strong>. Untuk mencatat dengan suara:</p><div style="display:grid;gap:10px;text-align:left"><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">1. Gunakan Dikte Keyboard HP (Paling Praktis)</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Ketuk kotak input teks, lalu tekan tombol <strong>Mikrofon (🎙️)</strong> pada keyboard bawaan HP Anda.</span></div><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">2. Buka Versi Resmi HTTPS</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Buka web resmi ber-HTTPS di mana izin mikrofon diizinkan penuh oleh Google Chrome.</span><a href="https://kas.bisabaca.web.id/" target="_blank" rel="noopener" class="primary" style="display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:8px 14px;border-radius:999px;font-size:12px;text-decoration:none">Buka https://kas.bisabaca.web.id/ ↗</a></div></div><div class="dialog-actions" style="margin-top:16px"><button class="primary" id="voiceNoticeClose" type="button" style="width:100%;min-height:44px">Saya Mengerti</button></div></div></div>
 <div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
@@ -1058,7 +1059,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./ui-icons.js?v=20261021.3"></script>
 <script src="./savings-core.js?v=20261021.2"></script>
 <script src="./receipt-store.js?v=20261021.1"></script>
-<script src="./receipt-gallery.js?v=20261021.1"></script>
+<script src="./receipt-gallery.js?v=20261021.3"></script>
 <script>
 (function(){
 'use strict';
@@ -1848,7 +1849,7 @@ function ensureReportLayout(){
     const gallery=document.createElement('section');
     gallery.id='receiptGalleryCard';
     gallery.className='card receipt-gallery-card';
-    gallery.innerHTML='<div class="receipt-gallery-head"><div><span class="report-eyebrow">ARSIP DI PERANGKAT INI</span><h3>Nota Tersimpan</h3><p>Foto baru yang dicatat dari kamera atau galeri</p></div><span id="receiptGalleryCount" class="receipt-gallery-count">0 nota</span></div><div class="receipt-gallery-controls"><div class="seg receipt-gallery-period" id="receiptGalleryPeriod"><button type="button" data-receipt-period="report" class="active">Periode laporan</button><button type="button" data-receipt-period="all">Semua tanggal</button></div><div class="receipt-gallery-fields"><select id="receiptGalleryCategory" aria-label="Filter kategori nota"><option value="">Semua kategori</option></select><input id="receiptGallerySearch" type="search" placeholder="Cari toko atau transaksi" aria-label="Cari nota"></div></div><div id="receiptGalleryResults" class="receipt-gallery-grid"></div><div id="receiptGallerySelection" class="receipt-gallery-selection" hidden><span id="receiptGallerySelectedCount">0 dipilih</span><button id="receiptGalleryClearSelection" type="button" class="ghost">Batal pilih</button><button id="receiptGalleryShare" type="button" class="primary" disabled>Bagikan foto</button></div><p class="receipt-gallery-help">Foto tersimpan di browser perangkat ini. Unduh cadangan data dan foto dari Pengaturan bila perlu.</p>';
+    gallery.innerHTML='<div class="receipt-gallery-head"><div><span class="report-eyebrow">ARSIP DI PERANGKAT INI</span><h3>Nota Tersimpan</h3><p>Foto baru yang dicatat dari kamera atau galeri</p></div><span id="receiptGalleryCount" class="receipt-gallery-count">0 nota</span></div><div class="receipt-gallery-controls"><div class="seg receipt-gallery-period" id="receiptGalleryPeriod"><button type="button" data-receipt-period="report" class="active">Periode laporan</button><button type="button" data-receipt-period="all">Semua tanggal</button></div><div class="receipt-gallery-dates"><label>Dari tanggal<input id="receiptGalleryFrom" type="date" aria-label="Dari tanggal nota"></label><label>Sampai tanggal<input id="receiptGalleryTo" type="date" aria-label="Sampai tanggal nota"></label></div><div class="receipt-gallery-fields"><select id="receiptGalleryCategory" aria-label="Filter kategori nota"><option value="">Semua kategori</option></select><input id="receiptGallerySearch" type="search" placeholder="Cari toko atau transaksi" aria-label="Cari nota"></div></div><div id="receiptGalleryResults" class="receipt-gallery-grid"></div><div id="receiptGallerySelection" class="receipt-gallery-selection" hidden><span id="receiptGallerySelectedCount">0 nota sesuai filter</span><button id="receiptGalleryShare" type="button" class="primary" disabled>Bagikan foto</button></div><p class="receipt-gallery-help">Semua foto yang cocok dengan filter akan dibagikan. Foto tersimpan di browser perangkat ini; cadangkan dari Pengaturan bila perlu.</p>';
     budget.after(gallery);
   }
   const share=$('shareWaBtn');
@@ -1892,14 +1893,17 @@ function renderReport(arr){
   $('breakdown').innerHTML=totals.length?totals.map((c,i)=>{const pct=Math.round(c.total/grandTotal*100),col=colors[i%colors.length];return `<button class="breakdown-card" data-report-category="${esc(c.category)}" type="button"><div class="breakdown-card-top"><div class="icon" style="background:${color(c.category)}">${renderIcon(c.icon)}</div><div class="breakdown-card-title"><strong>${esc(c.category)}</strong><span>${c.count} transaksi · ${pct}%</span></div><div class="amount ${reportType}">${reportType==='income'?'+':'−'} ${money(c.total)}</div></div><div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:${pct}%;background:${col}"></div></div></button>`}).join(''):'<div class="empty">Belum ada data pada periode ini.</div>';
   renderReceiptGallery(arr);
 }
-let receiptGalleryAllDates=false;
-let receiptGallerySelected=new Set();
+let receiptGalleryDatesCustomized=false;
 let receiptGalleryVisible=[];
 let receiptGalleryRecords=[];
 let receiptGalleryUrls=[];
 let receiptGalleryRenderToken=0;
 let receiptPhotoUrl=null;
 let receiptPhotoCurrentId=null;
+let receiptPhotoPreparedFile=null;
+let receiptPreparedShareFiles=[];
+let receiptSharePrepareToken=0;
+let receiptFallbackFiles=[];
 function revokeReceiptGalleryUrls(){receiptGalleryUrls.forEach(url=>URL.revokeObjectURL(url));receiptGalleryUrls=[]}
 async function renderReceiptGallery(transactions=getTX()){
   const grid=$('receiptGalleryResults');
@@ -1919,14 +1923,12 @@ async function renderReceiptGallery(transactions=getTX()){
   categorySelect.innerHTML='<option value="">Semua kategori</option>'+categories.map(cat=>`<option value="${esc(cat)}">${esc(cat)}</option>`).join('');
   categorySelect.value=categories.includes(selectedCategory)?selectedCategory:'';
   refreshFancySelect(categorySelect);
-  const period=range();
+  if(!receiptGalleryDatesCustomized){const period=range();$('receiptGalleryFrom').value=dateInput(period.start);$('receiptGalleryTo').value=dateInput(period.end)}
   const query=$('receiptGallerySearch').value;
-  const visible=window.ReceiptGallery.filter(records,transactions,{start:period.start,end:period.end,allDates:receiptGalleryAllDates,category:categorySelect.value,query});
+  const visible=window.ReceiptGallery.filterByDateInputs(records,transactions,{from:$('receiptGalleryFrom').value,to:$('receiptGalleryTo').value,category:categorySelect.value,query});
   receiptGalleryVisible=visible;
-  const visibleIds=new Set(visible.map(item=>item.id));
-  receiptGallerySelected=new Set([...receiptGallerySelected].filter(id=>visibleIds.has(id)));
   $('receiptGalleryCount').textContent=visible.length+' nota';
-  document.querySelectorAll('#receiptGalleryPeriod button').forEach(button=>button.classList.toggle('active',(button.dataset.receiptPeriod==='all')===receiptGalleryAllDates));
+  document.querySelectorAll('#receiptGalleryPeriod button').forEach(button=>button.classList.toggle('active',button.dataset.receiptPeriod==='report'?!receiptGalleryDatesCustomized:!$('receiptGalleryFrom').value&&!$('receiptGalleryTo').value));
   revokeReceiptGalleryUrls();
   if(!records.length){grid.innerHTML='<p class="receipt-gallery-empty">Belum ada foto nota tersimpan. Foto yang dicatat setelah pembaruan ini akan muncul di sini.</p>'}
   else if(!visible.length){grid.innerHTML='<p class="receipt-gallery-empty">Tidak ada nota yang cocok dengan filter ini.</p>'}
@@ -1934,22 +1936,36 @@ async function renderReceiptGallery(transactions=getTX()){
     const url=URL.createObjectURL(item.blob);receiptGalleryUrls.push(url);
     const date=new Date(item.capturedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
     const info=item.transactionCount?item.transactionCount+' transaksi':(item.categoryNames||[]).join(', ')||'Foto nota';
-    return `<article class="receipt-gallery-item"><label class="receipt-gallery-check"><input type="checkbox" data-receipt-select="${esc(item.id)}" ${receiptGallerySelected.has(item.id)?'checked':''} aria-label="Pilih nota ${esc(item.displayTitle)}"></label><button type="button" class="receipt-gallery-open" data-receipt-open="${esc(item.id)}"><img src="${url}" alt="Foto nota ${esc(item.displayTitle)}"><span class="receipt-gallery-item-info"><strong>${esc(item.displayTitle)}</strong><small>${esc(date)} · ${esc(info)}</small></span></button></article>`;
+    return `<article class="receipt-gallery-item"><button type="button" class="receipt-gallery-open" data-receipt-open="${esc(item.id)}"><img src="${url}" alt="Foto nota ${esc(item.displayTitle)}"><span class="receipt-gallery-item-info"><strong>${esc(item.displayTitle)}</strong><small>${esc(date)} · ${esc(info)}</small></span></button></article>`;
   }).join('')}
-  updateReceiptGallerySelection();
+  updateReceiptGalleryShare();
 }
-function updateReceiptGallerySelection(){
+function updateReceiptGalleryShare(){
   const bar=$('receiptGallerySelection');if(!bar)return;
-  const count=receiptGallerySelected.size;
+  const count=receiptGalleryVisible.length;
   bar.hidden=count===0;
-  $('receiptGallerySelectedCount').textContent=count+' dipilih';
-  $('receiptGalleryShare').disabled=count===0;
+  $('receiptGallerySelectedCount').textContent=count+' nota sesuai filter';
+  const button=$('receiptGalleryShare');
+  button.disabled=true;
+  receiptPreparedShareFiles=[];
+  const token=++receiptSharePrepareToken;
+  if(!count)return;
+  button.textContent='Menyiapkan foto...';
+  window.ReceiptGallery.prepareShareFiles(receiptGalleryVisible.map(item=>item.id)).then(files=>{
+    if(token!==receiptSharePrepareToken)return;
+    receiptPreparedShareFiles=files;
+    button.disabled=files.length!==count;
+    button.textContent=files.length===count?`Bagikan ${count} foto ke WhatsApp`:'Foto belum tersedia';
+  }).catch(()=>{if(token===receiptSharePrepareToken)button.textContent='Foto belum tersedia'});
 }
 async function openReceiptPhoto(receiptId){
   const record=await window.ReceiptStore.get(receiptId);
   if(!record)return;
   if(receiptPhotoUrl)URL.revokeObjectURL(receiptPhotoUrl);
   receiptPhotoCurrentId=receiptId;
+  receiptPhotoPreparedFile=null;
+  $('receiptPhotoShare').disabled=true;
+  $('receiptPhotoDownload').disabled=true;
   receiptPhotoUrl=URL.createObjectURL(record.blob);
   $('receiptPhotoFull').src=receiptPhotoUrl;
   $('receiptPhotoTitle').textContent=record.title||'Foto Nota';
@@ -1957,6 +1973,10 @@ async function openReceiptPhoto(receiptId){
   const related=getTX().filter(item=>item.receiptId===receiptId);
   $('receiptPhotoTransactions').innerHTML=related.length?'<strong>Transaksi terkait</strong>'+related.map(item=>`<button type="button" data-receipt-transaction="${esc(item.id)}">${esc(item.title)} · ${money(item.amount)}</button>`).join(''):'<p class="muted">Transaksi terkait sudah dihapus. Foto tetap tersimpan.</p>';
   openModalLayer('receiptPhotoModal');
+  try{
+    const file=(await window.ReceiptGallery.prepareShareFiles([receiptId]))[0];
+    if(receiptPhotoCurrentId===receiptId&&file){receiptPhotoPreparedFile=file;$('receiptPhotoShare').disabled=false;$('receiptPhotoDownload').disabled=false}
+  }catch(error){console.warn('[ArusKas] Foto belum siap dibagikan:',error)}
 }
 function closeReceiptPhoto(){
   closeModalLayer('receiptPhotoModal');
@@ -1964,6 +1984,18 @@ function closeReceiptPhoto(){
   if(receiptPhotoUrl)URL.revokeObjectURL(receiptPhotoUrl);
   receiptPhotoUrl=null;
   receiptPhotoCurrentId=null;
+  receiptPhotoPreparedFile=null;
+}
+function downloadReceiptFile(file){
+  const url=URL.createObjectURL(file);
+  const link=document.createElement('a');link.href=url;link.download=file.name;document.body.appendChild(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function openReceiptShareFallback(files){
+  receiptFallbackFiles=files;
+  $('receiptShareFallbackList').innerHTML=files.map((file,index)=>`<button type="button" data-receipt-download="${index}">Unduh ${esc(file.name)}</button>`).join('');
+  if(receiptPhotoCurrentId)closeReceiptPhoto();
+  openModalLayer('receiptShareFallbackModal');
 }
 function renderTXPeriodControls(){const seg=$('txPeriodSeg');if(seg)seg.querySelectorAll('[data-tx-period]').forEach(b=>b.classList.toggle('active',b.dataset.txPeriod===txPeriod));const box=$('txRangeBox'), sel=$('txPeriodSelect'), control=$('txPeriodControl');if(box)box.style.display=txPeriod==='range'?'grid':'none';if(sel)sel.style.display=txPeriod==='range'?'none':'block';if(control)control.classList.toggle('range-active',txPeriod==='range');if(txPeriod!=='range')buildTxPeriodSelect()}
 function buildTxPeriodSelect(){const sel=$('txPeriodSelect');if(!sel)return;const n=new Date();let opts='';if(txPeriod==='daily'){for(let i=6;i>=-26;i--){const d=new Date(n);d.setDate(d.getDate()+i);opts+=`<option value="${i}" ${i===txOffset?'selected':''}>${d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</option>`}}if(txPeriod==='weekly'){for(let i=6;i>=-26;i--){const d=new Date(n);d.setDate(d.getDate()+i*7);const ws=startWeek(d), we=endWeek(d);opts+=`<option value="${i}" ${i===txOffset?'selected':''}>Minggu ${weekNum(d)} (${ws.toLocaleDateString('id-ID',{day:'numeric',month:'short'})} - ${we.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})})</option>`}}if(txPeriod==='monthly'){for(let i=12;i>=-12;i--){const d=new Date(n.getFullYear(),n.getMonth()+i,1);opts+=`<option value="${i}" ${i===txOffset?'selected':''}>${d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</option>`}}if(txPeriod==='yearly'){for(let i=5;i>=-5;i--){opts+=`<option value="${i}" ${i===txOffset?'selected':''}>${n.getFullYear()+i}</option>`}}sel.innerHTML=opts}
@@ -3627,7 +3659,7 @@ ensureReportLayout();
 initShareWaHandlers();
 document.addEventListener('click',async event=>{
   const period=event.target.closest('[data-receipt-period]');
-  if(period){receiptGalleryAllDates=period.dataset.receiptPeriod==='all';renderReceiptGallery();return}
+  if(period){receiptGalleryDatesCustomized=period.dataset.receiptPeriod==='all';if(receiptGalleryDatesCustomized){$('receiptGalleryFrom').value='';$('receiptGalleryTo').value=''}renderReceiptGallery();return}
   const open=event.target.closest('[data-receipt-open]');
   if(open){openReceiptPhoto(open.dataset.receiptOpen);return}
   const transaction=event.target.closest('[data-receipt-transaction]');
@@ -3635,14 +3667,28 @@ document.addEventListener('click',async event=>{
 });
 $('receiptGalleryCategory')?.addEventListener('change',()=>renderReceiptGallery());
 $('receiptGallerySearch')?.addEventListener('input',()=>renderReceiptGallery());
-$('receiptGalleryResults')?.addEventListener('change',event=>{
-  const input=event.target.closest('[data-receipt-select]');if(!input)return;
-  if(input.checked)receiptGallerySelected.add(input.dataset.receiptSelect);
-  else receiptGallerySelected.delete(input.dataset.receiptSelect);
-  updateReceiptGallerySelection();
+$('receiptGalleryFrom')?.addEventListener('change',()=>{receiptGalleryDatesCustomized=true;renderReceiptGallery()});
+$('receiptGalleryTo')?.addEventListener('change',()=>{receiptGalleryDatesCustomized=true;renderReceiptGallery()});
+$('receiptGalleryShare')?.addEventListener('click',async()=>{
+  const files=receiptPreparedShareFiles;
+  if(!files.length||files.length!==receiptGalleryVisible.length)return;
+  try{
+    const result=await window.ReceiptGallery.shareSelectedReceipts(files,`${files.length} foto nota dari ArusKas`,navigator);
+    if(result==='unsupported')openReceiptShareFallback(files);
+  }catch(error){console.warn('[ArusKas] Berbagi foto gagal:',error);openReceiptShareFallback(files)}
 });
-$('receiptGalleryClearSelection')?.addEventListener('click',()=>{receiptGallerySelected.clear();renderReceiptGallery()});
 $('receiptPhotoClose')?.addEventListener('click',closeReceiptPhoto);
+$('receiptPhotoDownload')?.addEventListener('click',()=>{if(receiptPhotoPreparedFile)downloadReceiptFile(receiptPhotoPreparedFile)});
+$('receiptPhotoShare')?.addEventListener('click',async()=>{
+  if(!receiptPhotoPreparedFile)return;
+  const files=[receiptPhotoPreparedFile];
+  try{
+    const result=await window.ReceiptGallery.shareSelectedReceipts(files,'Foto nota dari ArusKas',navigator);
+    if(result==='unsupported')openReceiptShareFallback(files);
+  }catch(error){console.warn('[ArusKas] Berbagi foto gagal:',error);openReceiptShareFallback(files)}
+});
+$('receiptShareFallbackClose')?.addEventListener('click',()=>{closeModalLayer('receiptShareFallbackModal');receiptFallbackFiles=[]});
+$('receiptShareFallbackList')?.addEventListener('click',event=>{const button=event.target.closest('[data-receipt-download]');if(!button)return;const file=receiptFallbackFiles[Number(button.dataset.receiptDownload)];if(file)downloadReceiptFile(file)});
 $('receiptPhotoDelete')?.addEventListener('click',async()=>{
   if(!receiptPhotoCurrentId)return;
   const confirmed=await confirmBox({title:'Hapus foto nota?',message:'Foto nota ini akan dihapus dari perangkat. Transaksi terkait tetap ada.',okText:'Hapus foto',tone:'danger'});
