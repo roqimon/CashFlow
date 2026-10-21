@@ -500,7 +500,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
 
 :where(button,a,input,select,textarea):focus-visible { outline: 3px solid #d99974 !important; outline-offset: 2px; }
 @media (max-width: 980px) {
-  .screen { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important; }
+  .screen { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)) !important; }
   .nav {
     position: fixed !important;
     bottom: 0 !important;
@@ -516,7 +516,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
   }
 }
 @media (max-width: 430px) {
-  .screen { padding-left: 13px !important; padding-right: 13px !important; padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important; }
+  .screen { padding-left: 13px !important; padding-right: 13px !important; padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)) !important; }
   .balance { padding: 25px 22px 22px !important; }
   .balance .grid2 strong { font-size: 13.5px; }
   .nav {
@@ -835,10 +835,35 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .page[data-page="settings"]:not(.active) {
   display: none !important;
 }
+
 .page[data-page="settings"].active {
   display: flex !important;
   flex-direction: column;
   gap: 10px;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Ensure all scrollable app pages have sufficient bottom clearance to prevent bottom nav collision */
+.page {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+}
+.page[data-page="transactions"] {
+  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important;
+}
+.page[data-page="transactions"] #txList {
+  margin-bottom: 24px !important;
+}
+.page[data-page="home"] {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+}
+.page[data-page="report"] {
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+}
+.page[data-page="savings"] {
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+}
+.page[data-page="add"] {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Destination Chip Pos Anggaran Icon Sizing & Centering */
