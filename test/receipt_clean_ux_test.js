@@ -21,7 +21,7 @@ console.log('✔ Human-friendly Indonesian labels and controls verified');
 
 console.log('--- Test 3: Image Compression & Speed Optimization ---');
 assert.ok(html.includes('compressImage(file, 800, 0.7)'), 'Image compression uses 800px and 0.7 quality for fast upload');
-assert.ok(html.includes('maxOutputTokens:256') || html.includes('maxOutputTokens: 256'), 'Gemini API call uses maxOutputTokens limit for fast token response');
+assert.ok(html.includes('maxOutputTokens:2048') || html.includes('maxOutputTokens: 2048'), 'Gemini API allows enough tokens for product rows');
 assert.ok(html.includes('temperature:0.1') || html.includes('temperature: 0.1'), 'Gemini API call uses temperature 0.1 for deterministic concise output');
 console.log('✔ Speed optimization safeguards verified');
 

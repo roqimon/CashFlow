@@ -76,7 +76,7 @@ test('manual and AI paths archive only when there is a transaction', () => {
 
 test('manual save cannot duplicate a completed AI scan', async () => {
   const start = html.indexOf('async function saveScanManualTransaction()');
-  const end = html.indexOf('\nasync function importJsonData', start);
+  const end = html.indexOf('\nasync function importCsvData', start);
   assert.ok(start >= 0 && end > start);
   const context = { isScanning: false, receiptScanCompleted: true, $: () => { throw new Error('completed scan should not read the form'); } };
   vm.createContext(context);
@@ -86,7 +86,7 @@ test('manual save cannot duplicate a completed AI scan', async () => {
 
 test('manual save ignores a second click while the first photo is saving', async () => {
   const start = html.indexOf('async function saveScanManualTransaction()');
-  const end = html.indexOf('\nasync function importJsonData', start);
+  const end = html.indexOf('\nasync function importCsvData', start);
   const context = { isScanning: false, receiptScanCompleted: false, receiptSaveInProgress: true, $: () => { throw new Error('second click should not read the form'); } };
   vm.createContext(context);
   vm.runInContext(`${html.slice(start, end)}; this.saveScanManualTransaction=saveScanManualTransaction`, context);

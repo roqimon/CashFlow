@@ -1063,7 +1063,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <input type="file" id="receiptFileInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
 <input type="file" id="importCsvFileInput" accept=".csv,text/csv,application/vnd.ms-excel" style="display:none">
 <div class="modal" id="categoryModal" aria-hidden="true"><div class="sheet category-sheet" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle"><div class="row"><div><h3 id="categoryEditTitle" style="margin:0">Kategori</h3><p id="categoryEditSubtitle" class="muted" style="margin:3px 0 0;font-size:12px">Isi nama kategori, ikon, tipe, kode, dan catatan.</p></div><button class="icon-btn" id="categoryEditClose" type="button">×</button></div><input type="hidden" id="catEditOld"><div class="form-grid" style="margin-top:12px"><label>Kode<input id="catEditCode" placeholder="Kode pintasan (opsional)" autocomplete="off"></label><label>Nama kategori<input id="catEditName" placeholder="Nama kategori" autocomplete="off"></label><label>Ikon<input id="catEditIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Tipe<select id="catEditType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label class="wide">Catatan<input id="catEditNote" placeholder="Opsional" autocomplete="off"></label></div><div class="emoji-picker cat-edit-picker" id="catEditIconPicker"></div><div class="dialog-actions"><button class="ghost" id="categoryEditCancel" type="button">Batal</button><button class="primary" id="categoryEditSave" type="button">Simpan</button></div></div></div>
-<div class="modal confirm-modal" id="confirmModal" aria-hidden="true"><div class="sheet confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="confirm-icon" id="confirmIcon">!</div><h3 id="confirmTitle">Konfirmasi</h3><p id="confirmMessage">Lanjutkan tindakan ini?</p><div class="dialog-actions confirm-actions"><button class="ghost" id="confirmCancel" type="button">Batal</button><button class="primary" id="confirmOk" type="button">Ya, lanjutkan</button></div></div></div>
+<div class="modal confirm-modal" id="confirmModal" aria-hidden="true"><div class="sheet confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="confirm-icon" id="confirmIcon">!</div><h3 id="confirmTitle">Konfirmasi</h3><p id="confirmMessage" style="white-space:pre-line;max-height:45vh;overflow:auto">Lanjutkan tindakan ini?</p><div class="dialog-actions confirm-actions"><button class="ghost" id="confirmCancel" type="button">Batal</button><button class="primary" id="confirmOk" type="button">Ya, lanjutkan</button></div></div></div>
 <div class="modal" id="pocketManageModal" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true" style="max-width:440px">
     <div class="row" style="margin-bottom:8px">
@@ -1272,13 +1272,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="modal" id="receiptShareFallbackModal" aria-hidden="true"><div class="sheet receipt-share-fallback-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptShareFallbackTitle"><div class="row"><h3 id="receiptShareFallbackTitle" style="margin:0">Simpan foto untuk WhatsApp</h3><button class="icon-btn" id="receiptShareFallbackClose" type="button" aria-label="Tutup">×</button></div><p class="muted">Perangkat ini belum bisa membagikan semua foto langsung. Unduh tiap foto, lalu lampirkan dari WhatsApp.</p><div id="receiptShareFallbackList"></div><label class="receipt-share-fallback-text">Pesan yang akan dikirim<textarea id="receiptShareFallbackText" readonly rows="4"></textarea></label><button class="primary" id="receiptShareFallbackWhatsApp" type="button">Buka WhatsApp dengan pesan</button></div></div>
 <div class="modal" id="photoChoiceModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:380px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">📷</div><h3 style="margin:0 0 6px;font-size:18px">Pilih Sumber Foto</h3><p class="muted" style="margin:0 0 18px;font-size:12.5px;line-height:1.4">Ambil foto struk langsung dengan kamera HP atau pilih dari galeri.</p><div style="display:grid;gap:10px"><button class="primary" id="btnTakePhoto" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><span>📸</span><span>Ambil Foto (Kamera Langsung)</span></button><button class="ghost" id="btnPickGallery" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface2);border:1px solid var(--line)"><span>🖼️</span><span>Pilih dari Galeri / File</span></button><button class="ghost" id="btnCancelPhotoChoice" type="button" style="min-height:42px;font-size:13px;font-weight:700">Batal</button></div></div></div>
 <div class="modal" id="voiceNoticeModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:390px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">🎙️</div><h3 style="margin:0 0 6px;font-size:18px">Fitur Suara di HP</h3><p class="muted" style="margin:0 0 16px;font-size:12.5px;line-height:1.45">Browser HP membatasi akses mikrofon web pada jaringan <strong>HTTP lokal</strong>. Untuk mencatat dengan suara:</p><div style="display:grid;gap:10px;text-align:left"><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">1. Gunakan Dikte Keyboard HP (Paling Praktis)</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Ketuk kotak input teks, lalu tekan tombol <strong>Mikrofon (🎙️)</strong> pada keyboard bawaan HP Anda.</span></div><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">2. Buka Versi Resmi HTTPS</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Buka web resmi ber-HTTPS di mana izin mikrofon diizinkan penuh oleh Google Chrome.</span><a href="https://kas.bisabaca.web.id/" target="_blank" rel="noopener" class="primary" style="display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:8px 14px;border-radius:999px;font-size:12px;text-decoration:none">Buka https://kas.bisabaca.web.id/ ↗</a></div></div><div class="dialog-actions" style="margin-top:16px"><button class="primary" id="voiceNoticeClose" type="button" style="width:100%;min-height:44px">Saya Mengerti</button></div></div></div>
-<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
+<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Tanggal nota<input id="scanManualDate" type="date"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script src="./ui-icons.js?v=20261021.3"></script>
 <script src="./savings-core.js?v=20261021.2"></script>
 <script src="./receipt-store.js?v=20261021.1"></script>
 <script src="./receipt-gallery.js?v=20261021.4"></script>
+<script src="./receipt-analysis.js?v=20261021.1"></script>
 <script src="./receipt-backup.js?v=20261021.1"></script>
 <script>
 (function(){
@@ -1286,7 +1287,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.34').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.35').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -3568,12 +3569,12 @@ async function prepareReceiptBlob(file){
   for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
   return new Blob([bytes],{type:'image/jpeg'});
 }
-async function persistScannedReceipt({file,items}){
+async function persistScannedReceipt({file,items,merchant}){
   const validItems=items.filter(item=>Number(item.amount)>0);
   if(!validItems.length)throw new Error('Tidak ada transaksi yang valid untuk disimpan.');
   const receiptId=id();
   const blob=await prepareReceiptBlob(file);
-  const record={id:receiptId,blob,capturedAt:new Date().toISOString(),title:validItems[0].title||'Nota',categoryNames:[...new Set(validItems.map(item=>item.category).filter(Boolean))],transactionIds:validItems.map(item=>item.id)};
+  const record={id:receiptId,blob,capturedAt:validItems[0].createdAt||new Date().toISOString(),title:merchant||validItems[0].title||'Nota',categoryNames:[...new Set(validItems.map(item=>item.category).filter(Boolean))],transactionIds:validItems.map(item=>item.id)};
   await window.ReceiptStore.put(record);
   const linked=validItems.map(item=>({...item,receiptId}));
   if(!saveTX([...linked,...getTX()])){
@@ -3582,13 +3583,13 @@ async function persistScannedReceipt({file,items}){
   }
   return {receiptId,items:linked};
 }
-async function saveReceiptWithChoice(items,file){
+async function saveReceiptWithChoice(items,file,merchant){
   if(!file){
     if(!saveTX([...items,...getTX()]))throw new Error('Gagal menyimpan transaksi.');
     return {receiptId:null,items};
   }
   while(true){
-    try{return await persistScannedReceipt({file,items})}
+    try{return await persistScannedReceipt({file,items,merchant})}
     catch(error){
       console.error('[ArusKas] Gagal mengarsipkan nota:',error);
       const retry=await confirmBox({title:'Foto nota belum tersimpan',message:'Penyimpanan foto gagal. Coba lagi, atau simpan transaksi tanpa fotonya.',okText:'Coba Lagi',cancelText:'Simpan tanpa foto',tone:'safe'});
@@ -3606,6 +3607,7 @@ function setScanningState(scanning){
   if($('scanManualSaveBtn'))$('scanManualSaveBtn').disabled=scanning||receiptScanCompleted;
 }
 
+let currentReceiptUploadedAt=null;
 let currentReceiptFile=null;
 let receiptSelectionToken=0;
 let receiptScanCompleted=false;
@@ -3618,9 +3620,11 @@ function openPhotoChoice(){
 async function handleReceiptFileSelected(file){
   if(!file) return;
   receiptSelectionToken++;
+  currentReceiptUploadedAt=new Date();
   currentReceiptFile=file;
   receiptScanCompleted=false;
   if($('scanManualTitle'))$('scanManualTitle').value='';
+  if($('scanManualDate'))$('scanManualDate').value=dateInput(currentReceiptUploadedAt);
   if($('scanManualAmount'))$('scanManualAmount').value='';
   const reader=new FileReader();
   reader.onload=e=>{
@@ -3673,6 +3677,7 @@ async function executeReceiptAiScan(file, apiKey){
   try{
     const base64Data=await compressImage(file, 800, 0.7);
     const pList=getPockets();
+    const activeCategories=getCatList();
     const activePocketsInfo=pList.length?pList.map(p=>`${p.name} (id: ${p.id})`).join(', '):'Belum ada pos khusus';
     const activeST=getActiveSTSession();
     const activeSTInfo=activeST?`Tersedia Sesi Dinas: ${activeST.label} (id: ${activeST.id})`:'Tidak ada sesi dinas aktif';
@@ -3683,10 +3688,11 @@ async function executeReceiptAiScan(file, apiKey){
             text:'Anda adalah asisten pencatat transaksi keuangan otomatis. Analisa gambar bukti nota / struk / mutasi bank / QRIS / transfer ini.\n' +
                  'Daftar Pos Anggaran aktif: ' + activePocketsInfo + '.\n' +
                  'Status Sesi Dinas: ' + activeSTInfo + '.\n' +
-                 'Ekstrak seluruh transaksi yang ada menjadi format JSON murni TANPA markdown/backticks.\n' +
-                 'Format respon wajib berupa satu array objek JSON (atau objek tunggal jika 1 transaksi):\n' +
-                 '[{"title": "Nama Toko / Penerima / Keperluan", "amount": 12345, "category": "Kategori", "pocketId": "id pos yang cocok atau bebas", "source": "personal atau st", "type": "expense" atau "income", "note": "catatan singkat"}]\n' +
-                 'Hanya respon dengan JSON valid.'
+                 'Kategori yang tersedia: ' + activeCategories.join(', ') + '.\n' +
+                 'Baca tanggal yang tercetak pada nota. Jika tidak jelas, isi null. Jangan memakai tanggal hari ini sebagai tebakan.\n' +
+                 'Untuk nota belanja, baca total yang benar-benar dibayar dan rincian produk. amount tiap produk adalah harga akhir baris (kuantitas dikali harga, sesudah diskon baris). Jangan masukkan subtotal, total, uang tunai, kembalian, pajak, biaya, atau diskon sebagai produk. Bila baris produk tidak jelas, isi items array kosong. Jangan menebak nama atau harga.\n' +
+                 'Balas satu objek JSON murni: {"merchant":"Nama toko/penerima","receiptDate":"YYYY-MM-DD atau null","total":12345,"type":"expense atau income","items":[{"title":"Nama produk","amount":1000,"category":"salah satu kategori yang tersedia"}]}.\n' +
+                 'Jika total tidak jelas, isi null. Hanya respon JSON valid.'
           },
           {inlineData:{mimeType:'image/jpeg',data:base64Data}}
         ]
@@ -3694,7 +3700,7 @@ async function executeReceiptAiScan(file, apiKey){
       generationConfig:{
         responseMimeType:'application/json',
         temperature:0.1,
-        maxOutputTokens:256
+        maxOutputTokens:2048
       }
     };
     const data=await callGeminiWithRollingKeys(payload);
@@ -3705,29 +3711,29 @@ async function executeReceiptAiScan(file, apiKey){
       cleanJson=cleanJson.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
     }
     const parsed=JSON.parse(cleanJson);
-    const items=Array.isArray(parsed)?parsed:[parsed];
-    if(!items.length) throw new Error('Tidak ada transaksi terdeteksi dalam foto.');
+    const analysis=window.ReceiptAnalysis.chooseTransactions(parsed,activeCategories);
+    if(analysis.mode==='manual') throw new Error('Total nota belum terbaca.');
     if(selectionToken!==receiptSelectionToken||file!==currentReceiptFile)return;
 
     const pendingItems=[];
-    const nowIso=new Date().toISOString();
+    const nowIso=window.ReceiptAnalysis.receiptDate(parsed.receiptDate,currentReceiptUploadedAt||new Date());
     let countSaved=0, firstSaved=null;
-    items.forEach(it=>{
+    analysis.items.forEach(it=>{
       const rawTitle=String(it.title||'Nota').trim();
       const cleanTitle=sanitizeBankNotificationText(rawTitle);
       const amount=Number(it.amount)||0;
       if(amount<=0) return;
-      const type=it.type==='income'?'income':'expense';
+      const type=parsed.type==='income'?'income':'expense';
       let cat=String(it.category||'').trim();
-      if(!cat) cat=smartInferCat(cleanTitle, type, getCatList(), getTX());
+      if(!cat) cat=analysis.mode==='total'?(type==='income'?'Pemasukan':'Belanja'):smartInferCat(cleanTitle, type, activeCategories, getTX());
       cat=activeCategory(cat, type);
       const catIcon=icon(cat, type);
-      const isST=(it.source==='st')||stMode;
+      const isST=stMode;
       const src=isST?'st':'personal';
       const sessId=src==='st'?(it.stSessionId||getActiveSTSession()?.id||null):null;
       const reimb=(src==='st'&&type==='expense')?'pending':null;
-      const itemNote=String(it.note||'Foto Struk').trim();
-      const itemPocketId=src==='personal'?(it.pocketId?String(it.pocketId).trim():inferPocket(cat,cleanTitle)):null;
+      const itemNote='Foto Struk · '+analysis.merchant;
+      const itemPocketId=src==='personal'?inferPocket(cat,cleanTitle):null;
 
       const newItem=tx({
         title:cleanTitle||'Transaksi',
@@ -3744,16 +3750,19 @@ async function executeReceiptAiScan(file, apiKey){
         createdAt:nowIso
       });
       pendingItems.push(newItem);
-      learnCategory(cleanTitle, cat);
-      learnTitle(cleanTitle, newItem.title);
       if(!firstSaved) firstSaved=newItem;
       countSaved++;
     });
 
     if(countSaved>0){
-      const saved=await saveReceiptWithChoice(pendingItems,file);
+      const preview=pendingItems.map(item=>`${item.title} · ${item.category} · ${money(item.amount)}`).join('\n');
+      const approved=await confirmBox({title:'Periksa hasil nota',message:`${analysis.merchant} · ${dateInput(nowIso)}\n${analysis.mode==='items'?'Rincian produk':'Total nota (rincian tidak lengkap)'} · ${money(parsed.total)}\n\n${preview}\n\nPeriksa kembali foto dan kategori sebelum menyimpan.`,okText:'Simpan transaksi',cancelText:'Batal',tone:'safe'});
+      if(selectionToken!==receiptSelectionToken||file!==currentReceiptFile)return;
+      if(!approved){statusBox.textContent='Hasil nota belum disimpan. Isi transaksi secara manual jika perlu.';return}
+      const saved=await saveReceiptWithChoice(pendingItems,file,analysis.merchant);
       if(selectionToken!==receiptSelectionToken)return;
       currentReceiptFile=null;
+      pendingItems.forEach(item=>{learnCategory(item.title,item.category);learnTitle(item.title,item.title)});
       receiptScanCompleted=true;
       try{ render(); }catch(renderErr){ console.warn('Render non-fatal:', renderErr); }
       if(firstSaved){
@@ -3763,7 +3772,7 @@ async function executeReceiptAiScan(file, apiKey){
       }
       if(statusBox){
         statusBox.className='pratinjau';
-        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}!</strong><span class="muted" style="display:block;margin-top:2px">${firstSaved.title}: ${money(firstSaved.amount)}</span>`;
+        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}!</strong><span class="muted" style="display:block;margin-top:2px">${esc(analysis.merchant)} · ${money(parsed.total)} · ${esc(dateInput(nowIso))}</span>`;
       }
       toast(`✅ Berhasil dicatat: ${firstSaved.title} (${money(firstSaved.amount)})`);
       setTimeout(()=>{if(selectionToken===receiptSelectionToken)closeModalLayer('scanModal')}, 1100);
@@ -3810,7 +3819,7 @@ async function saveScanManualTransaction(){
     stSessionId:sessId,
     reimburseStatus:reimb,
     rawInput:'foto: '+titleVal,
-    createdAt:new Date().toISOString()
+    createdAt:window.ReceiptAnalysis.receiptDate($('scanManualDate')?.value,currentReceiptUploadedAt||new Date())
   });
   receiptSaveInProgress=true;
   $('scanManualSaveBtn').disabled=true;
