@@ -1,7 +1,7 @@
 const fs = require('fs');
 const assert = require('assert');
 
-console.log('=== TEST SUITE: Home Header Cleanup, Setting Navigation & Full Settings Page (v43) ===\n');
+console.log('=== TEST SUITE: Home Header Cleanup, Setting Navigation & Full Settings Page (v44) ===\n');
 
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('warm-ui.css', 'utf8');
@@ -37,14 +37,14 @@ assert.ok(html.includes('data-action="clear-data"'), 'Clear all data button pres
 assert.ok(!html.includes('Masukkan Gemini API Key'), 'Gemini API Key input is removed from visible UI');
 console.log('✔ Dedicated Settings page successfully contains clean, modern configuration cards without API Key jargon!');
 
-// Test 4: Version and Service Worker Integrity (v43)
-console.log('--- Test 4: Version and Service Worker v43 ---');
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v43</span>'), 'HTML version badge bumped to v43');
-assert.ok(html.includes("u.searchParams.set('updated','v43')"), 'Force update parameter set to v43');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v43'"), 'Service worker CACHE_NAME bumped to v43');
-assert.ok(html.includes('warm-ui.css?v=20261021.23'), 'HTML warm-ui.css query bumped');
-assert.ok(sw.includes('./warm-ui.css?v=20261021.23'), 'SW warm-ui.css query bumped');
-console.log('✔ App version and Service Worker cache successfully synchronized to v43!');
+// Test 4: Version and Service Worker Integrity (v44)
+console.log('--- Test 4: Version and Service Worker v44 ---');
+assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v44</span>'), 'HTML version badge bumped to v44');
+assert.ok(html.includes("u.searchParams.set('updated','v44')"), 'Force update parameter set to v44');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v44'"), 'Service worker CACHE_NAME bumped to v44');
+assert.ok(html.includes('warm-ui.css?v=20261021.24'), 'HTML warm-ui.css query bumped');
+assert.ok(sw.includes('./warm-ui.css?v=20261021.24'), 'SW warm-ui.css query bumped');
+console.log('✔ App version and Service Worker cache successfully synchronized to v44!');
 
 // Test 5: Isolation of Settings Page (Prevent leaking across other pages)
 console.log('--- Test 5: Page Isolation & Specificity Guard ---');
@@ -52,6 +52,14 @@ assert.ok(css.includes('.page:not(.active) {\n  display: none !important;'), 'In
 assert.ok(css.includes('.page[data-page="settings"]:not(.active) {\n  display: none !important;'), 'Settings page explicitly hidden when not active');
 assert.ok(css.includes('.page[data-page="settings"].active {\n  display: flex !important;'), 'Settings page flex only when active');
 console.log('✔ Settings page strictly hidden when inactive, preventing display leaks!');
+
+// Test 6: Precision Centering of Pos Anggaran Icons
+console.log('--- Test 6: Precision Centering of Pos Anggaran Icons ---');
+assert.ok(css.includes('.pocket-icon {') && css.includes('display: grid !important;') && css.includes('place-items: center !important;'), 'Pocket icons use grid place-items: center');
+assert.ok(css.includes('.pocket-icon .category-svg {') && css.includes('margin: auto !important;'), 'Pocket SVG icons centered with auto margin');
+assert.ok(css.includes('.pocket-icon-trigger {') && css.includes('display: grid !important;'), 'Pocket icon modal trigger centered');
+assert.ok(css.includes('.destination-chip .category-svg {') && css.includes('width: 16px !important;'), 'Destination chips have constrained icon dimensions');
+console.log('✔ Pocket icon containers and SVGs strictly mathematically centered!');
 
 console.log('\n=======================================');
 console.log('All Setting Navigation & Page Tests PASSED! 🎉');

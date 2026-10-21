@@ -221,17 +221,18 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .page[data-page="shortcut"] > .card:last-child h3 { font-size: 18px !important; letter-spacing: -.035em; }
 #pocketManager { margin-top: 12px !important; }
 #pocketManager .pocket-manage-item { background: var(--surface) !important; border-color: var(--line) !important; border-radius: 17px !important; }
-.pocket-icon { box-sizing: border-box; width: 32px; min-width: 32px; max-width: 32px; height: 32px; flex: 0 0 32px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 10px; background: var(--accent-soft); line-height: 1; }
-.pocket-icon .category-svg { box-sizing: border-box; width: 20px; min-width: 20px; max-width: 20px; height: 20px; max-height: 20px; flex: 0 0 20px; object-fit: contain; margin: 0; }
-.pocket-icon > span { display: grid; width: 100%; height: 100%; place-items: center; overflow: hidden; font-size: 18px; line-height: 1; }
+.pocket-icon { box-sizing: border-box; width: 36px; min-width: 36px; max-width: 36px; height: 36px; flex: 0 0 36px; aspect-ratio: 1 / 1; display: grid !important; place-items: center !important; place-content: center !important; overflow: hidden; border-radius: 12px; background: var(--accent-soft); line-height: 0 !important; padding: 0 !important; margin: 0 !important; vertical-align: middle; }
+.pocket-icon .category-svg { box-sizing: border-box; width: 22px !important; min-width: 22px !important; max-width: 22px !important; height: 22px !important; max-height: 22px !important; display: block !important; object-fit: contain !important; margin: auto !important; padding: 0 !important; transform: none; }
+.pocket-icon > span { display: flex !important; align-items: center !important; justify-content: center !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; font-size: 19px !important; line-height: 1 !important; text-align: center !important; }
 .pocket-form-name-icon { display: grid; grid-template-columns: minmax(0,1fr) 72px; align-items: start; gap: 10px; }
 .pocket-form-name-icon > label { display: grid; min-width: 0; gap: 5px; color: var(--ink); font-size: 12px; font-weight: 750; }
 .pocket-form-name-icon > label small { color: var(--muted); font-size: 11px; font-weight: 400; line-height: 1.35; }
 .pocket-icon-field { justify-items: center; text-align: center; }
-.pocket-icon-trigger { display: grid; width: 54px; min-width: 54px; height: 54px; min-height: 54px !important; box-sizing: border-box; place-items: center; margin: 0 auto; padding: 5px !important; border: 1px solid var(--line) !important; border-radius: 16px !important; background: var(--surface) !important; color: var(--ink) !important; cursor: pointer; }
+.pocket-icon-trigger { display: grid !important; place-items: center !important; place-content: center !important; width: 56px; min-width: 56px; height: 56px; min-height: 56px !important; box-sizing: border-box; margin: 0 auto; padding: 0 !important; border: 1px solid var(--line) !important; border-radius: 16px !important; background: var(--surface) !important; color: var(--ink) !important; cursor: pointer; }
 .pocket-icon-trigger:focus-visible { outline: 3px solid color-mix(in srgb,var(--green) 34%,transparent); outline-offset: 2px; }
-.pocket-icon-preview { width: 40px; min-width: 40px; max-width: 40px; height: 40px; flex: 0 0 40px; border-radius: 12px; }
-.pocket-icon-preview .category-svg { width: 24px; min-width: 24px; max-width: 24px; height: 24px; max-height: 24px; flex: 0 0 24px; }
+.pocket-icon-preview { width: 44px !important; min-width: 44px !important; max-width: 44px !important; height: 44px !important; flex: 0 0 44px !important; border-radius: 13px !important; display: grid !important; place-items: center !important; place-content: center !important; margin: auto !important; }
+.pocket-icon-preview .category-svg { width: 26px !important; min-width: 26px !important; max-width: 26px !important; height: 26px !important; max-height: 26px !important; margin: auto !important; display: block !important; }
+.pocket-icon-preview > span { font-size: 24px !important; display: flex !important; align-items: center !important; justify-content: center !important; line-height: 1 !important; }
 #shortcutList { padding: 8px !important; }
 #shortcutList .shortcut-item { border-radius: 16px !important; background: var(--surface) !important; border: 1px solid var(--line) !important; margin-bottom: 8px; padding: 12px !important; }
 .shortcut-icon { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); }
@@ -547,9 +548,10 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .savings-calendar-footer button { min-height: 38px; border: 0; border-radius: 12px; padding: 0 10px; background: transparent; color: var(--green2); font-size: 11px; font-weight: 850; }
 .savings-calendar-footer button:last-child { background: var(--accent-soft); }
 .pocket-icon-picker.emoji-picker.open { box-sizing: border-box; width: 100%; max-height: min(38vh,320px) !important; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); background: var(--surface) !important; }
-.pocket-icon-picker .icon-grid { grid-template-columns: repeat(5,minmax(0,1fr)); }
-.pocket-icon-picker .icon-grid button { min-height: 60px; }
-.pocket-icon-picker .icon-grid img { flex: 0 0 23px; }
+.pocket-icon-picker .icon-grid { grid-template-columns: repeat(5,minmax(0,1fr)) !important; gap: 6px !important; padding: 4px 2px !important; }
+.pocket-icon-picker .icon-grid button { min-height: 64px !important; padding: 7px 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; gap: 4px !important; border-radius: 13px !important; background: var(--surface) !important; }
+.pocket-icon-picker .icon-grid img { width: 24px !important; height: 24px !important; flex: 0 0 24px !important; object-fit: contain !important; margin: 0 auto !important; display: block !important; }
+.pocket-icon-picker .icon-grid span { display: block !important; width: 100% !important; font-size: 9.5px !important; font-weight: 700 !important; text-align: center !important; line-height: 1.1 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
 .savings-inline-error { margin: 9px 0 0; border-radius: 12px; padding: 9px 11px; background: var(--danger-bg); color: var(--danger); font-size: 12px; line-height: 1.4; }
 .savings-entry-type { display: grid; grid-template-columns: 1fr 1fr; margin: 13px 0; padding: 4px; border-radius: 14px; background: var(--surface3); }
 .savings-entry-type button { min-height: 39px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 800; }
@@ -713,4 +715,45 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   display: flex !important;
   flex-direction: column;
   gap: 10px;
+}
+
+/* Destination Chip Pos Anggaran Icon Sizing & Centering */
+.destination-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface2) !important;
+  color: var(--muted) !important;
+  cursor: pointer !important;
+  transition: all .15s ease !important;
+  user-select: none !important;
+  flex-shrink: 0 !important;
+}
+.destination-chip span:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+}
+.destination-chip .category-svg {
+  width: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  height: 16px !important;
+  max-height: 16px !important;
+  object-fit: contain !important;
+  margin: auto !important;
+  display: block !important;
+}
+.destination-chip.active .category-svg {
+  filter: brightness(0) invert(1) !important;
 }
