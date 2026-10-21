@@ -762,7 +762,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <strong style="font-size:15px;letter-spacing:-.02em">Pos anggaran</strong>
               <p class="muted" id="budgetSummaryText" style="margin:2px 0 0;font-size:12px">Ringkasan pos pengeluaran</p>
             </div>
-            <button class="text-btn" data-action="manage-pockets" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Atur pos</button>
+            <div style="display:flex;gap:8px;align-items:center"><button class="text-btn" data-action="sweep-pocket-modal" type="button" style="font-size:12px;font-weight:800;color:var(--green);background:rgba(31,138,91,0.08);padding:4px 10px;border-radius:8px">🧹 Alokasikan Sisa</button><button class="text-btn" data-action="manage-pockets" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Atur pos</button></div>
           </div>
           <div id="budgetPocketList" style="display:grid;gap:8px"></div>
         </section>
@@ -958,7 +958,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v51</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v52</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1054,7 +1054,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 </div>
 <div class="modal" id="savingsGoalModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsGoalModalTitle"><div class="row"><div><h3 id="savingsGoalModalTitle" style="margin:0">Buat tujuan</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Pilih tujuan, lalu isi target yang ingin dicapai.</p></div><button class="icon-btn" data-action="close-savings-goal" type="button" aria-label="Tutup">×</button></div><div class="savings-presets" id="savingsPresets"><button type="button" data-savings-preset="qurban"><img src="./icons/category/savings-sheep.svg" alt=""><span>Qurban</span></button><button type="button" data-savings-preset="education"><img src="./icons/category/graduation-cap.svg" alt=""><span>Pendidikan</span></button><button type="button" data-savings-preset="emergency"><img src="./icons/category/piggy-bank.svg" alt=""><span>Dana darurat</span></button><button type="button" data-savings-preset="travel"><img src="./icons/category/suitcase.svg" alt=""><span>Liburan</span></button></div><div class="savings-icon-choice"><span>Ikon tujuan</span><button class="savings-icon-trigger" id="savingsGoalIconButton" data-action="toggle-savings-icon-picker" type="button" aria-label="Pilih ikon tujuan"><span id="savingsGoalIconPreview"></span><span id="savingsGoalIconName">Tabungan</span><span aria-hidden="true">&#8964;</span></button></div><div class="emoji-picker savings-icon-picker" id="savingsCustomIconPicker" style="display:none;width:100%"></div><form id="savingsGoalForm" autocomplete="off"><input type="hidden" id="savingsGoalId"><input type="hidden" id="savingsGoalIconKey" value="general"><input type="hidden" id="savingsGoalCustomIcon" value=""><div class="form-grid savings-form-grid"><label class="wide">Nama tujuan<input id="savingsGoalName" maxlength="80" required placeholder="Contoh: Qurban 2027"></label><label class="wide">Target tabungan (Rp)<input id="savingsGoalTarget" inputmode="numeric" required placeholder="Contoh: 3.500.000"></label><div class="wide savings-date-field"><span class="savings-date-label">Target tanggal <span class="muted">(opsional)</span></span><input id="savingsGoalDate" type="hidden"><div class="savings-date-control"><button class="savings-date-trigger" id="savingsCalendarToggle" type="button" aria-expanded="false" aria-controls="savingsCalendarPanel"><span class="savings-date-icon" aria-hidden="true"><img src="./icons/category/calendar.svg" alt=""></span><span class="savings-date-copy"><strong id="savingsDateSelectedLabel">Belum ada tanggal</strong><small id="savingsDateHint">Ketuk untuk pilih target</small></span><span class="savings-date-chevron" aria-hidden="true">⌄</span></button><button type="button" class="savings-date-clear" id="savingsDateClear" aria-label="Hapus target tanggal" title="Hapus target tanggal" style="display:none">×</button></div><div class="savings-calendar-panel" id="savingsCalendarPanel" hidden><div class="savings-calendar-shortcuts"><button type="button" data-savings-shortcut="3m">+3 Bulan</button><button type="button" data-savings-shortcut="6m">+6 Bulan</button><button type="button" data-savings-shortcut="eoy">Akhir Tahun</button><button type="button" data-savings-shortcut="1y">+1 Tahun</button></div><div class="savings-calendar-heading"><button type="button" data-savings-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="savingsCalendarMonthLabel"></strong><button type="button" data-savings-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="savingsCalendarGrid" role="grid" aria-label="Pilih tanggal target"></div><div class="savings-calendar-footer"><button type="button" data-savings-calendar-action="clear">Tanpa tanggal</button><button type="button" data-savings-calendar-action="today">Hari ini</button></div></div></div></div><p class="savings-inline-error" id="savingsGoalError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-goal" type="button">Batal</button><button class="primary" type="submit">Simpan tujuan</button></div></form></div></div>
 <div class="modal" id="savingsDetailModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsDetailTitle"><div id="savingsDetailContent"></div></div></div>
-<div class="modal" id="savingsEntryModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsEntryTitle"><div class="row"><div><h3 id="savingsEntryTitle" style="margin:0">Setor tabungan</h3><p class="muted" id="savingsEntryGoalName" style="margin:3px 0 0;font-size:12px"></p></div><button class="icon-btn" data-action="close-savings-entry" type="button" aria-label="Tutup">×</button></div><div class="seg savings-entry-type" id="savingsEntryType"><button class="active" type="button" data-savings-entry-type="deposit">Setor</button><button type="button" data-savings-entry-type="withdrawal">Ambil dana</button></div><form id="savingsEntryForm" autocomplete="off"><input type="hidden" id="savingsEntryGoalId"><input type="hidden" id="savingsEntryKind" value="deposit"><div class="form-grid savings-form-grid"><label class="wide">Nominal (Rp)<input id="savingsEntryAmount" inputmode="numeric" required placeholder="Contoh: 100.000"></label><label class="wide">Tanggal<input id="savingsEntryDate" type="date" required></label><label class="wide">Catatan <span class="muted">(opsional)</span><input id="savingsEntryNote" maxlength="280" placeholder="Contoh: dari uang belanja minggu ini"></label></div><p class="savings-inline-error" id="savingsEntryError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-entry" type="button">Batal</button><button class="primary" type="submit" id="savingsEntrySave">Simpan setoran</button></div></form></div></div>
+<div class="modal" id="savingsEntryModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="savingsEntryTitle"><div class="row"><div><h3 id="savingsEntryTitle" style="margin:0">Setor tabungan</h3><p class="muted" id="savingsEntryGoalName" style="margin:3px 0 0;font-size:12px"></p></div><button class="icon-btn" data-action="close-savings-entry" type="button" aria-label="Tutup">×</button></div><div class="seg savings-entry-type" id="savingsEntryType"><button class="active" type="button" data-savings-entry-type="deposit">Setor</button><button type="button" data-savings-entry-type="withdrawal">Ambil dana</button></div><form id="savingsEntryForm" autocomplete="off"><input type="hidden" id="savingsEntryGoalId"><input type="hidden" id="savingsEntryKind" value="deposit"><div class="form-grid savings-form-grid" style="margin-top:6px"><div class="wide" id="savingsEntrySourceGroup"><span style="display:block;font-size:12px;font-weight:750;margin-bottom:5px">Sumber Dana</span><div class="source-seg" id="savingsSourceSeg" style="margin-bottom:8px"><button type="button" class="active" data-savings-source="free">💵 Dana Bebas</button><button type="button" data-savings-source="pocket">📦 Sisa Pos</button><button type="button" data-savings-source="goal">🏦 Tabungan Lain</button></div><div id="savingsPocketSourceWrap" style="display:none;background:var(--surface2);padding:10px 12px;border-radius:14px;border:1px solid var(--line);margin-bottom:8px"><label style="display:grid;gap:4px;font-size:11.5px;font-weight:700">Pilih Pos Anggaran<select id="savingsPocketSelect" style="width:100%"></select></label><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span id="savingsPocketBalanceLabel" class="muted" style="font-size:11px">Sisa jatah: <strong>Rp 0</strong></span><button type="button" class="text-btn" id="savingsPocketUseAllBtn" style="font-size:11px;font-weight:800;color:var(--green)">Pakai Semua Sisa</button></div></div><div id="savingsGoalSourceWrap" style="display:none;background:var(--surface2);padding:10px 12px;border-radius:14px;border:1px solid var(--line);margin-bottom:8px"><label style="display:grid;gap:4px;font-size:11.5px;font-weight:700">Pilih Tabungan Asal<select id="savingsGoalSourceSelect" style="width:100%"></select></label><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span id="savingsGoalSourceBalanceLabel" class="muted" style="font-size:11px">Saldo tersedia: <strong>Rp 0</strong></span><button type="button" class="text-btn" id="savingsGoalSourceUseAllBtn" style="font-size:11px;font-weight:800;color:var(--green)">Pindahkan Semua</button></div></div></div><label class="wide">Nominal (Rp)<input id="savingsEntryAmount" inputmode="numeric" required placeholder="Contoh: 100.000"></label><label class="wide">Tanggal<input id="savingsEntryDate" type="date" required></label><label class="wide">Catatan <span class="muted">(opsional)</span><input id="savingsEntryNote" maxlength="280" placeholder="Contoh: dari uang belanja minggu ini"></label></div><p class="savings-inline-error" id="savingsEntryError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-entry" type="button">Batal</button><button class="primary" type="submit" id="savingsEntrySave">Simpan setoran</button></div></form></div></div>
+<div class="modal" id="sweepPocketModal" aria-hidden="true"><div class="sheet savings-sheet" role="dialog" aria-modal="true" aria-labelledby="sweepPocketModalTitle"><div class="row"><div><h3 id="sweepPocketModalTitle" style="margin:0">Alokasikan Sisa Pos</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Pindahkan sisa uang jatah pos ke tabungan impian.</p></div><button class="icon-btn" data-action="close-sweep-modal" type="button" aria-label="Tutup">×</button></div><div class="sweep-summary-card" style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:var(--muted)">Total Sisa Pos Bulan Ini</span><strong id="sweepTotalSurplusAmount" style="font-size:16px;color:var(--green)">Rp 0</strong></div></div><form id="sweepPocketForm" autocomplete="off"><div class="form-grid savings-form-grid"><label class="wide">Pilih Pos yang Mau Dialokasikan<select id="sweepPocketSelect" style="width:100%"></select></label><label class="wide">Pindahkan ke Tujuan Tabungan<select id="sweepGoalSelect" style="width:100%"></select></label><label class="wide">Nominal Alokasi (Rp)<input id="sweepAmount" inputmode="numeric" required placeholder="Contoh: 100.000"></label><div style="display:flex;justify-content:space-between;align-items:center;margin-top:-6px;margin-bottom:6px"><span id="sweepPocketAvailableHint" class="muted" style="font-size:11px">Maksimal sisa pos: Rp 0</span><button type="button" class="text-btn" id="sweepMaxBtn" style="font-size:11.5px;font-weight:800;color:var(--green)">Gunakan Semua Sisa</button></div><label class="wide">Catatan <span class="muted">(opsional)</span><input id="sweepNote" maxlength="280" placeholder="Alokasi sisa pos anggaran"></label></div><p class="savings-inline-error" id="sweepError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-sweep-modal" type="button">Batal</button><button class="primary" type="submit" id="sweepSaveBtn">Pindahkan ke Tabungan</button></div></form></div></div>
 <div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txModalTitle" style="margin:0">Rincian Transaksi</h3><button class="icon-btn" data-action="close-modal" type="button">×</button></div><div id="txDetail"></div><div id="txEdit" style="display:none" class="form-grid"></div><div class="dialog-actions" id="detailActions"><button class="ghost danger" data-action="delete-tx" type="button">Hapus</button><button class="ghost" data-action="edit-tx" type="button">Edit</button><button class="ghost" data-action="close-modal" type="button">Back</button></div><div class="dialog-actions" id="editActions" style="display:none"><button class="ghost danger" data-action="cancel-edit" type="button">Batal</button><button class="primary" data-action="save-edit" type="button">Simpan</button></div></div></div>
 <div class="modal" id="manualModal"><div class="sheet"><div class="row"><h3 style="margin:0">Input Manual</h3><button class="icon-btn" data-action="close-manual" type="button">×</button></div><div class="source-seg" id="manSourceSeg"><button data-source="personal" class="active" type="button">💵 Pribadi</button><button data-source="st" type="button">📋 ST</button></div><div class="form-grid" style="margin-top:8px"><label>Nama<input id="manTitle" placeholder="Nama transaksi" autocomplete="off"></label><label>Nominal<input id="manAmount" inputmode="numeric" placeholder="Contoh: 50.000" autocomplete="off"></label><label>Tipe<select id="manType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label>Kategori<select id="manCategory" style="margin-bottom:4px"></select><input id="manCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label><label>Ikon<input id="manIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Catatan<input id="manNote" placeholder="Opsional" autocomplete="off"></label></div><div class="dialog-actions"><button class="ghost" data-action="close-manual" type="button">Batal</button><button class="primary" data-action="save-manual" type="button">Simpan</button></div></div></div>
 <input type="file" id="cameraDirectInput" accept="image/*" capture="environment" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
@@ -1995,7 +1996,10 @@ function renderBudgetPockets(){
           <span class="pocket-icon">${renderIcon(p.icon||'❓')}</span>
           <strong style="font-size:13px;letter-spacing:-.01em">${esc(p.name)}</strong>
         </div>
-        <span style="font-size:11.5px;font-weight:850;color:${usage.isOver?'#ef4444':'var(--ink)'}">${usage.percent}%</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${(!usage.isOver && usage.remaining > 0) ? `<button type="button" class="text-btn" data-action="sweep-pocket-modal" data-pocket-id="${esc(p.id)}" style="font-size:11px;font-weight:800;color:var(--green);padding:2px 8px;background:rgba(31,138,91,0.08);border-radius:6px">Pindah Sisa ›</button>` : ''}
+          <span style="font-size:11.5px;font-weight:850;color:${usage.isOver?'#ef4444':'var(--ink)'}">${usage.percent}%</span>
+        </div>
       </div>
       <div style="width:100%;height:7px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden;margin-bottom:6px">
         <div style="width:${safePercent}%;height:100%;background:${barColor};border-radius:99px;transition:width .3s ease"></div>
@@ -2275,33 +2279,378 @@ function saveSavingsGoal(event){
     editingSavingsGoalReturn='';
   }catch(err){error.textContent=err.message||'Periksa kembali nama, nominal, dan tanggal tujuan.';error.hidden=false}
 }
-function openSavingsEntry(goalId,type='deposit'){
+let savingsActiveSource = 'free';
+
+function updateSavingsSourceUI(){
+  const isDeposit = $('savingsEntryKind').value === 'deposit';
+  const group = $('savingsEntrySourceGroup');
+  if(!group) return;
+  group.style.display = isDeposit ? 'block' : 'none';
+  if(!isDeposit) return;
+
+  document.querySelectorAll('#savingsSourceSeg button').forEach(b => {
+    b.classList.toggle('active', b.dataset.savingsSource === savingsActiveSource);
+  });
+
+  const pWrap = $('savingsPocketSourceWrap');
+  const gWrap = $('savingsGoalSourceWrap');
+  if(pWrap) pWrap.style.display = savingsActiveSource === 'pocket' ? 'block' : 'none';
+  if(gWrap) gWrap.style.display = savingsActiveSource === 'goal' ? 'block' : 'none';
+
+  if(savingsActiveSource === 'pocket'){
+    refreshSavingsPocketSelect();
+  } else if(savingsActiveSource === 'goal'){
+    refreshSavingsGoalSourceSelect();
+  }
+}
+
+function refreshSavingsPocketSelect(){
+  const sel = $('savingsPocketSelect');
+  if(!sel) return;
+  const pockets = getPockets();
+  const tx = getTX();
+  const now = new Date();
+  
+  if(!pockets.length){
+    sel.innerHTML = '<option value="">(Belum ada pos anggaran)</option>';
+    if($('savingsPocketBalanceLabel')) $('savingsPocketBalanceLabel').innerHTML = 'Sisa jatah: <strong>Rp 0</strong>';
+    return;
+  }
+
+  const curVal = sel.value;
+  sel.innerHTML = pockets.map(p => {
+    const usage = calculatePocketUsage(p, now, tx);
+    const sisa = Math.max(0, usage.remaining);
+    return `<option value="${esc(p.id)}" data-sisa="${sisa}">${esc(p.icon||'•')} ${esc(p.name)} (Sisa ${short(sisa)})</option>`;
+  }).join('');
+
+  if(curVal && pockets.some(p => p.id === curVal)){
+    sel.value = curVal;
+  }
+  updateSavingsPocketSelectedInfo();
+}
+
+function updateSavingsPocketSelectedInfo(){
+  const sel = $('savingsPocketSelect');
+  const opt = sel?.selectedOptions?.[0];
+  const sisa = Number(opt?.dataset?.sisa || 0);
+  if($('savingsPocketBalanceLabel')){
+    $('savingsPocketBalanceLabel').innerHTML = `Sisa jatah pos: <strong style="color:var(--green)">${money(sisa)}</strong>`;
+  }
+}
+
+function refreshSavingsGoalSourceSelect(){
+  const sel = $('savingsGoalSourceSelect');
+  if(!sel) return;
+  const currentGoalId = $('savingsEntryGoalId').value;
+  const data = getSavings();
+  const otherGoals = data.goals.filter(g => g.status === 'active' && g.id !== currentGoalId);
+
+  if(!otherGoals.length){
+    sel.innerHTML = '<option value="">(Tidak ada tujuan tabungan lain)</option>';
+    if($('savingsGoalSourceBalanceLabel')) $('savingsGoalSourceBalanceLabel').innerHTML = 'Saldo tersedia: <strong>Rp 0</strong>';
+    return;
+  }
+
+  const curVal = sel.value;
+  sel.innerHTML = otherGoals.map(g => {
+    const bal = savingsCore.goalBalance(data, g.id);
+    return `<option value="${esc(g.id)}" data-bal="${bal}">${esc(g.name)} (Saldo ${short(bal)})</option>`;
+  }).join('');
+
+  if(curVal && otherGoals.some(g => g.id === curVal)){
+    sel.value = curVal;
+  }
+  updateSavingsGoalSourceSelectedInfo();
+}
+
+function updateSavingsGoalSourceSelectedInfo(){
+  const sel = $('savingsGoalSourceSelect');
+  const opt = sel?.selectedOptions?.[0];
+  const bal = Number(opt?.dataset?.bal || 0);
+  if($('savingsGoalSourceBalanceLabel')){
+    $('savingsGoalSourceBalanceLabel').innerHTML = `Saldo tabungan ini: <strong style="color:var(--green)">${money(bal)}</strong>`;
+  }
+}
+
+function openSavingsEntry(goalId,type='deposit',initialSource='free',initialAmount=0,initialNote=''){
   const goal=getSavings().goals.find(item=>item.id===goalId);
   if(!goal||goal.status!=='active')return;
   $('savingsEntryGoalId').value=goal.id;
   $('savingsEntryKind').value=type==='withdrawal'?'withdrawal':'deposit';
   $('savingsEntryGoalName').textContent=goal.name;
   $('savingsEntryTitle').textContent=type==='withdrawal'?'Ambil dana':'Setor tabungan';
-  $('savingsEntryAmount').value='';
+  $('savingsEntryAmount').value=initialAmount ? formatThousands(initialAmount) : '';
   $('savingsEntryDate').value=dateInput(new Date());
-  $('savingsEntryNote').value='';
+  $('savingsEntryNote').value=initialNote||'';
   $('savingsEntryError').hidden=true;
   document.querySelectorAll('[data-savings-entry-type]').forEach(button=>button.classList.toggle('active',button.dataset.savingsEntryType===(type==='withdrawal'?'withdrawal':'deposit')));
   $('savingsEntrySave').textContent=type==='withdrawal'?'Simpan pengambilan':'Simpan setoran';
+  
+  savingsActiveSource = initialSource || 'free';
+  updateSavingsSourceUI();
+
   openModalLayer('savingsEntryModal');
   setTimeout(()=>$('savingsEntryAmount')?.focus(),80);
 }
+
 function saveSavingsEntry(event){
   event.preventDefault();
   const kind=$('savingsEntryKind').value==='withdrawal'?'withdrawal':'deposit';
   const raw=$('savingsEntryAmount').value;
   const amount=Number(raw.replace(/\D/g,''))||parseAmount(raw)||0;
+  const dateVal=$('savingsEntryDate').value;
+  const noteVal=$('savingsEntryNote').value.trim();
+  const goalId=$('savingsEntryGoalId').value;
+  const goal=getSavings().goals.find(item=>item.id===goalId);
+  const error=$('savingsEntryError');
+  error.hidden=true;
+
+  if(!amount || amount <= 0){
+    error.textContent = 'Nominal harus lebih dari Rp 0.';
+    error.hidden = false;
+    return;
+  }
+
   try{
-    const updated=savingsCore.addEntry(getSavings(),{id:id(),goalId:$('savingsEntryGoalId').value,type:kind,amount,date:$('savingsEntryDate').value,note:$('savingsEntryNote').value});
-    saveSavings(updated);
+    if(kind === 'deposit' && savingsActiveSource === 'pocket'){
+      const pocketId = $('savingsPocketSelect')?.value;
+      const pockets = getPockets();
+      const pocket = pockets.find(p => p.id === pocketId);
+      if(!pocket) throw new Error('Pilih pos anggaran sumber dana.');
+
+      const usage = calculatePocketUsage(pocket, new Date(dateVal), getTX());
+      if(usage.remaining < amount){
+        const ok = confirm(`Sisa jatah pos ${pocket.name} hanya ${money(usage.remaining)}. Lanjutkan alokasi ${money(amount)} (pos akan overbudget)?`);
+        if(!ok) return;
+      }
+
+      // 1. Simpan transaksi pengeluaran pos
+      const expTitle = `Alokasi ke ${goal?goal.name:'Tabungan'}`;
+      const txItemData = tx({
+        title: expTitle,
+        amount: amount,
+        type: 'expense',
+        category: (pocket.categories && pocket.categories[0]) ? pocket.categories[0] : 'Lainnya',
+        icon: pocket.icon || '🏦',
+        note: noteVal || `Alokasi sisa jatah pos ${pocket.name}`,
+        source: 'personal',
+        pocketId: pocket.id,
+        createdAt: new Date(dateVal + 'T12:00:00').toISOString()
+      });
+      const curTx = getTX();
+      curTx.unshift(txItemData);
+      saveTX(curTx);
+
+      // 2. Setor ke tabungan
+      const updatedSavings = savingsCore.addEntry(getSavings(), {
+        id: id(),
+        goalId: goalId,
+        type: 'deposit',
+        amount: amount,
+        date: dateVal,
+        note: noteVal ? `Dari pos ${pocket.name} · ${noteVal}` : `Dari sisa pos ${pocket.name}`
+      });
+      saveSavings(updatedSavings);
+      toast(`Alokasi ${short(amount)} dari pos ${pocket.name} berhasil!`);
+
+    } else if(kind === 'deposit' && savingsActiveSource === 'goal'){
+      const srcGoalId = $('savingsGoalSourceSelect')?.value;
+      const curSavings = getSavings();
+      const srcGoal = curSavings.goals.find(g => g.id === srcGoalId);
+      if(!srcGoal) throw new Error('Pilih tabungan asal.');
+      if(srcGoal.id === goalId) throw new Error('Tabungan asal dan tujuan tidak boleh sama.');
+
+      const srcBalance = savingsCore.goalBalance(curSavings, srcGoal.id);
+      if(amount > srcBalance){
+        throw new Error(`Saldo tabungan ${srcGoal.name} hanya ${money(srcBalance)}.`);
+      }
+
+      // 1. Tarik dari tabungan asal
+      let updatedSavings = savingsCore.addEntry(curSavings, {
+        id: id(),
+        goalId: srcGoal.id,
+        type: 'withdrawal',
+        amount: amount,
+        date: dateVal,
+        note: noteVal ? `Pindah ke ${goal?goal.name:'tujuan lain'} · ${noteVal}` : `Pindah ke tabungan ${goal?goal.name:'lain'}`
+      });
+
+      // 2. Setor ke tabungan tujuan
+      updatedSavings = savingsCore.addEntry(updatedSavings, {
+        id: id(),
+        goalId: goalId,
+        type: 'deposit',
+        amount: amount,
+        date: dateVal,
+        note: noteVal ? `Dari tabungan ${srcGoal.name} · ${noteVal}` : `Dari tabungan ${srcGoal.name}`
+      });
+      saveSavings(updatedSavings);
+      toast(`Pindah saldo ${short(amount)} dari ${srcGoal.name} berhasil!`);
+
+    } else {
+      // Setor biasa / Tarik biasa
+      const updated = savingsCore.addEntry(getSavings(), {
+        id: id(),
+        goalId: goalId,
+        type: kind,
+        amount: amount,
+        date: dateVal,
+        note: noteVal
+      });
+      saveSavings(updated);
+    }
+
     closeModalLayer('savingsEntryModal');
     render();
-  }catch(err){const error=$('savingsEntryError');error.textContent=err.message||'Periksa kembali nominal dan tanggal.';error.hidden=false}
+  }catch(err){
+    error.textContent=err.message||'Periksa kembali nominal dan tanggal.';
+    error.hidden=false;
+  }
+}
+
+/* =========================================================
+   FITUR SWEEP / ALOKASIKAN SISA POS KE TABUNGAN
+   ========================================================= */
+function openSweepPocketModal(preselectedPocketId=''){
+  const pockets = getPockets();
+  const tx = getTX();
+  const now = new Date();
+  const data = getSavings();
+  const activeGoals = data.goals.filter(g => g.status === 'active');
+
+  const pSel = $('sweepPocketSelect');
+  const gSel = $('sweepGoalSelect');
+  const totalLabel = $('sweepTotalSurplusAmount');
+  const err = $('sweepError');
+  if(err) err.hidden = true;
+
+  if(!activeGoals.length){
+    toast('Buat minimal satu tujuan tabungan aktif terlebih dahulu.');
+    openSavingsGoalForm();
+    return;
+  }
+
+  // Hitung sisa semua pos
+  let totalSurplus = 0;
+  const pocketSurplusList = [];
+  pockets.forEach(p => {
+    const usage = calculatePocketUsage(p, now, tx);
+    const sisa = Math.max(0, usage.remaining);
+    totalSurplus += sisa;
+    pocketSurplusList.push({ pocket: p, sisa, usage });
+  });
+
+  if(totalLabel) totalLabel.textContent = money(totalSurplus);
+
+  if(!pocketSurplusList.length){
+    pSel.innerHTML = '<option value="">(Belum ada pos anggaran)</option>';
+  } else {
+    pSel.innerHTML = pocketSurplusList.map(item => {
+      return `<option value="${esc(item.pocket.id)}" data-sisa="${item.sisa}">${esc(item.pocket.icon||'•')} ${esc(item.pocket.name)} (Sisa ${short(item.sisa)})</option>`;
+    }).join('');
+  }
+
+  if(preselectedPocketId && pockets.some(p => p.id === preselectedPocketId)){
+    pSel.value = preselectedPocketId;
+  }
+
+  gSel.innerHTML = activeGoals.map(g => {
+    const stats = savingsCore.goalStats(data, g.id);
+    return `<option value="${esc(g.id)}">${esc(g.name)} (Target: ${short(stats.targetAmount)}, Sisa butuh: ${short(stats.remaining)})</option>`;
+  }).join('');
+
+  updateSweepPocketSelectedInfo();
+  $('sweepAmount').value = '';
+  $('sweepNote').value = '';
+
+  openModalLayer('sweepPocketModal');
+  setTimeout(() => $('sweepAmount')?.focus(), 80);
+}
+
+function updateSweepPocketSelectedInfo(){
+  const sel = $('sweepPocketSelect');
+  const opt = sel?.selectedOptions?.[0];
+  const sisa = Number(opt?.dataset?.sisa || 0);
+  const hint = $('sweepPocketAvailableHint');
+  if(hint){
+    hint.innerHTML = `Maksimal sisa pos: <strong style="color:var(--green)">${money(sisa)}</strong>`;
+  }
+}
+
+function saveSweepPocket(event){
+  event.preventDefault();
+  const pocketId = $('sweepPocketSelect')?.value;
+  const goalId = $('sweepGoalSelect')?.value;
+  const raw = $('sweepAmount')?.value || '';
+  const amount = Number(raw.replace(/\D/g,'')) || parseAmount(raw) || 0;
+  const note = $('sweepNote')?.value.trim();
+  const error = $('sweepError');
+  if(error) error.hidden = true;
+
+  const pockets = getPockets();
+  const pocket = pockets.find(p => p.id === pocketId);
+  const data = getSavings();
+  const goal = data.goals.find(g => g.id === goalId);
+
+  if(!pocket){
+    if(error){ error.textContent = 'Pilih pos anggaran.'; error.hidden = false; }
+    return;
+  }
+  if(!goal){
+    if(error){ error.textContent = 'Pilih tujuan tabungan.'; error.hidden = false; }
+    return;
+  }
+  if(!amount || amount <= 0){
+    if(error){ error.textContent = 'Nominal alokasi harus lebih dari Rp 0.'; error.hidden = false; }
+    return;
+  }
+
+  const now = new Date();
+  const dateVal = dateInput(now);
+  const usage = calculatePocketUsage(pocket, now, getTX());
+  if(usage.remaining < amount){
+    const ok = confirm(`Sisa jatah pos ${pocket.name} hanya ${money(usage.remaining)}. Tetap alokasikan ${money(amount)}?`);
+    if(!ok) return;
+  }
+
+  try{
+    // 1. Catat transaksi pengeluaran dari pos
+    const expTx = tx({
+      title: `Alokasi ke ${goal.name}`,
+      amount: amount,
+      type: 'expense',
+      category: (pocket.categories && pocket.categories[0]) ? pocket.categories[0] : 'Lainnya',
+      icon: pocket.icon || '🏦',
+      note: note || `Alokasi sisa jatah pos ${pocket.name}`,
+      source: 'personal',
+      pocketId: pocket.id,
+      createdAt: now.toISOString()
+    });
+    const curTx = getTX();
+    curTx.unshift(expTx);
+    saveTX(curTx);
+
+    // 2. Catat setoran ke tabungan
+    const updatedSavings = savingsCore.addEntry(data, {
+      id: id(),
+      goalId: goal.id,
+      type: 'deposit',
+      amount: amount,
+      date: dateVal,
+      note: note ? `Dari sisa pos ${pocket.name} · ${note}` : `Dari sisa pos ${pocket.name}`
+    });
+    saveSavings(updatedSavings);
+
+    closeModalLayer('sweepPocketModal');
+    render();
+    toast(`Berhasil memindahkan ${short(amount)} ke tabungan ${goal.name}!`);
+  } catch(err){
+    if(error){
+      error.textContent = err.message || 'Gagal mengalokasikan dana.';
+      error.hidden = false;
+    }
+  }
 }
 function homeDateTime(t){const d=new Date(t.createdAt);return d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}
 function homeTxItem(t){const sel=selectSet.has(t.id);return `<div class="tx-item${selectMode?' selectable':''}${sel?' selected':''}" data-tx-id="${esc(t.id)}" role="button" tabindex="0"><input type="checkbox" class="tx-cb" aria-label="Pilih transaksi" ${sel?'checked':''}>${selectMode?'':'<div class="icon" style="background:'+color(t.category)+';margin-bottom:0">'+renderIcon(t.icon)+'</div>'}<div><div class="tx-title">${esc(t.title)}</div><div class="tx-meta">${esc(t.category)} - ${esc(homeDateTime(t))}</div></div><div class="amount ${t.type}">${t.type==='income'?'+':'-'} ${money(t.amount)}</div></div>`}
@@ -4019,12 +4368,14 @@ document.addEventListener('click',async e=>{
 const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,start:null,end:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
-    if(a==='manage-pockets'){openPocketManager();return}
+    if(a==='sweep-pocket-modal'){openSweepPocketModal(escBtn.dataset.pocketId||'');return}
+if(a==='close-sweep-modal'){closeModalLayer('sweepPocketModal');return}
+if(a==='manage-pockets'){openPocketManager();return}
     if(a==='close-pocket-manager'){closeModalLayer('pocketManageModal');return}
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){cancelReceiptScan();}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-csv'){$('importCsvFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
-if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v51');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v52');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, foto nota, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){try{await window.ReceiptStore.clear()}catch(error){alert('Foto nota belum berhasil dihapus: '+(error.message||error));return}saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
 document.addEventListener('input',e=>{if(e.target.id==='quickInput')pratinjau('quickInput','quickPreview');if(e.target.id==='focusInput')pratinjau('focusInput','focusPreview');if(e.target.id==='txSearch'){txFilter.search=e.target.value;render()}if(e.target.id==='manCategory'){$('manIcon').value=icon(e.target.value,$('manType').value)}});document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='quickInput')addFrom('quickInput');if(e.key==='Enter'&&e.target.id==='focusInput')addFrom('focusInput');if(e.key==='Escape'){closeActiveLayer()}});
@@ -4129,7 +4480,48 @@ $('savingsGoalForm')?.addEventListener('submit',saveSavingsGoal);
 $('savingsEntryForm')?.addEventListener('submit',saveSavingsEntry);
 $('savingsFilter')?.addEventListener('click',e=>{const button=e.target.closest('[data-savings-filter]');if(!button)return;savingsFilter=button.dataset.savingsFilter;renderSavings()});
 $('savingsPresets')?.addEventListener('click',e=>{const button=e.target.closest('[data-savings-preset]');if(!button)return;const preset=button.dataset.savingsPreset;const defaults={qurban:`Qurban ${new Date().getFullYear()+1}`,education:'Pendidikan',emergency:'Dana darurat',travel:'Liburan'};$('savingsGoalIconKey').value=preset;$('savingsGoalCustomIcon').value='';$('savingsGoalName').value=defaults[preset]||'';document.querySelectorAll('[data-savings-preset]').forEach(item=>item.classList.toggle('active',item===button));$('savingsCustomIconPicker')?.classList.remove('open');updateSavingsGoalIconPreview();$('savingsGoalError').hidden=true;$('savingsGoalName').focus()});
-$('savingsEntryType')?.addEventListener('click',e=>{const button=e.target.closest('[data-savings-entry-type]');if(!button)return;const kind=button.dataset.savingsEntryType;$('savingsEntryKind').value=kind;$('savingsEntryTitle').textContent=kind==='withdrawal'?'Ambil dana':'Setor tabungan';$('savingsEntrySave').textContent=kind==='withdrawal'?'Simpan pengambilan':'Simpan setoran';$('savingsEntryError').hidden=true;$('savingsEntryType').querySelectorAll('button').forEach(item=>item.classList.toggle('active',item===button))});
+$('savingsEntryType')?.addEventListener('click',e=>{
+  const button=e.target.closest('[data-savings-entry-type]');
+  if(!button)return;
+  const kind=button.dataset.savingsEntryType;
+  $('savingsEntryKind').value=kind;
+  $('savingsEntryTitle').textContent=kind==='withdrawal'?'Ambil dana':'Setor tabungan';
+  $('savingsEntrySave').textContent=kind==='withdrawal'?'Simpan pengambilan':'Simpan setoran';
+  $('savingsEntryError').hidden=true;
+  $('savingsEntryType').querySelectorAll('button').forEach(item=>item.classList.toggle('active',item===button));
+  updateSavingsSourceUI();
+});
+$('savingsSourceSeg')?.addEventListener('click',e=>{
+  const button=e.target.closest('[data-savings-source]');
+  if(!button)return;
+  savingsActiveSource=button.dataset.savingsSource;
+  updateSavingsSourceUI();
+});
+$('savingsPocketSelect')?.addEventListener('change',updateSavingsPocketSelectedInfo);
+$('savingsGoalSourceSelect')?.addEventListener('change',updateSavingsGoalSourceSelectedInfo);
+$('savingsPocketUseAllBtn')?.addEventListener('click',()=>{
+  const sel=$('savingsPocketSelect');
+  const opt=sel?.selectedOptions?.[0];
+  const sisa=Number(opt?.dataset?.sisa||0);
+  if(sisa>0)$('savingsEntryAmount').value=formatThousands(sisa);
+  else toast('Pos ini tidak memiliki sisa jatah.');
+});
+$('savingsGoalSourceUseAllBtn')?.addEventListener('click',()=>{
+  const sel=$('savingsGoalSourceSelect');
+  const opt=sel?.selectedOptions?.[0];
+  const bal=Number(opt?.dataset?.bal||0);
+  if(bal>0)$('savingsEntryAmount').value=formatThousands(bal);
+  else toast('Tabungan ini belum memiliki saldo.');
+});
+$('sweepPocketSelect')?.addEventListener('change',updateSweepPocketSelectedInfo);
+$('sweepMaxBtn')?.addEventListener('click',()=>{
+  const sel=$('sweepPocketSelect');
+  const opt=sel?.selectedOptions?.[0];
+  const sisa=Number(opt?.dataset?.sisa||0);
+  if(sisa>0)$('sweepAmount').value=formatThousands(sisa);
+  else toast('Pos ini tidak memiliki sisa jatah.');
+});
+$('sweepPocketForm')?.addEventListener('submit',saveSweepPocket);
 ['cameraDirectInput','galleryFileInput'].forEach(id=>{
   $(id)?.addEventListener('change', e=>{
     if(e.target.files&&e.target.files[0]){
@@ -4161,7 +4553,7 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v51');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v52');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');
