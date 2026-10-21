@@ -106,6 +106,58 @@ assert.strictEqual(photoChoiceOpened, true, 'foto action should call openPhotoCh
 
 console.log('✔ triggerAddAction routing verified');
 
+console.log('--- Test 5: Event Listener & Boot Hooks for Setting Toggle ---');
+assert.ok(html.includes("$('addActionModeSeg')") && html.includes("setAddClickAction"), 'addActionModeSeg must have click listener calling setAddClickAction');
+assert.ok(html.includes("renderAddClickActionControls();"), 'renderAddClickActionControls must be called in navigate/boot');
+
+// Unit test setAddClickAction & renderAddClickActionControls
+const setFnCode = extractFunction(html, 'setAddClickAction');
+const renderFnCode = extractFunction(html, 'renderAddClickActionControls');
+assert.ok(setFnCode && renderFnCode, 'setAddClickAction and renderAddClickActionControls must be extractable');
+
+const buttons = [
+  { dataset: { addActionMode: 'chat' }, classList: { toggle: (cls, on) => { buttons[0].active = on; } }, active: true },
+  { dataset: { addActionMode: 'voice' }, classList: { toggle: (cls, on) => { buttons[1].active = on; } }, active: false },
+  { dataset: { addActionMode: 'foto' }, classList: { toggle: (cls, on) => { buttons[2].active = on; } }, active: false }
+];
+const labelEl = { textContent: 'Mode Tulis' };
+let toasted = '';
+
+const fakeDom = {
+  querySelectorAll: (sel) => sel === '[data-add-action-mode]' ? buttons : [],
+  getElementById: (id) => id === 'addActionLabel' ? labelEl : null
+};
+
+const renderAddClickActionControls = new Function('getAddClickAction', 'document', '$',
+  `return (${renderFnCode});`
+)(getAddClickAction, fakeDom, (id) => fakeDom.getElementById(id));
+
+const setAddClickAction = new Function('KEY_ADD_ACTION', 'localStorage', 'renderAddClickActionControls', 'toast',
+  `return (${setFnCode});`
+)('aruskas_add_action_v1', fakeLocalStorage, renderAddClickActionControls, (msg) => { toasted = msg; });
+
+// Switch to voice
+setAddClickAction('voice');
+assert.strictEqual(fakeLocalStorage.getItem('aruskas_add_action_v1'), 'voice', 'localStorage should be updated to voice');
+assert.strictEqual(buttons[1].active, true, 'voice button should be active');
+assert.strictEqual(buttons[0].active, false, 'chat button should be inactive');
+assert.strictEqual(labelEl.textContent, 'Suara', 'addActionLabel should display Suara');
+
+// Switch to foto
+setAddClickAction('foto');
+assert.strictEqual(fakeLocalStorage.getItem('aruskas_add_action_v1'), 'foto', 'localStorage should be updated to foto');
+assert.strictEqual(buttons[2].active, true, 'foto button should be active');
+assert.strictEqual(buttons[1].active, false, 'voice button should be inactive');
+assert.strictEqual(labelEl.textContent, 'Foto Struk', 'addActionLabel should display Foto Struk');
+
+// Switch back to chat
+setAddClickAction('chat');
+assert.strictEqual(fakeLocalStorage.getItem('aruskas_add_action_v1'), 'chat', 'localStorage should be updated to chat');
+assert.strictEqual(buttons[0].active, true, 'chat button should be active');
+assert.strictEqual(labelEl.textContent, 'Mode Tulis', 'addActionLabel should display Mode Tulis');
+
+console.log('✔ Settings event bindings & UI toggle state verified');
+
 console.log('\n=======================================');
 console.log('All Quick Add & Settings Tests PASSED!');
 console.log('=======================================');

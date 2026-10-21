@@ -597,6 +597,7 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .savings-calendar-heading { display: grid; grid-template-columns: 40px minmax(0,1fr) 40px; align-items: center; gap: 6px; margin-bottom: 8px; }
 .savings-calendar-heading strong { color: var(--ink); font-size: 14px; font-weight: 850; text-align: center; text-transform: capitalize; }
 .savings-calendar-heading button { width: 40px; height: 40px; min-height: 40px !important; border: 1px solid var(--line); border-radius: 13px; background: var(--surface2); color: var(--green2); font-size: 24px; line-height: 1; }
+.savings-calendar-grid { touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
 .savings-calendar-weekdays, .savings-calendar-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 4px; }
 .savings-calendar-weekdays { margin-bottom: 5px; }
 .savings-calendar-weekdays span { min-width: 0; color: var(--muted); font-size: 10px; font-weight: 800; text-align: center; }
@@ -605,6 +606,7 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .savings-calendar-day:active { transform: scale(.94); }
 .savings-calendar-day.today { border-color: var(--green); color: var(--green2); font-weight: 900; }
 .savings-calendar-day.selected { border-color: var(--green); background: var(--green); color: #fff; font-weight: 900; box-shadow: 0 4px 10px rgba(147,66,44,.2); }
+.savings-calendar-day.in-range { background: var(--accent-soft); color: var(--green2); border-color: transparent; font-weight: 800; border-radius: 6px; }
 .savings-calendar-empty { min-width: 0; min-height: 36px; }
 .savings-calendar-footer { display: flex; justify-content: space-between; gap: 8px; margin-top: 9px; border-top: 1px solid var(--line); padding-top: 8px; }
 .savings-calendar-footer button { min-height: 38px; border: 0; border-radius: 12px; padding: 0 10px; background: transparent; color: var(--green2); font-size: 11px; font-weight: 850; }

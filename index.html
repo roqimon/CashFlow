@@ -1136,7 +1136,38 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         <button type="button" id="shareWaPeriodMonth" data-scope="monthly" style="font-size:12px;padding:8px 6px">Bulan ini</button>
       </div>
       <div id="shareWaPeriodHint" class="muted" style="font-size:11px;margin-top:4px;padding:0 2px">Periode: <strong>-</strong></div>
-      <div class="receipt-gallery-dates share-wa-dates"><label>Dari tanggal<input id="shareWaFrom" type="date" aria-label="Dari tanggal kiriman"></label><label>Sampai tanggal<input id="shareWaTo" type="date" aria-label="Sampai tanggal kiriman"></label></div>
+      <input id="shareWaFrom" type="hidden"><input id="shareWaTo" type="hidden">
+      <div class="savings-date-field" style="margin-top:8px">
+        <div class="savings-date-control">
+          <button class="savings-date-trigger" id="shareWaCalendarToggle" type="button" aria-expanded="false" aria-controls="shareWaCalendarPanel">
+            <span class="savings-date-icon" aria-hidden="true"><img src="./icons/category/calendar.svg" alt=""></span>
+            <span class="savings-date-copy">
+              <strong id="shareWaDateSelectedLabel">Pilih rentang tanggal</strong>
+              <small id="shareWaDateHint">Ketuk untuk atur rentang tanggal</small>
+            </span>
+            <span class="savings-date-chevron" aria-hidden="true">⌄</span>
+          </button>
+        </div>
+        <div class="savings-calendar-panel" id="shareWaCalendarPanel" hidden>
+          <div class="savings-calendar-shortcuts">
+            <button type="button" data-sharewa-shortcut="today">Hari ini</button>
+            <button type="button" data-sharewa-shortcut="7d">7 Hari</button>
+            <button type="button" data-sharewa-shortcut="30d">30 Hari</button>
+            <button type="button" data-sharewa-shortcut="this-month">Bulan Ini</button>
+          </div>
+          <div class="savings-calendar-heading">
+            <button type="button" data-sharewa-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button>
+            <strong id="shareWaCalendarMonthLabel"></strong>
+            <button type="button" data-sharewa-calendar-nav="1" aria-label="Bulan berikutnya">›</button>
+          </div>
+          <div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+          <div class="savings-calendar-grid" id="shareWaCalendarGrid" role="grid" aria-label="Pilih rentang tanggal"></div>
+          <div class="savings-calendar-footer">
+            <button type="button" data-sharewa-calendar-action="reset">Atur Ulang</button>
+            <button type="button" data-sharewa-calendar-action="close">Selesai</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <fieldset class="share-wa-modes"><legend>YANG DIKIRIM</legend><label><input type="radio" name="shareWaMode" value="list" checked><span><strong>Daftar saja</strong><small>Rekap dan transaksi dalam pesan</small></span></label><label><input type="radio" name="shareWaMode" value="both"><span><strong>Daftar + nota</strong><small>Pesan dan foto nota pada rentang tanggal</small></span></label><label><input type="radio" name="shareWaMode" value="receipts"><span><strong>Nota saja</strong><small>Foto nota tanpa rincian transaksi</small></span></label></fieldset>
@@ -1852,6 +1883,32 @@ function chooseSavingsGoalDate(value){
   if(value){const [year,month]=value.split('-').map(Number);savingsCalendarCursor=new Date(year,month-1,1)}
   updateSavingsCalendar();setSavingsCalendarOpen(false);
 }
+function attachCalendarSwipe(element, onSwipeLeft, onSwipeRight){
+  if(!element)return;
+  let startX=0, startY=0, startTime=0, touching=false;
+  element.addEventListener('touchstart', e=>{
+    if(e.touches.length!==1)return;
+    touching=true;
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+    startTime=Date.now();
+  }, {passive:true});
+  element.addEventListener('touchend', e=>{
+    if(!touching)return;
+    touching=false;
+    const diffX=e.changedTouches[0].clientX-startX;
+    const diffY=e.changedTouches[0].clientY-startY;
+    const diffTime=Date.now()-startTime;
+    if(diffTime<600 && Math.abs(diffX)>=40 && Math.abs(diffX)>Math.abs(diffY)*1.2){
+      if(diffX < 0){
+        onSwipeLeft();
+      } else {
+        onSwipeRight();
+      }
+    }
+  }, {passive:true});
+}
+
 function initSavingsCalendar(){
   $('savingsCalendarToggle')?.addEventListener('click',e=>{if(e.target.closest('#savingsDateClear'))return;setSavingsCalendarOpen($('savingsCalendarPanel')?.hidden)});
   $('savingsDateClear')?.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();chooseSavingsGoalDate('')});
@@ -1867,6 +1924,16 @@ function initSavingsCalendar(){
     if(action.dataset.savingsCalendarAction==='today')chooseSavingsGoalDate(savingsCalendarToday());
     if(action.dataset.savingsCalendarAction==='clear')chooseSavingsGoalDate('');
   });
+  const savingsGrid = $('savingsCalendarGrid');
+  if(savingsGrid){
+    attachCalendarSwipe(savingsGrid, ()=>{
+      savingsCalendarCursor=new Date(savingsCalendarCursor.getFullYear(),savingsCalendarCursor.getMonth()+1,1);
+      updateSavingsCalendar();
+    }, ()=>{
+      savingsCalendarCursor=new Date(savingsCalendarCursor.getFullYear(),savingsCalendarCursor.getMonth()-1,1);
+      updateSavingsCalendar();
+    });
+  }
 }
 initSavingsCalendar();
 function savingsPercentLabel(stats){return stats.percent>100?'100%+':stats.percent+'%'}
@@ -3611,7 +3678,7 @@ document.addEventListener('click',async e=>{
     if(ep){openPocketEdit(ep.dataset.editPocket);return}
     const dp=e.target.closest('[data-del-pocket]');
     if(dp){deletePocket(dp.dataset.delPocket);return}
-const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,start:null,end:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
+const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,start:null,end:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
     if(a==='new-pocket')openPocketEdit('');
@@ -3666,6 +3733,7 @@ $('pocketManager')?.addEventListener('click',async e=>{
 document.getElementById('catManager').addEventListener('click',async e=>{if(catSelectMode){const catItem=e.target.closest('[data-cat-name]');if(catItem){const cname=catItem.dataset.catName;if(cname&&cname!=='Lainnya'){e.preventDefault();if(catSelectSet.has(cname))catSelectSet.delete(cname);else catSelectSet.add(cname);updateCatSelectUI();return}}}const del=e.target.closest('[data-del-cat]');if(del){await deleteCategory(del.dataset.delCat);return}const ed=e.target.closest('[data-edit-cat]');if(ed){openCategoryEdit(ed.dataset.editCat);return}});
 $('categoryEditClose').addEventListener('click',closeCategoryEdit);$('categoryEditCancel').addEventListener('click',closeCategoryEdit);$('categoryEditSave').addEventListener('click',saveCategoryEdit);$('categoryModal').addEventListener('click',e=>{if(e.target.id==='categoryModal')closeCategoryEdit()});['catEditCode','catEditName','catEditIcon','catEditNote'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')saveCategoryEdit()}));$('catEditType').addEventListener('change',()=>{if(!$('catEditIcon').value.trim())$('catEditIcon').value=icon($('catEditName').value,$('catEditType').value);refreshFancySelect($('catEditType'))});$('catEditIcon').addEventListener('click',()=>{$('catEditIconPicker').classList.toggle('open');renderCategoryIconPicker($('catEditIcon').value||'•')});$('catEditIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-cat-icon]');if(!b)return;$('catEditIcon').value=b.dataset.catIcon;renderCategoryIconPicker(b.dataset.catIcon);$('catEditIconPicker').classList.remove('open')});
 $('themeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-theme-mode]');if(!b)return;setThemeMode(b.dataset.themeMode)});
+$('addActionModeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-add-action-mode]');if(!b)return;setAddClickAction(b.dataset.addActionMode)});
 $('txBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
 $('homeBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
 $('homeToggleSelectBtn')?.addEventListener('click',()=>{if(selectMode)exitSelectMode();else startSelectMode()});
@@ -3779,10 +3847,131 @@ let shareWaReceiptLoading=false;
 let shareWaReceiptError=null;
 let shareWaPreparedFiles=[];
 let shareWaPrepareToken=0;
+let shareWaCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+let shareWaRangeSelecting=false;
+
+function updateShareWaCalendar(){
+  const monthLabel=$('shareWaCalendarMonthLabel'),grid=$('shareWaCalendarGrid');
+  const fromEl=$('shareWaFrom'),toEl=$('shareWaTo');
+  if(!monthLabel||!grid||!fromEl||!toEl)return;
+  const year=shareWaCalendarCursor.getFullYear(),month=shareWaCalendarCursor.getMonth();
+  monthLabel.textContent=new Intl.DateTimeFormat('id-ID',{month:'long',year:'numeric'}).format(new Date(year,month,1));
+  const fromVal=fromEl.value, toVal=toEl.value;
+  const today=savingsCalendarToday();
+  const rawCells=savingsCore.calendarDays(year,month,'',today);
+  grid.innerHTML=rawCells.map(cell=>{
+    if(!cell)return '<span class="savings-calendar-empty" aria-hidden="true"></span>';
+    const d=cell.date;
+    const isStart = d === fromVal;
+    const isEnd = d === toVal;
+    const isInRange = fromVal && toVal && d >= fromVal && d <= toVal;
+    let cls = 'savings-calendar-day';
+    if(isStart || isEnd) cls += ' selected';
+    else if(isInRange) cls += ' in-range';
+    if(cell.today) cls += ' today';
+    return `<button class="${cls}" type="button" role="gridcell" data-sharewa-calendar-date="${d}" aria-label="${esc(savingsDateLabel(d))}" aria-pressed="${isStart||isEnd}">${cell.day}</button>`;
+  }).join('');
+
+  const label=$('shareWaDateSelectedLabel');
+  const hint=$('shareWaDateHint');
+  if(label){
+    if(fromVal && toVal){
+      if(fromVal === toVal){
+        label.textContent = savingsDateLabel(fromVal);
+      } else {
+        const [y1,m1,d1]=fromVal.split('-').map(Number);
+        const [y2,m2,d2]=toVal.split('-').map(Number);
+        const dt1 = new Date(y1, m1-1, d1);
+        const dt2 = new Date(y2, m2-1, d2);
+        if(y1 === y2 && m1 === m2){
+          label.textContent = `${dt1.getDate()} – ${savingsDateLabel(toVal)}`;
+        } else {
+          label.textContent = `${savingsDateLabel(fromVal)} – ${savingsDateLabel(toVal)}`;
+        }
+      }
+    } else if(fromVal){
+      label.textContent = `Dari: ${savingsDateLabel(fromVal)}`;
+    } else {
+      label.textContent = 'Pilih rentang tanggal';
+    }
+  }
+  if(hint){
+    hint.textContent = shareWaRangeSelecting ? 'Pilih tanggal akhir rentang' : 'Ketuk untuk atur rentang tanggal';
+  }
+}
+
+function setShareWaCalendarOpen(open){
+  const panel=$('shareWaCalendarPanel'),toggle=$('shareWaCalendarToggle');
+  if(!panel||!toggle)return;
+  panel.hidden=!open;
+  toggle.setAttribute('aria-expanded',String(open));
+  if(open){
+    updateShareWaCalendar();
+    requestAnimationFrame(()=>{
+      const sheet=panel.closest('.sheet');
+      if(!sheet)return;
+      const rect=panel.getBoundingClientRect();
+      const sheetRect=sheet.getBoundingClientRect();
+      if(rect.bottom > sheetRect.bottom){
+        sheet.scrollBy({top:rect.bottom-sheetRect.bottom+16,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      }
+    });
+  }
+}
+
+function applyShareWaShortcut(type){
+  const now=new Date();
+  let start=new Date(), end=new Date();
+  if(type==='today'){
+    start=new Date(); end=new Date();
+  } else if(type==='7d'){
+    start=new Date(now.getFullYear(), now.getMonth(), now.getDate()-6);
+    end=new Date();
+  } else if(type==='30d'){
+    start=new Date(now.getFullYear(), now.getMonth(), now.getDate()-29);
+    end=new Date();
+  } else if(type==='this-month'){
+    start=startMonth(now);
+    end=endMonth(now);
+  }
+  $('shareWaFrom').value=dateInput(start);
+  $('shareWaTo').value=dateInput(end);
+  shareWaRangeSelecting=false;
+  shareWaCalendarCursor=new Date(start.getFullYear(), start.getMonth(), 1);
+  document.querySelectorAll('#shareWaPeriodSeg button').forEach(button=>button.classList.remove('active'));
+  updateShareWaCalendar();
+  updateShareWaPreview();
+}
+
+function handleShareWaDateClick(dateStr){
+  const fromEl=$('shareWaFrom'), toEl=$('shareWaTo');
+  if(!fromEl || !toEl)return;
+  document.querySelectorAll('#shareWaPeriodSeg button').forEach(button=>button.classList.remove('active'));
+  if(!shareWaRangeSelecting){
+    fromEl.value=dateStr;
+    toEl.value=dateStr;
+    shareWaRangeSelecting=true;
+  } else {
+    shareWaRangeSelecting=false;
+    if(dateStr < fromEl.value){
+      toEl.value=fromEl.value;
+      fromEl.value=dateStr;
+    } else {
+      toEl.value=dateStr;
+    }
+    setShareWaCalendarOpen(false);
+  }
+  updateShareWaCalendar();
+  updateShareWaPreview();
+}
+
 function setShareWaDatesFromScope(scope){
   const period=scope==='monthly'?{start:startMonth(new Date()),end:endMonth(new Date())}:range();
   $('shareWaFrom').value=dateInput(period.start);
   $('shareWaTo').value=dateInput(period.end);
+  shareWaRangeSelecting=false;
+  shareWaCalendarCursor=new Date(period.start.getFullYear(), period.start.getMonth(), 1);
+  updateShareWaCalendar();
 }
 async function openShareWaModal(){
   const modal=$('shareWaModal');
@@ -3809,6 +3998,8 @@ async function openShareWaModal(){
   updateShareWaPocketListVisibility();
   updateShareWaPreview();
   
+  setShareWaCalendarOpen(false);
+  updateShareWaCalendar();
   openModalLayer('shareWaModal');
   try{shareWaReceiptRecords=await window.ReceiptStore.list()}
   catch(error){console.warn('[ArusKas] Arsip nota belum bisa dibuka:',error);shareWaReceiptRecords=[];shareWaReceiptError=error}
@@ -3946,7 +4137,53 @@ function initShareWaHandlers(){
     setShareWaDatesFromScope(btn.dataset.scope);
     updateShareWaPreview();
   });
-  ['shareWaFrom','shareWaTo'].forEach(id=>$(id)?.addEventListener('change',()=>{document.querySelectorAll('#shareWaPeriodSeg button').forEach(button=>button.classList.remove('active'));updateShareWaPreview()}));
+  ['shareWaFrom','shareWaTo'].forEach(id=>$(id)?.addEventListener('change',()=>{
+    document.querySelectorAll('#shareWaPeriodSeg button').forEach(button=>button.classList.remove('active'));
+    updateShareWaCalendar();
+    updateShareWaPreview();
+  }));
+
+  $('shareWaCalendarToggle')?.addEventListener('click', ()=>{
+    setShareWaCalendarOpen($('shareWaCalendarPanel')?.hidden);
+  });
+
+  $('shareWaCalendarPanel')?.addEventListener('click', event=>{
+    const shortcut=event.target.closest('[data-sharewa-shortcut]');
+    if(shortcut){applyShareWaShortcut(shortcut.dataset.sharewaShortcut);return}
+    const day=event.target.closest('[data-sharewa-calendar-date]');
+    if(day){handleShareWaDateClick(day.dataset.sharewaCalendarDate);return}
+    const nav=event.target.closest('[data-sharewa-calendar-nav]');
+    if(nav){
+      shareWaCalendarCursor=new Date(shareWaCalendarCursor.getFullYear(),shareWaCalendarCursor.getMonth()+Number(nav.dataset.sharewaCalendarNav),1);
+      updateShareWaCalendar();
+      return;
+    }
+    const action=event.target.closest('[data-sharewa-calendar-action]');
+    if(!action)return;
+    if(action.dataset.sharewaCalendarAction==='reset'){
+      shareWaRangeSelecting=false;
+      setShareWaDatesFromScope('active');
+      $('shareWaPeriodActive')?.classList.add('active');
+      $('shareWaPeriodMonth')?.classList.remove('active');
+      updateShareWaPreview();
+      return;
+    }
+    if(action.dataset.sharewaCalendarAction==='close'){
+      setShareWaCalendarOpen(false);
+      return;
+    }
+  });
+
+  const shareWaGrid = $('shareWaCalendarGrid');
+  if(shareWaGrid){
+    attachCalendarSwipe(shareWaGrid, ()=>{
+      shareWaCalendarCursor=new Date(shareWaCalendarCursor.getFullYear(),shareWaCalendarCursor.getMonth()+1,1);
+      updateShareWaCalendar();
+    }, ()=>{
+      shareWaCalendarCursor=new Date(shareWaCalendarCursor.getFullYear(),shareWaCalendarCursor.getMonth()-1,1);
+      updateShareWaCalendar();
+    });
+  }
   document.querySelectorAll('[name="shareWaMode"]').forEach(input=>input.addEventListener('change',updateShareWaPreview));
   
   ['shareWaIncSummary', 'shareWaIncPockets', 'shareWaIncCategories'].forEach(id => {
