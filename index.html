@@ -448,6 +448,116 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       stroke-width: 2.5;
       display: block;
     }
+    .nav .add {
+      -webkit-touch-callout: none !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      touch-action: none !important;
+    }
+    .quick-add-radial-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    .quick-add-radial-overlay.active {
+      display: flex;
+    }
+    .quick-add-radial-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(14, 20, 16, 0.42);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      animation: radialBackdropIn .18s ease;
+    }
+    @keyframes radialBackdropIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .quick-add-radial-bubble-wrap {
+      position: relative;
+      z-index: 2;
+      margin-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: radialPop .24s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+    @keyframes radialPop {
+      from { opacity: 0; transform: translateY(24px) scale(0.82); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .quick-add-radial-hint {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(22, 33, 27, 0.84);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 6px 14px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      pointer-events: none;
+      letter-spacing: .01em;
+    }
+    .quick-add-radial-items {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 16px;
+    }
+    .quick-add-radial-item {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      background: var(--surface2, #ffffff);
+      color: var(--ink, #1f2a24);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      transition: transform .14s cubic-bezier(0.2, 0, 0.1, 1), background .14s ease, border-color .14s ease, box-shadow .14s ease, color .14s ease;
+      touch-action: none;
+    }
+    .quick-add-radial-item[data-radial-action="foto"] {
+      transform: translateY(-14px);
+    }
+    .quick-add-radial-item .radial-item-icon {
+      font-size: 24px;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .quick-add-radial-item .radial-item-label {
+      font-size: 10px;
+      font-weight: 850;
+      line-height: 1.1;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .quick-add-radial-item.hovered {
+      transform: scale(1.22) translateY(-4px) !important;
+      background: var(--green, #1f8a5b) !important;
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+      box-shadow: 0 16px 36px rgba(31, 138, 91, 0.5) !important;
+    }
+    .quick-add-radial-item[data-radial-action="foto"].hovered {
+      transform: scale(1.22) translateY(-18px) !important;
+    }
+    .quick-add-radial-item.hovered .radial-item-label {
+      color: #ffffff !important;
+    }
     @media(max-width:430px){
       #exampleChips button{
         font-size:12px!important;
@@ -702,6 +812,23 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
+        <!-- Aksi Tombol Catat (+) -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">⚡</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Aksi Tombol Catat (+)</strong>
+              <small class="muted" style="font-size:11.5px">Pilihan saat tombol ditekan sekali (tahan untuk gestur 1 jari)</small>
+            </div>
+            <span class="theme-badge" id="addActionLabel" style="font-size:10.5px">Mode Tulis</span>
+          </div>
+          <div class="seg" id="addActionModeSeg" style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
+            <button data-add-action-mode="chat" type="button" class="active" style="font-size:12px;min-height:36px">⌨️ Tulis</button>
+            <button data-add-action-mode="voice" type="button" style="font-size:12px;min-height:36px">🎙️ Suara</button>
+            <button data-add-action-mode="foto" type="button" style="font-size:12px;min-height:36px">📸 Foto</button>
+          </div>
+        </section>
+
         <!-- 2. Pos Anggaran Bulanan -->
         <section class="card settings-card">
           <div class="settings-card-head">
@@ -897,6 +1024,26 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         <span class="nav-label">Setting</span>
       </button>
     </nav>
+    <div class="quick-add-radial-overlay" id="quickAddRadial" aria-hidden="true">
+      <div class="quick-add-radial-backdrop"></div>
+      <div class="quick-add-radial-bubble-wrap">
+        <div class="quick-add-radial-hint">Geser jari ke opsi yang diinginkan</div>
+        <div class="quick-add-radial-items">
+          <button type="button" class="quick-add-radial-item" data-radial-action="voice" aria-label="Catat dengan Suara">
+            <span class="radial-item-icon">🎙️</span>
+            <span class="radial-item-label">Suara</span>
+          </button>
+          <button type="button" class="quick-add-radial-item" data-radial-action="foto" aria-label="Catat dari Foto Struk">
+            <span class="radial-item-icon">📸</span>
+            <span class="radial-item-label">Foto Struk</span>
+          </button>
+          <button type="button" class="quick-add-radial-item" data-radial-action="chat" aria-label="Mode Tulis / Chat">
+            <span class="radial-item-icon">⌨️</span>
+            <span class="radial-item-label">Ketik</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </main>
   <aside class="panel"><h2>Pintasan</h2><p>Kode pribadi mengubah input singkat menjadi transaksi lengkap.</p><div id="sideExamples"></div><div class="tip"><strong>Arus Kas</strong><br>Catat transaksi harian dengan cepat dan pantau keuanganmu.</div></aside>
 </div>
@@ -1100,7 +1247,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1';
+const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
 let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -3008,6 +3155,150 @@ async function importJsonData(file){
   }
 }
 
+function getAddClickAction(){
+  const a=localStorage.getItem(KEY_ADD_ACTION)||'chat';
+  return ['chat','voice','foto'].includes(a)?a:'chat';
+}
+function setAddClickAction(action){
+  if(!['chat','voice','foto'].includes(action)) action='chat';
+  localStorage.setItem(KEY_ADD_ACTION,action);
+  renderAddClickActionControls();
+  const labels={chat:'Mode Tulis / Fokus',voice:'Langsung Suara',foto:'Langsung Foto Struk'};
+  toast('Aksi tombol catat: '+(labels[action]||action));
+}
+function renderAddClickActionControls(){
+  const action=getAddClickAction();
+  document.querySelectorAll('[data-add-action-mode]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.addActionMode===action);
+  });
+  const label=$('addActionLabel');
+  if(label){
+    const labels={chat:'Mode Tulis',voice:'Suara',foto:'Foto Struk'};
+    label.textContent=labels[action]||'Mode Tulis';
+  }
+}
+function triggerAddAction(action){
+  const target=action||getAddClickAction();
+  if(target==='voice'){
+    toggleVoiceInput();
+  }else if(target==='foto'){
+    openPhotoChoice();
+  }else{
+    navigate('add');
+    setTimeout(()=>$('focusInput')?.focus(),80);
+  }
+}
+let suppressAddClick=false;
+function initQuickAddRadialGesture(){
+  const addBtn=document.querySelector('.nav .add');
+  const radial=$('quickAddRadial');
+  if(!addBtn||!radial)return;
+
+  let longPressTimer=null;
+  let isRadialOpen=false;
+  let startX=0, startY=0;
+  let lastHoveredAction=null;
+
+  function vibrate(ms){
+    try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}
+  }
+
+  function openRadial(e){
+    isRadialOpen=true;
+    suppressAddClick=true;
+    radial.classList.add('active');
+    radial.setAttribute('aria-hidden','false');
+    vibrate(28);
+    updateHoveredItem(e.clientX, e.clientY);
+  }
+
+  function closeRadial(){
+    isRadialOpen=false;
+    radial.classList.remove('active');
+    radial.setAttribute('aria-hidden','true');
+    radial.querySelectorAll('.quick-add-radial-item').forEach(el=>el.classList.remove('hovered'));
+    lastHoveredAction=null;
+    setTimeout(()=>{suppressAddClick=false;},120);
+  }
+
+  function updateHoveredItem(clientX, clientY){
+    if(!isRadialOpen)return null;
+    const el=document.elementFromPoint(clientX, clientY);
+    const item=el?.closest('.quick-add-radial-item');
+    const items=radial.querySelectorAll('.quick-add-radial-item');
+    items.forEach(it=>{
+      it.classList.toggle('hovered', it===item);
+    });
+    if(item){
+      const act=item.dataset.radialAction;
+      if(act!==lastHoveredAction){
+        lastHoveredAction=act;
+        vibrate(18);
+      }
+      return act;
+    }else{
+      lastHoveredAction=null;
+      return null;
+    }
+  }
+
+  addBtn.addEventListener('contextmenu', e=>e.preventDefault());
+  radial.addEventListener('contextmenu', e=>e.preventDefault());
+
+  addBtn.addEventListener('pointerdown', e=>{
+    if(e.button!==undefined&&e.button!==0)return;
+    startX=e.clientX;
+    startY=e.clientY;
+    isRadialOpen=false;
+    suppressAddClick=false;
+    try{addBtn.setPointerCapture(e.pointerId)}catch(err){}
+    if(longPressTimer)clearTimeout(longPressTimer);
+    longPressTimer=setTimeout(()=>{openRadial(e)},380);
+  });
+
+  addBtn.addEventListener('pointermove', e=>{
+    if(!isRadialOpen){
+      const dist=Math.hypot(e.clientX-startX, e.clientY-startY);
+      if(dist>14&&longPressTimer){
+        clearTimeout(longPressTimer);
+        longPressTimer=null;
+      }
+    }else{
+      updateHoveredItem(e.clientX, e.clientY);
+    }
+  });
+
+  addBtn.addEventListener('pointerup', e=>{
+    try{addBtn.releasePointerCapture(e.pointerId)}catch(err){}
+    if(longPressTimer){
+      clearTimeout(longPressTimer);
+      longPressTimer=null;
+    }
+    if(isRadialOpen){
+      const selectedAction=updateHoveredItem(e.clientX, e.clientY);
+      closeRadial();
+      if(selectedAction){
+        vibrate(35);
+        triggerAddAction(selectedAction);
+      }
+    }
+  });
+
+  addBtn.addEventListener('pointercancel', e=>{
+    try{addBtn.releasePointerCapture(e.pointerId)}catch(err){}
+    if(longPressTimer){
+      clearTimeout(longPressTimer);
+      longPressTimer=null;
+    }
+    if(isRadialOpen)closeRadial();
+  });
+
+  radial.addEventListener('click', e=>{
+    if(e.target.classList.contains('quick-add-radial-backdrop')||e.target===radial){
+      closeRadial();
+    }
+  });
+}
 function getThemeMode(){const mode=localStorage.getItem(KEY_THEME)||'light';return ['system','light','dark'].includes(mode)?mode:'light'}
 function resolveTheme(mode=getThemeMode()){return mode==='dark'||(mode==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'}
 function applyTheme(mode=getThemeMode()){const resolved=resolveTheme(mode);document.documentElement.dataset.theme=resolved;document.documentElement.dataset.themeMode=mode;document.documentElement.style.colorScheme=resolved;document.body.dataset.theme=resolved;document.body.dataset.themeMode=mode;document.body.style.colorScheme=resolved;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',resolved==='dark'?'#211b18':'#f7efe8');renderThemeControls();}
