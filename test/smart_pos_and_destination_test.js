@@ -68,3 +68,18 @@ assert.ok(html.includes('"pocketId"'), 'aiCorrectTransactionText prompt must ask
 console.log('✔ Gemini prompt structure verified for Pockets and ST classification!');
 
 console.log('\nAll Task 1 & 2 tests passed successfully!');
+
+// Test 5: Destination Chips in Beranda & Focus Mode
+console.log('--- Test 5: Destination Chips in Beranda & Focus Mode ---');
+assert.ok(html.includes('id="homeDestinationChips"'), 'homeDestinationChips container must exist in home page');
+assert.ok(html.includes('id="focusDestinationChips"'), 'focusDestinationChips container must exist in focus page');
+assert.ok(html.includes('activeInputDestination'), 'activeInputDestination state variable must exist');
+assert.ok(html.includes('function renderDestinationChips('), 'renderDestinationChips function must exist');
+assert.ok(html.includes('function setInputDestination('), 'setInputDestination function must exist');
+assert.ok(html.includes('.destination-chips-wrap'), 'CSS styling for destination-chips-wrap must exist');
+assert.ok(html.includes('.destination-chip'), 'CSS styling for destination-chip must exist');
+console.log('✔ Destination chips markup, functions, and CSS verified!');
+
+console.log('\n=======================================');
+console.log('All Smart Pos & Destination Tests PASSED! 🎉');
+console.log('=======================================');
