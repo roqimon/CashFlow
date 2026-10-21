@@ -1338,7 +1338,7 @@ function title(x){return String(x||'').trim().replace(/\s+/g,' ').split(' ').fil
 function icon(cat,type){const rec=findCatRecord(cat);if(rec&&rec.icon)return rec.icon;if(catMeta[cat])return catMeta[cat][0];const n=String(cat||'').toLowerCase();if(type==='income')return '＋';const emojiMap=[['makan','🍽️'],['food','🍽️'],['jajan','🍿'],['snack','🍿'],['kopi','☕'],['coffee','☕'],['teh','🍵'],['transport','🚙'],['bensin','⛽'],['ojol','🛵'],['grab','🛵'],['gojek','🛵'],['taxi','🚕'],['belanja','🛍️'],['shopping','🛍️'],['fashion','👗'],['baju','👕'],['rumah','🏠'],['kos','🏠'],['kost','🏠'],['tagihan','💡'],['listrik','💡'],['air','🚿'],['gas','🔥'],['internet','📶'],['wifi','📶'],['digital','🔑'],['api','🔑'],['server','🖥️'],['hosting','🌐'],['software','💻'],['akademik','🎓'],['jurnal','📖'],['buku','📚'],['kuliah','🎓'],['sekolah','🏫'],['kesehatan','🏥'],['dokter','🩺'],['obat','💊'],['gym','🏋️'],['olahraga','🏋️'],['olahraga','🏃'],['fitness','🏋️'],['investasi','📈'],['saham','📉'],['crypto','🪙'],['bitcoin','₿'],['emas','🥇'],['properti','🏘️'],['hiburan','🎬'],['nonton','🎬'],['game','🎮'],['gaming','🎮'],['travel','✈️'],['liburan','🏖️'],['vacation','🏖️'],['hadiah','🎁'],['gift','🎁'],['kado','🎁'],['donasi','🤝'],['charity','🤝'],['perawatan','💅'],['beauty','💄'],['skincare','🧴'],['fotografi','📷'],['foto','📷'],['camera','📷'],['musik','🎵'],['music','🎵'],['hobi','🎯'],['pet','🐾'],['kucing','🐱'],['anjing','🐶'],['laundry','👔'],['cuci','🫧'],['asuransi','🛡️'],['bank','🏦'],['cicilan','💳'],['hutang','💳'],['pulsa','📱'],['hp','📱'],['phone','📱'],['tabungan','🐷'],['saving','🐷'],['kursus','📝'],['training','📝'],['bimbel','✏️'],['rokok','🚬'],['smoke','🚬'],['parkir','🅿️'],['tol','🛣️'],['langganan','🔄'],['subscription','🔄'],['donat','🍩'],['pizza','🍕'],['burger','🍔'],['nasi','🍛'],['soto','🍜'],['bakso','🍜'],['ayam','🍗'],['ikan','🐟'],['seafood','🦐'],['buah','🍎'],['sayur','🥗'],['roti','🍞'],['susu','🥛'],['minuman','🥤'],['es','🧊'],['gaji','💰'],['salary','💰'],['honor','💼'],['bonus','🎁'],['thr','🎁'],['fee','💵'],['pemasukan','＋'],['income','＋'],['lainnya','•']];for(const[key,emoji]of emojiMap){if(n.includes(key))return emoji}return '•'}
 function renderIcon(icon,cls=''){const asset=window.AruskasIcons?.assetFor(icon);return asset?`<img class="category-svg ${esc(cls)}" src="${asset}" alt="">`:`<span class="${esc(cls)}">${esc(icon||'•')}</span>`}
 function color(cat){const name=String(cat||'').toLowerCase();if(/gaji|pemasukan|honor|bonus|fee|masuk/.test(name))return '#e6eddf';const tones=['#f8e1d2','#fbebd6','#e8ecdf','#f4dfd8','#f6e8dc'];return tones[Array.from(name).reduce((a,c)=>a+c.charCodeAt(0),0)%tones.length]}
-function getTX(){try{const raw=localStorage.getItem(KEY_TX);const arr=raw?JSON.parse(raw):[];if(!arr.length){const old=localStorage.getItem('aruskas_transactions_v3_fixed');const oldArr=old?JSON.parse(old):[];if(oldArr.length){console.log('[ArusKas] Migrating '+oldArr.length+' transactions from v3');const migrated=oldArr.map(o=>tx({...o,source:'personal',reimburseStatus:null,stSessionId:null,updFlag:false}));saveTX(migrated);return migrated}console.log('[ArusKas] No transactions found');return[]}console.log('[ArusKas] Loaded '+arr.length+' transactions');return arr.map(tx)}catch(e){console.error('[ArusKas] getTX error:',e);return[]}} function saveTX(a){try{localStorage.setItem(KEY_TX,JSON.stringify(a));console.log('[ArusKas] Saved '+a.length+' transactions')}catch(e){console.error('[ArusKas] saveTX error:',e)}}
+function getTX(){try{const raw=localStorage.getItem(KEY_TX);const arr=raw?JSON.parse(raw):[];if(!arr.length){const old=localStorage.getItem('aruskas_transactions_v3_fixed');const oldArr=old?JSON.parse(old):[];if(oldArr.length){console.log('[ArusKas] Migrating '+oldArr.length+' transactions from v3');const migrated=oldArr.map(o=>tx({...o,source:'personal',reimburseStatus:null,stSessionId:null,updFlag:false}));saveTX(migrated);return migrated}console.log('[ArusKas] No transactions found');return[]}console.log('[ArusKas] Loaded '+arr.length+' transactions');return arr.map(tx)}catch(e){console.error('[ArusKas] getTX error:',e);return[]}} function saveTX(a){try{localStorage.setItem(KEY_TX,JSON.stringify(a));console.log('[ArusKas] Saved '+a.length+' transactions');return true}catch(e){console.error('[ArusKas] saveTX error:',e);return false}}
 function getSTBalance(){const arr=getTX(),st=arr.filter(t=>t.source==='st');const deposit=st.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);const expense=st.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);const pending=st.filter(t=>t.type==='expense'&&t.reimburseStatus==='pending').reduce((s,t)=>s+t.amount,0);const reimbursed=st.filter(t=>t.type==='expense'&&t.reimburseStatus==='reimbursed').reduce((s,t)=>s+t.amount,0);return{deposit,expense,pending,reimbursed,sisa:deposit-expense,hasST:st.length>0}}
 function markReimbursed(tid,unmark=false){const arr=getTX(),i=arr.findIndex(t=>t.id===tid);if(i<0)return;arr[i].reimburseStatus=unmark?'pending':'reimbursed';arr[i].updatedAt=new Date().toISOString();saveTX(arr);render();openTx(tid,false)}function resetKeyword(rawInput,oldCategory){const clean=rawInput.toLowerCase().trim().replace(/^st\s+/,'');const words=clean.split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w)&&!['rb','ribu','jt','juta','k','m'].includes(w));if(!words.length)return;const mem=getCatMem();let removed=[];words.forEach(w=>{if(mem[w]===oldCategory){delete mem[w];removed.push(w)}});localStorage.setItem(KEY_CATMEM,JSON.stringify(mem));FUZZY_CACHE=null;render()}window.markReimbursed=markReimbursed;window.resetKeyword=resetKeyword;
 const KEY_STSESS='aruskas_st_sessions_v1';
@@ -2542,20 +2542,67 @@ function compressImage(file, maxDimension=800, quality=0.7){
   });
 }
 
+async function prepareReceiptBlob(file){
+  const base64=await compressImage(file,1600,0.82);
+  const binary=atob(base64);
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  return new Blob([bytes],{type:'image/jpeg'});
+}
+async function persistScannedReceipt({file,items}){
+  const validItems=items.filter(item=>Number(item.amount)>0);
+  if(!validItems.length)throw new Error('Tidak ada transaksi yang valid untuk disimpan.');
+  const receiptId=id();
+  const blob=await prepareReceiptBlob(file);
+  const record={id:receiptId,blob,capturedAt:new Date().toISOString(),title:validItems[0].title||'Nota',categoryNames:[...new Set(validItems.map(item=>item.category).filter(Boolean))],transactionIds:validItems.map(item=>item.id)};
+  await window.ReceiptStore.put(record);
+  const linked=validItems.map(item=>({...item,receiptId}));
+  if(!saveTX([...linked,...getTX()])){
+    await window.ReceiptStore.remove(receiptId);
+    throw new Error('Gagal menyimpan transaksi.');
+  }
+  return {receiptId,items:linked};
+}
+async function saveReceiptWithChoice(items,file){
+  if(!file){
+    if(!saveTX([...items,...getTX()]))throw new Error('Gagal menyimpan transaksi.');
+    return {receiptId:null,items};
+  }
+  while(true){
+    try{return await persistScannedReceipt({file,items})}
+    catch(error){
+      console.error('[ArusKas] Gagal mengarsipkan nota:',error);
+      const retry=await confirmBox({title:'Foto nota belum tersimpan',message:'Penyimpanan foto gagal. Coba lagi, atau simpan transaksi tanpa fotonya.',okText:'Coba Lagi',cancelText:'Simpan tanpa foto',tone:'safe'});
+      if(retry)continue;
+      if(!saveTX([...items,...getTX()]))throw new Error('Gagal menyimpan transaksi.');
+      return {receiptId:null,items};
+    }
+  }
+}
+
 let isScanning=false;
 function setScanningState(scanning){
   isScanning=scanning;
   ['scanBtn','scanBtnFocus'].forEach(id=>{const b=$(id);if(b)b.classList.toggle('scanning',scanning)});
+  if($('scanManualSaveBtn'))$('scanManualSaveBtn').disabled=scanning||receiptScanCompleted;
 }
 
 let currentReceiptFile=null;
+let receiptSelectionToken=0;
+let receiptScanCompleted=false;
+let receiptSaveInProgress=false;
+function cancelReceiptScan(){receiptSelectionToken++;currentReceiptFile=null;closeModalLayer('scanModal')}
 function openPhotoChoice(){
   openModalLayer('photoChoiceModal');
 }
 
 async function handleReceiptFileSelected(file){
   if(!file) return;
+  receiptSelectionToken++;
   currentReceiptFile=file;
+  receiptScanCompleted=false;
+  if($('scanManualTitle'))$('scanManualTitle').value='';
+  if($('scanManualAmount'))$('scanManualAmount').value='';
   const reader=new FileReader();
   reader.onload=e=>{
     const img=$('scanPreviewImg');
@@ -2586,6 +2633,7 @@ async function handleReceiptFileSelected(file){
 
 async function executeReceiptAiScan(file, apiKey){
   if(!file) file=currentReceiptFile;
+  const selectionToken=receiptSelectionToken;
   if(!apiKey) apiKey=$('scanApiKeyInput')?.value.trim()||getGeminiApiKey();
   if(!apiKey){
     const statusBox=$('scanStatusBox');
@@ -2649,8 +2697,9 @@ async function executeReceiptAiScan(file, apiKey){
     const parsed=JSON.parse(cleanJson);
     const items=Array.isArray(parsed)?parsed:[parsed];
     if(!items.length) throw new Error('Tidak ada transaksi terdeteksi dalam foto.');
+    if(selectionToken!==receiptSelectionToken||file!==currentReceiptFile)return;
 
-    const arr=getTX();
+    const pendingItems=[];
     const nowIso=new Date().toISOString();
     let countSaved=0, firstSaved=null;
     items.forEach(it=>{
@@ -2684,7 +2733,7 @@ async function executeReceiptAiScan(file, apiKey){
         rawInput:'foto: '+cleanTitle,
         createdAt:nowIso
       });
-      arr.unshift(newItem);
+      pendingItems.push(newItem);
       learnCategory(cleanTitle, cat);
       learnTitle(cleanTitle, newItem.title);
       if(!firstSaved) firstSaved=newItem;
@@ -2692,7 +2741,10 @@ async function executeReceiptAiScan(file, apiKey){
     });
 
     if(countSaved>0){
-      saveTX(arr);
+      const saved=await saveReceiptWithChoice(pendingItems,file);
+      if(selectionToken!==receiptSelectionToken)return;
+      currentReceiptFile=null;
+      receiptScanCompleted=true;
       try{ render(); }catch(renderErr){ console.warn('Render non-fatal:', renderErr); }
       if(firstSaved){
         if($('scanManualTitle')) $('scanManualTitle').value=firstSaved.title;
@@ -2701,10 +2753,10 @@ async function executeReceiptAiScan(file, apiKey){
       }
       if(statusBox){
         statusBox.className='pratinjau';
-        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat!</strong><span class="muted" style="display:block;margin-top:2px">${firstSaved.title}: ${money(firstSaved.amount)}</span>`;
+        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}!</strong><span class="muted" style="display:block;margin-top:2px">${firstSaved.title}: ${money(firstSaved.amount)}</span>`;
       }
       toast(`✅ Berhasil dicatat: ${firstSaved.title} (${money(firstSaved.amount)})`);
-      setTimeout(()=>closeModalLayer('scanModal'), 1100);
+      setTimeout(()=>{if(selectionToken===receiptSelectionToken)closeModalLayer('scanModal')}, 1100);
     } else {
       throw new Error('Nominal transaksi dalam struk tidak terbaca.');
     }
@@ -2722,7 +2774,8 @@ async function executeReceiptAiScan(file, apiKey){
 
 const scanReceiptWithGemini=executeReceiptAiScan;
 
-function saveScanManualTransaction(){
+async function saveScanManualTransaction(){
+  if(isScanning||receiptScanCompleted||receiptSaveInProgress)return;
   const titleVal=$('scanManualTitle')?.value.trim()||'Nota Struk';
   const rawScanAmt=$('scanManualAmount')?.value.trim()||'';
   const amountVal=Number(rawScanAmt.replace(/\D/g,''))||parseAmount(rawScanAmt)||0;
@@ -2749,12 +2802,22 @@ function saveScanManualTransaction(){
     rawInput:'foto: '+titleVal,
     createdAt:new Date().toISOString()
   });
-  const arr=getTX();
-  arr.unshift(item);
-  saveTX(arr);
-  render();
-  closeModalLayer('scanModal');
-  alert(`Transaksi berhasil dicatat: ${item.title} - ${money(item.amount)}`);
+  receiptSaveInProgress=true;
+  $('scanManualSaveBtn').disabled=true;
+  try{
+    const saved=await saveReceiptWithChoice([item],currentReceiptFile);
+    currentReceiptFile=null;
+    receiptScanCompleted=true;
+    receiptSelectionToken++;
+    render();
+    closeModalLayer('scanModal');
+    alert(`Transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}: ${item.title} - ${money(item.amount)}`);
+  }catch(error){
+    alert(error.message||'Transaksi belum berhasil disimpan.');
+  }finally{
+    receiptSaveInProgress=false;
+    $('scanManualSaveBtn').disabled=receiptScanCompleted;
+  }
 }
 
 async function importJsonData(file){
@@ -3132,7 +3195,7 @@ const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.edi
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
     if(a==='new-pocket')openPocketEdit('');
     if(a==='close-pocket-modal')closePocketEdit();
-if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){closeModalLayer('scanModal');}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
+if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}if(a==='close-scan-modal'){cancelReceiptScan();}if(a==='finish-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.stop()}catch(e){}}}if(a==='cancel-voice'){if(voiceSilenceTimer)clearTimeout(voiceSilenceTimer);if(voiceMaxTimer)clearTimeout(voiceMaxTimer);if(recognition){try{recognition.abort()}catch(e){}}setListeningState(false);const targetId=page==='add'?'focusPreview':'quickPreview';const b=$(targetId);if(b)b.style.display='none';}if(a==='import-json'){$('importJsonFileInput')?.click();}if(a==='install-pwa'){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';updateNativeHint()})}}if(a==='ai-fix'){const tid=escBtn.dataset.target||(page==='add'?'focusInput':'quickInput');triggerAiCorrection(tid);return;}
 if(a==='force-update'){try{sessionStorage.setItem('aruskas_just_updated','1');if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(let r of regs)await r.unregister();}if('caches' in window){const keys=await caches.keys();for(let k of keys)await caches.delete(k);}}catch(e){}const u=new URL(window.location.href);u.searchParams.set('updated','v43');u.searchParams.set('v',String(Date.now()));window.location.replace(u.toString());return;}if(a==='manual'){openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='flex'?'none':'flex';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}if(a==='clear-data'){const ok=await confirmBox({title:'Hapus semua data?',message:'Semua transaksi, pintasan, pos anggaran, tujuan tabungan, riwayat setor, dan memori kategori akan dihapus dari penyimpanan lokal peramban.',okText:'Hapus semua',tone:'danger'});if(ok){saveTX([]);saveSC([]);saveCatRecords([]);savePockets([]);saveSavings(savingsCore.emptySavings());localStorage.removeItem(KEY_CATMEM);localStorage.removeItem(KEY_TITLEMEM);localStorage.removeItem('aruskas_st_sessions_v1');localStorage.setItem('aruskas_cleared','1');localStorage.setItem('aruskas_pockets_cleared','1');render()}}});
 document.addEventListener('keydown',e=>{const txBtn=e.target.closest&&e.target.closest('[data-tx-id]');if(!txBtn||!['Enter',' '].includes(e.key))return;e.preventDefault();if(selectMode){const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId)});
