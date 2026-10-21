@@ -31,8 +31,8 @@ console.log('✔ Mic and secure context guidance verified');
 
 console.log('--- Test 5: Service Worker Cache Version Bump ---');
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v27'"), 'sw.js must be bumped to v27');
-assert.ok(html.includes('sw.js?v=20261021.15'), 'index.html must register sw.js?v=20261021.15');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v28'"), 'sw.js must be bumped to v28');
+assert.ok(html.includes('sw.js?v=20261021.16'), 'index.html must register sw.js?v=20261021.16');
 console.log('✔ Service Worker cache version verified');
 
 console.log('--- Test 6: Gemini Receipt AI Scanner Configuration ---');

@@ -353,7 +353,7 @@ html[data-theme="dark"] .category-svg { filter: brightness(0) invert(94%) sepia(
 .focus-preview-copy strong { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--ink); font-size: 12px; }
 .focus-preview-amount { color: var(--expense); font-size: 12px; white-space: nowrap; }
 #focusPreview[data-type="income"] .focus-preview-amount { color: var(--income); }
-.focus-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 15px; }
+.focus-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 9px; margin-top: 15px; }
 .focus-tool { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 53px; border: 1px solid var(--line); border-radius: 15px; background: var(--button-bg); color: var(--ink); font-size: 13px; font-weight: 800; }
 .focus-tool img { width: 22px; height: 22px; filter: brightness(0) saturate(100%) invert(36%) sepia(26%) saturate(742%) hue-rotate(334deg) brightness(92%); }
 .focus-save { width: 100%; min-height: 57px !important; margin-top: 12px; font-size: 15px !important; }

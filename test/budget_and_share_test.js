@@ -20,7 +20,12 @@ console.log('✔ Pocket Spending calculation function verified');
 
 console.log('--- Test 3: WhatsApp Share Message Generator ---');
 assert.ok(html.includes('generateWhatsAppRecap'), 'index.html must implement generateWhatsAppRecap');
-console.log('✔ WhatsApp message generator verified');
+assert.ok(html.includes('generateCustomWhatsAppRecap'), 'index.html must implement generateCustomWhatsAppRecap');
+assert.ok(html.includes('id="shareWaModal"'), 'index.html must include shareWaModal');
+assert.ok(html.includes('id="shareWaPreview"'), 'index.html must include shareWaPreview textarea');
+assert.ok(html.includes('id="shareWaCopyBtn"'), 'index.html must include shareWaCopyBtn');
+assert.ok(html.includes('id="shareWaSendBtn"'), 'index.html must include shareWaSendBtn');
+console.log('✔ WhatsApp message generator & modal UI verified');
 
 // 2. Logic execution test
 console.log('--- Test 4: Calculation Logic Unit Test ---');
@@ -131,6 +136,85 @@ assert.ok(waMsg.includes('Rekap Belanja Keluarga — Oktober 2026'), 'Title must
 assert.ok(waMsg.includes('Dapur & Belanja'), 'Must include pocket name');
 assert.ok(waMsg.includes('Sisa Rp 875 rb'), 'Must include remaining');
 console.log('✔ WhatsApp text recap verified');
+
+console.log('--- Test 5: Custom WhatsApp Generator Functionality ---');
+function extractFunction(source, fnName) {
+  const start = source.indexOf(`function ${fnName}(`);
+  if (start === -1) return null;
+  let braceCount = 0;
+  let started = false;
+  for (let i = start; i < source.length; i++) {
+    if (source[i] === '{') {
+      braceCount++;
+      started = true;
+    } else if (source[i] === '}') {
+      braceCount--;
+      if (started && braceCount === 0) {
+        return source.slice(start, i + 1);
+      }
+    }
+  }
+  return null;
+}
+
+const customCode = extractFunction(html, 'generateCustomWhatsAppRecap');
+assert.ok(customCode, 'generateCustomWhatsAppRecap must be defined in index.html');
+
+// Create test evaluator
+const evalScope = {
+  short,
+  calculatePocketUsage,
+  monthlyPersonalExpense: (d, tx) => 125000,
+  catTotals: (tx, type) => [{ category: 'Belanja', total: 75000, count: 1, icon: '🛍️' }, { category: 'Makan', total: 50000, count: 1, icon: '🍽️' }],
+  money: (v) => 'Rp ' + Number(v).toLocaleString('id-ID'),
+  getPockets: () => [mockPocket],
+  getTX: () => mockTx
+};
+
+const customFn = new Function('short', 'calculatePocketUsage', 'monthlyPersonalExpense', 'catTotals', 'money', 'getPockets', 'getTX',
+  `return (${customCode});`
+)(evalScope.short, evalScope.calculatePocketUsage, evalScope.monthlyPersonalExpense, evalScope.catTotals, evalScope.money, evalScope.getPockets, evalScope.getTX);
+
+// 1. Full options test
+const fullMsg = customFn({
+  periodLabel: 'Minggu ke-42 (13 Okt - 19 Okt 2026)',
+  includeSummary: true,
+  summary: { income: 5000000, expense: 125000, net: 4875000 },
+  includePockets: true,
+  pockets: [mockPocket],
+  txList: mockTx,
+  targetDate: '2026-10-20',
+  includeCategories: true,
+  categories: [{ category: 'Belanja', total: 75000, count: 1, icon: '🛍️' }],
+  customNote: 'Uang belanja minggu ini terkontrol baik.'
+});
+
+assert.ok(fullMsg.includes('Minggu ke-42'), 'Must include active period label');
+assert.ok(fullMsg.includes('Ringkasan Arus Kas'), 'Must include summary');
+assert.ok(fullMsg.includes('Pos Anggaran'), 'Must include budget pockets');
+assert.ok(fullMsg.includes('Dapur & Belanja'), 'Must list pocket');
+assert.ok(fullMsg.includes('Pengeluaran per Kategori'), 'Must include categories');
+assert.ok(fullMsg.includes('Belanja'), 'Must include category item');
+assert.ok(fullMsg.includes('Uang belanja minggu ini terkontrol baik.'), 'Must include custom note');
+
+// 2. Selective exclusions
+const selectiveMsg = customFn({
+  periodLabel: 'Oktober 2026',
+  includeSummary: false,
+  includePockets: true,
+  pockets: [mockPocket],
+  txList: mockTx,
+  targetDate: '2026-10-20',
+  includeCategories: false,
+  customNote: ''
+});
+
+assert.ok(!selectiveMsg.includes('Ringkasan Arus Kas'), 'Must NOT include summary when disabled');
+assert.ok(selectiveMsg.includes('Pos Anggaran'), 'Must include budget pockets when enabled');
+assert.ok(!selectiveMsg.includes('Pengeluaran per Kategori'), 'Must NOT include categories when disabled');
+assert.ok(!selectiveMsg.includes('Catatan:'), 'Must NOT include note header when empty');
+
+console.log('✔ Custom WhatsApp generator logic verified');
 
 console.log('\n=======================================');
 console.log('All Budget & WhatsApp Share Tests PASSED!');
