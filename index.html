@@ -958,7 +958,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v69</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v70</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1404,7 +1404,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261021.39').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261022.70').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -2074,7 +2074,7 @@ function parseAppHash(){const raw=location.hash.replace(/^#/,'');const parts=raw
 function navigate(p,updateHistory=true){const prevPage=page;if(selectMode)exitSelectMode();if(pocketSelectMode)exitPocketSelectMode();if(scSelectMode)exitScSelectMode();if(typeof catSelectMode !== 'undefined' && catSelectMode) exitCatSelectMode();if(p==='shortcut')p='settings';if(!document.querySelector(`[data-page="${p}"]`))p='home';page=p;try{localStorage.setItem('aruskas_active_page',p)}catch(e){}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.dataset.page===p));const activeNav=(p==='savings'||p==='home')?'home':p;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===activeNav||(b.dataset.nav==='settings'&&(p==='settings'||p==='shortcut'))));const meta={home:['Beranda','Ringkasan dan input cepat'],transactions:['Transaksi','Daftar lengkap, rincian, ubah, dan saring'],add:['Tambah','Input fokus satu baris'],report:['Laporan','Diagram porsi dan tren arus kas'],settings:['Setting','Preferensi, anggaran, dan data'],shortcut:['Setting','Preferensi, anggaran, dan data'],savings:['Tabungan','Pantau tujuan dan setoranmu']}[p]||['Beranda','Ringkasan'];document.querySelector('.topbar')?.classList.toggle('report-centered',p==='report'||p==='transactions'||p==='settings');document.querySelector('.topbar')?.classList.toggle('home-topbar',p==='home');$('pageTitle').textContent=meta[0];$('pageSubtitle').textContent=meta[1];if(p==='home'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null};}if(p==='settings'){renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type===txFilter.type));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source===txFilter.source));render();if(p==='add')setTimeout(()=>$('focusInput').focus(),80);if(updateHistory&&prevPage!==p){pageStack.push(prevPage);try{if(p==='home')history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));else history.pushState({app:true,page:p},'',appHash(p))}catch{}}updateBackButton()}
 function currentHistoryPage(){return page||'home'}
 function ensureHomeHistoryGuard(){if(page!=='home')return;try{const st=history.state||{};if(st.app&&st.page==='home'&&st.guard&&!st.layer)return;if(st.page!=='home'||st.layer){history.replaceState({app:true,page:'home',root:true},'',appHash('home'))}history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'))}catch(e){}}
-function initHistoryGuard(){try{history.replaceState({app:true,page:'home',root:true},'',appHash('home'));history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'))}catch(e){}}
+function initHistoryGuard(){try{const cur=page||'home';if(cur==='home'){history.replaceState({app:true,page:'home',root:true},'',appHash('home'));history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));}else{history.replaceState({app:true,page:cur},'',appHash(cur));}}catch(e){}}
 function pushLayerHistory(layer){try{const p=currentHistoryPage();const st=history.state||{};if(st.app&&st.page===p&&st.layer===layer)return;history.pushState({app:true,page:p,layer},'',appHash(p,layer))}catch(e){}}
 function replaceLayerHistory(layer){try{const p=currentHistoryPage();if(layer)history.replaceState({app:true,page:p,layer},'',appHash(p,layer));else history.replaceState({app:true,page:p},'',appHash(p))}catch(e){}}
 function markLayerClosed(layer){try{const st=history.state||{};if(st.layer===layer)history.replaceState({app:true,page:currentHistoryPage()},'',appHash(currentHistoryPage()))}catch(e){}if(page==='home')ensureHomeHistoryGuard()}
@@ -5037,7 +5037,7 @@ if(a==='close-scan-modal'){cancelReceiptScan();}if(a==='finish-voice'){if(voiceS
 if(a==='force-update'){
   try{
     sessionStorage.setItem('aruskas_just_updated','1');
-    localStorage.setItem('aruskas_active_page', page || 'home');
+    localStorage.setItem('aruskas_active_page', 'home');
     if('serviceWorker' in navigator){
       const regs=await navigator.serviceWorker.getRegistrations();
       for(let r of regs)await r.unregister();
@@ -5048,9 +5048,9 @@ if(a==='force-update'){
     }
   }catch(e){}
   const u=new URL(window.location.href);
-  u.searchParams.set('updated','v69');
+  u.searchParams.set('updated','v70');
   u.searchParams.set('v',String(Date.now()));
-  if(!u.hash || u.hash==='#') u.hash=page ? '#'+page : '#home';
+  u.hash='#home';
   window.location.replace(u.toString());
   return;
 }if(a==='manual'){populatePocketOptions($('manPocketSelect'),'');refreshFancySelect($('manPocketSelect'));openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='none'?'flex':'none';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
@@ -5353,13 +5353,13 @@ function checkUpdateNotice(){
         const cleanUrl=new URL(window.location.href);
         cleanUrl.searchParams.delete('updated');
         cleanUrl.searchParams.delete('v');
-        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.hash);
+        window.history.replaceState({app:true,page:page||'home'}, document.title, cleanUrl.pathname + cleanUrl.hash);
       }catch(err){}
     }
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v69');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v70');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');
@@ -5904,7 +5904,7 @@ $('clearToggleAllBtn')?.addEventListener('click', ()=>{
 });
 $('clearExecuteBtn')?.addEventListener('click', executeSelectiveClear);
 
-boot();checkUpdateNotice();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
+boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
 })();
 </script>
 </body>
