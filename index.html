@@ -2418,10 +2418,7 @@ function renderBudgetPockets(){
     totalAllocated+=usage.allocated;
   });
 
-  const MAX_HOME_POCKETS = 3;
-  const shownPockets = activePockets.slice(0, MAX_HOME_POCKETS);
-
-  let pocketCardsHtml = shownPockets.map(p=>{
+  let pocketCardsHtml = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
     const safePercent=Math.max(0,Math.min(100,usage.percent));
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Sisa ${short(Math.max(0,usage.remaining))}">
@@ -2431,12 +2428,10 @@ function renderBudgetPockets(){
     </button>`;
   }).join('');
 
-  if(activePockets.length > MAX_HOME_POCKETS){
-    pocketCardsHtml += `<button class="ghost" data-action="manage-pockets" type="button" style="width:100%;min-height:38px;font-size:12px;font-weight:800;border:1px dashed var(--line);background:var(--surface);margin-top:2px;display:flex;align-items:center;justify-content:center;gap:6px">
-      <span>Lihat Semua Pos (${activePockets.length})</span>
-      <span style="font-size:14px">›</span>
-    </button>`;
-  }
+  pocketCardsHtml += `<button class="ghost" data-action="manage-pockets" type="button" style="width:100%;min-height:38px;font-size:12px;font-weight:800;border:1px dashed var(--line);background:var(--surface);margin-top:2px;display:flex;align-items:center;justify-content:center;gap:6px">
+    <span>Atur Semua Pos (${allPockets.length})</span>
+    <span style="font-size:14px">›</span>
+  </button>`;
 
   container.innerHTML = pocketCardsHtml;
 
@@ -2589,10 +2584,14 @@ function renderHomeDonut(totals, totalExpense){
 
   const legend = displayedItems.map((item, index) =>
     '<button class="home-donut-item" type="button" data-home-category="' + esc(item.category) + '" aria-label="Kategori ' + esc(item.category) + ': ' + money(item.total) + ' (' + item.percent + '%)">' +
-      '<span class="home-donut-dot" style="--donut-color:' + colors[index % colors.length] + '"></span>' +
-      '<span class="home-donut-name">' + esc(item.category) + '</span>' +
-      '<strong>' + (item.percent < 1 ? '<1%' : item.percent + '%') + '</strong>' +
-      '<small>' + money(item.total) + '</small>' +
+      '<div class="home-donut-item-left">' +
+        '<span class="home-donut-dot" style="--donut-color:' + colors[index % colors.length] + '"></span>' +
+        '<span class="home-donut-name">' + esc(item.category) + '</span>' +
+      '</div>' +
+      '<div class="home-donut-item-right">' +
+        '<small>' + money(item.total) + '</small>' +
+        '<strong>' + (item.percent < 1 ? '<1%' : item.percent + '%') + '</strong>' +
+      '</div>' +
     '</button>'
   ).join('');
 
