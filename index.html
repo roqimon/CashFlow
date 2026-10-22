@@ -1003,7 +1003,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v73</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v74</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -2001,9 +2001,9 @@ function parseInput(input){
   if(/^pribadi\s+/i.test(rawWork)){
     isExplicitPersonal=true;
     rawWork=rawWork.replace(/^pribadi\s+/i,'').trim();
-  }else if(/^st\s+/i.test(rawWork)){
+  }else if(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i.test(rawWork)){
     isExplicitST=true;
-    rawWork=rawWork.replace(/^st\s+/i,'').trim();
+    rawWork=rawWork.replace(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i,'').trim();
   }
   const stPocket=getSTPocket();
   if(isExplicitST && !stPocket){
@@ -3468,10 +3468,11 @@ function addFrom(inputId,overrideValue){
       return
     }
     const stPocket=getSTPocket();
+    const isTargetST = activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id);
     if(activeInputDestination==='bebas'){
       r.item.pocketId='bebas';
       r.item.source='personal';
-    }else if(activeInputDestination==='st'){
+    }else if(isTargetST){
       if(stPocket){
         r.item.source='st';
         r.item.pocketId=stPocket.id;
@@ -3539,12 +3540,11 @@ function pratinjau(inputId,boxId){
   const item=r.item;
   let destBadge='';
   const stPocket=getSTPocket();
-  if(item.source==='st'){
+  const isTargetST = activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id);
+  if(item.source==='st' || isTargetST){
     destBadge=` · 📋 [ST / Dinas: ${stPocket?esc(stPocket.name):'ST'}]`;
   }else if(activeInputDestination==='bebas'){
     destBadge=' · ⚪ Saldo Bebas';
-  }else if(activeInputDestination==='st'){
-    destBadge=` · 📋 [ST / Dinas: ${stPocket?esc(stPocket.name):'ST'}]`;
   }else if(activeInputDestination!=='auto'){
     const p=getPockets().find(x=>x.id===activeInputDestination);
     if(p) destBadge=` · 🎯 Pos: ${esc(p.name)}`;
@@ -6082,6 +6082,10 @@ if(typeof window!=='undefined'){
   window.renderHome=renderHome;
   window.getPockets=getPockets;
   window.savePockets=savePockets;
+  window.parseInput=parseInput;
+  window.addFrom=addFrom;
+  window.setInputDestination=setInputDestination;
+  window.getTX=getTX;
 }
 })();
 </script>
