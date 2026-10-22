@@ -740,7 +740,32 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div></header>
       <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan Tampilan Berhasil!</strong><span style="font-size:12px;color:var(--muted)">Aplikasi versi terbaru aktif. Seluruh data transaksi tetap aman.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
-        <section class="card balance"><div class="row"><span>Saldo Bersih</span><span id="homePeriod">Bulan ini</span></div><h2 id="netBalance">Rp 0</h2><div class="grid2" style="margin-top:18px"><div><small>Pemasukan</small><strong id="incomeTotal" style="display:block">Rp 0</strong></div><div><small>Pengeluaran</small><strong id="expenseTotal" style="display:block">Rp 0</strong></div></div></section>
+        <section class="card balance">
+          <div class="row">
+            <span id="safeStatusBadge" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:999px">🟢 Sesuai Ritme</span>
+            <span id="homePeriod">Memuat siklus...</span>
+          </div>
+          <small style="color:rgba(255,255,255,0.85);font-size:11.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;display:block;margin-top:6px">
+            Aman Dibelanjakan Hari Ini
+          </small>
+          <h2 id="dailySafeAmount">Rp 0</h2>
+          <div class="grid2" style="margin-top:16px">
+            <div>
+              <small style="opacity:.9">Sisa Uang Bebas</small>
+              <strong id="freeMoneyTotal" style="display:block">Rp 0</strong>
+            </div>
+            <div>
+              <small style="opacity:.9">Pos Komitmen</small>
+              <strong id="committedStatus" style="display:block">Aman 🛡️</strong>
+            </div>
+          </div>
+          <!-- Hidden fallback elements for legacy compatibility -->
+          <div style="display:none" aria-hidden="true">
+            <span id="netBalance">Rp 0</span>
+            <span id="incomeTotal">Rp 0</span>
+            <span id="expenseTotal">Rp 0</span>
+          </div>
+        </section>
         <section class="card home-quick" id="home-quick">
           <div class="row"><strong>Input cepat</strong><button class="text-btn" data-nav="add" type="button">Mode fokus</button></div>
           <div class="input-row">
@@ -828,6 +853,26 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         </section>
 
         <!-- 2. Pos Anggaran Bulanan -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">🗓️</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Tanggal Gajian Bulanan</strong>
+              <small class="muted" style="font-size:11.5px">Awal siklus perhitungan anggaran & jatah belanja harian</small>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <select id="settingPayday" class="input" style="width:100%;font-size:13px;font-weight:700">
+              <option value="25">Tanggal 25 (Umum Swasta / BUMN)</option>
+              <option value="1">Tanggal 1 (PNS / ASN / Awal Bulan)</option>
+              <option value="20">Tanggal 20</option>
+              <option value="27">Tanggal 27</option>
+              <option value="28">Tanggal 28</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- 3. Pos Anggaran Bulanan -->
         <section class="card settings-card">
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#fef3eb;color:#e66c48">🎯</span>
@@ -2403,19 +2448,45 @@ function renderWarmTxSummary(arr){
 }
 function renderSTSessions(){const el=$('stSessionManager');if(!el)return;const sessions=getSTSessions().filter(s=>s.status==='active');if(!sessions.length){el.innerHTML='<div class="empty">Tidak ada sesi ST aktif. Klik ＋ Sesi Baru untuk membuat.</div>';return}el.innerHTML=sessions.map(s=>{const b=getSessionBalance(s.id);return `<div class="st-session-card active"><div class="st-session-head"><strong>${esc(s.label)}</strong><span class="st-badge st">Aktif</span></div><div class="st-session-grid"><div><span>Deposit</span><strong>${short(b.deposit)}</strong></div><div><span>Akomodasi</span><strong>${short(b.akomodasi)}</strong></div><div><span>UPD</span><strong>${short(b.upd)}</strong></div><div><span>${b.sisa>=0?'Sisa':'Kurang'}</span><strong>${short(Math.abs(b.sisa))}</strong></div></div><div class="st-session-actions"><button class="edit-btn" data-edit-session="${esc(s.id)}" type="button">Edit</button><button class="settle-btn" data-settle-session="${esc(s.id)}" type="button">Tutup & Settlement</button><button class="detail-btn" data-session-detail="${esc(s.id)}" type="button">Detail</button></div></div>`}).join('')}
 function renderHome(arr){
-  const r={start:startMonth(new Date()),end:endMonth(new Date())};
+  const pockets=getPockets();
+  const savings=getSavings();
+  const safeData=calculateSafeDailySpend(arr,pockets,savings,new Date(),getPaydaySetting());
+  const periodEl=$('homePeriod');
+  if(periodEl)periodEl.textContent=`${safeData.cycle.label} (${safeData.daysRemaining} hr lagi)`;
+  const dailyEl=$('dailySafeAmount');
+  if(dailyEl)dailyEl.textContent=money(safeData.safeDailyAmount);
+  const freeEl=$('freeMoneyTotal');
+  if(freeEl)freeEl.textContent=money(safeData.freeMoneyRemaining);
+  const badgeEl=$('safeStatusBadge');
+  if(badgeEl){
+    if(!safeData.hasIncome){
+      badgeEl.textContent='💡 Catat Gaji';
+      badgeEl.style.background='rgba(255,255,255,.22)';
+    }else if(safeData.isOverspent){
+      badgeEl.textContent=`⚠️ Lebih ${money(Math.abs(safeData.todayRemaining))}`;
+      badgeEl.style.background='rgba(235,90,70,.4)';
+    }else{
+      badgeEl.textContent='🟢 Sesuai Ritme';
+      badgeEl.style.background='rgba(255,255,255,.22)';
+    }
+  }
+  const statusEl=$('committedStatus');
+  if(statusEl){
+    const hasOverPocket=pockets.some(p=>calculatePocketUsage(p,new Date(),arr).isOver);
+    statusEl.textContent=hasOverPocket?'Perlu Hemat ⚠️':'Aman 🛡️';
+  }
+  const r=safeData.cycle;
   const a=arr.filter(t=>inRange(t,r.start,r.end)),s=sum(a);
-  $('netBalance').textContent=money(s.income-s.expense);
-  $('incomeTotal').textContent=money(s.income);
-  $('expenseTotal').textContent=money(s.expense);
-  $('homePeriod').textContent=new Date().toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+  if($('netBalance'))$('netBalance').textContent=money(s.income-s.expense);
+  if($('incomeTotal'))$('incomeTotal').textContent=money(s.income);
+  if($('expenseTotal'))$('expenseTotal').textContent=money(s.expense);
   $('txCount').textContent=`${Math.min(arr.length,5)} dari ${arr.length} transaksi`;
   $('homeTxList').innerHTML=arr.slice(0,5).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
   const totals=catTotals(a,'expense');
   const visibleCats=getCatList().filter(c=>!['Gaji','Honor','Bonus','Masuk'].includes(c));
   const fallback=(visibleCats.length?visibleCats:['Lainnya']).slice(0,5).map(c=>({category:c,total:0,count:0,icon:icon(c,'expense')}));
   const shown=(totals.length?totals:fallback).slice(0,5);
-  $('homeCategories').innerHTML=shown.map(c=>{const share=s.expense>0?Math.round(c.total/s.expense*100):0;return `<button class="cat-card" data-home-category="${esc(c.category)}" type="button" style="--bar:${share}%" aria-label="Lihat pengeluaran ${esc(c.category)}: ${money(c.total)}, ${share}% dari total bulan ini"><div class="cat-icon" style="background:${color(c.category)}">${renderIcon(c.icon)}</div><div class="cat-info"><strong>${esc(c.category)}</strong><i class="cat-bar"><i></i></i></div><div class="cat-stat"><small>${money(c.total)}</small><em>${share}%</em></div></button>`}).join('');
+  $('homeCategories').innerHTML=shown.map(c=>{const share=s.expense>0?Math.round(c.total/s.expense*100):0;return `<button class="cat-card" data-home-category="${esc(c.category)}" type="button" style="--bar:${share}%" aria-label="Lihat pengeluaran ${esc(c.category)}: ${money(c.total)}, ${share}% dari total siklus ini"><div class="cat-icon" style="background:${color(c.category)}">${renderIcon(c.icon)}</div><div class="cat-info"><strong>${esc(c.category)}</strong><i class="cat-bar"><i></i></i></div><div class="cat-stat"><small>${money(c.total)}</small><em>${share}%</em></div></button>`}).join('');
   const ec=$('exampleChips');if(ec){ec.innerHTML='';ec.style.display='none'}
 }
 function savingsIconHtml(iconKey,customIcon='',cls=''){
@@ -5990,12 +6061,25 @@ $('clearToggleAllBtn')?.addEventListener('click', ()=>{
 $('clearExecuteBtn')?.addEventListener('click', executeSelectiveClear);
 
 boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
+const settingPaydayEl=$('settingPayday');
+if(settingPaydayEl){
+  settingPaydayEl.value=String(getPaydaySetting());
+  settingPaydayEl.addEventListener('change',()=>{
+    const val=parseInt(settingPaydayEl.value,10)||25;
+    savePaydaySetting(val);
+    renderHome(getTX());
+    renderPockets(getPockets(),getTX());
+    if(typeof renderReport==='function')renderReport(getTX());
+    toast(`Tanggal gajian diubah ke tanggal ${val}. Anggaran & jatah harian diperbarui.`);
+  });
+}
 if(typeof window!=='undefined'){
   window.getPaydaySetting=getPaydaySetting;
   window.savePaydaySetting=savePaydaySetting;
   window.getPaydayCycle=getPaydayCycle;
   window.calculateSafeDailySpend=calculateSafeDailySpend;
   window.calculatePocketUsage=calculatePocketUsage;
+  window.renderHome=renderHome;
   window.getPockets=getPockets;
   window.savePockets=savePockets;
 }
