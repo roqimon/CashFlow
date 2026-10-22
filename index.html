@@ -1433,14 +1433,9 @@ const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
 let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 const defaultPockets=[
-  {id:'pocket-dapur',name:'Dapur & Bahan Makanan',icon:'🛒',amount:2500000,color:'#1f8a5b',categories:['dapur & bahan makanan','dapur','belanja dapur','pasar','sayur','beras','minyak','bumbu','lauk','daging','ikan','telur','ayam']},
-  {id:'pocket-makan',name:'Makan & Minum',icon:'🍽️',amount:1500000,color:'#f59e0b',categories:['makan & minum','makan','sarapan','siang','malam','resto','gofood','grabfood','shopeefood','warung','warteg','padang']},
-  {id:'pocket-transport',name:'Transportasi & Kendaraan',icon:'⛽',amount:800000,color:'#0284c7',categories:['transportasi','transport','bensin','bbm','pertalite','pertamax','solar','spbu','tol','parkir','ojol','gojek','grab','servis','cuci']},
-  {id:'pocket-tagihan',name:'Tagihan & Utilitas',icon:'💡',amount:1200000,color:'#eab308',categories:['tagihan & utilitas','tagihan','utilitas','listrik','pln','token','pdam','air','wifi','internet','pulsa','kuota','indihome','iuran']},
-  {id:'pocket-rumah',name:'Kebutuhan Rumah',icon:'🏠',amount:700000,color:'#84cc16',categories:['kebutuhan rumah','rumah','sabun','sampo','deterjen','rinso','sunlight','tisu','kebersihan','alat rumah','indomaret','alfamart']},
-  {id:'pocket-anak',name:'Anak & Pendidikan',icon:'🎓',amount:1500000,color:'#3094d4',categories:['anak & pendidikan','anak','pendidikan','sekolah','spp','les','bimbel','buku','susu','pampers','popok']},
-  {id:'pocket-jajan',name:'Jajan & Nongkrong',icon:'☕',amount:600000,color:'#e55a6b',categories:['jajan & nongkrong','jajan','kopi','kafe','cafe','snack','cemilan','boba','es krim']},
-  {id:'pocket-sosial',name:'Sosial & Sedekah',icon:'🤲',amount:500000,color:'#10b981',categories:['sosial & sedekah','sosial','sedekah','infaq','zakat','jumat berkah','kondangan','amplop','arisan','sumbangan']}
+  {id:'pocket-dapur',name:'Dapur & Makan',icon:'🛒',amount:2500000,color:'#1f8a5b',categories:['dapur & bahan makanan','dapur','belanja dapur','pasar','sayur','beras','minyak','bumbu','lauk','daging','ikan','telur','ayam','makan & minum','makan','sarapan','siang','malam','warteg','padang']},
+  {id:'pocket-tagihan',name:'Tagihan, Cicilan & Rumah',icon:'💡',amount:1800000,color:'#ad4e34',categories:['tagihan & utilitas','tagihan','listrik','pln','token','pdam','air','wifi','internet','pulsa','kuota','iuran','kebutuhan rumah','rumah','sabun','sampo','deterjen','kebersihan','cicilan & finansial','cicilan','angsuran','kredit','kpr','leasing','paylater']},
+  {id:'pocket-keluarga',name:'Keluarga & Anak',icon:'🎓',amount:1200000,color:'#3094d4',categories:['anak & pendidikan','anak','pendidikan','sekolah','spp','les','bimbel','buku','susu','pampers','popok','sosial & sedekah','kirim ortu','transfer ibu','transfer mama','transfer bapak','uang belanja ortu','bantu keluarga']}
 ];
 function getPockets(){
   try{
@@ -1483,13 +1478,14 @@ function saveSavings(value){
 }
 function calculatePocketUsage(pocket,targetDate,txList){
   const d=targetDate?new Date(targetDate):new Date();
-  const year=d.getFullYear(), month=d.getMonth();
+  const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(d,getPaydaySetting()):{start:startMonth(d),end:endMonth(d)};
+  const startTs=cycle.start.getTime(), endTs=cycle.end.getTime();
   const cats=(pocket.categories||[]).map(c=>String(c).toLowerCase().trim());
   const matchingTx=(txList||[]).filter(t=>{
     if(t.type!=='expense')return false;
     if(t.source==='st')return false;
-    const tDate=new Date(t.createdAt||Date.now());
-    if(tDate.getFullYear()!==year||tDate.getMonth()!==month)return false;
+    const tTime=new Date(t.createdAt||Date.now()).getTime();
+    if(tTime<startTs||tTime>endTs)return false;
     if(t.pocketId==='bebas')return false;
     if(t.pocketId&&t.pocketId!==pocket.id)return false;
     if(t.pocketId&&t.pocketId===pocket.id)return true;
