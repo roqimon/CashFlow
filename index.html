@@ -2583,15 +2583,12 @@ function renderHomeDonut(totals, totalExpense){
   const displayedItems = (hasOverflow && !homeDonutExpanded) ? items.slice(0, MAX_DEFAULT_LEGEND) : items;
 
   const legend = displayedItems.map((item, index) =>
-    '<button class="home-donut-item" type="button" data-home-category="' + esc(item.category) + '" aria-label="Kategori ' + esc(item.category) + ': ' + money(item.total) + ' (' + item.percent + '%)">' +
+    '<button class="home-donut-item" type="button" data-home-category="' + esc(item.category) + '" aria-label="Kategori ' + esc(item.category) + ' (' + item.percent + '%)">' +
       '<div class="home-donut-item-left">' +
         '<span class="home-donut-dot" style="--donut-color:' + colors[index % colors.length] + '"></span>' +
         '<span class="home-donut-name">' + esc(item.category) + '</span>' +
       '</div>' +
-      '<div class="home-donut-item-right">' +
-        '<small>' + money(item.total) + '</small>' +
-        '<strong>' + (item.percent < 1 ? '<1%' : item.percent + '%') + '</strong>' +
-      '</div>' +
+      '<strong class="home-donut-percent">' + (item.percent < 1 ? '<1%' : item.percent + '%') + '</strong>' +
     '</button>'
   ).join('');
 
