@@ -1003,7 +1003,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v75</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v76</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -2430,16 +2430,16 @@ function renderDestinationChips(){
   const containers=[$('homeDestinationChips'),$('focusDestinationChips')].filter(Boolean);
   if(!containers.length)return;
   const pockets=getSortedPockets();
-  let html=`<button type="button" class="destination-chip${activeInputDestination==='auto'?' active':''}" data-dest="auto" title="Otomatis tentukan pos dari nama transaksi"><span>⚡</span><span>Otomatis</span></button>`;
+  let html=`<button type="button" class="destination-chip${activeInputDestination==='auto'?' active':''}" data-dest="auto" title="Otomatis tentukan pos dari nama transaksi"><span class="chip-icon-box">${renderIcon('⚡')}</span><span>Otomatis</span></button>`;
   pockets.forEach(p=>{
     const sel=activeInputDestination===p.id;
     const isST = (p.categories||[]).some(c=>['st','dinas','surat tugas'].includes(String(c).toLowerCase().trim())) || /st|dinas|tugas/i.test(p.name);
-    const iconHtml = isST ? '📋' : renderIcon(p.icon||'•');
+    const iconHtml = isST ? renderIcon('📋') : renderIcon(p.icon||'•');
     const chipTitle = isST ? `Pos Dinas / ST: ${esc(p.name)} (Tahan untuk geser)` : `${esc(p.name)} · Jatah: ${short(p.amount)} (Tahan untuk geser)`;
     const label = esc(shortPocketName(p.name));
-    html+=`<button type="button" class="destination-chip${sel?' active':''}" data-dest="${esc(p.id)}" draggable="true" title="${chipTitle}"><span>${iconHtml}</span><span>${label}</span><span class="chip-drag-handle" aria-hidden="true">⋮⋮</span></button>`;
+    html+=`<button type="button" class="destination-chip${sel?' active':''}" data-dest="${esc(p.id)}" draggable="true" title="${chipTitle}"><span class="chip-icon-box">${iconHtml}</span><span>${label}</span><span class="chip-drag-handle" aria-hidden="true">⋮⋮</span></button>`;
   });
-  html+=`<button type="button" class="destination-chip${activeInputDestination==='bebas'?' active':''}" data-dest="bebas" title="Pengeluaran pribadi di luar pos jatah bulanan"><span>⚪</span><span>Bebas</span></button>`;
+  html+=`<button type="button" class="destination-chip${activeInputDestination==='bebas'?' active':''}" data-dest="bebas" title="Pengeluaran pribadi di luar pos jatah bulanan"><span class="chip-icon-box">${renderIcon('⚪')}</span><span>Bebas</span></button>`;
   containers.forEach(c=>{c.innerHTML=html;});
 }
 function setInputDestination(destId){

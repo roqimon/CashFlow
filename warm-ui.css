@@ -918,41 +918,75 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .destination-chip {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  padding: 5px 12px !important;
+  gap: 7px !important;
+  padding: 5px 12px 5px 6px !important;
   border-radius: 999px !important;
   font-size: 12px !important;
   font-weight: 750 !important;
   line-height: 1 !important;
   border: 1px solid var(--line) !important;
   background: var(--surface2) !important;
-  color: var(--muted) !important;
+  color: var(--ink) !important;
   cursor: pointer !important;
-  transition: all .15s ease !important;
+  transition: all .18s cubic-bezier(0.16, 1, 0.3, 1) !important;
   user-select: none !important;
   flex-shrink: 0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
 }
-.destination-chip span:first-child {
+.destination-chip:hover {
+  border-color: rgba(182, 83, 55, 0.35) !important;
+  transform: translateY(-1px);
+}
+.destination-chip:active {
+  transform: scale(0.96) !important;
+}
+.destination-chip .chip-icon-box {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 16px !important;
-  height: 16px !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: rgba(182, 83, 55, 0.08) !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+  transition: background .18s ease !important;
+}
+.destination-chip span:first-child:not(.chip-icon-box) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 18px !important;
+  height: 18px !important;
   flex-shrink: 0 !important;
   line-height: 1 !important;
 }
 .destination-chip .category-svg {
-  width: 16px !important;
-  min-width: 16px !important;
-  max-width: 16px !important;
-  height: 16px !important;
-  max-height: 16px !important;
+  width: 14px !important;
+  min-width: 14px !important;
+  max-width: 14px !important;
+  height: 14px !important;
+  max-height: 14px !important;
   object-fit: contain !important;
   margin: auto !important;
   display: block !important;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05)) !important;
+}
+.destination-chip.active {
+  background: var(--accent, #b65337) !important;
+  border-color: var(--accent, #b65337) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(182, 83, 55, 0.28) !important;
+}
+.destination-chip.active .chip-icon-box {
+  background: rgba(255, 255, 255, 0.22) !important;
 }
 .destination-chip.active .category-svg {
   filter: brightness(0) invert(1) !important;
+}
+.settings-card-icon .category-svg {
+  width: 20px !important;
+  height: 20px !important;
 }
 
 /* Report date picker, unclipped period menu, and percentage legend. */

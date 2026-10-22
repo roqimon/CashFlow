@@ -77,6 +77,9 @@
     ['📉', 'chart-line-up'], ['🎯', 'chart-line-up'], ['🤝', 'hand-heart'],
     ['🏖️', 'suitcase'], ['🚬', 'question'], ['🅿️', 'map-pin'],
     ['＋', 'money'], ['•', 'squares-four'],
+    ['⚡', 'lightning'], ['⚪', 'wallet'], ['📋', 'briefcase'], ['🏷️', 'receipt'],
+    ['🎨', 'paint-brush'], ['🗓️', 'calendar'],
+    ['📱', 'device-mobile'],
   ]);
   const pathFor = file => `./icons/category/${file}.svg`;
   const assetFor = value => {
