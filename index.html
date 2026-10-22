@@ -2063,6 +2063,62 @@ function getPaydayCycle(targetDate=new Date(),payday=getPaydaySetting()){
   const daysRemaining=Math.max(1,Math.ceil(msDiff/86400000));
   const label=`${start.getDate()} ${start.toLocaleDateString('id-ID',{month:'short'})} – ${end.getDate()} ${end.toLocaleDateString('id-ID',{month:'short'})}`;
   return {start,end,daysRemaining,label};
+}
+function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=new Date(),payday=getPaydaySetting()){
+  const cycle=getPaydayCycle(targetDate,payday);
+  const startTs=cycle.start.getTime(), endTs=cycle.end.getTime();
+  const cycleTx=(txList||[]).filter(t=>{
+    const time=new Date(t.createdAt||Date.now()).getTime();
+    return time>=startTs&&time<=endTs;
+  });
+  const cycleIncome=cycleTx.filter(t=>t.type==='income').reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const committedBudget=(pockets||[]).reduce((sum,p)=>sum+(Number(p.amount)||0),0);
+  let savingsAllocated=0;
+  if(savings&&Array.isArray(savings.entries)){
+    savingsAllocated=savings.entries.filter(e=>{
+      if(e.type!=='deposit')return false;
+      const eTime=new Date(e.date||Date.now()).getTime();
+      return eTime>=startTs&&eTime<=endTs;
+    }).reduce((sum,e)=>sum+(Number(e.amount)||0),0);
+  }
+  const freeMoneyInitial=Math.max(0,cycleIncome-committedBudget-savingsAllocated);
+  const activePocketIds=new Set((pockets||[]).map(p=>p.id));
+  const freeMoneyTx=cycleTx.filter(t=>{
+    if(t.type!=='expense')return false;
+    if(t.source==='st')return false;
+    if(t.pocketId==='bebas')return true;
+    if(t.pocketId&&!activePocketIds.has(t.pocketId))return true;
+    if(t.pocketId)return false;
+    const cat=String(t.category||'').toLowerCase().trim();
+    const title=String(t.title||'').toLowerCase().trim();
+    const isPocketMatch=(pockets||[]).some(p=>(p.categories||[]).some(c=>{
+      const cleanC=String(c).toLowerCase().trim();
+      return cat.includes(cleanC)||title.includes(cleanC);
+    }));
+    return !isPocketMatch;
+  });
+  const freeMoneySpent=freeMoneyTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const freeMoneyRemaining=freeMoneyInitial-freeMoneySpent;
+  const targetDateStr=dateInput(targetDate);
+  const todaySpent=freeMoneyTx.filter(t=>dateInput(new Date(t.createdAt||Date.now()))===targetDateStr).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const baseDailyPace=Math.max(0,Math.floor(freeMoneyRemaining/cycle.daysRemaining));
+  const todayRemaining=baseDailyPace-todaySpent;
+  const isOverspent=todayRemaining<0;
+  return {
+    cycle,
+    cycleIncome,
+    committedBudget,
+    freeMoneyInitial,
+    freeMoneySpent,
+    freeMoneyRemaining,
+    daysRemaining:cycle.daysRemaining,
+    baseDailyPace,
+    safeDailyAmount:Math.max(0,todayRemaining),
+    todaySpent,
+    todayRemaining,
+    isOverspent,
+    hasIncome:cycleIncome>0
+  };
 } function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function range(){const o=reportOffset,n=new Date();if(reportPeriod==='daily'){const d=new Date(n);d.setDate(d.getDate()+o);return{start:startDay(d),end:endDay(d),label:d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}}if(reportPeriod==='weekly'){const d=new Date(n);d.setDate(d.getDate()+o*7);return{start:startWeek(d),end:endWeek(d),label:'Minggu ke-'+weekNum(d)+' ('+startWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+endWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+')'}}if(reportPeriod==='yearly'){const y=n.getFullYear()+o;return{start:startYear(new Date(y,0)),end:endYear(new Date(y,0)),label:String(y)}}if(reportPeriod==='range'){const s=$('rangeStart').value?startDay(new Date($('rangeStart').value)):startMonth(n), e=$('rangeEnd').value?endDay(new Date($('rangeEnd').value)):endDay(n);return{start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}}const d=new Date(n.getFullYear(),n.getMonth()+o,1);return{start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}}
 let reportCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1),reportRangeSelecting=false;
@@ -5942,6 +5998,7 @@ if(typeof window!=='undefined'){
   window.getPaydaySetting=getPaydaySetting;
   window.savePaydaySetting=savePaydaySetting;
   window.getPaydayCycle=getPaydayCycle;
+  window.calculateSafeDailySpend=calculateSafeDailySpend;
   window.calculatePocketUsage=calculatePocketUsage;
   window.getPockets=getPockets;
   window.savePockets=savePockets;
