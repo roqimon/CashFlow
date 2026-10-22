@@ -2026,7 +2026,44 @@ function applyFuzzy(input,suggestion){const raw=input.trim();const m=[...raw.mat
 function fmt(t,from){return `${t.icon} ${t.title} · ${t.category} · ${t.type==='income'?'+':'-'} ${money(t.amount)}${from?' · Pintasan '+t.shortcutCode:''}${t.source==='st'?' · 📋 ST':''}`}
 function sum(arr){return arr.reduce((a,t)=>{t.type==='income'?a.income+=t.amount:a.expense+=t.amount;return a},{income:0,expense:0})}
 function catTotals(arr,type){const map={};arr.filter(t=>t.type===type).forEach(t=>{map[t.category]||(map[t.category]={category:t.category,total:0,count:0,icon:t.icon,type:t.type});map[t.category].total+=t.amount;map[t.category].count++;map[t.category].icon=t.icon||map[t.category].icon});return Object.values(map).sort((a,b)=>b.total-a.total)}
-function startDay(d){d=new Date(d);d.setHours(0,0,0,0);return d} function endDay(d){d=new Date(d);d.setHours(23,59,59,999);return d} function startMonth(d){d=new Date(d);d.setDate(1);d.setHours(0,0,0,0);return d} function endMonth(d){d=new Date(d);d.setMonth(d.getMonth()+1,0);d.setHours(23,59,59,999);return d} function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function startDay(d){d=new Date(d);d.setHours(0,0,0,0);return d} function endDay(d){d=new Date(d);d.setHours(23,59,59,999);return d} function startMonth(d){d=new Date(d);d.setDate(1);d.setHours(0,0,0,0);return d} function endMonth(d){d=new Date(d);d.setMonth(d.getMonth()+1,0);d.setHours(23,59,59,999);return d}
+const KEY_PAYDAY='aruskas_payday_date_v1';
+function getPaydaySetting(){try{const raw=localStorage.getItem(KEY_PAYDAY);if(!raw)return 25;const n=parseInt(raw,10);return Number.isInteger(n)&&n>=1&&n<=31?n:25}catch(e){return 25}}
+function savePaydaySetting(day){try{const n=Math.max(1,Math.min(31,parseInt(day,10)||25));localStorage.setItem(KEY_PAYDAY,String(n));return n}catch(e){console.error('Failed to save payday setting',e);return 25}}
+function daysInMonth(year,month){return new Date(year,month+1,0).getDate()}
+function getPaydayCycle(targetDate=new Date(),payday=getPaydaySetting()){
+  const d=new Date(targetDate);
+  const year=d.getFullYear(), month=d.getMonth(), date=d.getDate();
+  if(payday===1){
+    const start=new Date(year,month,1,0,0,0,0);
+    const end=new Date(year,month,daysInMonth(year,month),23,59,59,999);
+    const msDiff=Math.max(0,end.getTime()-d.getTime());
+    const daysRemaining=Math.max(1,Math.ceil(msDiff/86400000));
+    const label=`${start.getDate()} ${start.toLocaleDateString('id-ID',{month:'short'})} – ${end.getDate()} ${end.toLocaleDateString('id-ID',{month:'short'})}`;
+    return {start,end,daysRemaining,label};
+  }
+  const pCurr=Math.min(payday,daysInMonth(year,month));
+  let start,end;
+  if(date>=pCurr){
+    start=new Date(year,month,pCurr,0,0,0,0);
+    const nextMonth=month+1;
+    const nextYear=year+Math.floor(nextMonth/12);
+    const nMonthNorm=(nextMonth%12+12)%12;
+    const pNext=Math.min(payday,daysInMonth(nextYear,nMonthNorm));
+    end=new Date(nextYear,nMonthNorm,pNext-1,23,59,59,999);
+  }else{
+    const prevMonth=month-1;
+    const prevYear=year+Math.floor(prevMonth/12);
+    const pMonthNorm=(prevMonth%12+12)%12;
+    const pPrev=Math.min(payday,daysInMonth(prevYear,pMonthNorm));
+    start=new Date(prevYear,pMonthNorm,pPrev,0,0,0,0);
+    end=new Date(year,month,pCurr-1,23,59,59,999);
+  }
+  const msDiff=Math.max(0,end.getTime()-d.getTime());
+  const daysRemaining=Math.max(1,Math.ceil(msDiff/86400000));
+  const label=`${start.getDate()} ${start.toLocaleDateString('id-ID',{month:'short'})} – ${end.getDate()} ${end.toLocaleDateString('id-ID',{month:'short'})}`;
+  return {start,end,daysRemaining,label};
+} function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function range(){const o=reportOffset,n=new Date();if(reportPeriod==='daily'){const d=new Date(n);d.setDate(d.getDate()+o);return{start:startDay(d),end:endDay(d),label:d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}}if(reportPeriod==='weekly'){const d=new Date(n);d.setDate(d.getDate()+o*7);return{start:startWeek(d),end:endWeek(d),label:'Minggu ke-'+weekNum(d)+' ('+startWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+endWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+')'}}if(reportPeriod==='yearly'){const y=n.getFullYear()+o;return{start:startYear(new Date(y,0)),end:endYear(new Date(y,0)),label:String(y)}}if(reportPeriod==='range'){const s=$('rangeStart').value?startDay(new Date($('rangeStart').value)):startMonth(n), e=$('rangeEnd').value?endDay(new Date($('rangeEnd').value)):endDay(n);return{start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}}const d=new Date(n.getFullYear(),n.getMonth()+o,1);return{start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}}
 let reportCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1),reportRangeSelecting=false;
 function updateReportCalendar(){
@@ -5901,6 +5938,14 @@ $('clearToggleAllBtn')?.addEventListener('click', ()=>{
 $('clearExecuteBtn')?.addEventListener('click', executeSelectiveClear);
 
 boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
+if(typeof window!=='undefined'){
+  window.getPaydaySetting=getPaydaySetting;
+  window.savePaydaySetting=savePaydaySetting;
+  window.getPaydayCycle=getPaydayCycle;
+  window.calculatePocketUsage=calculatePocketUsage;
+  window.getPockets=getPockets;
+  window.savePockets=savePockets;
+}
 })();
 </script>
 </body>
