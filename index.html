@@ -943,19 +943,21 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 
         <!-- 3. Pos Anggaran Bulanan -->
         <section class="card settings-card">
-          <div class="settings-card-head">
+          <button class="settings-collapse-trigger" type="button" data-settings-toggle="pockets" aria-expanded="false" aria-controls="settingsPocketsPanel">
             <span class="settings-card-icon" style="background:#fef3eb;color:#e66c48">🎯</span>
-            <div style="flex:1;min-width:0">
+            <span style="flex:1;min-width:0;text-align:left">
               <strong style="font-size:14px;color:var(--ink);display:block">Pos Anggaran</strong>
               <small class="muted" style="font-size:11.5px">Atur jatah belanja bulanan</small>
-            </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-              <button class="text-btn" data-action="zero-all-pockets" type="button" style="font-size:11.5px;font-weight:750;color:var(--muted);padding:4px 6px;min-height:30px" title="Kosongkan jatah semua pos menjadi Rp 0">Kosongkan</button>
-              <button class="text-btn" id="pocketToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 6px;min-height:30px">Pilih</button>
-              <button class="text-btn" data-action="new-pocket" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 6px;min-height:30px">＋ Pos Baru</button>
-            </div>
+            </span>
+            <span class="settings-collapse-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div id="settingsPocketsPanel" hidden>
+          <div style="display:flex;justify-content:flex-end;gap:6px;align-items:center;margin-top:10px">
+            <button class="text-btn" data-action="zero-all-pockets" type="button" style="font-size:11.5px;font-weight:750;color:var(--muted);padding:4px 6px;min-height:30px" title="Kosongkan jatah semua pos menjadi Rp 0">Kosongkan</button>
+            <button class="text-btn" id="pocketToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 6px;min-height:30px">Pilih</button>
+            <button class="text-btn" data-action="new-pocket" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 6px;min-height:30px">＋ Pos Baru</button>
           </div>
-          <div id="pocketManager" class="list" style="padding:4px;margin-top:10px"></div>
+          <div id="pocketManager" class="list" style="padding:4px;margin-top:6px"></div>
           <div class="bulk-bar" id="pocketBulkBar">
             <div style="display:flex;align-items:center;gap:6px">
               <button class="ghost" id="pocketSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
@@ -966,6 +968,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <button class="ghost" data-action="bulk-zero-pockets" type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:750;border:1px solid var(--line)">Kosongkan</button>
               <button class="danger" id="pocketBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
+          </div>
           </div>
         </section>
 
@@ -1020,18 +1023,20 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 
         <!-- 4. Kelola Kategori -->
         <section class="card settings-card">
-          <div class="settings-card-head">
+          <button class="settings-collapse-trigger" type="button" data-settings-toggle="categories" aria-expanded="false" aria-controls="settingsCategoriesPanel">
             <span class="settings-card-icon" style="background:#f4eeff;color:#7e4bd6">🏷️</span>
-            <div style="flex:1;min-width:0">
+            <span style="flex:1;min-width:0;text-align:left">
               <strong style="font-size:14px;color:var(--ink);display:block">Kategori Transaksi</strong>
               <small class="muted" style="font-size:11.5px">Kelola daftar kategori</small>
-            </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-              <button class="text-btn" id="catToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
-              <button class="text-btn" data-action="new-category" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Baru</button>
-            </div>
+            </span>
+            <span class="settings-collapse-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div id="settingsCategoriesPanel" hidden>
+          <div style="display:flex;justify-content:flex-end;gap:6px;align-items:center;margin-top:10px">
+            <button class="text-btn" id="catToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+            <button class="text-btn" data-action="new-category" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Baru</button>
           </div>
-          <div id="catManager" class="list" style="padding:4px;margin-top:10px"></div>
+          <div id="catManager" class="list" style="padding:4px;margin-top:6px"></div>
           <div class="bulk-bar" id="catBulkBar">
             <div style="display:flex;align-items:center;gap:6px">
               <button class="ghost" id="catSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
@@ -1041,6 +1046,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <button class="ghost" data-exit-cat-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
               <button class="danger" id="catBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
+          </div>
           </div>
         </section>
 
@@ -5588,6 +5594,17 @@ async function executeSelectiveClear(){
 
 
 document.addEventListener('click',async e=>{
+    const settingsToggle=e.target.closest('[data-settings-toggle]');
+    if(settingsToggle){
+      const panel=document.getElementById(settingsToggle.getAttribute('aria-controls'));
+      if(panel){
+        const open=panel.hidden;
+        panel.hidden=!open;
+        settingsToggle.setAttribute('aria-expanded',String(open));
+        settingsToggle.classList.toggle('is-open',open);
+      }
+      return;
+    }
     const savingsDetail=e.target.closest('[data-savings-detail]');
     if(savingsDetail){openSavingsDetail(savingsDetail.dataset.savingsDetail);return}
     const savingsIcon=e.target.closest('[data-savings-custom-icon]');
