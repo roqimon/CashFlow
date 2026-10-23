@@ -2264,55 +2264,58 @@ function openSavingsDetail(goalId){
 }
 
 function renderPocketManager(){
-  const containers=[$('pocketManager'),$('pocketModalManagerList')].filter(Boolean);
-  if(!containers.length)return;
-  const pockets=getPockets();
-  if(!pockets.length){
-    const emptyHtml='<div class="empty">Belum ada pos anggaran. Ketuk "+ Pos Baru" untuk membuat jatah bulanan.</div>';
-    containers.forEach(c=>{c.innerHTML=emptyHtml});
-    return;
-  }
-  const tx=getTX();
-  const now=new Date();
-  const html=pockets.map(p=>{
-    const usage=calculatePocketUsage(p,now,tx);
-    const sel=pocketSelectSet.has(p.id);
-    const active=isPocketActive(p,tx);
-    const safePercent=Math.max(0,Math.min(100,usage.percent));
-    return `<div class="mini-box pocket-manage-item${pocketSelectMode?' selectable':''}${sel?' selected':''}" data-pocket-id="${esc(p.id)}"${!pocketSelectMode?` data-pocket-actions="${esc(p.id)}"`:''} style="padding:12px;margin-bottom:8px;border-radius:18px;background:var(--surface2);position:relative;box-sizing:border-box;max-width:100%;cursor:pointer">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <div style="display:flex;gap:10px;align-items:center;min-width:0;flex:1">
-          ${pocketSelectMode ? `<input type="checkbox" class="pocket-cb" aria-label="Pilih pos" ${sel?'checked':''} style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;flex-shrink:0">` : ''}
-          <span class="pocket-icon">${renderIcon(p.icon||'❓')}</span>
-          <div style="min-width:0;flex:1">
-            <div style="display:flex;align-items:center;gap:6px">
-              <strong style="font-size:14px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</strong>
-              <span class="pocket-status-pill ${active?'active':'inactive'}">${active?'Aktif':'Nonaktif'}</span>
+  const pmEl = $('pocketManager');
+  const pmlEl = $('pocketModalManagerList');
+  const pockets = getPockets();
+  const tx = getTX();
+  const now = new Date();
+
+  function buildListHtml(list, isModalView){
+    if(!list.length){
+      return `<div class="empty">${isModalView ? 'Belum ada pos anggaran aktif. Buka Pengaturan untuk mengaktifkan pos.' : 'Belum ada pos anggaran. Ketuk "+ Pos Baru" untuk membuat jatah bulanan.'}</div>`;
+    }
+    return list.map(p=>{
+      const usage=calculatePocketUsage(p,now,tx);
+      const sel=pocketSelectSet.has(p.id);
+      const active=isPocketActive(p,tx);
+      const safePercent=Math.max(0,Math.min(100,usage.percent));
+      return `<div class="mini-box pocket-manage-item${pocketSelectMode?' selectable':''}${sel?' selected':''}" data-pocket-id="${esc(p.id)}"${!pocketSelectMode?` data-pocket-actions="${esc(p.id)}"`:''} style="padding:12px;margin-bottom:8px;border-radius:18px;background:var(--surface2);position:relative;box-sizing:border-box;max-width:100%;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <div style="display:flex;gap:10px;align-items:center;min-width:0;flex:1">
+            ${pocketSelectMode ? `<input type="checkbox" class="pocket-cb" aria-label="Pilih pos" ${sel?'checked':''} style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;flex-shrink:0">` : ''}
+            <span class="pocket-icon">${renderIcon(p.icon||'❓')}</span>
+            <div style="min-width:0;flex:1">
+              <div style="display:flex;align-items:center;gap:6px">
+                <strong style="font-size:14px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</strong>
+                <span class="pocket-status-pill ${active?'active':'inactive'}">${active?'Aktif':'Nonaktif'}</span>
+              </div>
+              <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Jatah: <strong>${short(p.amount)}</strong> / bln · Terpakai ${usage.percent}% · Sisa: <strong>${short(Math.max(0,usage.remaining))}</strong></span>
             </div>
-            <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Jatah: <strong>${short(p.amount)}</strong> / bln · Terpakai ${usage.percent}% · Sisa: <strong>${short(Math.max(0,usage.remaining))}</strong></span>
           </div>
+          ${!pocketSelectMode ? `<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+            ${!isModalView ? `<label class="pocket-toggle-label" title="${active?'Nonaktifkan pos ini':'Aktifkan pos ini'}" onclick="event.stopPropagation()">
+              <input type="checkbox" class="pocket-toggle-input" data-toggle-pocket="${esc(p.id)}" ${active?'checked':''}>
+              <span class="pocket-toggle-slider"></span>
+            </label>` : ''}
+            <button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>
+            ${usage.remaining>0?`<button class="primary" data-action="sweep-pocket-modal" data-pocket-id="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Pindahkan sisa</button>`:''}
+            <button class="ghost danger" data-del-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Hapus</button>
+          </div>` : ''}
         </div>
-        ${!pocketSelectMode ? `<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-          <label class="pocket-toggle-label" title="${active?'Nonaktifkan pos ini':'Aktifkan pos ini'}" onclick="event.stopPropagation()">
-            <input type="checkbox" class="pocket-toggle-input" data-toggle-pocket="${esc(p.id)}" ${active?'checked':''}>
-            <span class="pocket-toggle-slider"></span>
-          </label>
-          <button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>
-          ${usage.remaining>0?`<button class="primary" data-action="sweep-pocket-modal" data-pocket-id="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Pindahkan sisa</button>`:''}
-          <button class="ghost danger" data-del-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Hapus</button>
-        </div>` : ''}
-      </div>
-      <div style="margin-top:8px">
-        <span class="home-pocket-progress" role="progressbar" aria-label="Jatah terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100" style="display:block;height:6px;background:var(--line);border-radius:999px;overflow:hidden">
-          <span style="display:block;height:100%;width:${safePercent}%;background:${usage.isOver?'#ef4444':esc(p.color||'var(--green)')};border-radius:999px"></span>
-        </span>
-      </div>
-      <div style="margin-top:6px;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-        Kategori otomatis: ${esc((p.categories||[]).join(', ')||(p.name))}
-      </div>
-    </div>`;
-  }).join('');
-  containers.forEach(c=>{c.innerHTML=html});
+        <div style="margin-top:8px">
+          <span class="home-pocket-progress" role="progressbar" aria-label="Jatah terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100" style="display:block;height:6px;background:var(--line);border-radius:999px;overflow:hidden">
+            <span style="display:block;height:100%;width:${safePercent}%;background:${usage.isOver?'#ef4444':esc(p.color||'var(--green)')};border-radius:999px"></span>
+          </span>
+        </div>
+        <div style="margin-top:6px;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          Kategori otomatis: ${esc((p.categories||[]).join(', ')||(p.name))}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if(pmEl) pmEl.innerHTML = buildListHtml(pockets, false);
+  if(pmlEl) pmlEl.innerHTML = buildListHtml(pockets.filter(p => isPocketActive(p, tx)), true);
 }
 function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=`Jatah ${money(usage.effectiveAmount||usage.amount)} · Terpakai ${usage.percent}%`;$('pocketActionsRemaining').textContent=money(Math.max(0,usage.remaining));$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0||getPockets().length<2&&!getSavings().goals.some(goal=>goal.status==='active');openModalLayer('pocketActionsModal')}
 
