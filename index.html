@@ -740,7 +740,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       grid-template-columns: none !important;
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261023.83" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261023.84" />
 </head>
 <body>
 <div class="shell">
@@ -1014,7 +1014,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v83</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v84</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -2605,7 +2605,7 @@ function renderHomeDonut(totals, totalExpense){
     ...item,
     percent: Math.round((item.total / grandTotal) * 100)
   }));
-  const cx = 100, cy = 100, outer = 80, inner = 52;
+  const cx = 100, cy = 100, outer = 92, inner = 70;
   const colors = palette;
   let angle = -90;
   const slices = items.map((item, index) => {
@@ -2615,7 +2615,7 @@ function renderHomeDonut(totals, totalExpense){
     return '<path class="chart-click" d="' + path + '" fill="' + colors[index % colors.length] + '" data-home-category="' + esc(item.category) + '"><title>' + esc(item.category) + ' · ' + money(item.total) + ' · ' + item.percent + '%</title></path>';
   }).join('');
   const ring = items.length === 1
-    ? '<circle class="chart-click" cx="' + cx + '" cy="' + cy + '" r="66" fill="none" stroke="' + colors[0] + '" stroke-width="28" data-home-category="' + esc(items[0].category) + '"><title>' + esc(items[0].category) + ' · ' + money(grandTotal) + ' · 100%</title></circle>'
+    ? '<circle class="chart-click" cx="' + cx + '" cy="' + cy + '" r="81" fill="none" stroke="' + colors[0] + '" stroke-width="22" data-home-category="' + esc(items[0].category) + '"><title>' + esc(items[0].category) + ' · ' + money(grandTotal) + ' · 100%</title></circle>'
     : slices;
 
   const MAX_DEFAULT_LEGEND = 4;
@@ -3592,10 +3592,10 @@ function reportDonutLegendItems(totals){
 function donut(totals){
   const stage=$('chartStage'),items=reportDonutLegendItems(totals),total=items.reduce((sum,item)=>sum+item.total,0);
   if(!total){stage.innerHTML='<div class="empty">Belum ada data pada periode ini.</div>';return}
-  const colors=reportType==='income'?incomePalette:palette,cx=100,cy=100,outer=78,inner=49;
+  const colors=reportType==='income'?incomePalette:palette,cx=100,cy=100,outer=92,inner=70;
   let angle=-90;
   const slices=items.map((item,index)=>{const sweep=item.total/total*360,path=donutPath(cx,cy,outer,inner,angle,angle+sweep);angle+=sweep;return '<path class="chart-click" d="'+path+'" fill="'+colors[index%colors.length]+'" data-report-category="'+esc(item.category)+'"><title>'+esc(item.category)+' · '+money(item.total)+' · '+item.percent+'%</title></path>'}).join('');
-  const ring=items.length===1?'<circle class="chart-click" cx="'+cx+'" cy="'+cy+'" r="63.5" fill="none" stroke="'+colors[0]+'" stroke-width="29" data-report-category="'+esc(items[0].category)+'"><title>'+esc(items[0].category)+' · '+money(total)+' · 100%</title></circle>':slices;
+  const ring=items.length===1?'<circle class="chart-click" cx="'+cx+'" cy="'+cy+'" r="81" fill="none" stroke="'+colors[0]+'" stroke-width="22" data-report-category="'+esc(items[0].category)+'"><title>'+esc(items[0].category)+' · '+money(total)+' · 100%</title></circle>':slices;
   const legend=items.map((item,index)=>'<button class="report-donut-legend-item" type="button" data-report-category="'+esc(item.category)+'"><span class="report-donut-dot" style="--donut-color:'+colors[index%colors.length]+'"></span><span class="report-donut-name">'+esc(item.category)+'</span><strong>'+(item.percent<1?'<1%':item.percent+'%')+'</strong><small>'+money(item.total)+'</small></button>').join('');
   stage.innerHTML='<div class="report-donut-layout"><svg class="chart-svg" viewBox="0 0 200 200" role="img" aria-label="'+(reportType==='income'?'Porsi pemasukan':'Porsi pengeluaran')+' berdasarkan kategori"><g>'+ring+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+(inner-2)+'" fill="var(--chart-inner)"></circle><text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" class="chart-label">'+(reportType==='income'?'Pemasukan':'Pengeluaran')+'</text><text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" class="chart-value">'+short(total)+'</text></svg><div class="report-donut-legend" aria-label="Persentase kategori">'+legend+'</div></div>';
 }
