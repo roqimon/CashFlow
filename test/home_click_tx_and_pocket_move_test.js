@@ -15,3 +15,13 @@ function setupTestContext() {
 test('Home click pocket navigation and quick move transaction', () => {
   setupTestContext();
 });
+
+test('Pocket view transactions and sweep to uang bebas', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  assert.ok(html.includes('id="txPocketBanner"'), 'txPocketBanner element must exist');
+  assert.ok(html.includes('id="txFilterContainer"'), 'txFilterContainer element must exist');
+  assert.ok(html.includes('data-action="pocket-banner-edit"'), 'pocket-banner-edit button must exist');
+  assert.ok(html.includes('data-action="pocket-banner-sweep"'), 'pocket-banner-sweep button must exist');
+  assert.ok(html.includes('value="bebas">⚪ Uang Bebas (Tanpa Pos)</option>'), 'bebas option must exist in sweepDestinationType');
+  assert.ok(html.includes('destinationType===\'bebas\''), 'bebas sweep destination logic must exist');
+});

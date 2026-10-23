@@ -89,8 +89,8 @@ test('calculateSafeDailySpend with salary, pockets and daily spending', () => {
     { type: 'expense', amount: 25000, pocketId: 'bebas', createdAt: '2026-10-26T12:00:00' }
   ];
   const pockets = [
-    { id: 'pocket-dapur', name: 'Dapur', amount: 2500000, categories: ['dapur'] },
-    { id: 'pocket-tagihan', name: 'Tagihan', amount: 1000000, categories: ['tagihan'] }
+    { id: 'pocket-dapur', name: 'Dapur', amount: 2500000, categories: ['dapur'], isActive: true },
+    { id: 'pocket-tagihan', name: 'Tagihan', amount: 1000000, categories: ['tagihan'], isActive: true }
   ];
   const savings = { entries: [] };
 
