@@ -797,7 +797,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       color: var(--green, #1f8a5b);
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261023.88" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261023.89" />
 </head>
 <body>
 <div class="shell">
@@ -972,55 +972,6 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
-        <!-- 3. Pintasan Transaksi Cepat -->
-        <section class="card settings-card">
-          <div class="settings-card-head">
-            <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">⚡</span>
-            <div style="flex:1;min-width:0">
-              <strong style="font-size:14px;color:var(--ink);display:block">Pintasan Cepat</strong>
-              <small class="muted" style="font-size:11.5px" id="scCount">0 pintasan</small>
-            </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-              <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
-              <button class="text-btn" data-action="open-shortcut-editor" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Buat Baru</button>
-            </div>
-          </div>
-          
-          <div class="shortcut-editor-box" id="shortcutEditor" style="display:none;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface)">
-            <div class="row">
-              <strong style="font-size:13px;color:var(--ink)">Formulir Pintasan</strong>
-              <button class="text-btn" data-action="close-shortcut-editor" type="button" style="font-size:11.5px;min-height:28px">Tutup</button>
-            </div>
-            <form class="form-grid" id="shortcutForm" autocomplete="off" style="margin-top:10px">
-              <input type="hidden" id="scId">
-              <label>Kode Pintasan<input id="scCode" required placeholder="Contoh: bbm, kopi" autocomplete="off"></label>
-              <label>Nama Transaksi<input id="scTitle" required placeholder="Contoh: Beli Bensin, Kopi Pagi" autocomplete="off"></label>
-              <div class="wide" style="display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:start">
-                <label>Kategori<select id="scCategory" required style="margin-bottom:4px"></select><input id="scCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label>
-                <label style="text-align:center">Ikon<input id="scIcon" placeholder="☕" autocomplete="off" style="text-align:center;font-size:18px"></label>
-              </div>
-              <label>Tipe<select id="scType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label>
-              <label>Nilai Uang (Opsional)<input id="scAmount" inputmode="numeric" placeholder="Contoh: 25.000" autocomplete="off"></label>
-              <label class="wide">Komentar / Catatan<input id="scNote" placeholder="Opsional" autocomplete="off"></label>
-              <label class="wide check-row"><input type="checkbox" id="scShowHome" checked><span>Tampilkan pintasan ini di Beranda</span></label>
-              <div class="wide" style="margin-top:6px"><div class="emoji-picker" id="iconPicker"></div></div>
-              <button class="primary wide" type="submit" style="min-height:38px;font-size:12.5px;margin-top:4px">Simpan Pintasan</button>
-            </form>
-          </div>
-          
-          <section class="list" id="shortcutList" style="padding:4px;margin-top:8px"></section>
-          <div class="bulk-bar" id="scBulkBar">
-            <div style="display:flex;align-items:center;gap:6px">
-              <button class="ghost" id="scSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
-              <span id="scSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span>
-            </div>
-            <div style="display:flex;gap:6px">
-              <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
-              <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
-            </div>
-          </div>
-        </section>
-
         <!-- 4. Kelola Kategori -->
         <section class="card settings-card">
           <button class="settings-collapse-trigger" type="button" data-settings-toggle="categories" aria-expanded="false" aria-controls="settingsCategoriesPanel">
@@ -1078,7 +1029,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v88</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v91</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1103,6 +1054,52 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <div style="display:flex;gap:8px;margin-top:12px">
             <button class="ghost" data-action="reload-sample" type="button" style="flex:1;min-height:38px;font-size:11.5px;font-weight:750">Muat Data Contoh</button>
             <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:38px;font-size:11.5px;border:0;border-radius:12px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
+          </div>
+        </section>
+        <!-- Pintasan Cepat ditempatkan terakhir agar mudah ditemukan setelah pengaturan lain. -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">⚡</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Pintasan Cepat</strong>
+              <small class="muted" style="font-size:11.5px" id="scCount">0 pintasan</small>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+              <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+              <button class="text-btn" data-action="open-shortcut-editor" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Buat Baru</button>
+            </div>
+          </div>
+          <div class="shortcut-editor-box" id="shortcutEditor" style="margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface)">
+            <div class="row">
+              <strong style="font-size:13px;color:var(--ink)">Formulir Pintasan</strong>
+              <button class="text-btn" data-action="close-shortcut-editor" type="button" style="font-size:11.5px;min-height:28px">Tutup</button>
+            </div>
+            <form class="form-grid" id="shortcutForm" autocomplete="off" style="margin-top:10px">
+              <input type="hidden" id="scId">
+              <label>Kode Pintasan<input id="scCode" required placeholder="Contoh: bbm, kopi" autocomplete="off"></label>
+              <label>Nama Transaksi<input id="scTitle" required placeholder="Contoh: Beli Bensin, Kopi Pagi" autocomplete="off"></label>
+              <div class="wide" style="display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:start">
+                <label>Kategori<select id="scCategory" required style="margin-bottom:4px"></select><input id="scCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label>
+                <label style="text-align:center">Ikon<input id="scIcon" placeholder="☕" autocomplete="off" style="text-align:center;font-size:18px"></label>
+              </div>
+              <label>Tipe<select id="scType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label>
+              <label>Nilai Uang (Opsional)<input id="scAmount" inputmode="numeric" placeholder="Contoh: 25.000" autocomplete="off"></label>
+              <label class="wide">Komentar / Catatan<input id="scNote" placeholder="Opsional" autocomplete="off"></label>
+              <label class="wide check-row"><input type="checkbox" id="scShowHome" checked><span>Tampilkan pintasan ini di Beranda</span></label>
+              <div class="wide" style="margin-top:6px"><div class="emoji-picker" id="iconPicker"></div></div>
+              <button class="primary wide" type="submit" style="min-height:38px;font-size:12.5px;margin-top:4px">Simpan Pintasan</button>
+            </form>
+          </div>
+          <section class="list" id="shortcutList" style="padding:4px;margin-top:8px"></section>
+          <div class="bulk-bar" id="scBulkBar">
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="ghost" id="scSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button>
+              <span id="scSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
+              <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
+            </div>
           </div>
         </section>
       </section>
@@ -1548,7 +1545,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.90').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.91').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -5665,7 +5662,7 @@ if(a==='force-update'){
     }
   }catch(e){}
   const u=new URL(window.location.href);
-  u.searchParams.set('updated','v72');
+  u.searchParams.set('updated','v91');
   u.searchParams.set('v',String(Date.now()));
   u.hash='#'+page;
   window.location.replace(u.toString());
@@ -5856,7 +5853,7 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v72');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v91');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');

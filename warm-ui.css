@@ -865,6 +865,12 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   align-items: center;
   gap: 12px;
 }
+.shortcut-editor-box {
+  display: none;
+}
+.shortcut-editor-box.editor-open {
+  display: block;
+}
 .settings-collapse-trigger {
   display: flex;
   align-items: center;

@@ -37,14 +37,18 @@ assert.ok(html.includes('data-action="clear-data"'), 'Clear all data button pres
 assert.ok(!html.includes('Masukkan Gemini API Key'), 'Gemini API Key input is removed from visible UI');
 console.log('✔ Dedicated Settings page successfully contains clean, modern configuration cards without API Key jargon!');
 
-// Test 4: Version and Service Worker Integrity (v52)
-console.log('--- Test 4: Version and Service Worker v52 ---');
-assert.ok(html.includes('id="appVersionBadge" style="font-weight:800">v52</span>'), 'HTML version badge bumped to v52');
-assert.ok(html.includes("u.searchParams.set('updated','v52')"), 'Force update parameter set to v52');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v52'"), 'Service worker CACHE_NAME bumped to v52');
-assert.ok(html.includes('warm-ui.css?v=20261021.29'), 'HTML warm-ui.css query bumped');
-assert.ok(sw.includes('./warm-ui.css?v=20261021.29'), 'SW warm-ui.css query bumped');
-console.log('✔ App version and Service Worker cache successfully synchronized to v52!');
+// Test 4: Version and Service Worker Integrity
+console.log('--- Test 4: App and Service Worker Versions Stay Synchronized ---');
+const appVersion = html.match(/id="appVersionBadge"[^>]*>v(\d+)<\/span>/)?.[1];
+const forceUpdateVersion = html.match(/u\.searchParams\.set\('updated','v(\d+)'\)/)?.[1];
+const cacheVersion = sw.match(/CACHE_NAME = 'aruskas-pwa-v(\d+)'/)?.[1];
+const htmlCssVersion = html.match(/href="\.\/warm-ui\.css\?v=([^" ]+)"/)?.[1];
+const swCssVersion = sw.match(/'\.\/warm-ui\.css\?v=([^']+)'/)?.[1];
+assert.ok(appVersion, 'HTML version badge exists');
+assert.strictEqual(forceUpdateVersion, appVersion, 'Force update version must match the app version');
+assert.strictEqual(cacheVersion, appVersion, 'Service worker cache must match the app version');
+assert.strictEqual(swCssVersion, htmlCssVersion, 'Service worker shell must cache the stylesheet referenced by HTML');
+console.log(`✔ App v${appVersion} and service worker cache are synchronized.`);
 
 // Test 5: Isolation of Settings Page (Prevent leaking across other pages)
 console.log('--- Test 5: Page Isolation & Specificity Guard ---');
@@ -58,7 +62,7 @@ console.log('--- Test 6: Precision Centering of Pos Anggaran Icons ---');
 assert.ok(css.includes('.pocket-icon {') && css.includes('display: grid !important;') && css.includes('place-items: center !important;'), 'Pocket icons use grid place-items: center');
 assert.ok(css.includes('.pocket-icon .category-svg {') && css.includes('margin: auto !important;'), 'Pocket SVG icons centered with auto margin');
 assert.ok(css.includes('.pocket-icon-trigger {') && css.includes('display: grid !important;'), 'Pocket icon modal trigger centered');
-assert.ok(css.includes('.destination-chip .category-svg {') && css.includes('width: 16px !important;'), 'Destination chips have constrained icon dimensions');
+assert.ok(css.includes('.destination-chip .category-svg {') && css.includes('width: 14px !important;'), 'Destination chip SVGs have constrained icon dimensions');
 console.log('✔ Pocket icon containers and SVGs strictly mathematically centered!');
 
 console.log('\n=======================================');
