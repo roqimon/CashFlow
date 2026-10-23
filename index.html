@@ -2315,7 +2315,13 @@ function renderPocketManager(){
   }
 
   if(pmEl) pmEl.innerHTML = buildListHtml(pockets, false);
-  if(pmlEl) pmlEl.innerHTML = buildListHtml(pockets.filter(p => isPocketActive(p, tx)), true);
+  if(pmlEl){
+    const activeList = pockets.filter(p => isPocketActive(p, tx))
+      .map(p => ({ p, usage: calculatePocketUsage(p, now, tx) }))
+      .sort((a,b) => b.usage.percent - a.usage.percent)
+      .map(item => item.p);
+    pmlEl.innerHTML = buildListHtml(activeList, true);
+  }
 }
 function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=`Jatah ${money(usage.effectiveAmount||usage.amount)} · Terpakai ${usage.percent}%`;$('pocketActionsRemaining').textContent=money(Math.max(0,usage.remaining));$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0||getPockets().length<2&&!getSavings().goals.some(goal=>goal.status==='active');openModalLayer('pocketActionsModal')}
 
@@ -2414,15 +2420,18 @@ function renderBudgetPockets(){
   }
   const now=new Date();
   let totalPlafond=0,totalRemaining=0,totalAllocated=0;
-  activePockets.forEach(p=>{
+  const pocketsWithUsage = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
     totalPlafond+=usage.amount;
     totalRemaining+=usage.remaining;
     totalAllocated+=usage.allocated;
+    return { pocket: p, usage };
   });
 
-  let pocketCardsHtml = activePockets.map(p=>{
-    const usage=calculatePocketUsage(p,now,tx);
+  // Urutkan pos berdasarkan persentase terpakai tertinggi ke terendah
+  pocketsWithUsage.sort((a,b)=>b.usage.percent - a.usage.percent);
+
+  let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
     const safePercent=Math.max(0,Math.min(100,usage.percent));
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Sisa ${short(Math.max(0,usage.remaining))}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
