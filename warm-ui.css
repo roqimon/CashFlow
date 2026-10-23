@@ -1046,10 +1046,18 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 }
 .home-donut-svg {
   width: 100%;
-  max-width: 160px;
+  max-width: 380px;
   height: auto;
-  aspect-ratio: 1;
+  aspect-ratio: 380 / 330;
   display: block;
+}
+.donut-callout-text {
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+.donut-callout-sub {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
 }
 .home-donut-legend {
   width: 100%;
