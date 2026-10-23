@@ -1,1 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><defs><linearGradient id="body" x1="18%" y1="5%" x2="82%" y2="96%"><stop offset="0" stop-color="#DDF6F2"/><stop offset=".43" stop-color="#69C8BC"/><stop offset="1" stop-color="#258E92"/></linearGradient><linearGradient id="rim"><stop stop-color="#F0FFFD" stop-opacity=".9"/><stop offset="1" stop-color="#258E92" stop-opacity=".6"/></linearGradient><filter id="lift" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#1E5F6A" flood-opacity=".24"/></filter></defs><g transform="translate(0 8)" fill="#1E5F6A" stroke="#1E5F6A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".68"><path data-icon-shape="true" d="M219.71,117.38a12,12,0,0,0-7.25-8.52L161.28,88.39l10.59-70.61a12,12,0,0,0-20.64-10l-112,120a12,12,0,0,0,4.31,19.33l51.18,20.47L84.13,238.22a12,12,0,0,0,20.64,10l112-120A12,12,0,0,0,219.71,117.38ZM113.6,203.55l6.27-41.77a12,12,0,0,0-7.41-12.92L68.74,131.37,142.4,52.45l-6.27,41.77a12,12,0,0,0,7.41,12.92l43.72,17.49Z"/></g><g fill="url(#body)" stroke="url(#rim)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" filter="url(#lift)"><path data-icon-shape="true" d="M219.71,117.38a12,12,0,0,0-7.25-8.52L161.28,88.39l10.59-70.61a12,12,0,0,0-20.64-10l-112,120a12,12,0,0,0,4.31,19.33l51.18,20.47L84.13,238.22a12,12,0,0,0,20.64,10l112-120A12,12,0,0,0,219.71,117.38ZM113.6,203.55l6.27-41.77a12,12,0,0,0-7.41-12.92L68.74,131.37,142.4,52.45l-6.27,41.77a12,12,0,0,0,7.41,12.92l43.72,17.49Z"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg-lightning" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0fdfa" />
+      <stop offset="100%" stop-color="#ccfbf1" />
+    </linearGradient>
+  </defs>
+  <!-- Modern squircle container base -->
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#bg-lightning)" stroke="#0d9488" stroke-width="4" stroke-opacity="0.12" />
+  <g transform="translate(40, 40) scale(0.6875)">
+    <!-- Duotone soft depth underlay -->
+    <path d="M219.71,117.38a12,12,0,0,0-7.25-8.52L161.28,88.39l10.59-70.61a12,12,0,0,0-20.64-10l-112,120a12,12,0,0,0,4.31,19.33l51.18,20.47L84.13,238.22a12,12,0,0,0,20.64,10l112-120A12,12,0,0,0,219.71,117.38ZM113.6,203.55l6.27-41.77a12,12,0,0,0-7.41-12.92L68.74,131.37,142.4,52.45l-6.27,41.77a12,12,0,0,0,7.41,12.92l43.72,17.49Z" fill="#2dd4bf" fill-opacity="0.28" transform="translate(0, 4)" />
+    <!-- Crisp modern glyph layer -->
+    <path data-icon-shape="true" d="M219.71,117.38a12,12,0,0,0-7.25-8.52L161.28,88.39l10.59-70.61a12,12,0,0,0-20.64-10l-112,120a12,12,0,0,0,4.31,19.33l51.18,20.47L84.13,238.22a12,12,0,0,0,20.64,10l112-120A12,12,0,0,0,219.71,117.38ZM113.6,203.55l6.27-41.77a12,12,0,0,0-7.41-12.92L68.74,131.37,142.4,52.45l-6.27,41.77a12,12,0,0,0,7.41,12.92l43.72,17.49Z" fill="#0d9488" />
+  </g>
+</svg>
