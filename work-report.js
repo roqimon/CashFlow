@@ -31,7 +31,7 @@
       const name = tx.workType || tx.declarationType || tx.deklarasiType || inferred;
       if (!COLUMNS[name]) { errors.push({ id: tx.id, title: tx.title || 'Transaksi', message: 'Pilih jenis pengeluaran deklarasi.' }); continue; }
       const amounts = Object.fromEntries(Object.values(COLUMNS).map(col => [col, col === COLUMNS[name] ? Number(tx.amount) || 0 : 0]));
-      rows.push({ date, type: name, amount: Number(tx.amount) || 0, amounts, note: tx.note || tx.title || tx.sessionName || '', noWo: '' });
+      rows.push({ id: tx.id || '', receiptId: tx.receiptId || '', date, type: name, amount: Number(tx.amount) || 0, amounts, note: '', noWo: '' });
     }
     rows.sort((a,b) => a.date.localeCompare(b.date));
     return { rows, errors };
@@ -43,8 +43,8 @@
     rows.forEach((row,i) => {
       const rn=i+3, cells=[];
       cells.push(cell(`A${rn}`,row.date,'date'));
-      for (const col of Object.values(COLUMNS)) cells.push(cell(`${col}${rn}`,col===COLUMNS[row.type]?row.amount:'number'));
-      cells.push(cell(`L${rn}`,row.note,'text'),cell(`M${rn}`,row.noWo || '', 'text'),cell(`N${rn}`,Object.values(row.amounts||{}).reduce((sum,amount)=>sum+(Number(amount)||0),0)||Number(row.amount)||0));
+      for (const col of Object.values(COLUMNS)) cells.push(cell(`${col}${rn}`,col===COLUMNS[row.type]?row.amount:null));
+      cells.push(cell(`L${rn}`,'','text'),cell(`M${rn}`,row.noWo || '', 'text'),cell(`N${rn}`,Object.values(row.amounts||{}).reduce((sum,amount)=>sum+(Number(amount)||0),0)||Number(row.amount)||0));
       xmlRows.push(`<row r="${rn}">${cells.join('')}</row>`);
     });
     const sheet = `<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:N${Math.max(2,rows.length+2)}"/><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${Array.from({length:14},(_,i)=>`<col min="${i+1}" max="${i+1}" width="${i===0?14:i===11?34:i===12?14:13}" customWidth="1"/>`).join('')}</cols><sheetData>${xmlRows.join('')}</sheetData><autoFilter ref="A2:M${Math.max(2,rows.length+2)}"/></worksheet>`;
@@ -64,6 +64,11 @@
     const date = value => { const [y,m,d] = value.split('-'); return `${d}-${m}-${y}`; };
     return `ST ${date(from)} - ${date(to)}.xlsx`;
   }
+  function receiptName(date, type, amount, extension, sequence = 1) {
+    const safeType=String(type||'Pengeluaran').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}-]+/gu,'_').replace(/^_|_$/g,'');
+    const suffix=sequence>1?`_${sequence}`:'';
+    return `pengeluaran_${date}_${safeType}_${Number(amount)||0}${suffix}.${extension||'jpg'}`;
+  }
   function zipStore(files) {
     const enc = new TextEncoder(), chunks=[], central=[]; let offset=0;
     const u16=n=>[n&255,(n>>>8)&255], u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
@@ -76,7 +81,7 @@
     return new Uint8Array([...chunks.flatMap(a=>Array.from(a)),...central.flatMap(a=>Array.from(a)),...end]);
   }
   function crc32(bytes) { let crc=0xffffffff; for(const b of bytes){crc^=b;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);} return (crc^0xffffffff)>>>0; }
-  const api={COLUMNS,buildRows,createWorkbook,createZip,fileName};
+  const api={COLUMNS,buildRows,createWorkbook,createZip,fileName,receiptName};
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
   if(root) root.WorkReport=api;
 })(typeof window!=='undefined'?window:null);

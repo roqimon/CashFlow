@@ -14,7 +14,7 @@ test('work report maps the selected ST expense types to the declaration columns'
   assert.equal(result.rows.length, 1);
   assert.equal(result.rows[0].date, '2026-10-07');
   assert.equal(result.rows[0].amounts.K, 70000);
-  assert.equal(result.rows[0].note, 'SPBU');
+  assert.equal(result.rows[0].note, '');
   assert.equal(result.rows[0].noWo, '');
 });
 
@@ -49,10 +49,17 @@ ws = wb['Deklarasi']
 assert wb.sheetnames == ['Deklarasi', 'Lainnya']
 assert ws['A3'].value.strftime('%Y-%m-%d') == '2026-10-07'
 assert ws['K3'].value == 70000
+assert ws['B3'].value is None
+assert ws['C3'].value is None
+assert ws['L3'].value is None
 assert ws['M3'].value is None
+assert ws['N3'].value == 70000
 assert ws['A4'].value.strftime('%Y-%m-%d') == '2026-10-10'
 assert ws['I4'].value == 25000
+assert ws['K4'].value is None
+assert ws['L4'].value is None
 assert ws['M4'].value is None
+assert ws['N4'].value == 25000
 print('xlsx-ok')`;
   const checked = spawnSync('python', ['-c', script], { input: Buffer.from(bytes), encoding: 'utf8' });
   assert.equal(checked.status, 0, checked.stderr || checked.stdout);
@@ -61,6 +68,10 @@ print('xlsx-ok')`;
 
 test('export workbook filename follows the full selected date range', () => {
   assert.equal(WorkReport.fileName('2026-10-07', '2026-10-10'), 'ST 07-10-2026 - 10-10-2026.xlsx');
+});
+
+test('receipt name is aligned to the declaration date, type, and amount', () => {
+  assert.equal(WorkReport.receiptName('2026-10-10', 'Fuel', 500000, 'jpg'), 'pengeluaran_2026-10-10_Fuel_500000.jpg');
 });
 
 test('report archive preserves workbook and receipt bytes', () => {

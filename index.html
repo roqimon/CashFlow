@@ -6447,16 +6447,19 @@ async function downloadWorkReport(){
   if(!report.rows.length){alert('Tidak ada pengeluaran kerja pada rentang tanggal ini.');return;}
   const workbook=window.WorkReport.createWorkbook(report.rows);
   const files=[{name:window.WorkReport.fileName(from,to),data:workbook}];
-  const selectedIds=new Set(transactions.filter(item=>item.type==='expense'&&item.date>=from&&item.date<=to&&item.receiptId&&(item.source==='st'||/\b(spbu|pertamina|bensin|bbm|fuel)\b/i.test(`${item.title||''} ${item.note||''}`))).map(item=>item.receiptId));
+  const selectedIds=new Set(report.rows.map(row=>row.receiptId).filter(Boolean));
+  const usedReceiptNames=new Set();
   try{
     const receipts=await window.ReceiptStore.list();
     for(const receipt of receipts){
       if(!selectedIds.has(receipt.id)||!receipt.blob)continue;
       const linked=transactions.find(item=>item.receiptId===receipt.id);
-      const date=linked?.date||from;
+      const row=report.rows.find(item=>item.receiptId===receipt.id);
+      const date=row?.date||linked?.date||from;
       const ext=receipt.blob.type==='application/pdf'?'pdf':'jpg';
-      const safe=String(linked?.title||receipt.title||'Nota').replace(/[^\p{L}\p{N}_-]+/gu,'_').replace(/^_|_$/g,'')||'Nota';
-      const name=ext==='pdf'?`${safe}_${date}.pdf`:`pengeluaran_${date}_${safe}.jpg`;
+      const base=window.WorkReport.receiptName(date,row?.type,row?.amount,ext);
+      let name=base,sequence=2;while(usedReceiptNames.has(name.toLocaleLowerCase()))name=window.WorkReport.receiptName(date,row?.type,row?.amount,ext,sequence++);
+      usedReceiptNames.add(name.toLocaleLowerCase());
       files.push({name,data:new Uint8Array(await receipt.blob.arrayBuffer())});
     }
   }catch(error){alert('Arsip nota tidak dapat dibaca: '+(error.message||error));return;}
