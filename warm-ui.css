@@ -121,7 +121,7 @@ body { background: var(--app-bg) !important; }
 .home-quick .input-row { display: grid !important; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr); align-items: stretch !important; gap: 9px !important; margin-top: 12px; }
 .home-quick #quickInput { grid-column: 1 / -1; width: 100% !important; height: 51px !important; min-width: 0 !important; padding-inline: 15px; font-size: 13px; }
 .home-quick .quick-tool { width: 100% !important; min-width: 0 !important; height: 60px !important; min-height: 60px !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 5px !important; border-radius: 15px !important; background: var(--button-bg) !important; color: var(--ink) !important; font-size: 12px !important; }
-.home-quick .quick-tool img { width: 23px; height: 23px; filter: brightness(0) saturate(100%) invert(43%) sepia(66%) saturate(565%) hue-rotate(337deg) brightness(94%); }
+.home-quick .quick-tool img { width: 23px; height: 23px; }
 .home-quick .primary { width: 100%; min-width: 0; min-height: 60px !important; padding: 0 8px !important; font-size: 14px; white-space: nowrap; }
 .home-quick .primary span { font-size: 22px; vertical-align: -1px; margin-right: 4px; font-weight: 400; }
 .home-quick .quick-tool:active, .home-quick .primary:active, .nav button:active { transform: scale(.97); }
@@ -541,7 +541,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
 #focusPreview[data-type="income"] .focus-preview-amount { color: var(--income); }
 .focus-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 9px; margin-top: 15px; }
 .focus-tool { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 53px; border: 1px solid var(--line); border-radius: 15px; background: var(--button-bg); color: var(--ink); font-size: 13px; font-weight: 800; }
-.focus-tool img { width: 22px; height: 22px; filter: brightness(0) saturate(100%) invert(36%) sepia(26%) saturate(742%) hue-rotate(334deg) brightness(92%); }
+.focus-tool img { width: 22px; height: 22px; }
 .focus-save { width: 100%; min-height: 57px !important; margin-top: 12px; font-size: 15px !important; }
 .focus-manual { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 47px; margin-top: 6px; border: 0; background: transparent; color: var(--green2); font-size: 13px; font-weight: 800; }
 .focus-example:active, .focus-tool:active, .focus-save:active { transform: scale(.98); }
@@ -799,7 +799,6 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .home-quick .quick-tool img {
   width: 27px;
   height: 27px;
-  filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
 }
 #homeCategories .cat-icon {
   background: var(--category-icon-bg, #f7e6d9) !important;
@@ -849,7 +848,6 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .quick-input-icon img {
   width: 21px;
   height: 21px;
-  filter: brightness(0) saturate(100%) invert(19%) sepia(14%) saturate(1340%) hue-rotate(337deg) brightness(89%) contrast(88%);
 }
 
 /* Modern Settings Screen Styles */
