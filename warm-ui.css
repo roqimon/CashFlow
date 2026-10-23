@@ -1029,7 +1029,7 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--surface);
-  padding: 8px 8px 12px;
+  padding: 4px 4px 6px;
   box-shadow: 0 4px 16px rgba(27,48,37,.04);
 }
 .home-donut-layout {
