@@ -16,9 +16,11 @@
         id: record.id,
         capturedAt: record.capturedAt,
         title: record.title,
+        fileName: record.fileName || '',
+        source: record.source || 'personal',
         categoryNames: record.categoryNames || [],
         transactionIds: record.transactionIds || [],
-        mimeType: 'image/jpeg',
+        mimeType: record.blob.type || record.mimeType || 'image/jpeg',
         imageBase64: bytesToBase64(new Uint8Array(await record.blob.arrayBuffer()))
       });
     }
@@ -37,9 +39,13 @@
       catch { throw new Error('Data foto nota base64 tidak dapat dibaca.'); }
       const bytes = new Uint8Array(binary.length);
       for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+      const mimeType = record.mimeType === 'application/pdf' ? 'application/pdf' : 'image/jpeg';
       return {
         id: record.id,
-        blob: new Blob([bytes], { type: 'image/jpeg' }),
+        blob: new Blob([bytes], { type: mimeType }),
+        mimeType,
+        fileName: typeof record.fileName === 'string' ? record.fileName : '',
+        source: record.source === 'st' ? 'st' : 'personal',
         capturedAt: record.capturedAt,
         title: record.title || 'Nota',
         categoryNames: Array.isArray(record.categoryNames) ? record.categoryNames : [],

@@ -5,7 +5,7 @@
       if (!indexedDBApi) return Promise.reject(new Error('Penyimpanan foto tidak tersedia di browser ini.'));
       if (!databasePromise) {
         databasePromise = new Promise((resolve, reject) => {
-          const request = indexedDBApi.open('aruskas_receipts_v1', 1);
+          const request = indexedDBApi.open('aruskas_receipts_v1', 2);
           request.onupgradeneeded = () => {
             const db = request.result;
             if (!db.objectStoreNames.contains('receipts')) db.createObjectStore('receipts', { keyPath: 'id' });

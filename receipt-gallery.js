@@ -50,7 +50,8 @@
       const record = await store.get(id);
       if (!record?.blob) continue;
       const label = String(record.title || 'nota').replace(/[^\p{L}\p{N} _-]/gu, '').trim().replace(/\s+/g, '-') || 'nota';
-      files.push(new FileType([record.blob], `${label}-${String(id).slice(0,8)}.jpg`, { type: 'image/jpeg' }));
+      const pdf = record.blob.type === 'application/pdf' || record.mimeType === 'application/pdf';
+      files.push(new FileType([record.blob], record.fileName || `${label}-${String(id).slice(0,8)}.${pdf?'pdf':'jpg'}`, { type: pdf ? 'application/pdf' : 'image/jpeg' }));
     }
     return files;
   }
@@ -61,6 +62,7 @@
       if (!record?.blob) continue;
       const captured = new Date(record.capturedAt);
       const date = Number.isNaN(captured.getTime()) ? 'Tanggal tidak tersedia' : captured.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      if(record.blob.type==='application/pdf'||record.mimeType==='application/pdf')continue;
       pages.push({ id, title: record.title || 'Nota', date, capturedAt: record.capturedAt || '', image: record.blob });
     }
     if (!pages.length) throw new Error('Tidak ada foto nota yang bisa dimasukkan ke PDF.');

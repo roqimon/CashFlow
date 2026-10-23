@@ -48,3 +48,15 @@ test('photo write failure rolls back newly imported photos', async () => {
   await assert.rejects(restoreReceiptBackup(backup.receipts, target), /Kuota penuh/);
   assert.equal(target.records.size, 0);
 });
+
+test('receipt backup preserves PDF format and source metadata', async () => {
+  const original = store([{ id: 'pdf1', blob: new Blob(['%PDF sample'], { type: 'application/pdf' }), fileName: 'nota.pdf', source: 'st', capturedAt: '2026-10-07T00:00:00Z', title: 'Pertamina' }]);
+  const backup = await buildReceiptBackup({}, original);
+  const restored = store();
+  await restoreReceiptBackup(backup.receipts, restored);
+  const record = restored.records.get('pdf1');
+  assert.equal(record.blob.type, 'application/pdf');
+  assert.equal(record.fileName, 'nota.pdf');
+  assert.equal(record.source, 'st');
+  assert.equal(await record.blob.text(), '%PDF sample');
+});

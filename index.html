@@ -900,9 +900,12 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <button class="focus-manual" data-action="manual" type="button">Isi detail secara manual <span aria-hidden="true">→</span></button>
         </section>
       </section>
-      <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><input type="hidden" id="rangeStart"><input type="hidden" id="rangeEnd"><button class="report-range-trigger" id="reportCalendarToggle" type="button" aria-expanded="false" aria-controls="reportCalendarPanel"><span class="report-range-icon" aria-hidden="true">▦</span><span class="report-range-copy"><strong id="reportRangeSelectedLabel">Pilih rentang tanggal</strong><small id="reportRangeHint">Ketuk untuk mengatur laporan</small></span><span class="report-range-chevron" aria-hidden="true">⌄</span></button><div class="report-range-calendar" id="reportCalendarPanel" hidden><div class="report-calendar-shortcuts"><button type="button" data-report-calendar-shortcut="7d">7 hari</button><button type="button" data-report-calendar-shortcut="30d">30 hari</button><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div><div class="report-calendar-heading"><button type="button" data-report-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="reportCalendarMonthLabel"></strong><button type="button" data-report-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="reportCalendarGrid" role="grid" aria-label="Pilih rentang tanggal laporan"></div><div class="report-calendar-footer"><span id="reportCalendarSelectionHint">Pilih tanggal awal</span><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div></div></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p><button id="shareWaBtn" class="primary" type="button" style="width:100%;margin-top:10px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);font-size:13.5px;font-weight:800;border:0;border-radius:999px;box-shadow:0 8px 20px rgba(37,211,102,.28)"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 18.15c-1.52 0-3-.41-4.3-1.18l-.31-.18-3.19.84.85-3.11-.2-.32a8.163 8.163 0 0 1-1.25-4.29c0-4.52 3.68-8.2 8.2-8.2 2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.52-3.68 8.24-8.2 8.24zm4.49-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.45 1.03 2.61.12.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg><span>Kirim Laporan ke WhatsApp</span></button></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
+      <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><input type="hidden" id="rangeStart"><input type="hidden" id="rangeEnd"><button class="report-range-trigger" id="reportCalendarToggle" type="button" aria-expanded="false" aria-controls="reportCalendarPanel"><span class="report-range-icon" aria-hidden="true">▦</span><span class="report-range-copy"><strong id="reportRangeSelectedLabel">Pilih rentang tanggal</strong><small id="reportRangeHint">Ketuk untuk mengatur laporan</small></span><span class="report-range-chevron" aria-hidden="true">⌄</span></button><div class="report-range-calendar" id="reportCalendarPanel" hidden><div class="report-calendar-shortcuts"><button type="button" data-report-calendar-shortcut="7d">7 hari</button><button type="button" data-report-calendar-shortcut="30d">30 hari</button><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div><div class="report-calendar-heading"><button type="button" data-report-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="reportCalendarMonthLabel"></strong><button type="button" data-report-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="reportCalendarGrid" role="grid" aria-label="Pilih rentang tanggal laporan"></div><div class="report-calendar-footer"><span id="reportCalendarSelectionHint">Pilih tanggal awal</span><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div></div></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p><button id="shareWaBtn" class="primary" type="button" style="width:100%;margin-top:10px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);font-size:13.5px;font-weight:800;border:0;border-radius:999px;box-shadow:0 8px 20px rgba(37,211,102,.28)"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 18.15c-1.52 0-3-.41-4.3-1.18l-.31-.18-3.19.84.85-3.11-.2-.32a8.163 8.163 0 0 1-1.25-4.29c0-4.52 3.68-8.2 8.2-8.2 2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.52-3.68 8.24-8.2 8.24zm4.49-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.45 1.03 2.61.12.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg><span>Kirim Laporan Keluarga via WhatsApp</span></button><button id="workReportBtn" class="ghost" type="button" style="width:100%;margin-top:8px;min-height:46px">📋 Unduh Laporan Kerja + Nota</button></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
       <section class="page" data-page="settings" data-legacy-page="shortcut">
-        <!-- 1. Tema Tampilan -->
+        <section class="card settings-card">
+          <div class="settings-card-head"><span class="settings-card-icon">🧾</span><div><strong style="font-size:14px;color:var(--ink);display:block">Tujuan Nota</strong><small class="muted">Tujuan awal nota yang dipindai</small></div></div>
+          <label style="display:block;margin-top:10px">Simpan ke<select id="receiptDestinationSetting"><option value="st">ST (default)</option><option value="personal">Pribadi</option></select></label>
+        </section>        <!-- 1. Tema Tampilan -->
         <section class="card settings-card" style="margin-top:0">
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">🎨</span>
@@ -1221,7 +1224,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="modal" id="manualModal"><div class="sheet"><div class="row"><h3 style="margin:0">Input Manual</h3><button class="icon-btn" data-action="close-manual" type="button">×</button></div><div class="wide" style="margin-bottom:6px"><label style="display:grid;gap:4px;font-size:12px;font-weight:750">Pos Anggaran / Budget<select id="manPocketSelect" style="width:100%"></select></label></div><div class="source-seg" id="manSourceSeg" style="display:none"><button data-source="personal" class="active" type="button">💵 Pribadi</button><button data-source="st" type="button">📋 ST</button></div><div class="form-grid" style="margin-top:8px"><label>Nama<input id="manTitle" placeholder="Nama transaksi" autocomplete="off"></label><label>Nominal<input id="manAmount" inputmode="numeric" placeholder="Contoh: 50.000" autocomplete="off"></label><label>Tipe<select id="manType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label>Kategori<select id="manCategory" style="margin-bottom:4px"></select><input id="manCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label><label>Ikon<input id="manIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Catatan<input id="manNote" placeholder="Opsional" autocomplete="off"></label></div><div class="dialog-actions"><button class="ghost" data-action="close-manual" type="button">Batal</button><button class="primary" data-action="save-manual" type="button">Simpan</button></div></div></div>
 <input type="file" id="cameraDirectInput" accept="image/*" capture="environment" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
 <input type="file" id="galleryFileInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
-<input type="file" id="receiptFileInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
+<input type="file" id="receiptFileInput" accept="image/*,application/pdf" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
 <input type="file" id="importCsvFileInput" accept=".csv,text/csv,application/vnd.ms-excel" style="display:none">
 <div class="modal" id="categoryModal" aria-hidden="true"><div class="sheet category-sheet" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle"><div class="row"><div><h3 id="categoryEditTitle" style="margin:0">Kategori</h3><p id="categoryEditSubtitle" class="muted" style="margin:3px 0 0;font-size:12px">Isi nama kategori, ikon, tipe, kode, dan catatan.</p></div><button class="icon-btn" id="categoryEditClose" type="button">×</button></div><input type="hidden" id="catEditOld"><div class="form-grid" style="margin-top:12px"><label>Kode<input id="catEditCode" placeholder="Kode pintasan (opsional)" autocomplete="off"></label><label>Nama kategori<input id="catEditName" placeholder="Nama kategori" autocomplete="off"></label><label>Ikon<input id="catEditIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Tipe<select id="catEditType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label class="wide">Catatan<input id="catEditNote" placeholder="Opsional" autocomplete="off"></label></div><div class="emoji-picker cat-edit-picker" id="catEditIconPicker"></div><div class="dialog-actions"><button class="ghost" id="categoryEditCancel" type="button">Batal</button><button class="primary" id="categoryEditSave" type="button">Simpan</button></div></div></div>
 <div class="modal" id="paydayModal" aria-hidden="true">
@@ -1546,7 +1549,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="modal" id="receiptShareFallbackModal" aria-hidden="true"><div class="sheet receipt-share-fallback-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptShareFallbackTitle"><div class="row"><h3 id="receiptShareFallbackTitle" style="margin:0">Simpan foto untuk WhatsApp</h3><button class="icon-btn" id="receiptShareFallbackClose" type="button" aria-label="Tutup">×</button></div><p class="muted">Perangkat ini belum bisa membagikan semua foto langsung. Unduh tiap foto, lalu lampirkan dari WhatsApp.</p><div id="receiptShareFallbackList"></div><label class="receipt-share-fallback-text">Pesan yang akan dikirim<textarea id="receiptShareFallbackText" readonly rows="4"></textarea></label><button class="primary" id="receiptShareFallbackWhatsApp" type="button">Buka WhatsApp dengan pesan</button></div></div>
 <div class="modal" id="photoChoiceModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:380px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">📷</div><h3 style="margin:0 0 6px;font-size:18px">Pilih Sumber Foto</h3><p class="muted" style="margin:0 0 18px;font-size:12.5px;line-height:1.4">Ambil foto struk langsung dengan kamera HP atau pilih dari galeri.</p><div style="display:grid;gap:10px"><button class="primary" id="btnTakePhoto" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><span>📸</span><span>Ambil Foto (Kamera Langsung)</span></button><button class="ghost" id="btnPickGallery" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface2);border:1px solid var(--line)"><span>🖼️</span><span>Pilih dari Galeri / File</span></button><button class="ghost" id="btnCancelPhotoChoice" type="button" style="min-height:42px;font-size:13px;font-weight:700">Batal</button></div></div></div>
 <div class="modal" id="voiceNoticeModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:390px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">🎙️</div><h3 style="margin:0 0 6px;font-size:18px">Fitur Suara di HP</h3><p class="muted" style="margin:0 0 16px;font-size:12.5px;line-height:1.45">Browser HP membatasi akses mikrofon web pada jaringan <strong>HTTP lokal</strong>. Untuk mencatat dengan suara:</p><div style="display:grid;gap:10px;text-align:left"><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">1. Gunakan Dikte Keyboard HP (Paling Praktis)</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Ketuk kotak input teks, lalu tekan tombol <strong>Mikrofon (🎙️)</strong> pada keyboard bawaan HP Anda.</span></div><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">2. Buka Versi Resmi HTTPS</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Buka web resmi ber-HTTPS di mana izin mikrofon diizinkan penuh oleh Google Chrome.</span><a href="https://kas.bisabaca.web.id/" target="_blank" rel="noopener" class="primary" style="display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:8px 14px;border-radius:999px;font-size:12px;text-decoration:none">Buka https://kas.bisabaca.web.id/ ↗</a></div></div><div class="dialog-actions" style="margin-top:16px"><button class="primary" id="voiceNoticeClose" type="button" style="width:100%;min-height:44px">Saya Mengerti</button></div></div></div>
-<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Tanggal nota<input id="scanManualDate" type="date"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
+<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Tanggal nota<input id="scanManualDate" type="date"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label><label class="wide">Jenis pengeluaran kerja<select id="scanManualWorkType"><option value="">Pilih jenis deklarasi</option><option value="Fuel">Fuel</option><option value="Tol">Tol</option><option value="Parkir">Parkir</option><option value="Hotel">Hotel</option><option value="Laundry">Laundry</option><option value="Tiket">Tiket</option><option value="UPD">UPD</option><option value="Wrapping">Wrapping</option><option value="Cuci Mobil">Cuci Mobil</option><option value="Taxi">Taxi</option></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script src="./ui-icons.js?v=20261023.1"></script>
@@ -1556,6 +1559,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./receipt-gallery.js?v=20261021.5"></script>
 <script src="./receipt-backup.js?v=20261021.1"></script>
 <script src="./receipt-analysis.js?v=20261021.1"></script>
+<script src="./work-report.js?v=20261023.1"></script>
 <script src="./shortcut-date.js?v=20261023.2"></script>
 <script>
 (function(){
@@ -1852,6 +1856,8 @@ function saveShareWaPrefs(prefs){
   }catch(e){}
 }
 let activeInputDestination = 'auto';
+const RECEIPT_DEST_KEY='aruskas_receipt_destination';
+function getReceiptDestination(){return localStorage.getItem(RECEIPT_DEST_KEY)||'st'}
 let page='home', txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null}, txPeriod='monthly', txOffset=0, reportPeriod='monthly', reportOffset=0, chartType='donut', reportType='expense', reportSource='all', manualSource='personal', selectedId='', selectMode=false, selectSet=new Set(), pageStack=[], lastHomeSwipeAt=0, exitSwipeRequested=false;
 const palette=['#bd6041','#e3a34c','#82906a','#d78565','#aa785d','#d1a46c','#8f7365','#b9a181'];
 const incomePalette=['#4d7a58','#75a475','#9fc29a','#396a50','#b6d3a9','#6c9581','#8bb3a4','#c5d9b8'];
@@ -1861,7 +1867,7 @@ const defaultShortcuts=[sc({code:'kopi',title:'Kopi Kenangan',category:'Makan',t
 function id(){return (crypto.randomUUID&&crypto.randomUUID())||Date.now()+'-'+Math.random().toString(16).slice(2)}
 function at(days,h,m){const d=new Date();d.setDate(d.getDate()+days);d.setHours(h,m,0,0);return d.toISOString()}
 function sc(o={}){const amt=parseAmount(o.amount)||Number(o.amount)||0;return {id:o.id||id(),code:norm(o.code),title:o.title||'Transaksi',category:o.category||'Lainnya',type:o.type||'expense',icon:o.icon||icon(o.category,o.type),amount:amt,note:o.note||o.comment||'',targetPocketId:Object.hasOwn(o,'targetPocketId')?o.targetPocketId:'auto',showHome:o.showHome!==false}}
-function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;const pocketId=o.pocketId!==undefined?o.pocketId:null;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,pocketId,receiptId:o.receiptId||null,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
+function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const workType=o.workType||o.declarationType||'';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;const pocketId=o.pocketId!==undefined?o.pocketId:null;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,pocketId,receiptId:o.receiptId||null,workType,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
 const sample=[tx({title:'Kopi Kenangan',amount:25000,type:'expense',category:'Makan',icon:'☕',rawInput:'kopi 25',shortcutCode:'kopi',createdAt:at(0,9,15)}),tx({title:'Nasi Padang',amount:25000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'nasi padang 25',createdAt:at(0,12,30)}),tx({title:'Gaji Bulanan',amount:5000000,type:'income',category:'Pemasukan',icon:'💰',rawInput:'gaji 5jt',shortcutCode:'gaji',createdAt:at(-1,8,0)}),tx({title:'GoFood',amount:23000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'gofood 23',createdAt:at(-1,13,45)}),tx({title:'Gojek',amount:18000,type:'expense',category:'Transport',icon:'🚙',rawInput:'gojek 18',createdAt:at(-1,17,12)}),tx({title:'Beli Bensin',amount:50000,type:'expense',category:'Transport',icon:'⛽',rawInput:'bensin 50',shortcutCode:'bensin',createdAt:at(-5,10,20)}),tx({title:'Belanja Bulanan',amount:320000,type:'expense',category:'Belanja',icon:'🛍️',rawInput:'belanja bulanan 320',createdAt:at(-8,15,20)})];
 function boot(){const curSc=getSC();const legacyCodes=['api','server','jurnal','honor'];const hasLegacySc=curSc.some(s=>legacyCodes.includes(norm(s.code))||/honor/i.test(s.title));if(localStorage.getItem(KEY_SC)===null&&!localStorage.getItem('aruskas_cleared'))saveSC(defaultShortcuts);else if(hasLegacySc){const cleaned=curSc.filter(s=>!legacyCodes.includes(norm(s.code))&&!/honor/i.test(s.title));saveSC(cleaned);}const curTx=getTX();if(!curTx.length&&!localStorage.getItem('aruskas_cleared'))saveTX(sample);else if(curTx.some(t=>['honor','api','server','jurnal'].includes(t.shortcutCode)||/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)||/honor proyek/i.test(t.title))){const cleanedTx=curTx.filter(t=>!['honor','api','server','jurnal'].includes(t.shortcutCode)&&!/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)&&!/honor proyek/i.test(t.title));saveTX(cleanedTx.length?cleanedTx:sample);}const memT=getTitleMem();if(memT&&memT['siang']&&/udang/i.test(memT['siang'])){delete memT['siang'];localStorage.setItem(KEY_TITLEMEM,JSON.stringify(memT))}const curTxns=getTX();let txDirty=false;curTxns.forEach(t=>{if(/siang/i.test(t.rawInput)&&/udang/i.test(t.title)){t.title='Siang';t.category='Makan';t.icon='🍽️';txDirty=true}});if(txDirty)saveTX(curTxns);if($('rangeStart'))$('rangeStart').value=dateInput(startMonth(new Date()));if($('rangeEnd'))$('rangeEnd').value=dateInput(new Date());if($('txRangeStart'))$('txRangeStart').value=dateInput(startMonth(new Date()));if($('txRangeEnd'))$('txRangeEnd').value=dateInput(new Date());try{const cm=getCatMem();let d=false;Object.keys(cm).forEach(k=>{if(cm[k]==="Lainnya"||INDONESIAN_STOPWORDS.has(k)){delete cm[k];d=true}});if(d)localStorage.setItem(KEY_CATMEM,JSON.stringify(cm));}catch(e){};buildFuzzyCache();bootFixCatMem();try{const cm2=getCatMem();let d2=false;Object.keys(cm2).forEach(k=>{if(cm2[k]==="Lainnya"||INDONESIAN_STOPWORDS.has(k)){delete cm2[k];d2=true}});if(d2)localStorage.setItem(KEY_CATMEM,JSON.stringify(cm2));}catch(e){};buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));initCatSelect($('manCategory'),'manCategoryNew','manType','manIcon');initCatSelect($('scCategory'),'scCategoryNew','scType','scIcon');}
 function getDeletedCats(){try{return new Set(JSON.parse(localStorage.getItem(KEY_CATDEL)||'[]'))}catch{return new Set}}
@@ -3554,6 +3560,8 @@ function ensureReportLayout(){
   const chart=root.querySelector('.report-chart-card');
   const share=$('shareWaBtn');
   if(share&&chart&&share.parentElement!==chart)chart.append(share);
+  const workButton=$('workReportBtn');
+  if(workButton&&chart&&workButton.parentElement!==chart)chart.append(workButton);
   if(chart&&chart.parentElement===root)summary.after(chart);
   placeReceiptGalleryLast(root,$('receiptGalleryCard'));
 }
@@ -3637,12 +3645,14 @@ async function renderReceiptGallery(transactions=getTX()){
     const url=URL.createObjectURL(item.blob);receiptGalleryUrls.push(url);
     const date=new Date(item.capturedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
     const info=item.transactionCount?item.transactionCount+' transaksi':(item.categoryNames||[]).join(', ')||'Foto nota';
-    return `<article class="receipt-gallery-item"><button type="button" class="receipt-gallery-open" data-receipt-open="${esc(item.id)}"><img src="${url}" alt="Foto nota ${esc(item.displayTitle)}"><span class="receipt-gallery-item-info"><strong>${esc(item.displayTitle)}</strong><small>${esc(date)} · ${esc(info)}</small></span></button></article>`;
+    const isPdf=item.blob.type==='application/pdf'||item.mimeType==='application/pdf';
+    return `<article class="receipt-gallery-item"><button type="button" class="receipt-gallery-open" data-receipt-open="${esc(item.id)}">${isPdf?'<span class="receipt-pdf-preview" aria-label="PDF nota">📄 PDF</span>':`<img src="${url}" alt="Foto nota ${esc(item.displayTitle)}">`}<span class="receipt-gallery-item-info"><strong>${esc(item.displayTitle)}</strong><small>${esc(date)} · ${esc(info)}</small></span></button></article>`;
   }).join('')}
 }
 async function openReceiptPhoto(receiptId){
   const record=await window.ReceiptStore.get(receiptId);
   if(!record)return;
+  if(record.blob.type==='application/pdf'||record.mimeType==='application/pdf'){const pdfUrl=URL.createObjectURL(record.blob);window.open(pdfUrl,'_blank','noopener');setTimeout(()=>URL.revokeObjectURL(pdfUrl),60000);return;}
   if(receiptPhotoUrl)URL.revokeObjectURL(receiptPhotoUrl);
   receiptPhotoCurrentId=receiptId;
   receiptPhotoPreparedFile=null;
@@ -4531,6 +4541,7 @@ function compressImage(file, maxDimension=800, quality=0.7){
 }
 
 async function prepareReceiptBlob(file){
+  if(file.type==='application/pdf')return file;
   const base64=await compressImage(file,1600,0.82);
   const binary=atob(base64);
   const bytes=new Uint8Array(binary.length);
@@ -4542,7 +4553,7 @@ async function persistScannedReceipt({file,items,merchant}){
   if(!validItems.length)throw new Error('Tidak ada transaksi yang valid untuk disimpan.');
   const receiptId=id();
   const blob=await prepareReceiptBlob(file);
-  const record={id:receiptId,blob,capturedAt:validItems[0].createdAt||new Date().toISOString(),title:merchant||validItems[0].title||'Nota',categoryNames:[...new Set(validItems.map(item=>item.category).filter(Boolean))],transactionIds:validItems.map(item=>item.id)};
+  const record={id:receiptId,blob,capturedAt:validItems[0].createdAt||new Date().toISOString(),title:merchant||validItems[0].title||'Nota',fileName:file.name||'',mimeType:blob.type||file.type||'image/jpeg',source:validItems[0].source||'personal',categoryNames:[...new Set(validItems.map(item=>item.category).filter(Boolean))],transactionIds:validItems.map(item=>item.id)};
   await window.ReceiptStore.put(record);
   const linked=validItems.map(item=>({...item,receiptId}));
   if(!saveTX([...linked,...getTX()])){
@@ -4594,15 +4605,14 @@ async function handleReceiptFileSelected(file){
   if($('scanManualTitle'))$('scanManualTitle').value='';
   if($('scanManualAmount'))$('scanManualAmount').value='';
   if($('scanManualDate'))$('scanManualDate').value=dateInput(currentReceiptUploadedAt);
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=$('scanPreviewImg');
-    if(img) img.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
+  const isPdf=file.type==='application/pdf'||/\.pdf$/i.test(file.name||'');
+  const analyzeButton=$('scanAnalyzeBtn');if(analyzeButton)analyzeButton.style.display='none';
+  const preview=$('scanPreviewImg');
+  if(preview){preview.hidden=isPdf;if(!isPdf){const reader=new FileReader();reader.onload=e=>{preview.src=e.target.result};reader.readAsDataURL(file)}}
 
   const catSel=$('scanManualCategory');
   if(catSel) populateCatSelect(catSel,'Makan');
+  if($('scanManualWorkType'))$('scanManualWorkType').value='';
 
   const apiKey=getGeminiApiKey();
   const apiKeyInput=$('scanApiKeyInput');
@@ -4611,12 +4621,15 @@ async function handleReceiptFileSelected(file){
   openModalLayer('scanModal');
 
   const statusBox=$('scanStatusBox');
-  if(apiKey){
+  if(apiKey&&!isPdf&&getReceiptDestination()!=='st'){
     executeReceiptAiScan(file, apiKey);
   } else {
+    if(apiKey&&!isPdf&&getReceiptDestination()==='st'){
+      const analyze=$('scanAnalyzeBtn');if(analyze){analyze.style.display='block';analyze.textContent='Baca Nota';}
+    }
     if(statusBox){
       statusBox.className='pratinjau';
-      statusBox.innerHTML='📷 <strong>Foto nota terpasang.</strong> Silakan isi nominal di bawah untuk mencatat transaksi:';
+      statusBox.innerHTML=isPdf?'📄 <strong>PDF nota terpasang.</strong> Isi nominal, tanggal, dan jenis pengeluaran di bawah:':'📷 <strong>Foto nota terpasang.</strong> Silakan isi nominal di bawah untuk mencatat transaksi:';
     }
     setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 200);
   }
@@ -4634,6 +4647,10 @@ async function executeReceiptAiScan(file, apiKey){
     }
     setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 150);
     return;
+  }
+  if(getReceiptDestination()==='st'&&!$('scanManualWorkType')?.value){
+    const statusBox=$('scanStatusBox');if(statusBox){statusBox.className='pratinjau';statusBox.innerHTML='📋 <strong>Pilih jenis pengeluaran kerja terlebih dahulu</strong>, lalu ketuk Baca Nota.';}
+    $('scanManualWorkType')?.focus();return;
   }
   setGeminiApiKey(apiKey);
   setScanningState(true);
@@ -4696,7 +4713,7 @@ async function executeReceiptAiScan(file, apiKey){
       if(!cat) cat=analysis.mode==='total'?(type==='income'?'Pemasukan':'Belanja'):smartInferCat(cleanTitle, type, activeCategories, getTX());
       cat=activeCategory(cat, type);
       const catIcon=icon(cat, type);
-      const src='personal';
+      const src=getReceiptDestination();
       const sessId=src==='st'?(it.stSessionId||getActiveSTSession()?.id||null):null;
       const reimb=(src==='st'&&type==='expense')?'pending':null;
       const itemNote='Foto Struk · '+analysis.merchant;
@@ -4710,6 +4727,7 @@ async function executeReceiptAiScan(file, apiKey){
         icon:catIcon,
         note:itemNote,
         source:src,
+        workType:src==='st'?($('scanManualWorkType')?.value||''):'',
         stSessionId:sessId,
         reimburseStatus:reimb,
         pocketId:itemPocketId,
@@ -4772,7 +4790,8 @@ async function saveScanManualTransaction(){
     return;
   }
   const type=inferType(titleVal);
-  const src='personal';
+  const src=getReceiptDestination();
+  if(src==='st'&&!$('scanManualWorkType')?.value){alert('Pilih jenis pengeluaran kerja.');$('scanManualWorkType')?.focus();return;}
   const sessId=src==='st'?getActiveSTSession()?.id:null;
   const reimb=(src==='st'&&type==='expense')?'pending':null;
   const item=tx({
@@ -4786,6 +4805,7 @@ async function saveScanManualTransaction(){
     stSessionId:sessId,
     reimburseStatus:reimb,
     rawInput:'foto: '+titleVal,
+    workType:src==='st'?($('scanManualWorkType')?.value||'Fuel'):'',
     createdAt:window.ReceiptAnalysis.receiptDate($('scanManualDate')?.value,currentReceiptUploadedAt||new Date())
   });
   receiptSaveInProgress=true;
@@ -5836,6 +5856,7 @@ $('shortcutList').addEventListener('click',async e=>{
 document.getElementById('catManager').addEventListener('click',async e=>{if(catSelectMode){const catItem=e.target.closest('[data-cat-name]');if(catItem){const cname=catItem.dataset.catName;if(cname&&cname!=='Lainnya'){e.preventDefault();if(catSelectSet.has(cname))catSelectSet.delete(cname);else catSelectSet.add(cname);updateCatSelectUI();return}}}const del=e.target.closest('[data-del-cat]');if(del){await deleteCategory(del.dataset.delCat);return}const ed=e.target.closest('[data-edit-cat]');if(ed){openCategoryEdit(ed.dataset.editCat);return}});
 $('categoryEditClose').addEventListener('click',closeCategoryEdit);$('categoryEditCancel').addEventListener('click',closeCategoryEdit);$('categoryEditSave').addEventListener('click',saveCategoryEdit);$('categoryModal').addEventListener('click',e=>{if(e.target.id==='categoryModal')closeCategoryEdit()});['catEditCode','catEditName','catEditIcon','catEditNote'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')saveCategoryEdit()}));$('catEditType').addEventListener('change',()=>{if(!$('catEditIcon').value.trim())$('catEditIcon').value=icon($('catEditName').value,$('catEditType').value);refreshFancySelect($('catEditType'))});$('catEditIcon').addEventListener('click',()=>{$('catEditIconPicker').classList.toggle('open');renderCategoryIconPicker($('catEditIcon').value||'•')});$('catEditIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-cat-icon]');if(!b)return;$('catEditIcon').value=b.dataset.catIcon;renderCategoryIconPicker(b.dataset.catIcon);$('catEditIconPicker').classList.remove('open')});
 $('themeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-theme-mode]');if(!b)return;setThemeMode(b.dataset.themeMode)});
+const receiptDestinationSetting=$('receiptDestinationSetting');if(receiptDestinationSetting){receiptDestinationSetting.value=getReceiptDestination();receiptDestinationSetting.addEventListener('change',()=>{localStorage.setItem(RECEIPT_DEST_KEY,receiptDestinationSetting.value);toast('Tujuan nota disimpan.')})}
 $('addActionModeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-add-action-mode]');if(!b)return;setAddClickAction(b.dataset.addActionMode)});
 $('txBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
 $('homeBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
@@ -6274,8 +6295,12 @@ function updateShareWaPreview(){
 
 function initShareWaHandlers(){
   $('shareWaBtn')?.addEventListener('click',()=>{
-    openShareWaModal();
+    const period=range();
+    const txList=getTX().filter(item=>inRange(item,period.start,period.end));
+    const text=generateCustomWhatsAppRecap({periodLabel:period.label,targetDate:period.start,txList,pockets:getPockets(),includeTransactions:true,summary:sum(txList)});
+    window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(text),'_blank','noopener');
   });
+  $('workReportBtn')?.addEventListener('click',downloadWorkReport);
   
   $('shareWaPeriodSeg')?.addEventListener('click', e => {
     const btn = e.target.closest('[data-scope]');
@@ -6408,6 +6433,37 @@ function initShareWaHandlers(){
       else if(result==='shared')closeModalLayer('shareWaModal');
     }catch(error){console.warn('[ArusKas] Berbagi foto gagal:',error);openReceiptShareFallback(files,text)}
   });
+}
+
+async function downloadWorkReport(){
+  const period=range();
+  const from=dateInput(period.start), to=dateInput(period.end);
+  const transactions=getTX().map(item=>({...item,date:dateInput(new Date(item.createdAt))}));
+  const report=window.WorkReport.buildRows(transactions,{from,to});
+  if(report.errors.length){
+    alert('Pilih jenis pengeluaran deklarasi untuk: '+report.errors.map(item=>item.title).join(', '));
+    return;
+  }
+  if(!report.rows.length){alert('Tidak ada pengeluaran kerja pada rentang tanggal ini.');return;}
+  const workbook=window.WorkReport.createWorkbook(report.rows);
+  const files=[{name:window.WorkReport.fileName(from,to),data:workbook}];
+  const selectedIds=new Set(transactions.filter(item=>item.type==='expense'&&item.date>=from&&item.date<=to&&item.receiptId&&(item.source==='st'||/\b(spbu|pertamina|bensin|bbm|fuel)\b/i.test(`${item.title||''} ${item.note||''}`))).map(item=>item.receiptId));
+  try{
+    const receipts=await window.ReceiptStore.list();
+    for(const receipt of receipts){
+      if(!selectedIds.has(receipt.id)||!receipt.blob)continue;
+      const linked=transactions.find(item=>item.receiptId===receipt.id);
+      const date=linked?.date||from;
+      const ext=receipt.blob.type==='application/pdf'?'pdf':'jpg';
+      const safe=String(linked?.title||receipt.title||'Nota').replace(/[^\p{L}\p{N}_-]+/gu,'_').replace(/^_|_$/g,'')||'Nota';
+      const name=ext==='pdf'?`${safe}_${date}.pdf`:`pengeluaran_${date}_${safe}.jpg`;
+      files.push({name,data:new Uint8Array(await receipt.blob.arrayBuffer())});
+    }
+  }catch(error){alert('Arsip nota tidak dapat dibaca: '+(error.message||error));return;}
+  const zip=window.WorkReport.createZip(files);
+  const url=URL.createObjectURL(new Blob([zip],{type:'application/zip'}));
+  const anchor=document.createElement('a');anchor.href=url;anchor.download=`Laporan ${window.WorkReport.fileName(from,to).replace(/\.xlsx$/,'')}.zip`;anchor.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 ensureReportLayout();
 initShareWaHandlers();
