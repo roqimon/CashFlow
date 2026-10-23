@@ -797,7 +797,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       color: var(--green, #1f8a5b);
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261023.87" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261023.88" />
 </head>
 <body>
 <div class="shell">
@@ -929,12 +929,15 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <small class="muted" style="font-size:11.5px">Awal siklus perhitungan anggaran & jatah belanja harian</small>
             </div>
           </div>
-          <div style="margin-top:12px" class="payday-picker-wrap">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-              <span class="payday-cycle-badge" id="paydayCycleBadge">Siklus: <strong>-</strong></span>
-              <select id="settingPayday" class="input" style="width:auto;min-width:130px;font-size:12.5px;font-weight:800;padding:6px 10px;height:38px" aria-label="Pilih tanggal gajian"></select>
+          <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div style="min-width:0;flex:1">
+              <span class="payday-cycle-badge" id="paydayCycleBadge" style="margin:0;max-width:100%;white-space:normal">Siklus: <strong>-</strong></span>
             </div>
-            <div class="payday-calendar-grid" id="paydayCalendarGrid" role="radiogroup" aria-label="Pilih tanggal gajian 1 sampai 31"></div>
+            <button class="ghost" data-action="open-payday-modal" type="button" style="min-height:42px;padding:0 16px;border-radius:14px;font-size:13px;font-weight:850;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--green);background:var(--accent-soft);color:var(--green2)">
+              <span>📅</span>
+              <span id="paydayBtnText">Tanggal 25</span>
+              <span style="font-size:11px;opacity:.7">▾</span>
+            </button>
           </div>
         </section>
 
@@ -1069,7 +1072,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v87</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v88</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1201,6 +1204,30 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <input type="file" id="receiptFileInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
 <input type="file" id="importCsvFileInput" accept=".csv,text/csv,application/vnd.ms-excel" style="display:none">
 <div class="modal" id="categoryModal" aria-hidden="true"><div class="sheet category-sheet" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle"><div class="row"><div><h3 id="categoryEditTitle" style="margin:0">Kategori</h3><p id="categoryEditSubtitle" class="muted" style="margin:3px 0 0;font-size:12px">Isi nama kategori, ikon, tipe, kode, dan catatan.</p></div><button class="icon-btn" id="categoryEditClose" type="button">×</button></div><input type="hidden" id="catEditOld"><div class="form-grid" style="margin-top:12px"><label>Kode<input id="catEditCode" placeholder="Kode pintasan (opsional)" autocomplete="off"></label><label>Nama kategori<input id="catEditName" placeholder="Nama kategori" autocomplete="off"></label><label>Ikon<input id="catEditIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Tipe<select id="catEditType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label class="wide">Catatan<input id="catEditNote" placeholder="Opsional" autocomplete="off"></label></div><div class="emoji-picker cat-edit-picker" id="catEditIconPicker"></div><div class="dialog-actions"><button class="ghost" id="categoryEditCancel" type="button">Batal</button><button class="primary" id="categoryEditSave" type="button">Simpan</button></div></div></div>
+<div class="modal" id="paydayModal" aria-hidden="true">
+  <div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="paydayModalTitle" style="max-width:400px">
+    <div class="row">
+      <div>
+        <h3 id="paydayModalTitle" style="margin:0">Tanggal Gajian Bulanan</h3>
+        <p class="muted" style="margin:3px 0 0;font-size:12px">Pilih tanggal awal siklus anggaran dan jatah belanja harian.</p>
+      </div>
+      <button class="icon-btn" data-action="close-payday-modal" type="button" aria-label="Tutup">✕</button>
+    </div>
+
+    <div style="margin-top:14px;display:grid;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--surface2);padding:10px 14px;border-radius:14px;border:1px solid var(--line)">
+        <span style="font-size:12.5px;font-weight:750;color:var(--muted)">Siklus Aktif</span>
+        <span id="paydayModalCycleText" style="font-size:12.5px;font-weight:850;color:var(--green)">-</span>
+      </div>
+
+      <div class="payday-calendar-grid" id="paydayCalendarGrid" role="radiogroup" aria-label="Pilih tanggal gajian 1 sampai 31"></div>
+    </div>
+
+    <div class="dialog-actions" style="margin-top:16px">
+      <button class="primary" data-action="close-payday-modal" type="button" style="width:100%">Selesai</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="clearDataModal" aria-hidden="true">
   <div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="clearDataTitle" style="max-width:420px">
     <div class="row">
@@ -1515,7 +1542,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.87').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.88').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1591,15 +1618,7 @@ function saveSavings(value){
 function isPocketActive(pocket, txList = []){
   if(!pocket) return false;
   if(typeof pocket.isActive === 'boolean') return pocket.isActive;
-  const tx = txList && txList.length ? txList : (typeof getTX === 'function' ? getTX() : []);
-  const pid = pocket.id || '';
-  const cats = (pocket.categories || []).map(c => String(c).toLowerCase().trim());
-  return (tx || []).some(t => {
-    if(t.pocketId === pid) return true;
-    const cat = String(t.category || '').toLowerCase().trim();
-    const title = String(t.title || '').toLowerCase().trim();
-    return cats.some(c => (cat && cat.includes(c)) || (title && title.includes(c)));
-  });
+  return true;
 }
 function setPocketActive(pocketId, active){
   const list = getPockets();
@@ -2464,7 +2483,7 @@ function savePocketEdit(e){
     amount,
     categories,
     color:existingIdx>=0?list[existingIdx].color:'#1f8a5b',
-    isActive:existingIdx>=0?(list[existingIdx].isActive!==undefined?list[existingIdx].isActive:false):false,
+    isActive:existingIdx>=0?(list[existingIdx].isActive!==undefined?list[existingIdx].isActive:true):true,
     updatedAt:new Date().toISOString()
   };
   if(existingIdx>=0){
@@ -5609,6 +5628,8 @@ if(a==='manage-pockets'){openPocketManager();return}
     if(a==='close-pocket-modal')closePocketEdit();
 if(a==='save-quick')addFrom('quickInput');if(a==='save-focus')addFrom('focusInput');if(a==='settings'){navigate('settings');}if(a==='close-settings'){goBack();}
 
+if(a==='open-payday-modal'){openPaydayModal();return}
+if(a==='close-payday-modal'){closePaydayModal();return}
 if(a==='close-clear-modal') closeModalLayer('clearDataModal');
 if(a==='toggle-clear-all'){
   const cbs = [$('clearOptTx'),$('clearOptReceipts'),$('clearOptSavings'),$('clearOptPockets'),$('clearOptShortcuts'),$('clearOptST'),$('clearOptCategories')];
@@ -6377,20 +6398,14 @@ document.addEventListener('change',e=>{
 boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
 function renderPaydayControls(){
   const curDay=getPaydaySetting();
-  const selectEl=$('settingPayday');
   const gridEl=$('paydayCalendarGrid');
   const badgeEl=$('paydayCycleBadge');
+  const btnTextEl=$('paydayBtnText');
+  const modalCycleEl=$('paydayModalCycleText');
   const cycle=getPaydayCycle(new Date(),curDay);
   if(badgeEl) badgeEl.innerHTML=`Siklus: <strong>${esc(cycle.label)}</strong> (${cycle.daysRemaining} hr lagi)`;
-  if(selectEl && (!selectEl.children || !selectEl.children.length)){
-    let opts='';
-    for(let i=1;i<=31;i++){
-      const note = i===25?' (Umum Swasta / BUMN)':i===1?' (Awal Bulan / ASN)':i===20?' (Tanggal 20)':i===28?' (Tanggal 28)':'';
-      opts+=`<option value="${i}">Tanggal ${i}${note}</option>`;
-    }
-    selectEl.innerHTML=opts;
-  }
-  if(selectEl) selectEl.value=String(curDay);
+  if(btnTextEl) btnTextEl.textContent=`Tanggal ${curDay}`;
+  if(modalCycleEl) modalCycleEl.textContent=`${esc(cycle.label)} (${cycle.daysRemaining} hr lagi)`;
   if(gridEl){
     let daysHtml='';
     for(let i=1;i<=31;i++){
@@ -6402,6 +6417,17 @@ function renderPaydayControls(){
 }
 window.renderPaydayControls=renderPaydayControls;
 
+function openPaydayModal(){
+  renderPaydayControls();
+  openModalLayer('paydayModal');
+}
+window.openPaydayModal=openPaydayModal;
+
+function closePaydayModal(){
+  closeModalLayer('paydayModal');
+}
+window.closePaydayModal=closePaydayModal;
+
 function onPaydayChanged(newVal){
   const val=Math.max(1,Math.min(31,parseInt(newVal,10)||25));
   savePaydaySetting(val);
@@ -6412,12 +6438,6 @@ function onPaydayChanged(newVal){
   toast(`Tanggal gajian diubah ke tanggal ${val}. Anggaran & jatah harian diperbarui.`);
 }
 
-const settingPaydayEl=$('settingPayday');
-if(settingPaydayEl){
-  settingPaydayEl.addEventListener('change',()=>{
-    onPaydayChanged(settingPaydayEl.value);
-  });
-}
 document.addEventListener('click',e=>{
   const btn=e.target.closest('[data-payday-val]');
   if(btn){
@@ -6431,6 +6451,7 @@ if(typeof window!=='undefined'){
   window.getPaydayCycle=getPaydayCycle;
   window.calculateSafeDailySpend=calculateSafeDailySpend;
   window.calculatePocketUsage=calculatePocketUsage;
+  window.isPocketActive=isPocketActive;
   window.renderHome=renderHome;
   window.getPockets=getPockets;
   window.savePockets=savePockets;

@@ -134,3 +134,33 @@ test('Payday calendar controls render 1-31 and change cycle correctly', () => {
   ctx.renderPaydayControls();
   assert.ok(gridEl.innerHTML.includes('class="payday-day-btn active" data-payday-val="10"'));
 });
+
+
+test('Pocket stays active even when it has 0 transactions', () => {
+  const { ctx } = setupEnv();
+  
+  // Pos baru tanpa transaksi sama sekali
+  const emptyPocket = {
+    id: 'pocket-empty-1',
+    name: 'Dana Darurat Baru',
+    icon: '🛡️',
+    amount: 500000,
+    categories: ['darurat'],
+    isActive: true
+  };
+  
+  ctx.savePockets([emptyPocket]);
+  
+  // Pastikan isPocketActive mengembalikan true meskipun txList kosong
+  assert.equal(ctx.isPocketActive(emptyPocket, []), true, 'Pocket with isActive:true must stay active even without tx');
+  
+  // Pos tanpa properti isActive eksplisit juga harus default aktif
+  const defaultPocket = {
+    id: 'pocket-empty-2',
+    name: 'Tabungan Nikah',
+    icon: '💍',
+    amount: 1000000,
+    categories: ['nikah']
+  };
+  assert.equal(ctx.isPocketActive(defaultPocket, []), true, 'Pocket without explicit isActive must default to active');
+});
