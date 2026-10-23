@@ -101,6 +101,19 @@ test('ST Trigger via text prefix: "ST bbm 400rb"', () => {
   assert.equal(res.item.amount, 400000);
 });
 
+test('Shortcut target pocket overrides the automatic input destination', () => {
+  const { ctx } = setupEnv();
+  const stPocket = { id: 'pocket-st-shortcut', name: 'ST Oktober', icon: '📋', amount: 3000000, categories: ['st'] };
+  ctx.savePockets([stPocket]);
+  ctx.localStorage.setItem('aruskas_shortcuts_v3_fixed', JSON.stringify([{ code: 'upd-full', title: 'UPD Full', category: 'Perjalanan', type: 'expense', icon: '📋', amount: 132500, targetPocketId: stPocket.id }]));
+
+  const result = ctx.parseInput('UPD Full');
+  assert.equal(result.ok, true);
+  assert.equal(result.item.source, 'st');
+  assert.equal(result.item.pocketId, stPocket.id);
+  assert.equal(result.item.reimburseStatus, 'pending');
+});
+
 test('ST Trigger via spoken Indonesian variations: "es te bbm 400rb", "dinas bbm 400rb"', () => {
   const { ctx } = setupEnv();
   const stPocket = {

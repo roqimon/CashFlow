@@ -19,6 +19,11 @@ for (const group of ['Sehari-hari', 'Rumah & keluarga', 'Tagihan & keuangan', 'L
   assert.ok(catalog.some(item => item.group === group), `kelompok ${group} kosong`);
 }
 
+for (const label of ['Kerja', 'Dinas', 'Rapat', 'Proyek', 'Transportasi dinas', 'Penginapan']) {
+  assert.ok(catalog.some(item => item.label === label), `katalog perlu ikon ${label}`);
+}
+assert.ok(catalog.some(item => item.group === 'Kerja & dinas'), 'ikon kerja dan dinas perlu kelompok tersendiri');
+
 const serviceWorker = fs.readFileSync(path.join(__dirname, '..', 'sw.js'), 'utf8');
 const precacheNames = serviceWorker.match(/const ICON_NAMES = '([^']+)'\.split/)[1].split(' ');
 for (const name of precacheNames) {

@@ -25,8 +25,10 @@ for (const action of ['open-shortcut-editor', 'close-shortcut-editor']) {
 }
 
 assert.ok(html.includes('warm-ui.css?v=20261023.89'), 'HTML must request the new PWA stylesheet');
-assert.ok(html.includes("sw.js?v=20261023.91"), 'HTML must register the new service worker');
-assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v91'"), 'Service worker cache must be bumped');
+assert.ok(html.includes("sw.js?v=20261023.93"), 'HTML must register the new service worker');
+assert.ok(sw.includes("CACHE_NAME = 'aruskas-pwa-v93'"), 'Service worker cache must be bumped');
+assert.ok(html.includes('shortcut-date.js?v=20261023.1'), 'The date parser must load before the app script');
+assert.ok(sw.includes('./shortcut-date.js?v=20261023.1'), 'The service worker must cache the date parser');
 assert.ok(sw.includes('./warm-ui.css?v=20261023.89'), 'Service worker shell must cache the new stylesheet');
 
 console.log('Shortcut settings order and editor visibility verified.');

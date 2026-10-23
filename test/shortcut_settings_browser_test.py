@@ -41,15 +41,16 @@ try:
         cache_state = page.evaluate("""async () => {
           const registration = await navigator.serviceWorker.ready;
           const cacheNames = await caches.keys();
-          const shell = await caches.open('aruskas-pwa-v91');
+          const shell = await caches.open('aruskas-pwa-v93');
           const shellUrls = (await shell.keys()).map(request => request.url);
           return {
             activeWorker: Boolean(registration.active),
-            cachePresent: cacheNames.includes('aruskas-pwa-v91'),
-            stylesheetCached: shellUrls.some(url => url.includes('warm-ui.css?v=20261023.89'))
+            cachePresent: cacheNames.includes('aruskas-pwa-v93'),
+            stylesheetCached: shellUrls.some(url => url.includes('shortcut-date.js?v=20261023.1')),
+            iconsCached: shellUrls.some(url => url.includes('ui-icons.js?v=20261023.1'))
           };
         }""")
-        assert cache_state["activeWorker"] and cache_state["cachePresent"] and cache_state["stylesheetCached"], f"PWA must activate the new cache and stylesheet: {cache_state}"
+        assert cache_state["activeWorker"] and cache_state["cachePresent"] and cache_state["stylesheetCached"] and cache_state["iconsCached"], f"PWA must activate the new cache and icon catalog: {cache_state}"
         page.evaluate("""() => {
           localStorage.setItem('aruskas_cleared', '1');
           localStorage.setItem('aruskas_shortcuts_v3_fixed', '[]');

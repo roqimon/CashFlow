@@ -48,6 +48,26 @@
     ['💼', 'Pekerjaan', 'briefcase', 'Tagihan & keuangan'],
     ['🪙', 'Koin', 'coins', 'Tagihan & keuangan'],
     ['🏪', 'Toko', 'storefront', 'Tagihan & keuangan'],
+    ['🧱', 'Proyek', 'squares-four', 'Kerja & dinas'],
+
+    ['🧑‍💼', 'Kerja', 'briefcase', 'Kerja & dinas'],
+    ['🧑‍💻', 'Kerja digital', 'laptop', 'Kerja & dinas'],
+    ['🏬', 'Kantor', 'buildings', 'Kerja & dinas'],
+    ['👨‍👩‍👧‍👦', 'Rapat', 'users-three', 'Kerja & dinas'],
+    ['🗂️', 'Administrasi', 'receipt', 'Kerja & dinas'],
+    ['🧮', 'Target kerja', 'chart-line-up', 'Kerja & dinas'],
+    ['🫱🏻‍🫲🏽', 'Kerja sama', 'hand-heart', 'Kerja & dinas'],
+    ['🧰', 'Peralatan kerja', 'squares-four', 'Kerja & dinas'],
+    ['🎓', 'Pelatihan', 'graduation-cap', 'Kerja & dinas'],
+    ['🧑‍🔧', 'Operasional', 'buildings', 'Kerja & dinas'],
+    ['🛫', 'Dinas', 'suitcase', 'Kerja & dinas'],
+    ['🛩️', 'Perjalanan dinas', 'airplane', 'Kerja & dinas'],
+    ['🚄', 'Transportasi dinas', 'train', 'Kerja & dinas'],
+    ['🚘', 'Kendaraan dinas', 'car', 'Kerja & dinas'],
+    ['🛏️', 'Penginapan', 'house-line', 'Kerja & dinas'],
+    ['🍱', 'Konsumsi dinas', 'bowl-food', 'Kerja & dinas'],
+    ['🧷', 'Reimburse', 'receipt-x', 'Kerja & dinas'],
+    ['🧭', 'Lokasi tugas', 'map-pin', 'Kerja & dinas'],
 
     ['🎬', 'Hiburan', 'film-strip', 'Lainnya'],
     ['🎮', 'Gim', 'game-controller', 'Lainnya'],
@@ -89,7 +109,7 @@
   };
   const escapeAttr = value => String(value).replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
   const picker = (selected, attr) => {
-    const groups = ['Sehari-hari', 'Rumah & keluarga', 'Tagihan & keuangan', 'Lainnya'];
+    const groups = ['Sehari-hari', 'Rumah & keluarga', 'Tagihan & keuangan', 'Kerja & dinas', 'Lainnya'];
     return `<div class="icon-picker-search"><input type="search" class="icon-search" placeholder="Cari ikon atau kategori" aria-label="Cari ikon kategori"></div><div class="icon-gallery">${groups.map(group => `<div class="icon-group" data-group="${escapeAttr(group)}"><div class="icon-group-title">${group}</div><div class="icon-grid">${catalog.filter(item => item.group === group).map(item => `<button type="button" ${attr}="${escapeAttr(item.value)}" data-icon-search="${escapeAttr((item.label + ' ' + group).toLowerCase())}" class="${item.value === selected ? 'active' : ''}" title="${escapeAttr(item.label)}"><img src="${pathFor(item.file)}" alt=""><span>${escapeAttr(item.label)}</span></button>`).join('')}</div></div>`).join('')}</div>`;
   };
 
