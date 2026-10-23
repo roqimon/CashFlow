@@ -18,6 +18,14 @@ test('parses inclusive numeric ranges with default current month and year', () =
   }
 });
 
+test('accepts common Indonesian range separators', () => {
+  for (const text of ['1 s/d 4 Oktober', '1 sd 4 Oktober', '1 s.d. 4 Oktober', '1 sampai dengan 4 Oktober']) {
+    assert.deepEqual(dates(text).dates, [
+      '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04',
+    ], text);
+  }
+});
+
 test('parses Indonesian month names and explicit years in ranges', () => {
   assert.deepEqual(dates('1-5 Oktober').dates, [
     '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05',
@@ -44,6 +52,7 @@ test('normalizes spoken date numbers only in date expressions, preserving spoken
     ShortcutDate.normalizeTranscript('UPD Full dari tanggal satu sampai lima Oktober dua ribu dua puluh enam'),
     'UPD Full dari tanggal 1 sampai 5 Oktober 2026',
   );
+  assert.equal(ShortcutDate.normalizeTranscript('satu sampai dengan empat Oktober'), '1 sampai dengan 4 Oktober');
   assert.equal(ShortcutDate.normalizeTranscript('bayar tiga puluh ribu'), 'bayar tiga puluh ribu');
   assert.equal(ShortcutDate.normalizeTranscript('UPD Full tanggal satu Oktober dua ribu dua puluh enam'), 'UPD Full tanggal 1 Oktober 2026');
 });
@@ -61,6 +70,15 @@ test('supports explicit cross-month and cross-year ranges, including leap day', 
   ]);
   assert.deepEqual(dates('30 Desember 2025 sampai 2 Januari 2026').dates, [
     '2025-12-30', '2025-12-31', '2026-01-01', '2026-01-02',
+  ]);
+});
+
+test('parses numeric day/month ranges with shared or explicit year', () => {
+  assert.deepEqual(dates('1/10-4/10/2025').dates, [
+    '2025-10-01', '2025-10-02', '2025-10-03', '2025-10-04',
+  ]);
+  assert.deepEqual(dates('1/10/2025 sampai 4/10/2025').dates, [
+    '2025-10-01', '2025-10-02', '2025-10-03', '2025-10-04',
   ]);
 });
 
@@ -144,17 +162,26 @@ test('shortcut batch copies configured pos, category, amount, and session to eac
     ['UPD dari tanggal 1-5 Oktober', 79500, 397500],
     ['UPD Full dari tanggal 1 sampai 5 Oktober 2026', 132500, 662500],
     ['UPD Full dari tanggal 1-5 Oktober nominal 140.000', 140000, 700000],
+    ['1-4 Okt UPD', 79500, 318000],
+    ['1-4 UPD', 79500, 318000],
+    ['1 sampai 4 Oktober UPD', 79500, 318000],
+    ['UPD 1-4 Okt', 79500, 318000],
+    ['UPD dari tanggal 1 sampai 4 Oktober', 79500, 318000],
+    ['1 Oktober sampai 4 Oktober 2026 UPD', 79500, 318000],
+    ['1 s.d. 4 Oktober UPD', 79500, 318000],
+    ['1 sampai dengan 4 Oktober UPD', 79500, 318000],
+    ['1/10-4/10/2025 UPD', 79500, 318000],
   ]) {
     const batch = ctx.prepareShortcutDateBatch(phrase);
     assert.equal(batch.handled, true, phrase);
-    assert.equal(batch.items.length, 5, phrase);
+    const expectedCount = total / amount;
+    assert.equal(batch.items.length, expectedCount, phrase);
     assert.equal(batch.amount, amount, phrase);
     assert.equal(batch.total, total, phrase);
-    assert.deepEqual(batch.items.map(item => item.category), Array(5).fill('Perjalanan'));
-    assert.deepEqual(batch.items.map(item => item.amount), Array(5).fill(amount));
-    assert.deepEqual(batch.items.map(item => item.createdAt.slice(0, 10)), [
-      '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05',
-    ]);
+    assert.deepEqual(batch.items.map(item => item.category), Array(expectedCount).fill('Perjalanan'));
+    assert.deepEqual(batch.items.map(item => item.amount), Array(expectedCount).fill(amount));
+    const year = phrase.includes('2025') ? '2025' : '2026';
+    assert.deepEqual(batch.items.map(item => item.createdAt.slice(0, 10)), Array.from({ length: expectedCount }, (_, index) => `${year}-10-0${index + 1}`));
     for (const item of batch.items) {
       assert.equal(item.source, 'st');
       assert.equal(item.pocketId, 'pocket-st');
@@ -177,6 +204,8 @@ test('shortcut batch rejects ambiguous dates, missing pos, and missing amounts w
   vm.createContext(ctx);
   vm.runInContext(`${sourceFunction('matchShortcut')}; ${sourceFunction('prepareShortcutDateBatch')}; this.prepareShortcutDateBatch = prepareShortcutDateBatch;`, ctx);
   assert.match(ctx.prepareShortcutDateBatch('UPD 1 10 2025').error, /pemisah|tanggal/i);
+  assert.match(ctx.prepareShortcutDateBatch('1 10 2025 UPD').error, /pemisah|tanggal/i);
+  assert.match(ctx.prepareShortcutDateBatch('5-1 Oktober UPD').error, /awal|valid/i);
   assert.match(ctx.prepareShortcutDateBatch('UPD 1-5 Oktober').error, /pos.*tidak tersedia/i);
   shortcut.targetPocketId = 'auto';
   shortcut.amount = 0;

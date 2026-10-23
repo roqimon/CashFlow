@@ -1,8 +1,10 @@
 """Browser regression for shortcut date ranges, saved destinations, and confirmation."""
 from functools import partial
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from mimetypes import guess_type
 from pathlib import Path
 from threading import Thread
+from urllib.parse import unquote, urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -13,6 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
+
+
+def serve_workspace_asset(route):
+    relative = unquote(urlparse(route.request.url).path).lstrip("/") or "index.html"
+    asset = (ROOT / relative).resolve()
+    if not asset.is_relative_to(ROOT) or not asset.is_file():
+        route.abort()
+        return
+    route.fulfill(path=str(asset), content_type=guess_type(asset.name)[0] or "application/octet-stream")
 
 
 server = HTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT)))
@@ -48,6 +59,7 @@ try:
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on("console", lambda message: page_errors.append(message.text) if message.type == "error" and "fonts.googleapis.com" not in message.text else None)
         page.on("requestfailed", lambda request: page_errors.append(f"request failed: {request.url} {request.failure}") if "fonts.googleapis.com" not in request.url and "fonts.gstatic.com" not in request.url else None)
+        page.route(f"http://127.0.0.1:{server.server_port}/**", serve_workspace_asset)
         page.route("https://fonts.googleapis.com/**", lambda route: route.fulfill(status=200, content_type="text/css", body=""))
         page.route("https://fonts.gstatic.com/**", lambda route: route.fulfill(status=200, content_type="font/woff2", body=b""))
         page.goto(f"http://127.0.0.1:{server.server_port}/", wait_until="load")
@@ -76,7 +88,17 @@ try:
         input_box = page.locator("#quickInput")
         save_button = page.locator('[data-action="save-quick"]')
 
-        for phrase in ["UPD Full 1-5", "UPD Full 1 sampai 5 Oktober 2026"]:
+        for phrase in [
+            "UPD Full 1-5",
+            "UPD Full 1 sampai 5 Oktober 2026",
+            "1-5 Okt UPD Full",
+            "1-5 UPD Full",
+            "1 sampai 5 Oktober 2026 UPD Full",
+            "1/10-5/10/2026 UPD Full",
+            "1 Oktober sampai 5 Oktober 2026 UPD Full",
+            "1 s/d 5 Oktober UPD Full",
+            "1 sampai dengan 5 Oktober UPD Full",
+        ]:
             input_box.fill(phrase)
             save_button.click()
             assert page.locator("#confirmModal").is_visible(), (phrase, page.evaluate("({value:document.querySelector('#quickInput')?.value,preview:document.querySelector('#quickPreview')?.innerText,dateApi:typeof window.ShortcutDate,active:[...document.querySelectorAll('.page.active')].map(x=>x.dataset.page)})"), page_errors)
@@ -90,11 +112,11 @@ try:
         recognition = page.evaluate("Boolean(window.__activeRecognition)")
         assert recognition, "Voice input should start the browser recognizer"
         page.evaluate("""() => {
-          const result = [{transcript:'UPD Full dari tanggal satu sampai lima Oktober dua ribu dua puluh enam'}];
+          const result = [{transcript:'satu sampai dengan lima Oktober dua ribu dua puluh enam UPD Full'}];
           result.isFinal = true;
           window.__activeRecognition.onresult({results:[result]});
         }""")
-        assert "1 sampai 5 oktober 2026" in input_box.input_value().lower(), input_box.input_value()
+        assert "1 sampai dengan 5 oktober 2026 upd full" in input_box.input_value().lower(), input_box.input_value()
         page.evaluate("window.__activeRecognition.onend()")
         summary = page.locator("#confirmMessage").inner_text()
         summary = " ".join(summary.split())

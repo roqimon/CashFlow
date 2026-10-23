@@ -41,12 +41,12 @@ try:
         cache_state = page.evaluate("""async () => {
           const registration = await navigator.serviceWorker.ready;
           const cacheNames = await caches.keys();
-          const shell = await caches.open('aruskas-pwa-v93');
+          const shell = await caches.open('aruskas-pwa-v94');
           const shellUrls = (await shell.keys()).map(request => request.url);
           return {
             activeWorker: Boolean(registration.active),
-            cachePresent: cacheNames.includes('aruskas-pwa-v93'),
-            stylesheetCached: shellUrls.some(url => url.includes('shortcut-date.js?v=20261023.1')),
+            cachePresent: cacheNames.includes('aruskas-pwa-v94'),
+            stylesheetCached: shellUrls.some(url => url.includes('shortcut-date.js?v=20261023.2')),
             iconsCached: shellUrls.some(url => url.includes('ui-icons.js?v=20261023.1'))
           };
         }""")

@@ -13,6 +13,7 @@
     november: 11, nov: 11, desember: 12, des: 12,
   };
   const monthPattern = Object.keys(months).sort((a, b) => b.length - a.length).join('|');
+  const rangeSeparatorPattern = '(?:sampai(?:\\s+dengan)?|hingga|s\\s*\\.?\\s*(?:\\/\\s*\\.?\\s*)?d\\.?)';
   const numberWords = {
     nol: 0, kosong: 0, satu: 1, se: 1, dua: 2, tiga: 3, empat: 4,
     lima: 5, enam: 6, tujuh: 7, delapan: 8, sembilan: 9, sepuluh: 10,
@@ -47,7 +48,7 @@
   function normalizeTranscript(text) {
     const source = String(text || '');
     const numeric = `(?:\\d{1,4}|(?:${numberWordPattern})(?:\\s+(?:${numberWordPattern}))*)`;
-    const range = new RegExp(`\\b((?:dari\\s+)?(?:tanggal|tgl)\\s+)?(${numeric})\\s+(sampai|hingga|s\\s*\\/\\s*d|[-–—])\\s+(${numeric})(?:\\s+(${monthPattern})(?:\\s+(${numeric}))?)?\\b`, 'gi');
+    const range = new RegExp(`\\b((?:dari\\s+)?(?:tanggal|tgl)\\s+)?(${numeric})\\s+(${rangeSeparatorPattern}|[-–—])\\s+(${numeric})(?:\\s+(${monthPattern})(?:\\s+(${numeric}))?)?\\b`, 'gi');
     const dateRanges = source.replace(range, (whole, prefix, start, separator, end, month, year) => {
       return `${prefix || ''}${spokenNumbers(start)} ${separator} ${spokenNumbers(end)}${month ? ` ${month}` : ''}${year ? ` ${spokenNumbers(year)}` : ''}`;
     });
@@ -101,8 +102,27 @@
     const yearNow = now.getFullYear(), monthNow = now.getMonth() + 1;
     let match;
 
+    // Numeric day/month ranges such as 1/10-4/10/2025 or 1/10/2025 sampai 4/10/2025.
+    match = text.match(new RegExp(`\\b(\\d{1,2})\\/(\\d{1,2})(?:\\/(\\d{2,4}))?\\s*(?:${rangeSeparatorPattern}|[-–—])\\s*(\\d{1,2})\\/(\\d{1,2})(?:\\/(\\d{2,4}))?\\b`, 'i'));
+    if (match) {
+      const [, d1s, m1s, y1s, d2s, m2s, y2s] = match;
+      const m1 = Number(m1s), m2 = Number(m2s);
+      const normalizeYear = value => {
+        if (!value) return null;
+        const year = Number(value);
+        return year < 100 ? year + 2000 : year;
+      };
+      const explicitYear1 = normalizeYear(y1s), explicitYear2 = normalizeYear(y2s);
+      const y1 = explicitYear1 || explicitYear2 || yearNow;
+      let y2 = explicitYear2 || explicitYear1 || yearNow;
+      if (!explicitYear1 && !explicitYear2 && m2 < m1) y2++;
+      const d1 = localDate(y1, m1, Number(d1s)), d2 = localDate(y2, m2, Number(d2s));
+      if (!d1 || !d2) return fail('error', text, match.index, match.index + match[0].length);
+      return result('range', text, match.index, match.index + match[0].length, d1, d2);
+    }
+
     // Explicit month on both endpoints permits crossing a month or year boundary.
-    match = text.match(new RegExp(`\\b(\\d{1,2})\\s+(${monthPattern})(?:\\s+(\\d{4}))?\\s+(?:sampai|hingga|s\\s*\\/\\s*d|[-–—])\\s*(\\d{1,2})\\s+(${monthPattern})(?:\\s+(\\d{4}))?\\b`, 'i'));
+    match = text.match(new RegExp(`\\b(\\d{1,2})\\s+(${monthPattern})(?:\\s+(\\d{4}))?\\s+(?:${rangeSeparatorPattern}|[-–—])\\s*(\\d{1,2})\\s+(${monthPattern})(?:\\s+(\\d{4}))?\\b`, 'i'));
     if (match) {
       const [, d1s, m1s, y1s, d2s, m2s, y2s] = match;
       const m1 = months[m1s.toLowerCase()], m2 = months[m2s.toLowerCase()];
@@ -115,7 +135,7 @@
     }
 
     // Same-month ranges: 1-5 Oktober, 1 sampai 5 Oktober 2026, or bare 1-5.
-    match = text.match(new RegExp(`\\b(\\d{1,2})\\s*(?:-|–|—|sampai|hingga|s\\s*\\/\\s*d)\\s*(\\d{1,2})(?:\\s+(${monthPattern})(?:\\s+(\\d{4}))?)?\\b`, 'i'));
+    match = text.match(new RegExp(`\\b(\\d{1,2})\\s*(?:[-–—]|${rangeSeparatorPattern})\\s*(\\d{1,2})(?:\\s+(${monthPattern})(?:\\s+(\\d{4}))?)?\\b`, 'i'));
     if (match) {
       const [, d1s, d2s, monthName, yearStr] = match;
       const month = monthName ? months[monthName.toLowerCase()] : monthNow;

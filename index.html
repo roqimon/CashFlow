@@ -1045,7 +1045,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v93</span></small>
+              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v94</span></small>
             </div>
             <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
@@ -1556,14 +1556,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./receipt-gallery.js?v=20261021.5"></script>
 <script src="./receipt-backup.js?v=20261021.1"></script>
 <script src="./receipt-analysis.js?v=20261021.1"></script>
-<script src="./shortcut-date.js?v=20261023.1"></script>
+<script src="./shortcut-date.js?v=20261023.2"></script>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.93').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.94').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -3771,11 +3771,13 @@ function prepareShortcutDateBatch(rawInput){
   let explicitST=false,explicitPersonal=false;
   if(/^pribadi\s+/i.test(command)){explicitPersonal=true;command=command.replace(/^pribadi\s+/i,'').trim()}
   else if(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i.test(command)){explicitST=true;command=command.replace(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i,'').trim()}
-  const matched=matchShortcut(command,getSC());
+  const shortcuts=getSC();
+  const dateIntent=/\b(?:dari\s+)?(?:tanggal|tgl)\b|\b\d{1,2}\s*(?:-|–|—|sampai(?:\s+dengan)?|hingga|s\s*\.?\s*(?:\/\s*\.?\s*)?d\.?)\s*\d{1,2}\b|\b\d{1,2}\/\d{1,2}\b|\b\d{1,2}\s+\d{1,2}\s+\d{4}\b|\b\d{1,2}\s+(?:januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\b/i.test(command);
+  if(!window.ShortcutDate){const directMatch=matchShortcut(command,shortcuts);if(!directMatch)return{handled:false};return dateIntent?{handled:true,error:'Parser tanggal belum tersedia. Muat ulang halaman lalu coba lagi.'}:{handled:false}}
+  const parsed=window.ShortcutDate.parse(command,new Date());
+  const shortcutText=parsed?.cleanText||command;
+  const matched=matchShortcut(shortcutText,shortcuts)||matchShortcut(command,shortcuts);
   if(!matched)return{handled:false};
-  const dateIntent=/\b(?:dari\s+)?(?:tanggal|tgl)\b|\b\d{1,2}\s*(?:-|–|—|sampai|hingga)\s*\d{1,2}\b|\b\d{1,2}\/\d{1,2}\b|\b\d{1,2}\s+\d{1,2}\s+\d{4}\b|\b\d{1,2}\s+(?:januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\b/i.test(matched.remainder);
-  if(!window.ShortcutDate){return dateIntent?{handled:true,error:'Parser tanggal belum tersedia. Muat ulang halaman lalu coba lagi.'}:{handled:false}}
-  const parsed=window.ShortcutDate.parse(matched.remainder,new Date());
   if(!parsed||parsed.kind==='none')return dateIntent?{handled:true,error:'Format tanggal belum terbaca. Periksa kembali tanggalnya.'}:{handled:false};
   if(parsed.kind==='single')return{handled:false};
   if(parsed.kind==='ambiguous'||parsed.kind==='error')return{handled:true,error:parsed.error||'Format tanggal belum jelas. Periksa kembali tanggalnya.'};
@@ -5765,7 +5767,7 @@ if(a==='force-update'){
     }
   }catch(e){}
   const u=new URL(window.location.href);
-  u.searchParams.set('updated','v93');
+  u.searchParams.set('updated','v94');
   u.searchParams.set('v',String(Date.now()));
   u.hash='#'+page;
   window.location.replace(u.toString());
@@ -5957,7 +5959,7 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v93');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v94');
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');
