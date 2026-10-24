@@ -77,6 +77,7 @@
       date,
       note: String(value.note || '').trim().slice(0, 280),
       sourcePocketId: type === 'deposit' ? String(value.sourcePocketId || '').trim() : '',
+      transferId: String(value.transferId || '').trim(),
       createdAt: String(value.createdAt || new Date().toISOString()),
     };
   }
@@ -169,6 +170,7 @@
       date,
       note: String(input.note || '').trim().slice(0, 280),
       sourcePocketId: input.type === 'deposit' ? String(input.sourcePocketId || '').trim() : '',
+      transferId: String(input.transferId || '').trim(),
       createdAt: String(input.createdAt || new Date().toISOString()),
     };
     return { goals: data.goals, entries: [...data.entries, entry] };

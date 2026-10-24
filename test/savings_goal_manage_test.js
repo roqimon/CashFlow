@@ -46,6 +46,27 @@ test('Settings has a collapsed savings manager and Home only renders active savi
   assert.match(html, /data-toggle-savings-home/);
   assert.match(html, /goal\.status==='active'&&goal\.isActive!==false/);
   assert.match(html, /homeSavingsGoals'\);\s*if\(section\)section\.hidden=!active\.length/);
+  assert.match(html, /budgetContainer'\);\s*const visibleBudgetPockets=activePockets\.filter/);
+});
+
+test('savings goals keep an independent home visibility flag through normalization and edits', () => {
+  const legacy = savings.normalizeSavings({ goals: [
+    { id: 'old', name: 'Tujuan lama', targetAmount: 100000 },
+    { id: 'hidden', name: 'Tujuan disembunyikan', targetAmount: 200000, isActive: false },
+  ] });
+
+  assert.equal(legacy.goals.find(goal => goal.id === 'old').isActive, true, 'legacy goals remain visible by default');
+  assert.equal(legacy.goals.find(goal => goal.id === 'hidden').isActive, false);
+  assert.equal(savings.upsertGoal(legacy, { ...legacy.goals[1], name: 'Tujuan diperbarui' }).goals.find(goal => goal.id === 'hidden').isActive, false);
+  assert.equal(savings.upsertGoal(legacy, { id: 'new', name: 'Tujuan baru', targetAmount: 300000 }).goals.find(goal => goal.id === 'new').isActive, true);
+});
+
+test('Settings has a collapsed savings manager and Home only renders active savings goals', () => {
+  assert.match(html, /data-settings-toggle="savings"[^>]*aria-expanded="false"[^>]*aria-controls="settingsSavingsPanel"/);
+  assert.match(html, /<div id="settingsSavingsPanel" hidden>/);
+  assert.match(html, /data-toggle-savings-home/);
+  assert.match(html, /goal\.status==='active'&&goal\.isActive!==false/);
+  assert.match(html, /homeSavingsGoals'\);\s*if\(section\)section\.hidden=!active\.length/);
   assert.match(html, /budgetContainer'\);\s*if\(section\)section\.hidden=activePockets\.length===0/);
 });
 

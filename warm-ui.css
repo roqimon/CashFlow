@@ -1262,6 +1262,8 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 }
 
 
+.savings-ledger-actions { display:flex; gap:6px; flex:0 0 auto; }
+.savings-ledger-actions .text-btn { padding:5px 7px; color:var(--green2); font-size:11px; font-weight:800; }
 /* Compact dashboard hero: retain the warm card while reducing its vertical footprint. */
 .balance #homePeriod { opacity: .9; font-size: 10px; white-space: nowrap; }
 .balance .daily-guidance-label { display: inline-flex; align-items: center; width: max-content; margin-top: 5px; padding: 4px 8px; border: 1px solid rgba(255,244,231,.24); border-radius: 999px; background: rgba(255,244,231,.1); color: rgba(255,250,244,.96); font-size: 10px; font-weight: 800; letter-spacing: .025em; }
@@ -1274,4 +1276,5 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .balance .grid2 #committedStatus { font-size: clamp(11px, 3.25vw, 13px); }
 .balance .grid2 > div:nth-child(n+3) { grid-column: auto !important; }
 @media (max-width: 430px) { .balance .grid2 strong { font-size: clamp(12px, 3.6vw, 14px); } }
+
 .balance .grid2 small::before { display: none !important; content: none !important; }
