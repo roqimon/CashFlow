@@ -1596,27 +1596,45 @@ let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(
 const defaultPockets=[
   {id:'pocket-dapur',name:'Dapur & Makan',icon:'🛒',amount:2500000,color:'#1f8a5b',categories:['dapur & bahan makanan','dapur','belanja dapur','pasar','sayur','beras','minyak','bumbu','lauk','daging','ikan','telur','ayam','makan & minum','makan','sarapan','siang','malam','warteg','padang']},
   {id:'pocket-tagihan',name:'Tagihan, Cicilan & Rumah',icon:'💡',amount:1800000,color:'#ad4e34',categories:['tagihan & utilitas','tagihan','listrik','pln','token','pdam','air','wifi','internet','pulsa','kuota','iuran','kebutuhan rumah','rumah','sabun','sampo','deterjen','kebersihan','cicilan & finansial','cicilan','angsuran','kredit','kpr','leasing','paylater']},
-  {id:'pocket-keluarga',name:'Keluarga & Anak',icon:'🎓',amount:1200000,color:'#3094d4',categories:['anak & pendidikan','anak','pendidikan','sekolah','spp','les','bimbel','buku','susu','pampers','popok','sosial & sedekah','kirim ortu','transfer ibu','transfer mama','transfer bapak','uang belanja ortu','bantu keluarga']}
+  {id:'pocket-keluarga',name:'Keluarga & Anak',icon:'🎓',amount:1200000,color:'#3094d4',categories:['anak & pendidikan','anak','pendidikan','sekolah','spp','les','bimbel','buku','susu','pampers','popok','sosial & sedekah','kirim ortu','transfer ibu','transfer mama','transfer bapak','uang belanja ortu','bantu keluarga']},
+  {id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true}
 ];
+function ensureFreePocket(list){
+  const pockets=Array.isArray(list)?list:[];
+  const free=pockets.find(p=>p&&p.id==='bebas');
+  if(free){free.name='Uang Bebas';free.icon='⚪';free.amount=0;free.categories=[];free.isSystem=true;if(typeof free.isActive!=='boolean')free.isActive=true;return pockets}
+  pockets.push({id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true});
+  return pockets;
+}
 function getPockets(){
   try{
     const raw=localStorage.getItem(KEY_POCKETS);
     if(raw===null){
       if(!localStorage.getItem('aruskas_pockets_cleared')&&!localStorage.getItem('aruskas_cleared')){
-        savePockets(defaultPockets);
-        return defaultPockets;
+        savePockets(defaultPockets.map(p=>({...p,isActive:true})));
+        return getPockets();
       }
-      return [];
+      const pockets=[{id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true}];
+      savePockets(pockets);
+      return pockets;
     }
     const arr=JSON.parse(raw);
-    return Array.isArray(arr)?arr:[];
+    if(!Array.isArray(arr))return [];
+    let changed=false;
+    arr.forEach(p=>{if(p&&typeof p.isActive!=='boolean'){p.isActive=typeof p.active==='boolean'?p.active:true;changed=true}});
+    const before=arr.length;
+    ensureFreePocket(arr);
+    if(arr.length!==before)changed=true;
+    if(changed)localStorage.setItem(KEY_POCKETS,JSON.stringify(arr));
+    return arr;
   }catch(e){
-    return defaultPockets;
+    return defaultPockets.map(p=>({...p,isActive:true}));
   }
 }
 function savePockets(list){
   try{
-    const safeList=Array.isArray(list)?list:[];
+    const safeList=ensureFreePocket(Array.isArray(list)?list:[]);
+    safeList.forEach(p=>{if(p&&typeof p.isActive!=='boolean')p.isActive=typeof p.active==='boolean'?p.active:true});
     localStorage.setItem(KEY_POCKETS,JSON.stringify(safeList));
     const pocketIds=new Set(safeList.map(item=>item?.id).filter(Boolean));
     pocketIds.add('bebas');
@@ -1640,14 +1658,21 @@ function saveSavings(value){
 }
 function isPocketActive(pocket, txList = []){
   if(!pocket) return false;
+  if(pocket.id==='bebas') return true;
   if(typeof pocket.isActive === 'boolean') return pocket.isActive;
   if(typeof pocket.active === 'boolean') return pocket.active;
   return true;
 }
+function manualTransactionPocket(item,pockets=getPockets()){
+  if(!item)return 'bebas';
+  if(item.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
+  if(item.type==='income')return 'bebas';
+  return inferPocket(item.category,item.title,pockets)||'bebas';
+}
 function setPocketActive(pocketId, active){
   const list = getPockets();
   const idx = list.findIndex(p => p.id === pocketId);
-  if(idx >= 0){
+  if(idx >= 0&&pocketId!=='bebas'){
     list[idx].isActive = !!active;
     list[idx].updatedAt = new Date().toISOString();
     savePockets(list);
@@ -1656,6 +1681,19 @@ function setPocketActive(pocketId, active){
   }
 }
 function calculatePocketUsage(pocket,targetDate,txList){
+  if(pocket?.id==='bebas'){
+    const date=targetDate?new Date(targetDate):new Date();
+    const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(date,getPaydaySetting()):{start:startMonth(date),end:endMonth(date)};
+    const from=cycle.start.getTime(),to=cycle.end.getTime();
+    const cycleRows=(txList||[]).filter(t=>{const at=new Date(t.createdAt||Date.now()).getTime();return at>=from&&at<=to&&t.source!=='st'});
+    const income=cycleRows.filter(t=>t.type==='income').reduce((total,t)=>total+(Number(t.amount)||0),0);
+    const committed=getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)).reduce((total,p)=>total+(Number(p.amount)||0),0);
+    const allocated=savingsCore.pocketAllocated(getSavings(),'bebas',date);
+    const activeIds=new Set(getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)).map(p=>p.id));
+    const spent=cycleRows.filter(t=>t.type==='expense'&&(t.pocketId==='bebas'||(t.pocketId&&!activeIds.has(t.pocketId))||(!t.pocketId&&!getPockets().some(p=>p.id!=='bebas'&&isPocketActive(p)&&(p.categories||[]).some(c=>String(t.category||'').toLowerCase().includes(String(c).toLowerCase())||String(t.title||'').toLowerCase().includes(String(c).toLowerCase())))))).reduce((total,t)=>total+(Number(t.amount)||0),0);
+    const amount=Math.max(0,income-committed-allocated),remaining=amount-spent,percent=amount>0?Math.round(spent/amount*100):0;
+    return {pocket,spent,allocated,moved:allocated,incoming:0,outgoing:0,amount,effectiveAmount:amount,remaining,percent,isOver:spent>amount,overAmount:Math.max(0,spent-amount),count:cycleRows.filter(t=>t.type==='expense'&&t.pocketId==='bebas').length};
+  }
   const d=targetDate?new Date(targetDate):new Date();
   const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(d,getPaydaySetting()):{start:startMonth(d),end:endMonth(d)};
   const startTs=cycle.start.getTime(), endTs=cycle.end.getTime();
@@ -1696,7 +1734,9 @@ function inferPocket(category,title,pockets){
   const tCat=String(category||'').toLowerCase().trim();
   const tTitle=String(title||'').toLowerCase().trim();
   for(const p of pList){
-    if(!isPocketActive(p))continue;
+    if((typeof isPocketActive==='function'?isPocketActive(p):p?.isActive!==false)||p?.id==='bebas'){
+    }else continue;
+    if(p?.id==='bebas')continue;
     const name=String(p.name||'').toLowerCase();
     const isSTPocket=name.includes('st')||name.includes('dinas')||name.includes('tugas');
     if(isSTPocket)continue;
@@ -1706,8 +1746,9 @@ function inferPocket(category,title,pockets){
   return null;
 }
 function defaultTransactionPocket(item,pockets=getPockets()){
-  if(!item||item.source==='st')return item?.pocketId||getSTPocket(pockets)?.id||'bebas';
-  if(item.type!=='expense')return 'bebas';
+  if(!item)return 'bebas';
+  if(item.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
+  if(item.type==='income')return 'bebas';
   return inferPocket(item.category,item.title,pockets)||'bebas';
 }
 function monthlyPersonalExpense(targetDate,txList){
@@ -2273,8 +2314,15 @@ function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=ne
     const time=new Date(t.createdAt||Date.now()).getTime();
     return time>=startTs&&time<=endTs;
   });
+  const allRegularPockets=(pockets||[]).filter(p=>p.id!=='bebas');
+  const activePockets=allRegularPockets.filter(p=>isPocketActive(p,txList));
+  const activePocketIds=new Set(activePockets.map(p=>p.id));
+  const inactivePocketIds=new Set(allRegularPockets.filter(p=>!isPocketActive(p,txList)).map(p=>p.id));
+  const legacyFreeExpenses=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&!t.pocketId&&!activePockets.some(p=>(p.categories||[]).some(c=>{const clean=String(c).toLowerCase().trim();return String(t.category||'').toLowerCase().includes(clean)||String(t.title||'').toLowerCase().includes(clean)}))).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const legacyIncome=cycleTx.filter(t=>t.type==='income'&&t.source!=='st'&&t.pocketId!=='bebas').reduce((sum,t)=>sum+(Number(t.amount)||0),0);
   const cycleIncome=cycleTx.filter(t=>t.type==='income'&&t.source!=='st').reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const activePockets=(pockets||[]).filter(p=>isPocketActive(p,txList));
+  const routedFreeExpenses=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&(t.pocketId==='bebas'||(t.pocketId&&!activePocketIds.has(t.pocketId)))).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const freePocketIncome=cycleIncome;
   const committedBudget=activePockets.reduce((sum,p)=>sum+(Number(p.amount)||0),0);
   let savingsAllocated=0;
   if(savings&&Array.isArray(savings.entries)){
@@ -2295,21 +2343,8 @@ function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=ne
     }
   }catch(e){}
   const freeMoneyInitial=Math.max(0,cycleIncome-committedBudget-savingsAllocated)+sweepToBebas-sweepFromBebas;
-  const activePocketIds=new Set(activePockets.map(p=>p.id));
-  const freeMoneyTx=cycleTx.filter(t=>{
-    if(t.type!=='expense')return false;
-    if(t.source==='st')return false;
-    if(t.pocketId==='bebas')return true;
-    if(t.pocketId&&!activePocketIds.has(t.pocketId))return true;
-    if(t.pocketId)return false;
-    const cat=String(t.category||'').toLowerCase().trim();
-    const title=String(t.title||'').toLowerCase().trim();
-    const isPocketMatch=activePockets.some(p=>(p.categories||[]).some(c=>{
-      const cleanC=String(c).toLowerCase().trim();
-      return cat.includes(cleanC)||title.includes(cleanC);
-    }));
-    return !isPocketMatch;
-  });
+
+  const freeMoneyTx=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&(t.pocketId==='bebas'||!t.pocketId||inactivePocketIds.has(t.pocketId)));
   const freeMoneySpent=freeMoneyTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
   const freeMoneyRemaining=freeMoneyInitial-freeMoneySpent;
   const targetDateStr=dateInput(targetDate);
@@ -2438,13 +2473,13 @@ function renderPocketManager(){
             </div>
           </div>
           ${!pocketSelectMode ? `<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-            ${!isModalView ? `<label class="pocket-toggle-label" title="${active?'Nonaktifkan pos ini':'Aktifkan pos ini'}" onclick="event.stopPropagation()">
+            ${!isModalView&&p.id!=='bebas' ? `<label class="pocket-toggle-label" title="${active?'Nonaktifkan pos ini':'Aktifkan pos ini'}" onclick="event.stopPropagation()">
               <input type="checkbox" class="pocket-toggle-input" data-toggle-pocket="${esc(p.id)}" ${active?'checked':''}>
               <span class="pocket-toggle-slider"></span>
             </label>` : ''}
-            <button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>
+            ${p.id!=='bebas'?`<button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>`:''}
             ${usage.remaining>0?`<button class="primary" data-action="sweep-pocket-modal" data-pocket-id="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Pindahkan sisa</button>`:''}
-            <button class="ghost danger" data-del-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Hapus</button>
+            ${p.id!=='bebas'?`<button class="ghost danger" data-del-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Hapus</button>`:''}
           </div>` : ''}
         </div>
         <div style="margin-top:8px">
@@ -2453,7 +2488,7 @@ function renderPocketManager(){
           </span>
         </div>
         <div style="margin-top:6px;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-          Kategori otomatis: ${esc((p.categories||[]).join(', ')||(p.name))}
+          ${p.id==='bebas'?'Dana umum · pemasukan dan pengeluaran tanpa pos masuk ke sini':'Kategori otomatis: '+esc((p.categories||[]).join(', ')||(p.name))}
         </div>
       </div>`;
     }).join('');
@@ -2465,10 +2500,10 @@ function renderPocketManager(){
       .map(p => ({ p, usage: calculatePocketUsage(p, now, tx) }))
       .sort((a,b) => b.usage.percent - a.usage.percent)
       .map(item => item.p);
-    pmlEl.innerHTML = buildListHtml(activeList, true);
+    pmlEl.innerHTML = buildListHtml(pockets.filter(p=>p.id==='bebas'||!isPocketActive(p,tx)), true)+buildListHtml(activeList, true);
   }
 }
-function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=`Jatah ${money(usage.effectiveAmount||usage.amount)} · Terpakai ${usage.percent}%`;$('pocketActionsRemaining').textContent=money(Math.max(0,usage.remaining));$('pocketActionViewTx').dataset.pocketId=pocketId;$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0;openModalLayer('pocketActionsModal')}
+function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=pocket.id==='bebas'?`Dana umum · Terpakai ${usage.percent}%`:`Jatah ${money(usage.effectiveAmount||usage.amount)} · Terpakai ${usage.percent}%`;$('pocketActionsRemaining').textContent=money(Math.max(0,usage.remaining));$('pocketActionViewTx').dataset.pocketId=pocketId;$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0;if(pocket.id==='bebas'){$('pocketActionEdit').hidden=true;$('pocketActionTransfer').hidden=true}else{$('pocketActionEdit').hidden=false;$('pocketActionTransfer').hidden=false}openModalLayer('pocketActionsModal')}
 
 function updatePocketIconPreview(){
   const preview=$('pocketIconPreview'),iconValue=$('pocketFormIcon')?.value||'🛒';
@@ -2514,14 +2549,19 @@ function savePocketEdit(e){
 
   const list=getPockets();
   const existingIdx=list.findIndex(x=>x.id===id);
-  const updatedPocket={
+  const existingPocket=existingIdx>=0?list[existingIdx]:null;
+  if(existingPocket?.id==='bebas'){
+    toast('Pos Uang Bebas dikelola otomatis dan tidak dapat diubah.');
+    return;
+  }
+      const updatedPocket={
     id,
     name,
     icon,
     amount,
     categories,
     color:existingIdx>=0?list[existingIdx].color:'#1f8a5b',
-    isActive:existingIdx>=0?(typeof list[existingIdx].isActive==='boolean'?list[existingIdx].isActive:(typeof list[existingIdx].active==='boolean'?list[existingIdx].active:true)):true,
+    isActive:existingIdx>=0?isPocketActive(existingPocket):true,
     updatedAt:new Date().toISOString()
   };
   if(existingIdx>=0){
@@ -2538,6 +2578,7 @@ function savePocketEdit(e){
 
 async function deletePocket(id){
   const p=getPockets().find(x=>x.id===id);
+  if(p?.id==='bebas'){toast('Pos Uang Bebas selalu tersedia.');return}
   const ok=await confirmBox({
     title:'Hapus Pos Anggaran?',
     message:`Pos "${p?p.name:'ini'}" akan dihapus. Transaksi belanja Anda tidak akan terhapus.`,
@@ -2556,18 +2597,12 @@ function renderBudgetPockets(){
   if(!container)return;
   const allPockets=getPockets();
   const tx=getTX();
-  const activePockets=allPockets.filter(p=>isPocketActive(p,tx));
-  if(!activePockets.length){
-    container.innerHTML='<div class="empty">Belum ada pos anggaran aktif. Buka Pengaturan untuk mengaktifkan pos anggaran.</div>';
-    const summary=$('budgetSummaryText');
-    if(summary) summary.innerHTML='Semua pos anggaran sedang nonaktif';
-    return;
-  }
+  const activePockets=allPockets.filter(p=>p.id==='bebas'||isPocketActive(p,tx));
   const now=new Date();
   let totalPlafond=0,totalRemaining=0,totalAllocated=0;
   const pocketsWithUsage = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
-    totalPlafond+=usage.amount;
+    if(p.id!=='bebas')totalPlafond+=usage.amount;
     totalRemaining+=usage.remaining;
     totalAllocated+=usage.allocated;
     return { pocket: p, usage };
@@ -2578,6 +2613,11 @@ function renderBudgetPockets(){
 
   let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
     const safePercent=Math.max(0,Math.min(100,usage.percent));
+    if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-pocket-actions="${esc(p.id)}" aria-label="Uang Bebas tersisa ${short(Math.max(0,usage.remaining))}">
+      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Dana umum tersedia ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
+      <span class="home-pocket-progress" role="progressbar" aria-label="Uang Bebas terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span>
+      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>Sisa</span><strong>${short(Math.max(0,usage.remaining))}</strong></span></span>
+    </button>`;
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Sisa ${short(Math.max(0,usage.remaining))}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
       <span class="home-pocket-progress" role="progressbar" aria-label="Jatah ${esc(p.name)} yang dipakai atau dialokasikan" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%"></span></span>
@@ -2685,7 +2725,7 @@ function renderHome(arr){
   }
   const statusEl=$('committedStatus');
   if(statusEl){
-    const hasOverPocket=pockets.some(p=>calculatePocketUsage(p,new Date(),arr).isOver);
+    const hasOverPocket=pockets.some(p=>p.id!=='bebas'&&isPocketActive(p)&&calculatePocketUsage(p,new Date(),arr).isOver);
     statusEl.textContent=hasOverPocket?'Perlu Hemat ⚠️':'Aman 🛡️';
   }
   const r=safeData.cycle;
@@ -3575,7 +3615,7 @@ function renderReportBudget(transactions){
   if(!card)return;
   card.hidden=reportPeriod!=='monthly'||reportOffset!==0;
   if(card.hidden)return;
-  const limit=getPockets().reduce((total,p)=>total+(Number(p.amount)||0),0);
+  const limit=getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)).reduce((total,p)=>total+(Number(p.amount)||0),0);
   const used=monthlyPersonalExpense(new Date(),transactions);
   const remaining=limit-used;
   const percent=limit>0?Math.round(used/limit*100):0;
@@ -3818,7 +3858,7 @@ function prepareShortcutDateBatch(rawInput){
   }else if(destination==='bebas'){
     pocket={id:'bebas',name:'Uang Bebas'};
   }else if(destination==='auto'){
-    const defaultPocketId=defaultTransactionPocket({type:s.type,category:s.category,title:s.title,source:'personal'});
+      const defaultPocketId=manualTransactionPocket({type:s.type,category:s.category,title:s.title,source:'personal'});
     pocket=defaultPocketId==='bebas'?{id:'bebas',name:'Uang Bebas'}:getPockets().find(item=>item.id===defaultPocketId)||{id:'bebas',name:'Uang Bebas'};
   }else{
     pocket=getPockets().find(item=>item.id===destination)||null;
@@ -3921,7 +3961,7 @@ async function addFrom(inputId,overrideValue){
         if(stPocket) r.item.pocketId=stPocket.id;
         if(r.item.type==='expense') r.item.reimburseStatus='pending';
       }else{
-        r.item.pocketId=defaultTransactionPocket(r.item);
+        r.item.pocketId=manualTransactionPocket(r.item);
       }
     }
     const parsedCat=r.item.category;
@@ -3985,7 +4025,7 @@ function pratinjau(inputId,boxId){
     if(p) destBadge=` · 🎯 Pos: ${esc(p.name)}`;
   }else{
       const shortcutConfig=item.shortcutCode?getSC().find(shortcut=>shortcut.code===item.shortcutCode):null;
-      const inferredPId=shortcutConfig&&shortcutConfig.targetPocketId===null?'bebas':(item.pocketId||defaultTransactionPocket(item));
+      const inferredPId=shortcutConfig&&shortcutConfig.targetPocketId===null?'bebas':(item.pocketId||manualTransactionPocket(item));
     if(inferredPId){
       const p=getPockets().find(x=>x.id===inferredPId);
       if(p) destBadge=` · 🎯 Pos: ${esc(p.name)}`;
@@ -5111,7 +5151,7 @@ if(window.matchMedia){const mq=window.matchMedia('(prefers-color-scheme: dark)')
 function openCategoryEdit(old=''){const modal=$('categoryModal');if(!modal)return;const oldName=String(old||'').trim();const rec=findCatRecord(oldName)||{};const currentIcon=oldName?(rec.icon||catMeta[oldName]?.[0]||icon(oldName,rec.type||'expense')||'•'):'';$('catEditOld').value=oldName;$('catEditCode').value=rec.code||'';$('catEditName').value=oldName;$('catEditIcon').value=currentIcon;$('catEditType').value=rec.type||'expense';$('catEditNote').value=rec.note||'';$('categoryEditTitle').textContent=oldName?'Ubah Kategori':'Kategori Baru';$('categoryEditSubtitle').textContent=oldName?'Ubah kode, nama kategori, ikon, tipe, dan catatan.':'Buat kategori manual. Nama kategori, ikon, dan tipe wajib diisi.';renderCategoryIconPicker(currentIcon);$('catEditIconPicker')?.classList.remove('open');openModalLayer('categoryModal');refreshFancySelect($('catEditType'));setTimeout(()=>$('catEditName').focus(),80)}
 function closeCategoryEdit(){const modal=$('categoryModal');if(!modal)return;$('catEditIconPicker')?.classList.remove('open');closeModalLayer('categoryModal')}
 function saveCategoryEdit(){const old=$('catEditOld').value.trim(), newName=$('catEditName').value.trim(), newIcon=$('catEditIcon').value.trim(), newType=$('catEditType').value||'expense', newCode=$('catEditCode').value.trim(), newNote=$('catEditNote').value.trim();if(!newName){toast('Nama kategori wajib diisi.');return}if(!newIcon){toast('Icon kategori wajib diisi.');return}if(!newType){toast('Tipe kategori wajib diisi.');return}restoreCategory(newName);const oldRec=findCatRecord(old);const oldIcon=oldRec?.icon||catMeta[old]?.[0]||icon(old,newType)||'•';const mem=getCatMem();Object.keys(mem).forEach(k=>{if(mem[k]===old)mem[k]=newName});localStorage.setItem(KEY_CATMEM,JSON.stringify(mem));if(old){const arr=getTX();arr.forEach(t=>{if(t.category===old){t.category=newName;t.icon=newIcon;t.updatedAt=new Date().toISOString()}});saveTX(arr);const scs=getSC();scs.forEach(s=>{if(s.category===old){s.category=newName;if(!s.icon||s.icon==='•'||s.icon===oldIcon)s.icon=newIcon}});saveSC(scs)}upsertCatRecord({oldName:old||newName,code:newCode,name:newName,type:newType,icon:newIcon,note:newNote});if(catMeta[old]){catMeta[newName]=[newIcon,catMeta[old][1]];if(newName!==old)delete catMeta[old]}else if(!catMeta[newName]){catMeta[newName]=[newIcon,'#e8f0ff']}const del=getDeletedCats();if(old&&newName!==old)del.delete(old);saveDeletedCats(del);FUZZY_CACHE=null;buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));closeCategoryEdit();render();toast(old?'Kategori diperbarui.':'Kategori baru dibuat.')}
-function saveManual(){const isNewCat=$('manCategory').value==='__new__',catVal=getCatVal($('manCategory'),'manCategoryNew');if(catVal)restoreCategory(catVal);if(isNewCat&&catVal){const catIcon=($('manIcon').value||icon(catVal,$('manType').value)||'•').trim();upsertCatRecord({name:catVal,type:$('manType').value,icon:catIcon,note:''})}const src=manualSource||'personal';const sessId=src==='st'?getActiveSTSession()?.id:null;const manPocketVal=$('manPocketSelect')?.value||null;const item=tx({title:$('manTitle').value||'Transaksi',amount:Number($('manAmount').value.replace(/\D/g,''))||parseAmount($('manAmount').value)||0,type:$('manType').value,category:catVal,icon:$('manIcon').value,note:$('manNote').value,rawInput:'manual',source:src,pocketId:manPocketVal||undefined,stSessionId:sessId});if(!item.amount){toast('Nominal belum valid.');return}if(!manPocketVal)item.pocketId=defaultTransactionPocket(item);saveTX([item,...getTX()]);learnCategory($('manTitle').value||'manual',item.category);closeModalLayer('manualModal');$('manTitle').value='';$('manAmount').value='';$('manCategory').value='';$('manCategoryNew').style.display='none';$('manCategoryNew').value='';$('manIcon').value='';$('manNote').value='';manualSource='personal';$('manSourceSeg')?.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.source==='personal'));render()}
+function saveManual(){const isNewCat=$('manCategory').value==='__new__',catVal=getCatVal($('manCategory'),'manCategoryNew');if(catVal)restoreCategory(catVal);if(isNewCat&&catVal){const catIcon=($('manIcon').value||icon(catVal,$('manType').value)||'•').trim();upsertCatRecord({name:catVal,type:$('manType').value,icon:catIcon,note:''})}const src=manualSource||'personal';const sessId=src==='st'?getActiveSTSession()?.id:null;const manPocketVal=$('manPocketSelect')?.value||null;const item=tx({title:$('manTitle').value||'Transaksi',amount:Number($('manAmount').value.replace(/\D/g,''))||parseAmount($('manAmount').value)||0,type:$('manType').value,category:catVal,icon:$('manIcon').value,note:$('manNote').value,rawInput:'manual',source:src,pocketId:manPocketVal||undefined,stSessionId:sessId});if(!item.amount){toast('Nominal belum valid.');return}if(!manPocketVal)item.pocketId=manualTransactionPocket(item);saveTX([item,...getTX()]);learnCategory($('manTitle').value||'manual',item.category);closeModalLayer('manualModal');$('manTitle').value='';$('manAmount').value='';$('manCategory').value='';$('manCategoryNew').style.display='none';$('manCategoryNew').value='';$('manIcon').value='';$('manNote').value='';manualSource='personal';$('manSourceSeg')?.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.source==='personal'));render()}
 let longPressTimer=null, suppressTxClick=false;
 
 let pocketSelectMode = false;
@@ -5161,7 +5201,7 @@ function updatePocketSelectUI(){
 
 function toggleSelectAllPockets(){
   const pockets = getPockets();
-  const allIds = pockets.map(p => p.id);
+  const allIds = pockets.filter(p=>p.id!=='bebas').map(p => p.id);
   if(!allIds.length) return;
   const allSelected = allIds.every(id => pocketSelectSet.has(id));
   if(allSelected){
@@ -5186,7 +5226,7 @@ async function bulkDeletePockets(){
   });
   if(!ok) return;
   const current = getPockets();
-  const updated = current.filter(p => !pocketSelectSet.has(p.id));
+  const updated = current.filter(p => p.id==='bebas'||!pocketSelectSet.has(p.id));
   savePockets(updated);
   exitPocketSelectMode();
   render();
@@ -5220,7 +5260,7 @@ async function clearAllPocketsCompletely(){
   });
   if(!ok)return;
   localStorage.setItem('aruskas_pockets_cleared','1');
-  savePockets([]);
+  savePockets([{id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true}]);
   savePocketOrder([]);
   if(pocketSelectMode)exitPocketSelectMode();
   render();
@@ -6638,6 +6678,8 @@ if(typeof window!=='undefined'){
   window.calculateSafeDailySpend=calculateSafeDailySpend;
   window.calculatePocketUsage=calculatePocketUsage;
   window.isPocketActive=isPocketActive;
+  window.setPocketActive=setPocketActive;
+  window.manualTransactionPocket=manualTransactionPocket;
   window.renderHome=renderHome;
   window.getPockets=getPockets;
   window.savePockets=savePockets;

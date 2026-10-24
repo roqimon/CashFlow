@@ -154,7 +154,7 @@ test('Pocket stays active even when it has 0 transactions', () => {
   // Pastikan isPocketActive mengembalikan true meskipun txList kosong
   assert.equal(ctx.isPocketActive(emptyPocket, []), true, 'Pocket with isActive:true must stay active even without tx');
   
-  // Pos tanpa properti isActive eksplisit juga harus default aktif
+  // Data lama tanpa status harus tetap legacy-active, lalu migrasi eksplisit.
   const defaultPocket = {
     id: 'pocket-empty-2',
     name: 'Tabungan Nikah',
@@ -163,4 +163,18 @@ test('Pocket stays active even when it has 0 transactions', () => {
     categories: ['nikah']
   };
   assert.equal(ctx.isPocketActive(defaultPocket, []), true, 'Pocket without explicit isActive must default to active');
+  ctx.savePockets([defaultPocket]);
+  assert.equal(ctx.getPockets()[0].isActive, true, 'Legacy pocket status should be persisted once during migration');
+  ctx.setPocketActive(defaultPocket.id, false);
+  assert.equal(ctx.getPockets().find(p=>p.id===defaultPocket.id).isActive, false, 'Explicit inactive state should survive reads and saves');
+  assert.equal(ctx.isPocketActive(ctx.getPockets().find(p=>p.id===defaultPocket.id), []), false, 'Explicit inactive pocket must remain inactive');
+});
+
+test('free pocket is always available and income and unmatched spending use it', () => {
+  const { ctx } = setupEnv();
+  ctx.localStorage.setItem('aruskas_pockets_cleared', '1');
+  const pockets = ctx.getPockets();
+  assert.ok(pockets.some(p => p.id === 'bebas'), 'Uang Bebas should exist even after all regular budgets are removed');
+  assert.equal(ctx.manualTransactionPocket({ type: 'income', category: 'Pemasukan' }, pockets), 'bebas');
+  assert.equal(ctx.manualTransactionPocket({ type: 'expense', category: 'Lainnya', title: 'Belanja umum' }, pockets), 'bebas');
 });

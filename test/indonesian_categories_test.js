@@ -55,6 +55,7 @@ vm.runInContext(`
   var EXPENSE_RULES = ${expenseRulesMatch[1]};
   var INCOME_RULES = ${incomeRulesMatch[1]};
   var defaultPockets = ${defaultPocketsMatch[1]};
+  var INDONESIAN_STOPWORDS = new Set(['pribadi','belanja','beli','bayar','uang','untuk','ke','di','dan','dengan','yg','yang','rp','rupiah','st','toko','warung','mas','mbak']);
   function findCatRecord(cat) { return null; }
   ${extractFunction('smartInferCat')}
   ${iconFnStr}

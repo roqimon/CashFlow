@@ -104,3 +104,41 @@ test('calculateSafeDailySpend with salary, pockets and daily spending', () => {
   assert.ok(res.safeDailyAmount > 0);
   assert.equal(res.isOverspent, false);
 });
+
+test('free balance is income less active allocations and expenses on free pocket', () => {
+  const env = setupEnv();
+  const targetDate = new Date('2026-10-26T10:00:00');
+  const cycleTx = [
+    { type: 'income', amount: 5000000, pocketId: 'bebas', createdAt: '2026-10-25T08:00:00' },
+    { type: 'expense', amount: 25000, pocketId: 'bebas', createdAt: '2026-10-26T12:00:00' },
+    { type: 'expense', amount: 30000, pocketId: 'pocket-off', createdAt: '2026-10-26T13:00:00' },
+  ];
+  const pockets = [
+    { id: 'pocket-on', name: 'Dapur', amount: 2500000, categories: ['dapur'], isActive: true },
+    { id: 'pocket-off', name: 'Transportasi lama', amount: 900000, categories: ['transport'], isActive: false },
+    { id: 'bebas', name: 'Uang Bebas', amount: 0, isActive: true },
+  ];
+  const result = env.calculateSafeDailySpend(cycleTx, pockets, { entries: [] }, targetDate, 25);
+  assert.equal(result.committedBudget, 2500000);
+  assert.equal(result.freeMoneyInitial, 2500000);
+  assert.equal(result.freeMoneySpent, 55000);
+  assert.equal(result.freeMoneyRemaining, 2445000);
+});
+
+test('disabling a pocket frees its budget and its existing expense moves into free balance', () => {
+  const env = setupEnv();
+  const targetDate = new Date('2026-10-26T10:00:00');
+  const txList = [
+    { type: 'income', amount: 5000000, pocketId: 'bebas', createdAt: '2026-10-25T08:00:00' },
+    { type: 'expense', amount: 300000, pocketId: 'pocket-off', createdAt: '2026-10-26T13:00:00' },
+  ];
+  const pockets = [
+    { id: 'pocket-off', name: 'Transportasi', amount: 900000, categories: ['transport'], isActive: false },
+    { id: 'bebas', name: 'Uang Bebas', amount: 0, isActive: true },
+  ];
+  const result = env.calculateSafeDailySpend(txList, pockets, { entries: [] }, targetDate, 25);
+  assert.equal(result.committedBudget, 0);
+  assert.equal(result.freeMoneyInitial, 5000000);
+  assert.equal(result.freeMoneySpent, 300000);
+  assert.equal(result.freeMoneyRemaining, 4700000);
+});

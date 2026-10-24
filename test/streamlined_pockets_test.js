@@ -80,13 +80,15 @@ function setupEnv() {
   return ctx;
 }
 
-test('defaultPockets has 3 streamlined core commitment pockets', () => {
+test('default pockets include three commitment pockets and Uang Bebas', () => {
   const env = setupEnv();
   const pockets = env.getPockets();
-  assert.equal(pockets.length, 3);
+  assert.equal(pockets.length, 4);
   assert.equal(pockets[0].id, 'pocket-dapur');
   assert.equal(pockets[1].id, 'pocket-tagihan');
   assert.equal(pockets[2].id, 'pocket-keluarga');
+  assert.equal(pockets[3].id, 'bebas');
+  assert.equal(pockets[3].isSystem, true);
 });
 
 test('calculatePocketUsage matches across payday boundary (e.g. 26 Oct uses 25 Oct transaction)', () => {
