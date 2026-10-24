@@ -836,11 +836,9 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span id="safeStatusBadge" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:999px">🟢 Sesuai Ritme</span>
             <span id="homePeriod">Memuat siklus...</span>
           </div>
-          <small style="color:rgba(255,255,255,0.85);font-size:11.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;display:block;margin-top:6px">
-             Saran batas belanja per hari
-          </small>
+          <small class="daily-guidance-label">✦ Saran belanja harian</small>
           <h2 id="dailySafeAmount">Rp 0</h2>
-           <small style="display:block;margin-top:-8px;color:rgba(255,255,255,.82);font-size:11px;line-height:1.4">Perkiraan dari catatanmu, bukan jumlah wajib dibelanjakan. Pengeluaran yang belum dicatat belum mengurangi angka ini.</small>
+          <small class="daily-guidance-note">Berdasarkan catatanmu.</small>
           <div class="grid2" style="margin-top:16px">
             <div>
               <small style="opacity:.9">Pemasukan siklus</small>
@@ -1004,6 +1002,24 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <button class="danger" id="pocketBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
           </div>
+          </div>
+        </section>
+
+        <!-- Tujuan tabungan -->
+        <section class="card settings-card">
+          <button class="settings-collapse-trigger" type="button" data-settings-toggle="savings" aria-expanded="false" aria-controls="settingsSavingsPanel">
+            <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">🏦</span>
+            <span style="flex:1;min-width:0;text-align:left">
+              <strong style="font-size:14px;color:var(--ink);display:block">Tabungan</strong>
+              <small class="muted" style="font-size:11.5px">Atur tujuan yang tampil di Beranda</small>
+            </span>
+            <span class="settings-collapse-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div id="settingsSavingsPanel" hidden>
+            <div style="display:flex;justify-content:flex-end;gap:6px;align-items:center;margin-top:10px">
+              <button class="text-btn" data-action="new-savings-goal" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 6px;min-height:30px">＋ Tujuan Baru</button>
+            </div>
+            <div id="savingsSettingsManager" class="list" style="padding:4px;margin-top:6px"></div>
           </div>
         </section>
 
@@ -1595,7 +1611,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script src="./ui-icons.js?v=20261023.1"></script>
-<script src="./savings-core.js?v=20261024.1"></script>
+<script src="./savings-core.js?v=20261024.2"></script>
 <script src="./receipt-store.js?v=20261021.1"></script>
 <script src="./receipt-pdf.js?v=20261021.1"></script>
 <script src="./receipt-gallery.js?v=20261021.5"></script>
@@ -1634,7 +1650,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.9', APP_RELEASE_NOTE='Perbaikan saran belanja harian dan pengelolaan tujuan tabungan.';
+const APP_VERSION='10.10', APP_RELEASE_NOTE='Pengaturan tabungan dan tampilan Beranda untuk data aktif.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -2706,6 +2722,37 @@ function renderPocketManager(){
     pmlEl.innerHTML = buildListHtml(pockets.filter(p=>p.id==='bebas'||!isPocketActive(p,tx)), true)+buildListHtml(activeList, true);
   }
 }
+function renderSavingsSettingsManager(){
+  const host=$('savingsSettingsManager');
+  if(!host)return;
+  const goals=savingsGoalOrder(getSavings().goals.filter(goal=>goal.status==='active'));
+  if(!goals.length){
+    host.innerHTML='<div class="empty">Belum ada tujuan tabungan aktif. Tujuan yang dibuat bisa diaktifkan untuk ditampilkan di Beranda.</div>';
+    return;
+  }
+  const data=getSavings();
+  host.innerHTML=goals.map(goal=>{
+    const active=goal.isActive!==false;
+    const balance=savingsCore.goalBalance(data,goal.id);
+    return `<div class="mini-box pocket-manage-item" data-savings-setting-goal="${esc(goal.id)}" style="padding:12px;margin-bottom:8px;border-radius:18px;background:var(--surface2);position:relative;box-sizing:border-box;max-width:100%">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div style="display:flex;gap:10px;align-items:center;min-width:0;flex:1">
+          <span class="pocket-icon">${savingsIconHtml(goal.iconKey,goal.customIcon)}</span>
+          <div style="min-width:0;flex:1">
+            <div style="display:flex;align-items:center;gap:6px;min-width:0"><strong style="font-size:14px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(goal.name)}</strong><span class="pocket-status-pill ${active?'active':'inactive'}">${active?'Aktif':'Nonaktif'}</span></div>
+            <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Saldo ${short(balance)} · target ${short(goal.targetAmount)}</span>
+          </div>
+        </div>
+        <label class="pocket-toggle-label" title="${active?'Sembunyikan dari Beranda':'Tampilkan di Beranda'}">
+          <input type="checkbox" class="pocket-toggle-input" data-toggle-savings-home="${esc(goal.id)}" aria-label="${active?'Tampilkan':'Sembunyikan'} ${esc(goal.name)} ${active?'di':'dari'} Beranda" ${active?'checked':''}>
+          <span class="pocket-toggle-slider"></span>
+        </label>
+        <button class="ghost" data-savings-detail="${esc(goal.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Kelola</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function openPocketActions(pocketId){
   const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;
   const tx=getTX(),usage=calculatePocketUsage(pocket,new Date(),tx),safe=calculateSafeDailySpend(tx,getPockets(),getSavings(),new Date(),getPaydaySetting()),isFree=pocket.id==='bebas';
@@ -2887,7 +2934,7 @@ function renderBudgetPockets(){
   if(!container)return;
   const allPockets=getPockets();
   const tx=getTX();
-  const activePockets=allPockets.filter(p=>p.id==='bebas'||isPocketActive(p,tx));
+  const activePockets=allPockets.filter(p=>p.id==='bebas'||isPocketActive(p,tx)&&!isDedicatedSTPocket(p));
   const now=new Date();
   let totalPlafond=0,totalRemaining=0,totalAllocated=0;
   const pocketsWithUsage = activePockets.map(p=>{
@@ -2903,7 +2950,7 @@ function renderBudgetPockets(){
   // Urutkan pos berdasarkan persentase terpakai tertinggi ke terendah
   pocketsWithUsage.sort((a,b)=>b.usage.percent - a.usage.percent);
 
-  let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
+  let pocketCardsHtml = pocketsWithUsage.filter(({pocket})=>pocket.id==='bebas'||!isDedicatedSTPocket(pocket)).map(({pocket: p, usage})=>{
     const safePercent=Math.max(0,Math.min(100,usage.percent));
     if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-pocket-actions="${esc(p.id)}" aria-label="Uang Bebas ${usage.remaining<0?'minus '+short(Math.abs(usage.remaining)):'tersisa '+short(usage.remaining)}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Pemasukan siklus ${money(usage.income)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
@@ -2918,6 +2965,8 @@ function renderBudgetPockets(){
   }).join('');
 
   container.innerHTML = pocketCardsHtml;
+  const section=$('budgetContainer');
+  if(section)section.hidden=activePockets.length===0;
 
   const summary=$('budgetSummaryText');
   if(summary){
@@ -2926,7 +2975,7 @@ function renderBudgetPockets(){
 }
 
 function syncAppVersionInfo(){const badge=$('appVersionBadge');if(badge)badge.textContent='v'+APP_VERSION;const updateButton=$('settingsUpdateButton');if(updateButton)updateButton.setAttribute('aria-label','Perbarui aplikasi versi '+APP_VERSION);const note=$('appReleaseNote');if(note)note.textContent='v'+APP_VERSION+' · '+APP_RELEASE_NOTE}
-function render(){ensureCurrentBudgetAllocations(new Date());syncAppVersionInfo();const arr=sorted(getTX());renderHome(arr);renderSavings();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
+function render(){ensureCurrentBudgetAllocations(new Date());syncAppVersionInfo();const arr=sorted(getTX());renderHome(arr);renderSavings();renderSavingsSettingsManager();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
 function renderWarmPageCopy(){const subtitles={home:new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}),transactions:'Riwayat uang masuk & keluar',add:'Tulis, bicara, atau foto struk',report:'Arus kas dan anggaran bulanan',shortcut:'Yang sering dicatat, lebih cepat',savings:'Rencana yang ingin kamu capai'};if(subtitles[page])$('pageSubtitle').textContent=subtitles[page]}
 function getPocketOrder(){
   try{
@@ -3317,9 +3366,11 @@ function renderSavingsHome(){
   const host=$('homeSavingsList');
   if(!host)return;
   const data=getSavings();
-  const active=savingsGoalOrder(data.goals.filter(goal=>goal.status==='active')).slice(0,2);
+  const active=savingsGoalOrder(data.goals.filter(goal=>goal.status==='active'&&goal.isActive!==false)).slice(0,2);
+  const section=$('homeSavingsGoals');
+  if(section)section.hidden=!active.length;
   if(!active.length){
-    host.innerHTML='<div class="savings-home-empty"><span class="savings-home-empty-mark" aria-hidden="true">＋</span><div><strong>Mulai dari tujuan kecil</strong><p>Simpan rencana seperti Qurban, pendidikan anak, atau dana darurat.</p></div></div>';
+    host.innerHTML='';
     return;
   }
   host.innerHTML=active.map((goal,index)=>{
@@ -3345,6 +3396,7 @@ function renderSavings(){
     }).join(''):`<div class="card savings-list-empty"><strong>${savingsFilter==='active'?'Belum ada tujuan tabungan':'Belum ada tujuan yang diarsipkan'}</strong><p>${savingsFilter==='active'?'Buat satu tujuan, lalu catat setoran kapan saja.':'Tujuan yang diarsipkan akan muncul di sini dan riwayatnya tetap tersimpan.'}</p>${savingsFilter==='active'?'<button class="primary" data-action="new-savings-goal" type="button">＋ Buat tujuan</button>':''}</div>`;
   }
   renderSavingsHome();
+  renderSavingsSettingsManager();
   if($('savingsDetailModal')?.classList.contains('active'))renderSavingsDetail();
 }
 function renderSavingsDetail(){
@@ -3409,7 +3461,7 @@ function saveSavingsGoal(event){
   const error=$('savingsGoalError');
   try{
     const current=getSavings().goals.find(goal=>goal.id===editingSavingsGoalId);
-    const updated=savingsCore.upsertGoal(getSavings(),{id:editingSavingsGoalId||id(),name,targetAmount:amount,targetDate:$('savingsGoalDate').value||null,iconKey:$('savingsGoalIconKey').value,customIcon:$('savingsGoalCustomIcon').value,status:current?.status||'active'});
+    const updated=savingsCore.upsertGoal(getSavings(),{id:editingSavingsGoalId||id(),name,targetAmount:amount,targetDate:$('savingsGoalDate').value||null,iconKey:$('savingsGoalIconKey').value,customIcon:$('savingsGoalCustomIcon').value,status:current?.status||'active',isActive:current?.isActive!==false});
     const returnGoalId=editingSavingsGoalReturn;
     saveSavings(updated);
     closeModalLayer('savingsGoalModal');
@@ -6202,6 +6254,19 @@ $('shortcutList').addEventListener('click',async e=>{
   if(del){const s=getSC().find(x=>x.id===del.dataset.delSc);const ok=await confirmBox({title:'Hapus Pintasan?',message:`Pintasan ${s?'"'+s.code+'"':'ini'} akan dihapus dari daftar input cepat.`,okText:'Hapus',tone:'danger'});if(ok){saveSC(getSC().filter(x=>x.id!==del.dataset.delSc));render()}}
 });
 document.addEventListener('change',e=>{
+  const savingsToggle=e.target.closest('[data-toggle-savings-home]');
+  if(savingsToggle){
+    const goalId=savingsToggle.dataset.toggleSavingsHome;
+    const data=getSavings();
+    const goal=data.goals.find(item=>item.id===goalId&&item.status==='active');
+    if(!goal){render();return}
+    try{
+      saveSavings(savingsCore.upsertGoal(data,{...goal,isActive:savingsToggle.checked}));
+      render();
+      toast(savingsToggle.checked?'Tujuan tabungan ditampilkan di Beranda.':'Tujuan tabungan disembunyikan dari Beranda.');
+    }catch(error){render();toast(error.message||'Pengaturan tujuan belum tersimpan.')}
+    return;
+  }
   const pocketToggle=e.target.closest('[data-toggle-pocket]');
   if(!pocketToggle)return;
   setPocketActive(pocketToggle.dataset.togglePocket,pocketToggle.checked);

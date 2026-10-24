@@ -23,7 +23,7 @@ test('budget usage subtracts transfers without adding them to expenses', () => {
   const end=html.indexOf('\nfunction inferPocket(',start);
   assert.ok(transferStart>=0&&transferEnd>transferStart&&start>=0&&end>start);
   const transfers=[{id:'move-1',fromPocketId:'p',toPocketId:'target',amount:15000,date:'2026-10-21'}];
-  const context={KEY_POCKET_TRANSFERS:'transfers',localStorage:{getItem:key=>key==='transfers'?JSON.stringify(transfers):null},savingsCore:savings,getSavings:()=>({goals:[{id:'g',name:'Goal',targetAmount:1000000}],entries:[{id:'e',goalId:'g',type:'deposit',amount:20000,date:'2026-10-21',sourcePocketId:'p'}]})};
+  const context={KEY_POCKET_TRANSFERS:'transfers',localStorage:{getItem:key=>key==='transfers'?JSON.stringify(transfers):null},savingsCore:savings,getSavings:()=>({goals:[{id:'g',name:'Goal',targetAmount:1000000}],entries:[{id:'e',goalId:'g',type:'deposit',amount:20000,date:'2026-10-21',sourcePocketId:'p'}]}),getPockets:()=>[{id:'bebas',isActive:true}],getTX:()=>[],getPaydaySetting:()=>25,calculateSafeDailySpend:()=>({freeMoneyInitial:0,freeMoneyRemaining:0,freeMoneySpent:0,freeMoneyMoved:0,freeExpenseCount:0,cycleIncome:0,freeMoneyIncoming:0,freeMoneyOutgoing:0,savingsAllocated:0})};
   vm.createContext(context);
   vm.runInContext(`${html.slice(transferStart,transferEnd)}\n${html.slice(start,end)};this.calculatePocketUsage=calculatePocketUsage`,context);
   const usage=context.calculatePocketUsage({id:'p',amount:100000,categories:['Makan']},new Date(2026,9,21),[{type:'expense',source:'personal',amount:30000,category:'Makan',createdAt:'2026-10-21T10:00:00Z'}]);
@@ -68,7 +68,7 @@ test('home shows five recent transactions and five monthly expense categories wi
   const source=html.slice(start,end);
   assert.match(source,/arr\.slice\(0,5\)/);
   assert.match(source,/slice\(0,5\)/);
-  assert.match(source,/c\.total\s*\/\s*s\.expense/);
+  assert.match(source,/renderHomeDonut\(totals,\s*s\.expense\)/);
 });
 
 test('home pocket cards open choices while all-pockets view has direct actions', () => {

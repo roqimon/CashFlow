@@ -54,6 +54,7 @@
       iconKey,
       customIcon,
       status,
+      isActive: typeof value.isActive === 'boolean' ? value.isActive : true,
       createdAt: String(value.createdAt || new Date().toISOString()),
       updatedAt: value.updatedAt ? String(value.updatedAt) : null,
     };

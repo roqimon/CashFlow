@@ -113,7 +113,9 @@ body { background: var(--app-bg) !important; }
 .balance > * { position: relative; z-index: 1; }
 .balance .row { font-size: 13px; color: #fff8f0; }
 .balance #homePeriod { opacity: .86; font-size: 11px; }
-.balance h2 { margin: 13px 0 17px; font-size: clamp(30px, 7.5vw, 40px); line-height: 1.08; letter-spacing: -.05em; }
+.balance .daily-guidance-label { display: inline-flex; align-items: center; width: max-content; margin-top: 8px; padding: 5px 9px; border: 1px solid rgba(255,244,231,.3); border-radius: 999px; background: rgba(255,244,231,.12); color: rgba(255,250,244,.94); font-size: 10px; font-weight: 800; letter-spacing: .025em; }
+.balance #dailySafeAmount { margin: 10px 0 5px; font-size: clamp(28px, 6.8vw, 36px); line-height: 1.08; letter-spacing: -.045em; }
+.balance .daily-guidance-note { display: block; color: rgba(255,255,255,.82); font-size: 11px; line-height: 1.35; }
 .balance .grid2 { margin-top: 0 !important; border-top: 1px solid rgba(255,255,255,.29); padding-top: 16px; gap: 14px; }
 .balance .grid2 > div + div { border-left: 1px solid rgba(255,255,255,.25); padding-left: 14px; }
 .balance .grid2 small { color: #fff5ed; font-size: 11px; }
