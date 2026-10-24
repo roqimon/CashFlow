@@ -98,21 +98,23 @@ test('tapping available remainder fills the transfer amount and scrolls to it', 
   assert.match(html,/sweepMaxBtn'\)\?\.addEventListener\('click',useAllSweepRemainder\)/);
 });
 
-test('home shows five recent transactions and five monthly expense categories with share', () => {
+test('home shows the latest transaction and five monthly expense categories with share', () => {
   const start=html.indexOf('function renderHome(arr)');
   const end=html.indexOf('\nfunction savingsIconHtml(',start);
   const source=html.slice(start,end);
-  assert.match(source,/arr\.slice\(0,5\)/);
-  assert.match(source,/slice\(0,5\)/);
+  assert.match(source,/arr\.slice\(0,1\)/);
+  assert.match(source,/MAX_DEFAULT_LEGEND = 4/);
+  assert.match(source,/items\.slice\(0, MAX_DEFAULT_LEGEND\)/);
   assert.match(source,/renderHomeDonut\(totals,\s*s\.expense\)/);
 });
 
-test('home pocket cards open choices while all-pockets view has direct actions', () => {
+test('home pocket cards open their transaction details and all-pockets view has direct actions', () => {
   const start=html.indexOf('function renderBudgetPockets()');
   const end=html.indexOf('\nfunction render()',start);
   const source=html.slice(start,end);
-  assert.match(source,/class="home-pocket-card[^`]*data-pocket-actions="\$\{esc\(p\.id\)\}"/);
+  assert.match(source,/class="home-pocket-card[^`]*data-home-pocket-transactions="\$\{esc\(p\.id\)\}"/);
   assert.doesNotMatch(source,/data-action="sweep-pocket-modal"/);
+  assert.match(html,/data-home-pocket-transactions[\s\S]*openPocketTransactions\(pocketTransactions\.dataset\.homePocketTransactions\)/);
   assert.match(html,/data-action="edit-pocket-action"/);
   assert.match(html,/data-action="transfer-pocket-action"/);
   const managerStart=html.indexOf('function renderPocketManager(){');

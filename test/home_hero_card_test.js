@@ -24,6 +24,7 @@ function setupEnv() {
       },
       setAttribute: () => {},
       removeAttribute: () => {},
+      toggleAttribute: () => {},
       getAttribute: () => null,
       addEventListener: () => {},
       removeEventListener: () => {},
@@ -88,7 +89,7 @@ function setupEnv() {
   return { ctx, elements };
 }
 
-test('renderHome updates dailySafeAmount and cycle period', () => {
+test('renderHome updates dailySafeAmount and the configured cycle period', () => {
   const { ctx, elements } = setupEnv();
   const tx = [
     { type: 'income', amount: 5000000, createdAt: new Date().toISOString() },
@@ -96,6 +97,16 @@ test('renderHome updates dailySafeAmount and cycle period', () => {
   ];
   ctx.renderHome(tx);
   assert.ok(elements.dailySafeAmount.textContent.includes('Rp'), 'dailySafeAmount should be formatted with Rp');
-  assert.ok(elements.homePeriod.textContent.includes('lagi'), 'homePeriod should contain days remaining');
+  assert.match(elements.homePeriod.textContent, /\d{1,2}\s\w+\s[–-]\s\d{1,2}\s\w+/i, 'homePeriod should show the cycle date range');
   assert.ok(elements.freeMoneyTotal.textContent.includes('Rp'), 'freeMoneyTotal should be formatted with Rp');
+});
+
+test('formatDailySafeAmount uses readable rupiah units without rounding the shown amount upward', () => {
+  const { ctx } = setupEnv();
+  assert.equal(typeof ctx.formatDailySafeAmount, 'function', 'formatDailySafeAmount should be defined');
+  assert.equal(ctx.formatDailySafeAmount(1600000), 'Rp1,6 juta');
+  assert.equal(ctx.formatDailySafeAmount(1666666), 'Rp1,66 juta');
+  assert.equal(ctx.formatDailySafeAmount(500000), 'Rp500 ribu');
+  assert.equal(ctx.formatDailySafeAmount(50500), 'Rp\u00a050.500');
+  assert.equal(ctx.formatDailySafeAmount(0), 'Rp\u00a00');
 });

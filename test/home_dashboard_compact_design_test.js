@@ -6,13 +6,43 @@ const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('warm-ui.css', 'utf8');
 const balanceCard = html.match(/<section class="card balance">([\s\S]*?)<\/section>/)?.[1] || '';
 
-test('home balance card keeps approved concise copy and compact 2 by 2 summary', () => {
-  assert.match(html, /class="daily-guidance-label">✦ Saran belanja harian<\/small>/);
-  assert.match(html, /class="daily-guidance-note">Berdasarkan catatanmu\.<\/small>/);
+test('orange home dashboard follows the approved header and single-card balance layout', () => {
   assert.ok(balanceCard, 'home balance card should exist');
-  assert.match(css, /\.balance\s*\{[^}]*padding:\s*17px\s+18px\s+16px\s*!important/s);
-  assert.match(css, /\.balance \.grid2\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)\s+minmax\(0,1fr\)/s);
-  assert.match(css, /\.balance \.grid2 > div\s*\{[^}]*background:\s*rgba\(255,255,255,\.08\)/s);
-  assert.match(css, /\.balance \.grid2 > div:nth-child\(n\+3\)\s*\{[^}]*grid-column:\s*auto\s*!important/s);
-  assert.doesNotMatch(css, /\.balance::after\s*\{[^}]*dashed/s);
+  assert.match(balanceCard, /Sisa Uang Bebas/);
+  assert.match(balanceCard, /id="freeMoneyTotal"/);
+  assert.match(balanceCard, /Aman dibelanjakan hari ini/);
+  assert.match(balanceCard, /id="dailySafeAmount"[^>]*title=/);
+  assert.match(balanceCard, /class="home-cash-stats"[\s\S]*Pemasukan[\s\S]*id="homeCycleIncome"[\s\S]*Terpakai[\s\S]*id="homeFreeMoneySpent"/);
+  assert.match(balanceCard, /class="home-safe-row"[\s\S]*id="safeStatusBadge"/);
+  assert.doesNotMatch(balanceCard, /homePeriod|home-safe-spend|daily-guidance-note/);
+  const header = html.match(/<header class="topbar home-topbar">([\s\S]*?)<\/header>/)?.[1] || '';
+  assert.match(header, /id="pageTitle">Beranda/);
+  assert.match(header, /id="pageSubtitle"/);
+  assert.match(header, /class="home-cycle-pill"[\s\S]*id="homePeriod"/);
+  assert.match(header, /class="home-settings-btn" data-nav="settings"/);
+  assert.match(html, /if\(page==='home'\)\{label\.textContent='Pintasan'/);
+  assert.match(css, /\.page\[data-page="home"\] \.balance/);
+  assert.match(css, /\.home-safe-row\s*\{/);
+  assert.match(css, /\.home-cash-stats\s*\{/);
+});
+
+test('active positions and a single recent transaction match the compact mockup hierarchy', () => {
+  const quickEntryIndex = html.indexOf('id="home-quick"');
+  const budgetIndex = html.indexOf('id="budgetContainer"');
+  const savingsIndex = html.indexOf('id="homeSavingsGoals"');
+  const categoryIndex = html.indexOf('id="homeCategories"');
+  const transactionSectionIndex = html.indexOf('class="card home-recent-transactions"');
+  const transactionIndex = html.indexOf('id="homeTxList"');
+  assert.equal((html.match(/id="homeTxList"/g) || []).length, 1, 'recent transaction list must have one unique home target');
+  assert.ok(quickEntryIndex < budgetIndex, 'quick input should precede active budget data');
+  assert.ok(budgetIndex < savingsIndex, 'active budgets should precede savings');
+  assert.ok(savingsIndex < transactionSectionIndex, 'active savings should precede recent transactions');
+  assert.match(html, /budget-home-head"><strong>Pos aktif<\/strong>/);
+  assert.match(html, /home-pocket-progress-row[\s\S]*home-pocket-percent/);
+  assert.match(html, /arr\.slice\(0,1\)\.map\(homeTxItem\)/);
+  assert.match(html, /home-recent-head"><h3>Transaksi terbaru<\/h3>/);
+  assert.match(css, /\.page\[data-page="home"\] \.home-pocket-progress-row/);
+  assert.match(html, /<details class="home-spending-details">/);
+  assert.match(css, /\.page\[data-page="home"\] \.home-spending-details/);
+  assert.ok(categoryIndex > transactionIndex, 'the category chart should be below recent transactions');
 });
