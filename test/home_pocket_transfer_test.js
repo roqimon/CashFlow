@@ -16,6 +16,42 @@ test('pocket allocation survives normalization and counts only in its month', ()
   assert.equal(savings.normalizeSavings(data).entries[0].sourcePocketId,'pocket-food');
 });
 
+test('inactive budget pockets and savings goals do not count as Uang Bebas allocations', () => {
+  const transferStart=html.indexOf('function getPocketTransfers(){');
+  const transferEnd=html.indexOf('\nfunction getSavings(){',transferStart);
+  const savingsStart=html.indexOf('function getSavingsEntrySource(',transferStart);
+  const savingsEnd=html.indexOf('\nfunction getExpensePocketId(',savingsStart);
+  const safeSpendStart=html.indexOf('function calculateSafeDailySpend(',savingsStart);
+  const safeSpendEnd=html.indexOf('\nfunction ensureCurrentBudgetAllocations(',safeSpendStart);
+  assert.ok(transferStart>=0&&transferEnd>transferStart&&savingsStart>transferEnd&&savingsEnd>savingsStart&&safeSpendStart>savingsEnd&&safeSpendEnd>safeSpendStart);
+  const date='2026-10-21';
+  const transfers=[
+    {id:'inactive-allocation',fromPocketId:'bebas',toPocketId:'off',amount:5500000,date},
+    {id:'active-allocation',fromPocketId:'bebas',toPocketId:'on',amount:750000,date}
+  ];
+  const context={
+    KEY_POCKET_TRANSFERS:'transfers',localStorage:{getItem:key=>key==='transfers'?JSON.stringify(transfers):null},
+    getPaydaySetting:()=>25,getPaydayCycle:()=>({start:new Date('2026-09-25T00:00:00'),end:new Date('2026-10-24T23:59:59'),daysRemaining:4}),
+    dateInput:value=>new Date(value).toISOString().slice(0,10),
+    isPocketActive:pocket=>pocket.id==='on',isDedicatedSTPocket:()=>false,
+    getSavingsEntrySource:entry=>entry.sourcePocketId||'bebas',
+    calculatePocketUsage:()=>({cashGap:0,budgetOverAmount:0}),getExpensePocketId:()=> 'bebas',
+    getFreeBalanceAdjustments:()=>[],getTX:()=>[],
+    getSavings:()=>({goals:[{id:'off-goal',status:'active',isActive:false},{id:'on-goal',status:'active',isActive:true}],entries:[
+      {id:'off-deposit',goalId:'off-goal',type:'deposit',amount:2000000,date,sourcePocketId:'bebas'},
+      {id:'on-deposit',goalId:'on-goal',type:'deposit',amount:300000,date,sourcePocketId:'bebas'}
+    ]})
+  };
+  vm.createContext(context);
+  vm.runInContext(`${html.slice(transferStart,transferEnd)}\n${html.slice(savingsStart,savingsEnd)}\n${html.slice(safeSpendStart,safeSpendEnd)};this.calculateSafeDailySpend=calculateSafeDailySpend`,context);
+  const result=context.calculateSafeDailySpend([], [
+    {id:'bebas',isActive:true},{id:'off',amount:5500000,isActive:false},{id:'on',amount:750000,isActive:true}
+  ],context.getSavings(),new Date('2026-10-21T12:00:00'),25);
+  assert.equal(result.savingsAllocated,300000);
+  assert.equal(result.freeMoneyMoved,1050000);
+  assert.equal(result.freeMoneyInitial,-1050000);
+});
+
 test('budget usage subtracts transfers without adding them to expenses', () => {
   const transferStart=html.indexOf('function getPocketTransfers(){');
   const transferEnd=html.indexOf('\nfunction getSavings(){',transferStart);

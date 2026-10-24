@@ -85,6 +85,24 @@ function setupEnv() {
   return { ctx, elements, storage, listeners };
 }
 
+test('default budget pockets are inactive until the user activates them', () => {
+  const { ctx } = setupEnv();
+  const defaults=ctx.getPockets().filter(pocket=>pocket.id!=='bebas');
+  assert.ok(defaults.length>0);
+  assert.ok(defaults.every(pocket=>pocket.isActive===false));
+});
+
+test('legacy auto-enabled default pockets migrate to inactive without clearing their data', () => {
+  const { ctx } = setupEnv();
+  ctx.localStorage.setItem('aruskas_budget_pockets_v1', JSON.stringify([
+    {id:'pocket-dapur',name:'Dapur & Makan',amount:2500000,isActive:true,categories:['dapur']},
+    {id:'bebas',name:'Uang Bebas',amount:0,isActive:true,categories:[]}
+  ]));
+  const pockets=ctx.getPockets();
+  assert.equal(pockets.find(pocket=>pocket.id==='pocket-dapur').isActive,false);
+  assert.equal(pockets.find(pocket=>pocket.id==='pocket-dapur').amount,2500000);
+});
+
 test('ST transactions count in ST pocket usage and show in pocket transaction list', () => {
   const { ctx, elements } = setupEnv();
   
@@ -237,6 +255,10 @@ test('legacy personal income in Lainnya is repaired without changing ST income',
 test('Uang Bebas home card shows gross income and current usable balance', () => {
   const { ctx } = setupEnv();
   ctx.localStorage.setItem('aruskas_cleared', '1');
+  ctx.localStorage.setItem('aruskas_budget_pockets_v1', JSON.stringify([
+    { id: 'bebas', name: 'Uang Bebas', amount: 0, isActive: true, categories: [] },
+    { id: 'pocket-bbm', name: 'BBM', amount: 5450000, isActive: true, categories: ['Transport'] }
+  ]));
   const now = new Date();
   const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   ctx.localStorage.setItem('aruskas_transactions_v4_st', JSON.stringify([{
@@ -254,5 +276,5 @@ test('Uang Bebas home card shows gross income and current usable balance', () =>
   assert.equal(usage.income, 5000000);
   assert.equal(usage.remaining, -450000);
   assert.match(html, /Pemasukan siklus/);
-  assert.match(html, /Bisa dipakai/);
+  assert.match(html, /<span>\$\{usage\.remaining<0\?'Minus':'Sisa'\}<\/span>/);
 });

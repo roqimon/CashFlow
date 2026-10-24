@@ -828,8 +828,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Offline & sinkron</strong><small>Data tetap di HP saat offline; akun menyinkronkan antarperangkat.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button id="accountOpenBtn" class="account-trigger" type="button" aria-label="Akun dan sinkronisasi" aria-haspopup="dialog" aria-controls="accountModal" title="Akun dan sinkronisasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 18.2a4.2 4.2 0 0 1-.4-8.38A6.2 6.2 0 0 1 19 11.5h.3a3.35 3.35 0 0 1 0 6.7H7.5Z"/><path d="M9 14.5h6m-2-2 2 2-2 2"/></svg><span id="accountStatusDot" class="account-trigger-status" aria-hidden="true"></span></button><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.11" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.11</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.11 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pos aktif Beranda dan alokasi Uang Bebas lebih jelas.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button id="accountOpenBtn" class="account-trigger" type="button" aria-label="Akun dan sinkronisasi" aria-haspopup="dialog" aria-controls="accountModal" title="Akun dan sinkronisasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 18.2a4.2 4.2 0 0 1-.4-8.38A6.2 6.2 0 0 1 19 11.5h.3a3.35 3.35 0 0 1 0 6.7H7.5Z"/><path d="M9 14.5h6m-2-2 2 2-2 2"/></svg><span id="accountStatusDot" class="account-trigger-status" aria-hidden="true"></span></button><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.12" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.12</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.12 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Uang Bebas hanya menghitung alokasi aktif.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1652,7 +1652,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.11', APP_RELEASE_NOTE='Pos aktif Beranda dan alokasi Uang Bebas lebih jelas.';
+const APP_VERSION='10.12', APP_RELEASE_NOTE='Uang Bebas hanya menghitung alokasi aktif.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1675,7 +1675,7 @@ function getPockets(){
     const raw=localStorage.getItem(KEY_POCKETS);
     if(raw===null){
       if(!localStorage.getItem('aruskas_pockets_cleared')&&!localStorage.getItem('aruskas_cleared')){
-        savePockets(defaultPockets.map(p=>({...p,isActive:true})));
+        savePockets(defaultPockets.map(p=>({...p,isActive:p.id==='bebas',activationConfirmed:p.id==='bebas'})));
         return getPockets();
       }
       const pockets=[{id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true}];
@@ -1685,14 +1685,19 @@ function getPockets(){
     const arr=JSON.parse(raw);
     if(!Array.isArray(arr))return [];
     let changed=false;
-    arr.forEach(p=>{if(p&&typeof p.isActive!=='boolean'){p.isActive=typeof p.active==='boolean'?p.active:true;changed=true}});
+    const defaultPocketIds=new Set(defaultPockets.filter(p=>p.id!=='bebas').map(p=>p.id));
+    arr.forEach(p=>{
+      if(!p)return;
+      if(defaultPocketIds.has(p.id)&&p.isActive===true&&p.activationConfirmed!==true&&!p.updatedAt){p.isActive=false;changed=true}
+      if(typeof p.isActive!=='boolean'){p.isActive=typeof p.active==='boolean'?p.active:!defaultPocketIds.has(p.id);changed=true}
+    });
     const before=arr.length;
     ensureFreePocket(arr);
     if(arr.length!==before)changed=true;
     if(changed)localStorage.setItem(KEY_POCKETS,JSON.stringify(arr));
     return arr;
   }catch(e){
-    return defaultPockets.map(p=>({...p,isActive:true}));
+    return defaultPockets.map(p=>({...p,isActive:p.id==='bebas',activationConfirmed:p.id==='bebas'}));
   }
 }
 function savePockets(list){
@@ -1739,6 +1744,16 @@ function persistPocketFinance(pockets,transfers){
 function getPocketTransferTotals(pocketId,targetDate=new Date()){
   const cycle=getPaydayCycle(targetDate,getPaydaySetting()),start=dateInput(cycle.start),end=dateInput(cycle.end);
   return getPocketTransfers().reduce((totals,item)=>{if(item.date<start||item.date>end)return totals;if(item.fromPocketId===pocketId)totals.outgoing+=item.amount;if(item.toPocketId===pocketId)totals.incoming+=item.amount;return totals},{incoming:0,outgoing:0});
+}
+function getActiveFreePocketTransferTotals(targetDate=new Date(),pockets=getPockets()){
+  const cycle=getPaydayCycle(targetDate,getPaydaySetting()),start=dateInput(cycle.start),end=dateInput(cycle.end);
+  const activeIds=new Set((pockets||[]).filter(p=>p.id!=='bebas'&&isPocketActive(p)).map(p=>p.id));
+  return getPocketTransfers().reduce((totals,item)=>{
+    if(item.date<start||item.date>end)return totals;
+    if(item.fromPocketId==='bebas'&&activeIds.has(item.toPocketId))totals.outgoing+=item.amount;
+    if(item.toPocketId==='bebas'&&activeIds.has(item.fromPocketId))totals.incoming+=item.amount;
+    return totals;
+  },{incoming:0,outgoing:0});
 }
 function getFreeBalanceAdjustments(){try{const rows=JSON.parse(localStorage.getItem(KEY_FREE_BALANCE_ADJUSTMENTS)||'[]');return Array.isArray(rows)?rows.filter(item=>item&&item.id&&Number.isSafeInteger(Number(item.amount))&&Number(item.amount)!==0&&/^\d{4}-\d{2}-\d{2}$/.test(String(item.date||''))).map(item=>({...item,amount:Number(item.amount),date:String(item.date),note:String(item.note||'').slice(0,280)})):[]}catch{return[]}}
 function saveFreeBalanceAdjustments(rows){try{localStorage.setItem(KEY_FREE_BALANCE_ADJUSTMENTS,JSON.stringify(Array.isArray(rows)?rows:[]));return getFreeBalanceAdjustments()}catch(e){console.error('[ArusKas] Error saving free balance adjustments',e);throw new Error('Koreksi belum tersimpan. Periksa ruang penyimpanan perangkat lalu coba lagi.')}}
@@ -1802,6 +1817,7 @@ function setPocketActive(pocketId, active){
       }
     }
     list[idx].isActive=nextActive;
+    list[idx].activationConfirmed=true;
     list[idx].updatedAt=new Date().toISOString();
     try{persistPocketFinance(list,transfers)}catch(error){render();toast(error.message||'Perubahan pos belum tersimpan.');return}
     render();
@@ -2526,12 +2542,14 @@ function getSavingsEntrySource(entry,savings,txList){
 }
 function getSavingsAllocationsBySource(savings,pocketId,cycle,txList){
   const start=dateInput(cycle.start),end=dateInput(cycle.end);
-  return (savings?.entries||[]).filter(entry=>entry.type==='deposit'&&entry.date>=start&&entry.date<=end&&getSavingsEntrySource(entry,savings,txList)===pocketId).reduce((total,entry)=>total+(Number(entry.amount)||0),0);
+  const activeGoalIds=new Set((savings?.goals||[]).filter(goal=>goal.status==='active'&&goal.isActive!==false).map(goal=>goal.id));
+  return (savings?.entries||[]).filter(entry=>entry.type==='deposit'&&activeGoalIds.has(entry.goalId)&&entry.date>=start&&entry.date<=end&&getSavingsEntrySource(entry,savings,txList)===pocketId).reduce((total,entry)=>total+(Number(entry.amount)||0),0);
 }
 function getSavingsWithdrawalsToFree(savings,cycle){
   const start=dateInput(cycle.start),end=dateInput(cycle.end),entries=savings?.entries||[];
   return entries.filter(entry=>{
-    if(entry.type!=='withdrawal'||entry.date<start||entry.date>end)return false;
+    const goal=(savings?.goals||[]).find(item=>item.id===entry.goalId);
+    if(entry.type!=='withdrawal'||goal?.status!=='active'||goal?.isActive===false||entry.date<start||entry.date>end)return false;
     const paired=entries.some(other=>other.type==='deposit'&&other.goalId!==entry.goalId&&other.date===entry.date&&Number(other.amount)===Number(entry.amount)&&String(other.note||'').startsWith('Dari tabungan '));
     return !paired;
   }).reduce((total,entry)=>total+(Number(entry.amount)||0),0);
@@ -2553,10 +2571,10 @@ function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=ne
   const committedBudget=0;
   const savingsAllocated=getSavingsAllocationsBySource(savings,'bebas',cycle,cycleTx);
   const savingsWithdrawn=getSavingsWithdrawalsToFree(savings,cycle);
-  const freeTransfers=getPocketTransferTotals('bebas',targetDate);
+  const freeTransfers=getActiveFreePocketTransferTotals(targetDate,pockets);
   const balanceAdjustments=getFreeBalanceAdjustments().filter(item=>item.date>=start&&item.date<=end);
   const balanceAdjustmentTotal=balanceAdjustments.reduce((total,item)=>total+item.amount,0);
-  const personalUsage=allPersonalPockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx,pockets)}));
+  const personalUsage=activePockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx,pockets)}));
   const overBudgetPockets=personalUsage.filter(row=>isPocketActive(row.pocket,txList)&&row.usage.budgetOverAmount>0);
   const overBudgetTotal=overBudgetPockets.reduce((total,row)=>total+row.usage.budgetOverAmount,0);
   const cashGapTotal=personalUsage.reduce((total,row)=>total+row.usage.cashGap,0);
