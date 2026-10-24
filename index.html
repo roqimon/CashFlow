@@ -820,8 +820,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.6" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.6</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.6 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pengaturan lebih ringkas dan pintasan lebih rapi.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.7" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.7</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.7 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pencatatan pemasukan dan tujuan Uang Bebas diperbaiki.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1025,7 +1025,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v9.6 · Pengaturan lebih ringkas, pintasan lebih rapi, dan Uang Bebas tidak ganda.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v9.7 · Pemasukan seperti gaji masuk ke Uang Bebas kecuali pos tujuan disebutkan.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1554,7 +1554,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.98').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.99').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1578,7 +1578,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='9.6', APP_RELEASE_NOTE='Pengaturan lebih ringkas, pintasan lebih rapi, dan Uang Bebas tidak ganda.';
+const APP_VERSION='9.7', APP_RELEASE_NOTE='Pemasukan seperti gaji masuk ke Uang Bebas kecuali pos tujuan disebutkan.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1768,6 +1768,19 @@ function defaultTransactionPocket(item,pockets=getPockets()){
   if(item.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
   if(item.type==='income')return 'bebas';
   return inferPocket(item.category,item.title,pockets)||'bebas';
+}
+function explicitBudgetPocket(input,pockets=getPockets()){
+  const text=String(input||'').toLowerCase().trim().replace(/\s+/g,' ');
+  if(/^pribadi\b/.test(text))return null;
+  if(!text)return null;
+  const candidates=(pockets||[]).filter(p=>p&&p.id!=='bebas'&&isPocketActive(p)&&!/(?:\bst\b|dinas|surat tugas)/i.test(String(p.name||''))).sort((a,b)=>String(b.name||'').length-String(a.name||'').length);
+  for(const pocket of candidates){
+    const name=String(pocket.name||'').toLowerCase().trim().replace(/\s+/g,' ');
+    if(!name)continue;
+    const escaped=name.split(/\s+/).map(part=>part.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('\\s+');
+    if(new RegExp(`\\b(?:ke|untuk|pos|anggaran)(?:\\s+(?:pos|anggaran))?\\s+${escaped}(?:\\b|$)`).test(text))return pocket.id;
+  }
+  return null;
 }
 function monthlyPersonalExpense(targetDate,txList){
   const d=targetDate?new Date(targetDate):new Date();
@@ -2024,7 +2037,8 @@ function suggestCategory(input){const mem=getCatMem();const words=input.toLowerC
 function parseAmount(x){let raw=String(x||'').toLowerCase().replace(/rp|idr/g,'').replace(/\s+/g,'');const sm=raw.match(/(juta|jt|m|ribu|rb|k)$/);const suf=sm?sm[1]:'';let nt=suf?raw.slice(0,-suf.length):raw;let v;if(nt.includes(','))v=parseFloat(nt.replace(/\./g,'').replace(',','.'));else if(/^\d{1,3}(\.\d{3})+$/.test(nt))v=parseInt(nt.replace(/\./g,''),10);else if(nt.includes('.'))v=parseFloat(nt);else v=parseInt(nt,10);if(!isFinite(v)||v<=0)return null;if(['juta','jt','m'].includes(suf))return Math.round(v*1e6);if(['ribu','rb','k'].includes(suf))return Math.round(v*1e3);return v<1000?Math.round(v*1000):Math.round(v)}
 const INCOME_RULES=[['Gaji',['gaji','salary','upah','pendapatan','payroll','uang bulanan']],['Usaha & Jualan',['jualan','laku','closing','dagang','omzet','omset','toko','penjualan','hasil usaha','komisi jualan']],['Bonus',['bonus','thr','hadiah','reward','pesangon','dividen','cashback']],['Pemasukan',['masuk','transfer','income','pemasukan','terima','kiriman','uang saku','saku','kembalian','reimburse','piutang dibayar']]];
 const EXPENSE_RULES=[["Dapur & Bahan Makanan",["sayur","sayuran","sayur mayur","sayur asem","sayur sop","sayur lodeh","sayur bening","belanja sayur","beli sayur","sayur pasar","beras","minyak","minyak goreng","sembako","daging","sapi","kambing","ayam mentah","ayam potong","ayam fillet","fillet","ikan","ikan asin","tongkol","gurame","nila","lele","bandeng","kakap","tuna","udang","cumi","kepiting","seafood","telur","telur ayam","telor","bawang","bamer","baput","bawang merah","bawang putih","cabe","cabai","cabe rawit","cabe merah","cabe keriting","rawit","tomat","kentang","wortel","buncis","kangkung","bayam","sawi","kol","kubis","tauge","terong","labu","labu siam","timun","daun bawang","seledri","kemangi","lengkuas","jahe","kunyit","serai","sereh","daun salam","daun jeruk","jeruk nipis","bumbu","racik","royco","masako","ladaku","sasa","ajinomoto","ketumbar","merica","garam","gula","gula pasir","gula merah","kecap","kecap bango","kecap manis","saus","saos","sambal","terasi","santan","kara","santan kara","tahu","tempe","oncom","tempe tahu","tahu tempe","bakso mentah","sosis mentah","mie telur","bihun mentah","tepung","terigu","tepung beras","maizena","tapioka","buah","apel","pisang","jeruk","mangga","semangka","melon","pepaya","alpukat","anggur","nanas","gas","elpiji","lpg","gas 3kg","gas 12kg","bright gas","galon","aqua galon","le minerale galon","isi ulang","air galon","air minum isi ulang","belanja pasar","pasar","pasar tradisional","tukang sayur","warung sayur"]],["Makan & Minum",["bubur","buryam","bubur ayam","nasi","makan","makan siang","makan malam","makan pagi","sarapan","lunch","dinner","breakfast","nasi padang","padang","sederhana","warteg","nasi rames","nasi campur","nasi uduk","nasi kuning","nasi liwet","nasi goreng","nasgor","nasi bakar","nasi kucing","nasi kebuli","mie ayam","bakmi","yamin","kwetiau","bihun goreng","mie goreng","mie rebus","indomie","mie dokdok","mie dogdog","mie aceh","bakso","soto","soto ayam","soto betawi","soto lamongan","soto madura","soto daging","coto","coto makassar","rawon","sop buntut","sop iga","iga bakar","ayam goreng","ayam bakar","ayam geprek","geprek","ayam penyet","penyet","ayam katsu","ayam teriyaki","bebek","bebek goreng","bebek bakar","pecel lele","lele goreng","sate","sate ayam","sate kambing","sate padang","sate taichan","taichan","rendang","gulai","opor","kari","balado","empal","dendeng","gofood","grabfood","shopeefood","mcd","mcdonalds","kfc","hokben","solaria","richeese","burger king","a&w","pizza hut","dominos","dcrepes","siomay","batagor","pempek","tekwan","rujak","gado gado","karedok","ketoprak","lotek","pecel"]],["Jajan & Nongkrong",["jajan","snack","cemilan","camilan","ngemil","kopi","coffee","kopi susu","kopsus","kenangan","janji jiwa","fore","kopi kenangan","starbucks","point coffee","tomoro","kafe","cafe","warkop","latte","americano","cappuccino","espresso","kopi hitam","teh","es teh","esteh","teh poci","teh botol","teh tarik","boba","chatime","xingfutang","haus","esteh indonesia","roti","rotiboy","roti o","holland bakery","sari roti","donut","donat","jco","dunkin","es krim","ice cream","mixue","mcd sundae","gelato","yogurt","martabak","martabak manis","terang bulan","martabak telur","gorengan","bakwan","tahu isi","pisang goreng","cireng","cilok","cimol","seblak","lumpia","risol","risoles","pastel","kue","cake","brownies","croissant","waffle","pancake","toast","pudding","cendol","es buah","es teler","es campur","es doger","kelapa muda"]],["Kebutuhan Rumah",["sabun","sabun mandi","sabun cuci","lifebuoy","dettol","lux","biore","shampoo","sampo","pantene","clear","sunsilk","head & shoulders","odol","pasta gigi","pepsodent","ciptadent","sikat gigi","sabun cuci tangan","deterjen","detergent","rinso","daia","so klin","soklin","attack","pewangi","softener","molto","downy","sunlight","mama lemon","sabun cuci piring","pembersih lantai","wipol","sos","super pell","prostex","harpic","karbol","tisu","tissue","paseo","nice","tisu basah","cotton bud","kapas","obat nyamuk","baygon","hit","vape","force magic","sampah","plastik sampah","kantong sampah","kresek","sapu","pel","sikat","kemoceng","ember","gayung","bohlam","lampu","baterai","batre","steker","kabel colokan","lem","laundry","cuci kiloan","setrika","indomaret","alfamart","superindo","hypermart","lotte mart","transmart","hero","yomart"]],["Tagihan & Utilitas",["listrik","token","token listrik","token pln","tagihan listrik","pln","pascabayar","air","pdam","tagihan air","air bersih","aetra","palyja","wifi","internet","indihome","biznet","firstmedia","myrepublic","oxygen","cbn","iconnet","pulsa","paket data","kuota","telkomsel","byu","indosat","im3","xl","axis","smartfren","tri","iuran rt","iuran rw","keamanan","uang sampah","iuran kebersihan","ipl","ipl apartemen","sewa kos","kost","uang kos","kontrakan","sewa rumah","kontrak rumah","pajak","pbb","pajak motor","pajak mobil","stnk","perpanjang stnk"]],["Transportasi",["bensin","bbm","pertalite","pertamax","pertamax turbo","solar","dexlite","pertamina dex","shell","bp","spbu","isi bensin","ojol","gojek","grab","maxim","indrive","goride","gocar","grabike","grabcar","parkir","uang parkir","karcis parkir","valet","tol","e-toll","etoll","emoney","flazz","tapcash","brizzi","tarif tol","krl","commuterline","mrt","lrt","transjakarta","busway","tj","jaklingko","angkot","bus","damri","travel","shuttle","tiket kereta","kereta api","kai","tiket pesawat","pesawat","kapal","ferry","servis","servis motor","servis mobil","bengkel","ganti oli","oli motor","oli mobil","tune up","tambal ban","isi angin","nitrogen","cuci motor","cuci mobil","car wash","helm","jas hujan","sparepart"]],["Anak & Pendidikan",["susu","susu anak","sufor","susu formula","sgm","dancow","chil kid","pediasure","morinaga","bebelac","nutrilon","popok","pampers","mamypoko","sweety","merries","baby happy","goon","senja","minyak telon","telon","zwitsal","my baby","cussons","bedak bayi","baby oil","sabun bayi","spp","uang sekolah","uang komite","daftar ulang","seragam","seragam sekolah","buku tulis","buku pelajaran","lks","alat tulis","pensil","pulpen","penghapus","tas sekolah","sepatu sekolah","les","bimbel","kursus","kumon","ruangguru","privat","les renang","les gambar","uang saku","saku anak","jajan anak","mainan","mainan anak"]],["Kesehatan",["obat","apotek","apotik","kimia farma","k24","century","guardian","dokter","klinik","puskesmas","rumah sakit","rs","rsud","bidan","periksa","bpjs","bpjs kesehatan","premi bpjs","asuransi kesehatan","vitamin","suplemen","vitamin c","enervon","imboost","sangobion","hemaviton","blackmores","paracetamol","panadol","bodrex","paramex","tolak angin","antangin","minyak kayu putih","freshcare","salonpas","koyo","betadine","hansaplast","plester","kassa","dokter gigi","gigi","cabut gigi","tambal gigi","behel","kacamata","lensa","optik","tes lab","swab","rapid"]],["Belanja & Pakaian",["baju","kaos","kemeja","celana","jeans","rok","gamis","tunik","jilbab","hijab","kerudung","mukena","sarung","daster","pakaian dalam","bra","cd","sepatu","sandal","sendal","kaos kaki","tas","ransel","dompet","ikat pinggang","skincare","sunscreen","serum","toner","facial wash","sabun muka","moisturizer","pelembab","micellar water","masker muka","makeup","lipstik","liptint","bedak","cushion","foundation","eyeliner","mascara","parfum","cologne","deodorant","shopee","tokopedia","tiktok shop","lazada","blibli","paket shopee","belanja online"]],["Sosial & Sedekah",["sedekah","infaq","infak","zakat","zakat fitrah","zakat mal","jumat berkah","kotak amal","sumbangan","donasi","santunan","santunan anak yatim","kondangan","amplop","hajatan","nikahan","arisan","arisan keluarga","arisan rt","kado","hadiah","hampers","bingkisan","angpao","kirim ortu","transfer ibu","transfer mama","transfer bapak","uang belanja ortu","bantu keluarga"]],["Hiburan & Hobi",["bioskop","nonton","cinema","xxi","cgv","cinepolis","tiket nonton","wisata","tiket wisata","liburan","staycation","hotel","villa","pantai","museum","playground","taman bermain","timezone","karaoke","netflix","spotify","youtube premium","disney","vidio","prime video","game","topup","mobile legends","mlbb","steam","playstation","ps5","futsal","sewa lapangan","badminton","gym","fitness","sepeda","pancing","umpan"]],["Cicilan & Finansial",["cicilan","angsuran","kredit","kpr","leasing","fif","adira","oto","baf","cicilan motor","cicilan mobil","cicilan hp","paylater","spaylater","gopaylater","kredivo","akulaku","kartu kredit","tagihan cc","pinjol","pinjaman","investasi","reksadana","bibit","bareksa","ajaib","saham","crypto","bitcoin","emas","antam","tabungan emas"]],["Makan",["makan siang","sarapan","warteg","nasi padang","resto"]],["Transport",["bensin","ojol","tol","parkir"]],["Belanja",["shopee","tokopedia","mall"]],["Rumah",["kost","kontrakan","sewa"]],["Tagihan",["listrik","pdam","wifi","pulsa"]],["Akademik",["kuliah","jurnal","skripsi","kampus"]],["Digital",["hosting","domain","server","api","chatgpt","claude","openai"]],["Investasi",["reksadana","saham","crypto","emas"]]];
-function inferType(t){t=t.toLowerCase();if(/^\+/.test(t)||['gaji','honor','bonus','thr','pemasukan','transfer masuk','bayaran','upah','fee','refund'].some(w=>t.includes(w)))return'income';return'expense'}
+function detectInputType(t){const raw=String(t||'').trim();if(/^\+/.test(raw))return'income';const text=raw.toLowerCase().replace(/\s+/g,' ');if(!text)return null;if(/\b(?:gaji(?:an)?|salary|honor(?:arium)?|bonus|thr|pemasukan|pendapatan|income|upah|bayaran|fee|refund|reimburse|kiriman|uang saku|terima(?:\s+uang)?|transfer masuk)\b/.test(text)||/\buang\s+masuk\b/.test(text)||/^masuk\b/.test(text)||/\bmasuk\s+(?:gaji|gajian|uang|pendapatan)\b/.test(text))return'income';if(/\b(?:pengeluaran|uang keluar|beli|membeli|bayar|membayar|belanja|jajan|top\s?up)\b/.test(text))return'expense';return null}
+function inferType(t){return detectInputType(t)||'expense'}
 function inferCat(t,type){t=t.toLowerCase();const rules=type==='income'?INCOME_RULES:EXPENSE_RULES;const words=t.split(/\s+/);for(const r of rules){if(r[1].some(w=>words.includes(w)))return r[0]}return (rules.find(r=>r[1].some(w=>t.includes(w)))||['Lainnya'])[0]}
 function levenshtein(a,b){if(!a.length)return b.length;if(!b.length)return a.length;const m=[];for(let i=0;i<=b.length;i++)m[i]=[i];for(let j=0;j<=a.length;j++)m[0][j]=j;for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)m[i][j]=b[i-1]===a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1],m[i][j-1],m[i-1][j])+1;return m[b.length][a.length]}
 let FUZZY_CACHE=null;function buildFuzzyCache(){if(FUZZY_CACHE)return;const s=new Set;INCOME_RULES.concat(EXPENSE_RULES).forEach(r=>r[1].forEach(w=>{const n=w.replace(/\s+/g,'-');if(n.length>2)s.add(n)}));getSC().forEach(c=>{if(c.code.length>2)s.add(c.code)});Object.keys(getCatMem()).forEach(k=>{if(k.length>2)s.add(k)});FUZZY_CACHE=[...s]}
@@ -2077,12 +2091,21 @@ function parseDateInfo(rawText){if(!rawText)return{hasDate:false,isRange:false,d
 function smartInferCat(input,type,existingCats=[],previousTx=[]){
   const t=String(input||'').toLowerCase().trim();
   const words=t.split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w)&&!INDONESIAN_STOPWORDS.has(w));
+
+  // Untuk pemasukan, gunakan sinyal eksplisit sebelum memori kategori lama.
+  // Ini mencegah kata umum seperti "masuk" mewarisi kategori pengeluaran.
+  if(type==='income'){
+    const salary=existingCats.find(c=>/^gaji$/i.test(c));
+    if(/\b(?:gaji(?:an)?|salary)\b/.test(t))return salary||'Gaji';
+    const incomeRule=INCOME_RULES.find(r=>r[1].some(w=>words.includes(w)));
+    if(incomeRule)return incomeRule[0];
+  }
   
   // 1. Prioritas memori transaksi pengguna sebelumnya untuk kata kunci substantif persis
   if(previousTx&&previousTx.length&&words.length>0){
     const catFreq={};
     for(const tx of previousTx){
-      if(!tx.category||tx.category==='Lainnya')continue;
+      if(!tx.category||tx.category==='Lainnya'||(tx.type&&tx.type!==type))continue;
       const txWords=(tx.title+' '+(tx.note||'')).toLowerCase().split(/\s+/).filter(w=>!INDONESIAN_STOPWORDS.has(w));
       const matchCount=words.filter(w=>txWords.includes(w)).length;
       if(matchCount>0)catFreq[tx.category]=(catFreq[tx.category]||0)+matchCount;
@@ -2269,14 +2292,17 @@ function parseInput(input){
     const targetPocketId=isST&&stPocket?stPocket.id:(isExplicitPersonal?null:undefined);
     const noteExtra=(amMatch?(rem.slice(0,amMatch.index)+' '+rem.slice(amMatch.index+amMatch[0].length)):rem).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();
     const note=[s.note,noteExtra,parsedDateNote].filter(Boolean).join(' · ');
+    const shortcutType=detectInputType(rawWork)||s.type;
+    const shortcutCategory=detectInputType(rawWork)==='income'?smartInferCat(rawWork,'income',getCatList(),getTX()):s.category;
+    const mentionedPocketId=!isST&&!isExplicitPersonal?explicitBudgetPocket(rawWork):null;
     let scSource=isST?'st':'personal';
-    let scPocketId=targetPocketId!==undefined?targetPocketId:(isST&&stPocket?stPocket.id:null);
+    let scPocketId=targetPocketId!==undefined?targetPocketId:(isST&&stPocket?stPocket.id:(mentionedPocketId||null));
     const fixedTarget=s.targetPocketId===undefined?'auto':s.targetPocketId;
     if(fixedTarget!=='auto'){
       if(fixedTarget===null){scSource='personal';scPocketId=null}
       else{const targetPocket=getPockets().find(p=>p.id===fixedTarget);if(!targetPocket)return{ok:false,msg:'Pos yang dipilih pada pintasan sudah tidak tersedia. Perbarui tujuan pos pintasan.'};scPocketId=targetPocket.id;scSource=stPocket&&targetPocket.id===stPocket.id?'st':'personal'}
     }
-    const item=tx({title:s.title,amount,type:s.type,category:s.category,icon:s.icon,note,rawInput:raw,shortcutCode:s.code,source:scSource,pocketId:scPocketId,stSessionId:depositIntent?getOrCreateSTDepositSession(stMonthLabel):matchingSTSession?.id,reimburseStatus:(scSource==='st'&&s.type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
+    const item=tx({title:s.title,amount,type:shortcutType,category:shortcutCategory,icon:icon(shortcutCategory,shortcutType),note,rawInput:raw,shortcutCode:s.code,source:scSource,pocketId:scPocketId,stSessionId:depositIntent?getOrCreateSTDepositSession(stMonthLabel):matchingSTSession?.id,reimburseStatus:(scSource==='st'&&shortcutType==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
     return{ok:true,item,msg:fmt(item,true)};
   }
   const matches=[...rawWork.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];
@@ -2308,7 +2334,8 @@ function parseInput(input){
   else if(first&&!INDONESIAN_STOPWORDS.has(first)&&memCat[first]&&memCat[first]!=="Lainnya"){category=memCat[first];}
   else{category=inferredCat||memCat[fullKey]||(!INDONESIAN_STOPWORDS.has(first)&&memCat[first])||"Lainnya";}
   if(depositIntent)category='Deklarasi';
-  const finalPocketId = targetPocketId !== undefined ? targetPocketId : (isST && stPocket ? stPocket.id : null);
+  const mentionedPocketId=!isST&&!isExplicitPersonal?explicitBudgetPocket(rawWork):null;
+  const finalPocketId = targetPocketId !== undefined ? targetPocketId : (isST && stPocket ? stPocket.id : (mentionedPocketId||null));
   const item=tx({title:depositIntent?stMonthLabel:userTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',pocketId:finalPocketId,stSessionId:stDepositSessionId,reimburseStatus:(isST&&type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
   return{ok:true,item,msg:fmt(item,false)};
 }
@@ -3993,9 +4020,13 @@ async function addFrom(inputId,overrideValue){
     const shortcutConfig=r.item.shortcutCode?getSC().find(s=>s.code===r.item.shortcutCode):null;
     const hasFixedShortcutDestination=!!shortcutConfig&&shortcutConfig.targetPocketId!==undefined&&shortcutConfig.targetPocketId!=='auto';
     const isTargetST = activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id);
+    const mentionedPocketId=explicitBudgetPocket(val);
     if(hasFixedShortcutDestination){
       // The saved shortcut destination is authoritative for this input.
       if(shortcutConfig.targetPocketId===null)r.item.pocketId='bebas';
+    }else if(mentionedPocketId){
+      r.item.pocketId=mentionedPocketId;
+      r.item.source='personal';
     }else if(activeInputDestination==='bebas'){
       r.item.pocketId='bebas';
       r.item.source='personal';
@@ -4013,7 +4044,7 @@ async function addFrom(inputId,overrideValue){
         if(stPocket) r.item.pocketId=stPocket.id;
         if(r.item.type==='expense') r.item.reimburseStatus='pending';
       }else{
-        r.item.pocketId=manualTransactionPocket(r.item);
+        r.item.pocketId=r.item.pocketId||manualTransactionPocket(r.item);
       }
     }
     const parsedCat=r.item.category;
@@ -4243,10 +4274,17 @@ async function callGeminiWithRollingKeys(payload){
 
 function saveDirectTransaction(txData){
   const cleanTitle=cleanSpeechDuplicates(txData.title||'Transaksi');
-  const type=txData.type==='income'?'income':'expense';
-  let cat=txData.category||smartInferCat(cleanTitle,type,getCatList(),getTX());
+  const rawInput=txData.rawInput||cleanTitle;
+  const inputType=detectInputType(rawInput);
+  const type=inputType||(txData.type==='income'?'income':'expense');
+  let cat=type==='income'?smartInferCat(rawInput,type,getCatList(),getTX()):(txData.category||smartInferCat(cleanTitle,type,getCatList(),getTX()));
   cat=activeCategory(cat,type);
-  const src=txData.source||'personal';
+  const stPocket=getSTPocket();
+  const selectedST=activeInputDestination==='st'||(stPocket&&activeInputDestination===stPocket.id);
+  const src=txData.source==='st'||selectedST?'st':'personal';
+  const mentionedPocketId=explicitBudgetPocket(rawInput);
+  const selectedPocketId=activeInputDestination!=='auto'?(activeInputDestination==='st'?stPocket?.id||null:activeInputDestination):null;
+  const pocketId=src==='st'?(txData.pocketId||selectedPocketId||stPocket?.id||'bebas'):(txData.pocketId||mentionedPocketId||selectedPocketId||defaultTransactionPocket({type,category:cat,title:cleanTitle,source:src}));
   const sessId=src==='st'?getActiveSTSession()?.id:null;
   const reimb=(src==='st'&&type==='expense')?'pending':null;
   const item=tx({
@@ -4257,9 +4295,10 @@ function saveDirectTransaction(txData){
     icon:icon(cat,type),
     note:txData.note||'Input AI',
     source:src,
+    pocketId,
     stSessionId:sessId,
     reimburseStatus:reimb,
-    rawInput:txData.rawInput||cleanTitle,
+    rawInput,
     createdAt:new Date().toISOString()
   });
   const arr=getTX();
@@ -4501,6 +4540,8 @@ function initVoiceInput(){
     const targetInputId=page==='add'?'focusInput':'quickInput';
     const input=$(targetInputId);
     let val=cleanSpeechDuplicates((input?input.value:'')||recognizedText);
+    const dateNormalized=window.ShortcutDate?.normalizeTranscript(val)||val;
+    val=cleanSpeechDuplicates(convertSpokenIndonesianNumbers(dateNormalized));
     if(input) input.value=val;
     if(!val||!val.trim()) return;
 
@@ -4526,8 +4567,9 @@ function initVoiceInput(){
         if(aiRes && aiRes.title && (Number(aiRes.amount)>0)){
           const cleanTitle=cleanSpeechDuplicates(aiRes.title);
           const cleanAmount=Number(aiRes.amount)||0;
-          const cleanType=aiRes.type==='income'?'income':'expense';
-          let cleanCat=aiRes.category||smartInferCat(cleanTitle,cleanType,getCatList(),getTX());
+          const inputType=detectInputType(val);
+          const cleanType=inputType||(aiRes.type==='income'?'income':'expense');
+          let cleanCat=inputType==='income'?smartInferCat(val,cleanType,getCatList(),getTX()):(aiRes.category||smartInferCat(cleanTitle,cleanType,getCatList(),getTX()));
           cleanCat=activeCategory(cleanCat,cleanType);
 
           saveDirectTransaction({
@@ -4539,6 +4581,7 @@ function initVoiceInput(){
             rawInput:'suara: '+val,
             source:'personal'
           });
+          setInputDestination('auto');
           if(input) input.value='';
           if(box){
             box.className='pratinjau';
