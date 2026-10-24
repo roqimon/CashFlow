@@ -12,6 +12,7 @@ function setupEnv() {
   const code = scriptMatches[scriptMatches.length - 1][1];
   const storage = {};
   const elements = {};
+  const listeners = {};
 
   function makeEl(id) {
     return {
@@ -27,7 +28,7 @@ function setupEnv() {
       setAttribute: () => {},
       removeAttribute: () => {},
       getAttribute: () => null,
-      addEventListener: () => {},
+      addEventListener: (type, fn) => { (listeners[id+':'+type] ||= []).push(fn); },
       removeEventListener: () => {},
       closest: () => null,
       querySelectorAll: () => [],
@@ -54,7 +55,7 @@ function setupEnv() {
       getElementById: (id) => elements[id] || (elements[id] = makeEl(id)),
       querySelectorAll: () => [],
       querySelector: () => makeEl('query-el'),
-      addEventListener: () => {}
+      addEventListener: (type, fn) => { (listeners['document:'+type] ||= []).push(fn); }
     },
     $: (id) => elements[id] || (elements[id] = makeEl(id)),
     navigator: {
@@ -80,7 +81,7 @@ function setupEnv() {
   vm.createContext(ctx);
   vm.runInContext(savingsCoreCode, ctx);
   vm.runInContext(code, ctx);
-  return { ctx, elements };
+  return { ctx, elements, storage, listeners };
 }
 
 test('ST transactions count in ST pocket usage and show in pocket transaction list', () => {
@@ -168,6 +169,17 @@ test('Pocket stays active even when it has 0 transactions', () => {
   ctx.setPocketActive(defaultPocket.id, false);
   assert.equal(ctx.getPockets().find(p=>p.id===defaultPocket.id).isActive, false, 'Explicit inactive state should survive reads and saves');
   assert.equal(ctx.isPocketActive(ctx.getPockets().find(p=>p.id===defaultPocket.id), []), false, 'Explicit inactive pocket must remain inactive');
+});
+
+test('inactive pocket state persists through save, rerender and navigation reads', () => {
+  const { ctx, storage } = setupEnv();
+  const pocket = { id: 'pocket-toggle-proof', name: 'Transport', amount: 400000, categories: ['transport'], isActive: true };
+  ctx.savePockets([pocket]);
+  ctx.setPocketActive(pocket.id, false);
+  for (let i = 0; i < 4; i++) {
+    assert.equal(JSON.parse(storage.aruskas_budget_pockets_v1).find(p => p.id === pocket.id).isActive, false);
+    assert.equal(ctx.getPockets().find(p => p.id === pocket.id).isActive, false);
+  }
 });
 
 test('free pocket is always available and income and unmatched spending use it', () => {

@@ -1565,7 +1565,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261023.94').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.98').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1635,7 +1635,10 @@ function savePockets(list){
   try{
     const safeList=ensureFreePocket(Array.isArray(list)?list:[]);
     safeList.forEach(p=>{if(p&&typeof p.isActive!=='boolean')p.isActive=typeof p.active==='boolean'?p.active:true});
-    localStorage.setItem(KEY_POCKETS,JSON.stringify(safeList));
+    const serialized=JSON.stringify(safeList);
+    localStorage.setItem(KEY_POCKETS,serialized);
+    const saved=localStorage.getItem(KEY_POCKETS);
+    if(saved!==serialized)throw new Error('Status pos anggaran belum tersimpan di perangkat ini.');
     const pocketIds=new Set(safeList.map(item=>item?.id).filter(Boolean));
     pocketIds.add('bebas');
     savePocketTransfers(getPocketTransfers().filter(item=>pocketIds.has(item.fromPocketId)&&pocketIds.has(item.toPocketId)));
@@ -1676,6 +1679,13 @@ function setPocketActive(pocketId, active){
     list[idx].isActive = !!active;
     list[idx].updatedAt = new Date().toISOString();
     savePockets(list);
+    const saved=getPockets().find(p=>p.id===pocketId);
+    if(!saved||saved.isActive!==!!active){
+      list[idx].isActive=!active;
+      render();
+      toast('Status pos belum tersimpan. Periksa ruang penyimpanan perangkat lalu coba lagi.');
+      return;
+    }
     render();
     toast(`Pos "${list[idx].name}" ${active ? 'diaktifkan' : 'dinonaktifkan'}.`);
   }
@@ -2429,7 +2439,7 @@ window.addEventListener('popstate',e=>{if(closeActiveLayer())return;const fallba
 function updateBackButton(){const b=$('backBtn');const openModal=document.querySelector('.modal.active');b.classList.toggle('visible',page!=='home'||!!openModal||selectMode||pocketSelectMode||scSelectMode||catSelectMode)}
 function isStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.matchMedia?.('(display-mode: fullscreen)').matches||window.navigator.standalone===true}
 function updateNativeHint(){const hint=$('nativeHint');if(!hint)return;hint.textContent=isStandalone()?'Aplikasi berjalan dalam mode layar utama. URL bar browser sudah tidak tampil.':'Agar tampil tanpa URL bar dan navigasi peramban, pasang aplikasi ke layar utama. Jika tombol Pasang tidak muncul, gunakan menu peramban lalu pilih Tambahkan ke layar utama.'}
-(function(){let sx=0,sy=0,st=0,active=false,target=null;const ignore='input,textarea,select,button,a,.seg,.pill,.chips,.select-shell,.emoji-picker,.chart-click,[contenteditable="true"]';document.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;target=e.target;sx=e.touches[0].clientX;sy=e.touches[0].clientY;active=sx<92||!target.closest(ignore);st=Date.now()},{passive:true});document.addEventListener('touchend',e=>{if(!active)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy,dt=Date.now()-st;active=false;if(dt>650||dx<82||Math.abs(dy)>70||Math.abs(dx)<Math.abs(dy)*1.35)return;goBack()},{passive:true})})()
+(function(){let sx=0,sy=0,st=0,active=false,target=null;const ignore='input,textarea,select,button,a,.seg,.pill,.chips,.select-shell,.emoji-picker,.chart-click,.pocket-toggle-label,.pocket-toggle-input,[contenteditable="true"]';document.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;target=e.target;sx=e.touches[0].clientX;sy=e.touches[0].clientY;active=sx<92||!target.closest(ignore);st=Date.now()},{passive:true});document.addEventListener('touchend',e=>{if(!active)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy,dt=Date.now()-st;active=false;if(dt>650||dx<82||Math.abs(dy)>70||Math.abs(dx)<Math.abs(dy)*1.35)return;goBack()},{passive:true})})()
 
 
 function openPocketManager(){
@@ -5784,11 +5794,7 @@ document.addEventListener('click',async e=>{
     if(ep){openPocketEdit(ep.dataset.editPocket);return}
     const dp=e.target.closest('[data-del-pocket]');
     if(dp){deletePocket(dp.dataset.delPocket);return}
-    const pocketToggle=e.target.closest('[data-toggle-pocket]');
-    if(pocketToggle){
-      setPocketActive(pocketToggle.dataset.togglePocket, pocketToggle.checked);
-      return;
-    }
+    if(e.target.closest('[data-toggle-pocket]'))return;
     const pocketCard=e.target.closest('[data-pocket-actions]');if(pocketCard&&!e.target.closest('[data-action],[data-edit-pocket],[data-del-pocket],.pocket-toggle-label')){navPocket(pocketCard.dataset.pocketActions);return}
 const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',pocket:null,start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,pocket:null,start:null,end:null,source:'all',session:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='pocket')txFilter.pocket=null;if(cf.dataset.clearFilter==='pocket-settings'){if(txFilter.pocket)openPocketActions(txFilter.pocket);return;}if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
@@ -5881,6 +5887,11 @@ $('shortcutList').addEventListener('click',async e=>{
   if(home){saveSC(getSC().map(s=>s.id===home.dataset.toggleScHome?{...s,showHome:s.showHome===false}:s));render();return}
   if(ed){const s=getSC().find(x=>x.id===ed.dataset.editSc);if(s)fillSC(s)}
   if(del){const s=getSC().find(x=>x.id===del.dataset.delSc);const ok=await confirmBox({title:'Hapus Pintasan?',message:`Pintasan ${s?'"'+s.code+'"':'ini'} akan dihapus dari daftar input cepat.`,okText:'Hapus',tone:'danger'});if(ok){saveSC(getSC().filter(x=>x.id!==del.dataset.delSc));render()}}
+});
+document.addEventListener('change',e=>{
+  const pocketToggle=e.target.closest('[data-toggle-pocket]');
+  if(!pocketToggle)return;
+  setPocketActive(pocketToggle.dataset.togglePocket,pocketToggle.checked);
 });
 ['pocketManager','pocketModalManagerList'].forEach(mid=>{
   $(mid)?.addEventListener('click',async e=>{
