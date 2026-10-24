@@ -813,15 +813,15 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       color: var(--green, #1f8a5b);
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261024.90" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261024.91" />
 </head>
 <body>
 <div class="shell">
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan Tampilan Berhasil!</strong><span style="font-size:12px;color:var(--muted)">Aplikasi versi terbaru aktif. Seluruh data transaksi tetap aman.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.6" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.6</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.6 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pengaturan lebih ringkas dan pintasan lebih rapi.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -902,9 +902,9 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       </section>
       <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><input type="hidden" id="rangeStart"><input type="hidden" id="rangeEnd"><button class="report-range-trigger" id="reportCalendarToggle" type="button" aria-expanded="false" aria-controls="reportCalendarPanel"><span class="report-range-icon" aria-hidden="true">▦</span><span class="report-range-copy"><strong id="reportRangeSelectedLabel">Pilih rentang tanggal</strong><small id="reportRangeHint">Ketuk untuk mengatur laporan</small></span><span class="report-range-chevron" aria-hidden="true">⌄</span></button><div class="report-range-calendar" id="reportCalendarPanel" hidden><div class="report-calendar-shortcuts"><button type="button" data-report-calendar-shortcut="7d">7 hari</button><button type="button" data-report-calendar-shortcut="30d">30 hari</button><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div><div class="report-calendar-heading"><button type="button" data-report-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="reportCalendarMonthLabel"></strong><button type="button" data-report-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="reportCalendarGrid" role="grid" aria-label="Pilih rentang tanggal laporan"></div><div class="report-calendar-footer"><span id="reportCalendarSelectionHint">Pilih tanggal awal</span><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div></div></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p><button id="shareWaBtn" class="primary" type="button" style="width:100%;margin-top:10px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);font-size:13.5px;font-weight:800;border:0;border-radius:999px;box-shadow:0 8px 20px rgba(37,211,102,.28)"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 18.15c-1.52 0-3-.41-4.3-1.18l-.31-.18-3.19.84.85-3.11-.2-.32a8.163 8.163 0 0 1-1.25-4.29c0-4.52 3.68-8.2 8.2-8.2 2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.52-3.68 8.24-8.2 8.24zm4.49-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.45 1.03 2.61.12.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg><span>Kirim Laporan Keluarga via WhatsApp</span></button><button id="workReportBtn" class="ghost" type="button" style="width:100%;margin-top:8px;min-height:46px">📋 Unduh Laporan Kerja + Nota</button></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
       <section class="page" data-page="settings" data-legacy-page="shortcut">
-        <section class="card settings-card">
-          <div class="settings-card-head"><span class="settings-card-icon">🧾</span><div><strong style="font-size:14px;color:var(--ink);display:block">Tujuan Nota</strong><small class="muted">Tujuan awal nota yang dipindai</small></div></div>
-          <label style="display:block;margin-top:10px">Simpan ke<select id="receiptDestinationSetting"><option value="st">ST (default)</option><option value="personal">Pribadi</option></select></label>
+        <section class="card settings-card receipt-destination-card">
+          <div class="receipt-destination-title"><span class="settings-card-icon">🧾</span><strong>Tujuan Nota</strong></div>
+          <label class="receipt-destination-field">Simpan ke<select id="receiptDestinationSetting"><option value="st">ST</option><option value="personal">Pribadi</option></select></label>
         </section>        <!-- 1. Tema Tampilan -->
         <section class="card settings-card" style="margin-top:0">
           <div class="settings-card-head">
@@ -927,12 +927,11 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">⚡</span>
             <div style="flex:1;min-width:0">
-              <strong style="font-size:14px;color:var(--ink);display:block">Aksi Tombol Catat (+)</strong>
-              <small class="muted" style="font-size:11.5px">Pilihan saat tombol ditekan sekali (tahan untuk gestur 1 jari)</small>
+              <strong style="font-size:14px;color:var(--ink);display:block">Aksi Tombol Catat</strong>
             </div>
             <span class="theme-badge" id="addActionLabel" style="font-size:10.5px">Mode Tulis</span>
           </div>
-          <div class="seg" id="addActionModeSeg" style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
+          <div class="seg compact-action-seg" id="addActionModeSeg" style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
             <button data-add-action-mode="chat" type="button" class="active" style="font-size:12px;min-height:36px">⌨️ Tulis</button>
             <button data-add-action-mode="voice" type="button" style="font-size:12px;min-height:36px">🎙️ Suara</button>
             <button data-add-action-mode="foto" type="button" style="font-size:12px;min-height:36px">📸 Foto</button>
@@ -1020,37 +1019,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
-        <!-- 5. Pencadangan Data -->
+        <!-- Pembaruan aplikasi -->
         <section class="card settings-card">
           <div class="settings-card-head">
-            <span class="settings-card-icon" style="background:#eaf8f4;color:var(--green)">📥</span>
-            <div style="flex:1;min-width:0">
-              <strong style="font-size:14px;color:var(--ink);display:block">Pencadangan Data (CSV)</strong>
-              <small class="muted" style="font-size:11.5px">Unduh atau pulihkan riwayat transaksi dengan berkas CSV</small>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
-            <button class="primary" data-action="export-csv" type="button" style="width:100%;min-height:44px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Unduh Riwayat Transaksi (CSV)</span>
-            </button>
-            <button class="ghost" data-action="import-csv" type="button" style="width:100%;min-height:44px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--surface2)">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span>Pulihkan Riwayat Transaksi (CSV)</span>
-            </button>
-          </div>
-          <p class="muted" style="font-size:11.5px;line-height:1.4;margin:10px 0 0">Format berkas CSV kompatibel dengan Microsoft Excel dan Google Sheets.</p>
-        </section>
-
-        <!-- 6. Info Aplikasi & Pembaruan Sistem (Hapus Masalah API Key Gemini) -->
-        <section class="card settings-card">
-          <div class="settings-card-head" id="appVersionDetails">
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
-              <strong style="font-size:14px;color:var(--ink);display:block">ArusKas</strong>
-              <small class="muted" style="font-size:11.5px">Versi aplikasi <span id="appVersionBadge" style="font-weight:800">v95</span></small>
+              <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
+              <small class="muted settings-release-note" id="appReleaseNote">v9.6 · Pengaturan lebih ringkas, pintasan lebih rapi, dan Uang Bebas tidak ganda.</small>
             </div>
-            <button class="icon-btn" data-action="force-update" type="button" title="Perbarui Tampilan Aplikasi" aria-label="Perbarui Aplikasi" style="width:38px;height:38px;font-size:16px;background:var(--surface2);border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center">🔄</button>
           </div>
           <span id="updateStatusText" style="display:none"></span>
           <div id="nativeHint" style="display:none"></div>
@@ -1061,7 +1037,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <input type="hidden" id="geminiApiKeyInput">
         </section>
 
-        <!-- 7. Pengaturan Lanjutan -->
+        <!-- Pengaturan Lanjutan -->
         <section class="card settings-card" style="margin-bottom:28px;border-color:#ffdcd8">
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#fff1ef;color:var(--danger)">⚠️</span>
@@ -1075,7 +1051,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:38px;font-size:11.5px;border:0;border-radius:12px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
           </div>
         </section>
-        <!-- Pintasan Cepat ditempatkan terakhir agar mudah ditemukan setelah pengaturan lain. -->
+        <!-- Pintasan Cepat -->
         <section class="card settings-card">
           <div class="settings-card-head">
             <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">⚡</span>
@@ -1120,6 +1096,19 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
               <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
+          </div>
+        </section>
+        <section class="card settings-card settings-backup-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf8f4;color:var(--green)">📥</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Cadangan Data (CSV)</strong>
+              <small class="muted" style="font-size:11.5px">Unduh atau pulihkan transaksi.</small>
+            </div>
+          </div>
+          <div class="settings-backup-actions">
+            <button class="primary" data-action="export-csv" type="button">Unduh CSV</button>
+            <button class="ghost" data-action="import-csv" type="button">Pulihkan CSV</button>
           </div>
         </section>
       </section>
@@ -1589,6 +1578,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
+const APP_VERSION='9.6', APP_RELEASE_NOTE='Pengaturan lebih ringkas, pintasan lebih rapi, dan Uang Bebas tidak ganda.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -2469,7 +2459,7 @@ function weekNum(d){const s=startWeek(d);const y=new Date(s.getFullYear(),0,1);r
 function inRange(t,s,e){const x=new Date(t.createdAt).getTime();return x>=s.getTime()&&x<=e.getTime()} function sorted(a){return [...a].sort((x,y)=>new Date(y.createdAt)-new Date(x.createdAt))}
 function appHash(p=page,layer=''){return '#'+(p||'home')+(layer?'/'+layer:'')}
 function parseAppHash(){const raw=location.hash.replace(/^#/,'');const parts=raw.split('/').filter(Boolean);return{page:parts[0]||'home',layer:parts[1]||''}}
-function navigate(p,updateHistory=true){const prevPage=page;if(selectMode)exitSelectMode();if(pocketSelectMode)exitPocketSelectMode();if(scSelectMode)exitScSelectMode();if(typeof catSelectMode !== 'undefined' && catSelectMode) exitCatSelectMode();if(p==='shortcut')p='settings';if(!document.querySelector(`[data-page="${p}"]`))p='home';page=p;try{localStorage.setItem('aruskas_active_page',p)}catch(e){}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.dataset.page===p));const activeNav=(p==='savings'||p==='home')?'home':p;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===activeNav||(b.dataset.nav==='settings'&&(p==='settings'||p==='shortcut'))));const meta={home:['Beranda','Ringkasan dan input cepat'],transactions:['Transaksi','Daftar lengkap, rincian, ubah, dan saring'],add:['Tambah','Input fokus satu baris'],report:['Laporan','Diagram porsi dan tren arus kas'],settings:['Setting','Preferensi, anggaran, dan data'],shortcut:['Setting','Preferensi, anggaran, dan data'],savings:['Tabungan','Pantau tujuan dan setoranmu']}[p]||['Beranda','Ringkasan'];document.querySelector('.topbar')?.classList.toggle('report-centered',p==='report'||p==='transactions'||p==='settings');document.querySelector('.topbar')?.classList.toggle('home-topbar',p==='home');$('pageTitle').textContent=meta[0];$('pageSubtitle').textContent=meta[1];if(p==='home'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null};}if(p==='settings'){renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type===txFilter.type));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source===txFilter.source));render();if(p==='add')setTimeout(()=>$('focusInput').focus(),80);if(updateHistory&&prevPage!==p){pageStack.push(prevPage);try{if(p==='home')history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));else history.pushState({app:true,page:p},'',appHash(p))}catch{}}updateBackButton()}
+function navigate(p,updateHistory=true){const prevPage=page;if(selectMode)exitSelectMode();if(pocketSelectMode)exitPocketSelectMode();if(scSelectMode)exitScSelectMode();if(typeof catSelectMode !== 'undefined' && catSelectMode) exitCatSelectMode();if(p==='shortcut')p='settings';if(!document.querySelector(`[data-page="${p}"]`))p='home';page=p;try{localStorage.setItem('aruskas_active_page',p)}catch(e){}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.dataset.page===p));const activeNav=(p==='savings'||p==='home')?'home':p;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===activeNav||(b.dataset.nav==='settings'&&(p==='settings'||p==='shortcut'))));const meta={home:['Beranda','Ringkasan dan input cepat'],transactions:['Transaksi','Daftar lengkap, rincian, ubah, dan saring'],add:['Tambah','Input fokus satu baris'],report:['Laporan','Diagram porsi dan tren arus kas'],settings:['Setting',''],shortcut:['Setting',''],savings:['Tabungan','Pantau tujuan dan setoranmu']}[p]||['Beranda','Ringkasan'];document.querySelector('.topbar')?.classList.toggle('report-centered',p==='report'||p==='transactions'||p==='settings');document.querySelector('.topbar')?.classList.toggle('home-topbar',p==='home');$('pageTitle').textContent=meta[0];$('pageSubtitle').textContent=meta[1];$('settingsUpdateButton')?.toggleAttribute('hidden',p!=='settings');if(p==='home'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null};}if(p==='settings'){renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type===txFilter.type));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source===txFilter.source));render();if(p==='add')setTimeout(()=>$('focusInput').focus(),80);if(updateHistory&&prevPage!==p){pageStack.push(prevPage);try{if(p==='home')history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));else history.pushState({app:true,page:p},'',appHash(p))}catch{}}updateBackButton()}
 function currentHistoryPage(){return page||'home'}
 function ensureHomeHistoryGuard(){if(page!=='home')return;try{const st=history.state||{};if(st.app&&st.page==='home'&&st.guard&&!st.layer)return;if(st.page!=='home'||st.layer){history.replaceState({app:true,page:'home',root:true},'',appHash('home'))}history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'))}catch(e){}}
 function initHistoryGuard(){try{const cur=page||'home';if(cur==='home'){history.replaceState({app:true,page:'home',root:true},'',appHash('home'));history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));}else{history.replaceState({app:true,page:cur},'',appHash(cur));}}catch(e){}}
@@ -2690,7 +2680,8 @@ function renderBudgetPockets(){
   }
 }
 
-function render(){const arr=sorted(getTX());renderHome(arr);renderSavings();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
+function syncAppVersionInfo(){const badge=$('appVersionBadge');if(badge)badge.textContent='v'+APP_VERSION;const updateButton=$('settingsUpdateButton');if(updateButton)updateButton.setAttribute('aria-label','Perbarui aplikasi versi '+APP_VERSION);const note=$('appReleaseNote');if(note)note.textContent='v'+APP_VERSION+' · '+APP_RELEASE_NOTE}
+function render(){syncAppVersionInfo();const arr=sorted(getTX());renderHome(arr);renderSavings();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
 function renderWarmPageCopy(){const subtitles={home:new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}),transactions:'Riwayat uang masuk & keluar',add:'Tulis, bicara, atau foto struk',report:'Arus kas dan anggaran bulanan',shortcut:'Yang sering dicatat, lebih cepat',savings:'Rencana yang ingin kamu capai'};if(subtitles[page])$('pageSubtitle').textContent=subtitles[page]}
 function getPocketOrder(){
   try{
@@ -2726,7 +2717,7 @@ function shortPocketName(name){
 function renderDestinationChips(){
   const containers=[$('homeDestinationChips'),$('focusDestinationChips')].filter(Boolean);
   if(!containers.length)return;
-  const pockets=getSortedPockets().filter(p => isPocketActive(p));
+  const pockets=getSortedPockets().filter(p => p.id!=='bebas'&&isPocketActive(p));
   let html='';
   pockets.forEach(p=>{
     const sel=activeInputDestination===p.id;
@@ -3861,19 +3852,23 @@ function renderSC(){
   scListEl.innerHTML=list.map(s=>{
     const sel=scSelectSet.has(s.id);
     return `<article class="shortcut-item shortcut-card-simple shortcut-manage-item${scSelectMode?' selectable':''}${sel?' selected':''}" data-sc-id="${esc(s.id)}" data-flow="${esc(s.type||'expense')}" style="box-sizing:border-box;max-width:100%;cursor:${scSelectMode?'pointer':'default'}">
-      <div style="display:flex;align-items:center;gap:10px;width:100%;min-width:0">
-        ${scSelectMode ? `<input type="checkbox" class="sc-cb" aria-label="Pilih pintasan" ${sel?'checked':''} style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;flex-shrink:0">` : ''}
+      <button class="shortcut-summary" type="button" data-toggle-sc-details="${esc(s.id)}" aria-expanded="false" aria-controls="scDetails-${esc(s.id)}" ${scSelectMode?'tabindex="-1"':''}>
+        ${scSelectMode ? `<span class="sc-select-indicator${sel?' selected':''}" aria-hidden="true">${sel?'✓':''}</span>` : ''}
         <span class="shortcut-icon">${renderIcon(s.icon||icon(s.category,s.type))}</span>
         <div class="shortcut-title-only" style="flex:1;min-width:0">
           <strong style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title||s.code)}</strong>
-          <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kode: <code>${esc(s.code)}</code> · ${esc(s.category||'Lainnya')}${s.amount?' · '+money(s.amount):''} · ${esc(shortcutTargetLabel(s.targetPocketId))}</span>
+          <span class="muted shortcut-code-label">${esc(s.code)}</span>
         </div>
-      </div>
-      ${!scSelectMode ? `<div class="shortcut-actions">
+        <span class="shortcut-expand-icon" aria-hidden="true">⌄</span>
+      </button>
+      <div class="shortcut-details" id="scDetails-${esc(s.id)}" hidden>
+        <div class="shortcut-meta"><span>${esc(s.category||'Lainnya')}</span><span>${esc(s.type==='income'?'Pemasukan':'Pengeluaran')}</span>${s.amount?`<span>${money(s.amount)}</span>`:''}<span>${esc(shortcutTargetLabel(s.targetPocketId))}</span></div>
+        ${!scSelectMode ? `<div class="shortcut-actions">
         <button data-edit-sc="${esc(s.id)}" type="button">Ubah</button>
         <button data-toggle-sc-home="${esc(s.id)}" type="button">${s.showHome!==false?'Lepas':'Taruh'}</button>
         <button data-del-sc="${esc(s.id)}" type="button">Hapus</button>
-      </div>` : ''}
+        </div>` : ''}
+      </div>
     </article>`;
   }).join('');
 }
@@ -5889,7 +5884,7 @@ if(a==='force-update'){
     }
   }catch(e){}
   const u=new URL(window.location.href);
-  u.searchParams.set('updated','v95');
+  u.searchParams.set('updated','v'+APP_VERSION);
   u.searchParams.set('v',String(Date.now()));
   u.hash='#'+page;
   window.location.replace(u.toString());
@@ -5930,6 +5925,8 @@ $('shortcutList').addEventListener('click',async e=>{
       return;
     }
   }
+  const toggle=e.target.closest('[data-toggle-sc-details]');
+  if(toggle){const panel=document.getElementById(toggle.getAttribute('aria-controls'));if(panel){panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));toggle.closest('.shortcut-item')?.classList.toggle('is-expanded',!panel.hidden)}return}
   const ed=e.target.closest('[data-edit-sc]'), home=e.target.closest('[data-toggle-sc-home]'), del=e.target.closest('[data-del-sc]');
   if(home){saveSC(getSC().map(s=>s.id===home.dataset.toggleScHome?{...s,showHome:s.showHome===false}:s));render();return}
   if(ed){const s=getSC().find(x=>x.id===ed.dataset.editSc);if(s)fillSC(s)}
@@ -6087,11 +6084,13 @@ function checkUpdateNotice(){
     
     if(justUpdated){
       sessionStorage.removeItem('aruskas_just_updated');
-      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v95');
+      const seenKey='aruskas_update_notif_seen_'+(updatedVer||'v'+APP_VERSION);
       if(!localStorage.getItem(seenKey)){
         localStorage.setItem(seenKey,'1');
         const b=$('updateSuccessBanner');
         if(b){
+          if($('updateSuccessTitle'))$('updateSuccessTitle').textContent='Pembaruan v'+APP_VERSION+' aktif';
+          if($('updateSuccessCopy'))$('updateSuccessCopy').textContent=APP_RELEASE_NOTE;
           b.style.display='block';
           b.style.opacity='1';
           b.style.transform='translateY(0)';
@@ -6099,7 +6098,7 @@ function checkUpdateNotice(){
             b.style.opacity='0';
             b.style.transform='translateY(-8px)';
             setTimeout(()=>{ b.style.display='none'; }, 300);
-          }, 1000);
+          }, 2800);
         }
       }
     }

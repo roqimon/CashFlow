@@ -76,6 +76,11 @@ body { background: var(--app-bg) !important; }
 .topbar .icon-btn[data-action="settings"]:active, .topbar-settings-btn:active { transform: scale(0.92); background: var(--surface3) !important; }
 .topbar-settings-btn svg, .topbar .icon-btn[data-action="settings"] svg { display: block; width: 22px; height: 22px; }
 .topbar .back-btn.visible { width: 32px; flex: 0 0 32px; }
+.topbar .subtitle:empty { display: none !important; }
+.settings-update-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: 0 0 auto; min-height: 40px; padding: 0 12px; border: 1px solid color-mix(in srgb,var(--green) 26%,var(--line)); border-radius: 999px; background: var(--accent-soft); color: var(--green2); font: inherit; font-size: 12px; font-weight: 850; cursor: pointer; white-space: nowrap; }
+.settings-update-button > span:first-child { font-size: 17px; line-height: 1; }
+.settings-update-button[hidden] { display: none !important; }
+.settings-update-button:active { transform: scale(.97); }
 .card:not(.balance), .list, .dialog-card, .sheet { border-radius: 22px; box-shadow: 0 7px 26px rgba(118, 70, 46, .055); }
 .card:not(.balance):not(.report-period-card), .list, .dialog-card, .sheet { background: var(--card-glass) !important; border-color: var(--line) !important; }
 .text-btn { color: var(--green2) !important; font-weight: 800; min-height: 38px; }
@@ -345,6 +350,21 @@ body { background: var(--app-bg) !important; }
 .pocket-icon-preview > span { font-size: 24px !important; display: flex !important; align-items: center !important; justify-content: center !important; line-height: 1 !important; }
 #shortcutList { padding: 8px !important; }
 #shortcutList .shortcut-item { border-radius: 16px !important; background: var(--surface) !important; border: 1px solid var(--line) !important; margin-bottom: 8px; padding: 12px !important; }
+#shortcutList .shortcut-card-simple { display: block !important; padding: 9px 11px !important; }
+.shortcut-summary { display: flex; align-items: center; gap: 9px; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.shortcut-summary:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 10px; }
+.shortcut-summary .shortcut-icon { width: 34px; height: 34px; flex-basis: 34px; }
+.shortcut-summary .shortcut-title-only strong { display: block; font-size: 13.5px; line-height: 1.25; }
+.shortcut-code-label { display: block; margin-top: 2px; font-size: 10.5px; color: var(--muted); }
+.shortcut-expand-icon { flex: 0 0 auto; color: var(--muted); font-size: 18px; transition: transform .16s ease; }
+.shortcut-item.is-expanded .shortcut-expand-icon { transform: rotate(180deg); }
+.shortcut-details { padding: 9px 0 1px; margin-top: 8px; border-top: 1px solid var(--line); }
+.shortcut-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+.shortcut-meta span { max-width: 100%; padding: 4px 8px; overflow-wrap: anywhere; border-radius: 999px; background: var(--surface2); color: var(--muted); font-size: 10.5px; font-weight: 700; }
+.shortcut-details .shortcut-actions { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px !important; width: 100%; }
+.shortcut-details .shortcut-actions button { min-height: 36px !important; padding: 0 6px !important; font-size: 11.5px; font-weight: 800; }
+.sc-select-indicator { width: 20px; height: 20px; flex: 0 0 20px; display: grid; place-items: center; border: 1.5px solid var(--line); border-radius: 6px; color: #fff; font-size: 12px; }
+.sc-select-indicator.selected { background: var(--green); border-color: var(--green); }
 .shortcut-icon { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); }
 .shortcut-icon .category-svg { width: 23px; height: 23px; }
 #shortcutList .shortcut-title-only strong { font-size: 13.5px; }
@@ -865,6 +885,16 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   align-items: center;
   gap: 12px;
 }
+.receipt-destination-card { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 12px; }
+.receipt-destination-title { display: flex; align-items: center; gap: 9px; color: var(--ink); font-size: 14px; font-weight: 850; white-space: nowrap; }
+.receipt-destination-title .settings-card-icon { width: 34px; height: 34px; }
+.receipt-destination-field { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: 11.5px; font-weight: 750; }
+.receipt-destination-field select { min-width: 0; min-height: 40px; margin: 0; padding-block: 7px; }
+.compact-action-seg button { min-height: 36px !important; }
+.settings-backup-card { margin-bottom: 22px !important; }
+.settings-backup-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.settings-backup-actions button { min-height: 42px; padding: 0 10px; font-size: 12px; font-weight: 800; }
+.settings-release-note { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.4; }
 .shortcut-editor-box {
   display: none;
 }
