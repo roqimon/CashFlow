@@ -1191,23 +1191,26 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <label>Kata sandi<input name="password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Kata sandi"></label>
           <button class="primary" type="submit" style="min-height:42px">Masuk</button>
         </form>
-        <div class="account-quick-links"><button id="accountShowSignup" class="text-btn" type="button">Buat akun baru</button><button id="accountShowRecover" class="text-btn" type="button">Lupa kata sandi?</button></div>
+        <div id="accountFormLinks" class="account-quick-links"><button id="accountShowSignup" class="text-btn" type="button">Buat akun baru</button><button id="accountShowRecover" class="text-btn" type="button">Lupa kata sandi?</button></div>
         <form id="accountSignupForm" hidden style="display:grid;margin-top:10px">
           <strong style="font-size:13px">Daftar akun</strong>
           <label>Email<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="nama@email.com"></label>
           <label>Kata sandi<input name="password" type="password" autocomplete="new-password" required maxlength="128" placeholder="Buat kata sandi"></label>
           <button class="primary" type="submit" style="min-height:42px">Kirim tautan verifikasi</button>
           <button id="accountResendVerification" class="text-btn" type="button">Kirim ulang tautan</button>
+          <button class="text-btn" data-account-view="login" type="button">← Kembali masuk</button>
         </form>
         <form id="accountRecoverForm" hidden style="display:grid;margin-top:10px">
           <strong style="font-size:13px">Pulihkan kata sandi</strong>
           <label>Email akun<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="nama@email.com"></label>
           <button class="ghost" type="submit" style="min-height:40px">Kirim tautan pemulihan</button>
+          <button class="text-btn" data-account-view="login" type="button">← Kembali masuk</button>
         </form>
         <form id="accountResetForm" hidden style="display:grid;margin-top:10px">
           <strong style="font-size:13px">Buat kata sandi baru</strong>
           <label>Kata sandi<input name="password" type="password" autocomplete="new-password" required maxlength="128" placeholder="Kata sandi baru"></label>
           <button class="primary" type="submit" style="min-height:42px">Simpan kata sandi</button>
+          <button class="text-btn" data-account-view="login" type="button">← Kembali masuk</button>
         </form>
       </div>
       <div id="accountSignedIn" hidden>

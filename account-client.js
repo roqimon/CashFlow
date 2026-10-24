@@ -102,6 +102,10 @@
     const trigger=el('accountOpenBtn');
     if(trigger){const state=!signedIn?'signed-out':!navigator.onLine?'offline':busy?'syncing':'signed-in';trigger.dataset.state=state;trigger.title=state==='offline'?'Offline · perubahan menunggu koneksi':signedIn?'Akun tersambung':'Akun dan sinkronisasi';trigger.setAttribute('aria-label',trigger.title)}
   }
+  function setAccountFormMode(mode='login'){
+    for(const [name,id] of Object.entries({login:'accountLoginForm',signup:'accountSignupForm',recover:'accountRecoverForm',reset:'accountResetForm'})){const form=el(id);if(form)form.hidden=name!==mode}
+    if(el('accountFormLinks'))el('accountFormLinks').hidden=mode!=='login';
+  }
   function hasLocalData(){return localTransactions().length>0||currentDocs().length>0}
   function snapshotMeaningful(snapshot){return !!(snapshot&&(snapshot.transactions?.length||snapshot.docs?.length))}
   async function switchLocalAccount(nextId){
@@ -223,8 +227,9 @@
     el('accountResendVerification')?.addEventListener('click',async()=>{const email=String(new FormData(el('accountSignupForm')).get('email')||'').trim();if(!email)return setMessage('Isi email akun terlebih dahulu.','warning');try{const result=await serverCall('resend-verification',{method:'POST',body:{email}});setMessage(result.message,'success')}catch(error){setMessage(error.message,'error')}});
     el('accountRecoverForm')?.addEventListener('submit',event=>{event.preventDefault();submitForm(event.currentTarget,'recover')});
     el('accountResetForm')?.addEventListener('submit',event=>{event.preventDefault();const token=new URL(location.href).searchParams.get('account_token');submitFormWithToken(event.currentTarget,'reset',{token})});
-    el('accountShowSignup')?.addEventListener('click',()=>{el('accountSignupForm').hidden=!el('accountSignupForm').hidden});
-    el('accountShowRecover')?.addEventListener('click',()=>{el('accountRecoverForm').hidden=!el('accountRecoverForm').hidden});
+    el('accountShowSignup')?.addEventListener('click',()=>setAccountFormMode('signup'));
+    el('accountShowRecover')?.addEventListener('click',()=>setAccountFormMode('recover'));
+    el('accountModal')?.querySelectorAll('[data-account-view="login"]').forEach(button=>button.addEventListener('click',()=>setAccountFormMode('login')));
     el('accountSyncNow')?.addEventListener('click',()=>syncNow().catch(error=>setMessage(`${error.message} Perubahan tetap tersimpan di HP.`,'error')));
     el('accountLogout')?.addEventListener('click',()=>logout('logout'));
     el('accountLogoutAll')?.addEventListener('click',()=>logout('logout-all'));
@@ -237,7 +242,7 @@
       try{const result=await serverCall('verify',{method:'POST',body:{token}});setMessage(result.message,'success')}catch(error){setMessage(error.message,'error')}
       params.delete('account_token');params.delete('account_action');history.replaceState({},'',`${location.pathname}${params.toString()?`?${params}`:''}${location.hash}`);
     }else if(token&&action==='reset_password'){
-      el('accountResetForm').hidden=false;
+      setAccountFormMode('reset');
       root.openAccountModal?.();
     }
     renderUser();
@@ -248,7 +253,7 @@
     const cached=readJson(USER_KEY,null);
     if(cached&&localStorage.getItem(OWNER_KEY)===cached.id){user=cached;renderUser();setMessage('Offline · data tersimpan di HP dan menunggu koneksi untuk sinkron.','warning')}
   }
-  async function submitFormWithToken(form,route,extra){const body={...Object.fromEntries(new FormData(form).entries()),...extra};busy=true;renderUser();try{const result=await serverCall(route,{method:'POST',body});setMessage(result.message,'success');form.reset();form.hidden=true;const url=new URL(location.href);url.searchParams.delete('account_token');url.searchParams.delete('account_action');history.replaceState({},'',url.pathname+url.search+url.hash)}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
+  async function submitFormWithToken(form,route,extra){const body={...Object.fromEntries(new FormData(form).entries()),...extra};busy=true;renderUser();try{const result=await serverCall(route,{method:'POST',body});setMessage(result.message,'success');form.reset();form.hidden=true;if(route==='reset')setAccountFormMode('login');const url=new URL(location.href);url.searchParams.delete('account_token');url.searchParams.delete('account_action');history.replaceState({},'',url.pathname+url.search+url.hash)}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
   async function logout(route){if(!user)return;busy=true;renderUser();try{await serverCall(route,{method:'POST',body:{}});user=null;localStorage.removeItem(USER_KEY);if(el('accountOnboarding'))el('accountOnboarding').hidden=true;setMessage('Keluar berhasil. Data yang sudah tersimpan di HP tetap tersedia di perangkat ini.','success')}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
   function storageDataChanged(){if(user){queueSync();saveCacheSoon()}}
   root.AccountSync={start,transactionsChanged:noteTransactionChanges,storageDataChanged,syncNow};
