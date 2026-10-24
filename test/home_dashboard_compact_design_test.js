@@ -36,13 +36,14 @@ test('active positions and a single recent transaction match the compact mockup 
   assert.equal((html.match(/id="homeTxList"/g) || []).length, 1, 'recent transaction list must have one unique home target');
   assert.ok(quickEntryIndex < budgetIndex, 'quick input should precede active budget data');
   assert.ok(budgetIndex < savingsIndex, 'active budgets should precede savings');
-  assert.ok(savingsIndex < transactionSectionIndex, 'active savings should precede recent transactions');
+  assert.ok(savingsIndex < categoryIndex, 'active savings should precede the spending chart');
+  assert.ok(categoryIndex < transactionSectionIndex, 'the spending chart should be visible before recent transactions');
   assert.match(html, /budget-home-head"><strong>Pos aktif<\/strong>/);
   assert.match(html, /home-pocket-progress-row[\s\S]*home-pocket-percent/);
   assert.match(html, /arr\.slice\(0,1\)\.map\(homeTxItem\)/);
   assert.match(html, /home-recent-head"><h3>Transaksi terbaru<\/h3>/);
   assert.match(css, /\.page\[data-page="home"\] \.home-pocket-progress-row/);
-  assert.match(html, /<details class="home-spending-details">/);
+  assert.match(html, /<details class="home-spending-details" open>/);
   assert.match(css, /\.page\[data-page="home"\] \.home-spending-details/);
-  assert.ok(categoryIndex > transactionIndex, 'the category chart should be below recent transactions');
+  assert.ok(categoryIndex < transactionIndex, 'the category chart should appear before recent transactions');
 });
