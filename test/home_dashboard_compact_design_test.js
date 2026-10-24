@@ -34,14 +34,12 @@ test('active positions and a single recent transaction match the compact mockup 
   const transactionSectionIndex = html.indexOf('class="card home-recent-transactions"');
   const transactionIndex = html.indexOf('id="homeTxList"');
   assert.equal((html.match(/id="homeTxList"/g) || []).length, 1, 'recent transaction list must have one unique home target');
-  assert.ok(quickEntryIndex < budgetIndex, 'the Pos aktif toggle should follow quick entry');
-  assert.ok(budgetIndex < categoryIndex, 'the spending chart should follow the Pos aktif toggle');
-  assert.match(html, /id="home-quick">[\s\S]*?<\/section>\s*<details class="home-active-pockets-details" id="budgetContainer">/);
-  assert.match(html, /<details class="home-active-pockets-details" id="budgetContainer">\s*<summary[\s\S]*?<strong>Pos aktif<\/strong>[\s\S]*?id="homeActivePocketsStatus"/);
+  assert.ok(quickEntryIndex < categoryIndex, 'the spending chart should immediately follow quick entry');
+  assert.ok(categoryIndex < budgetIndex, 'active positions should follow the spending chart');
+  assert.match(html, /id="home-quick">[\s\S]*?<\/section>\s*<details class="home-spending-details" open>/);
   assert.ok(categoryIndex < savingsIndex, 'the spending chart should appear before savings');
   assert.ok(categoryIndex < transactionSectionIndex, 'the spending chart should be visible before recent transactions');
-  assert.doesNotMatch(html, /<details class="home-active-pockets-details" id="budgetContainer" open>/);
-  assert.match(html, /<details class="home-active-pockets-details" id="budgetContainer">\s*<summary[\s\S]*?<strong>Pos aktif<\/strong>/);
+  assert.match(html, /budget-home-head"><strong>Pos aktif<\/strong>/);
   assert.match(html, /home-pocket-progress-row[\s\S]*home-pocket-percent/);
   assert.match(html, /arr\.slice\(0,1\)\.map\(homeTxItem\)/);
   assert.match(html, /home-recent-head"><h3>Transaksi terbaru<\/h3>/);
