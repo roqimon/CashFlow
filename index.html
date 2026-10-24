@@ -817,11 +817,11 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 </head>
 <body>
 <div class="shell">
-  <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
+  <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Offline & sinkron</strong><small>Data tetap di HP saat offline; akun menyinkronkan antarperangkat.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.5" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.5</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.5 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.7" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.7</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.7 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Akun dan sinkronisasi data antarperangkat.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -829,9 +829,10 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span id="homePeriod">Memuat siklus...</span>
           </div>
           <small style="color:rgba(255,255,255,0.85);font-size:11.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;display:block;margin-top:6px">
-            Aman Dibelanjakan Hari Ini
+             Saran Uang Bebas per Hari
           </small>
           <h2 id="dailySafeAmount">Rp 0</h2>
+           <small style="display:block;margin-top:-8px;color:rgba(255,255,255,.82);font-size:11px">Sisa Uang Bebas dibagi hari tersisa</small>
           <div class="grid2" style="margin-top:16px">
             <div>
               <small style="opacity:.9">Pemasukan siklus</small>
@@ -891,7 +892,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         <div class="section-head savings-list-heading"><div><h3>Tujuanmu</h3><p>Setoran dicatat terpisah dari pemasukan dan pengeluaran.</p></div><button class="text-btn" data-action="new-savings-goal" type="button">＋ Tujuan</button></div>
         <div class="seg savings-filter" id="savingsFilter"><button class="active" data-savings-filter="active" type="button">Aktif</button><button data-savings-filter="archived" type="button">Arsip</button></div>
         <div class="savings-list" id="savingsGoalList"></div>
-        <p class="savings-footnote">Tabungan disimpan di perangkat ini. Unduh data cadangan di Pengaturan untuk menyimpannya.</p>
+        <p class="savings-footnote">Tabungan tetap tersedia offline. Masuk akun untuk menyinkronkan catatan dan pengaturan ke perangkat lain.</p>
       </section>
       <section class="page" data-page="transactions"><section class="card tx-period-card clean-period-card"><div class="seg period-tabs tx-period-tabs" id="txPeriodSeg"><button data-tx-period="daily" type="button">Harian</button><button data-tx-period="weekly" type="button">Mingguan</button><button class="active" data-tx-period="monthly" type="button">Bulanan</button><button data-tx-period="yearly" type="button">Tahun</button><button data-tx-period="range" type="button">Rentang</button></div><div id="txPeriodControl" class="period-control"><button class="period-step" data-tx-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="txPeriodSelect"></select><div id="txRangeBox" class="range-box" style="display:none"><label>Dari<input type="date" id="txRangeStart"></label><label>Sampai<input type="date" id="txRangeEnd"></label></div></div><button class="period-step" data-tx-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div></section><section class="card tx-filter-card"><input class="search" id="txSearch" autocomplete="off" placeholder="Cari transaksi, catatan, pintasan..."><div class="tx-pocket-banner" id="txPocketBanner" style="display:none"></div><div class="tx-filter-container" id="txFilterContainer"><div class="seg tx-seg-type" id="typeFilter"><button class="active" data-type="all" type="button">Semua</button><button data-type="expense" type="button">Pengeluaran</button><button data-type="income" type="button">Pemasukan</button></div><div class="tx-source-chips" id="sourceFilter"><span class="source-tag-label">Sumber</span><button class="active" data-source="all" type="button">Semua</button><button data-source="personal" type="button">💵 Pribadi</button><button data-source="st" type="button">📋 ST</button></div></div><div class="filter-row" id="activeFilters"></div></section><div class="section-head" style="margin:14px 4px 6px"><div><h3 style="font-size:15px;margin:0">Daftar Transaksi</h3></div><div><button class="text-btn" id="txToggleSelectBtn" type="button" style="font-size:12.5px;font-weight:800;color:var(--green)">Pilih Transaksi</button></div></div><section class="list tx-list" id="txList"></section><div class="bulk-bar" id="txBulkBar"><div style="display:flex;align-items:center;gap:6px"><button class="ghost" id="txSelectAllBtn" type="button" style="min-height:36px;font-size:12px;padding:0 10px;font-weight:800">Semua</button><span id="txSelCount" style="font-size:12.5px;font-weight:800">0 dipilih</span></div><div style="display:flex;gap:6px"><button class="ghost" data-exit-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button><button class="danger" id="txBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button></div></div></section>
       <section class="page" data-page="add">
@@ -910,6 +911,52 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       </section>
       <section class="page" data-page="report"><section class="card report-period-card clean-period-card"><div class="seg period-tabs" id="periodSeg"><button data-period="daily" type="button">Hari</button><button data-period="weekly" type="button">Minggu</button><button class="active" data-period="monthly" type="button">Bulan</button><button data-period="yearly" type="button">Tahun</button><button data-period="range" type="button">Rentang</button></div><div id="periodControl" class="period-control"><button class="period-step" data-period-step="-1" type="button" aria-label="Periode sebelumnya">‹</button><div class="period-main"><select id="periodSelect"></select><div id="rangeBox" class="range-box" style="display:none"><input type="hidden" id="rangeStart"><input type="hidden" id="rangeEnd"><button class="report-range-trigger" id="reportCalendarToggle" type="button" aria-expanded="false" aria-controls="reportCalendarPanel"><span class="report-range-icon" aria-hidden="true">▦</span><span class="report-range-copy"><strong id="reportRangeSelectedLabel">Pilih rentang tanggal</strong><small id="reportRangeHint">Ketuk untuk mengatur laporan</small></span><span class="report-range-chevron" aria-hidden="true">⌄</span></button><div class="report-range-calendar" id="reportCalendarPanel" hidden><div class="report-calendar-shortcuts"><button type="button" data-report-calendar-shortcut="7d">7 hari</button><button type="button" data-report-calendar-shortcut="30d">30 hari</button><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div><div class="report-calendar-heading"><button type="button" data-report-calendar-nav="-1" aria-label="Bulan sebelumnya">‹</button><strong id="reportCalendarMonthLabel"></strong><button type="button" data-report-calendar-nav="1" aria-label="Bulan berikutnya">›</button></div><div class="savings-calendar-weekdays" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div class="savings-calendar-grid" id="reportCalendarGrid" role="grid" aria-label="Pilih rentang tanggal laporan"></div><div class="report-calendar-footer"><span id="reportCalendarSelectionHint">Pilih tanggal awal</span><button type="button" data-report-calendar-shortcut="this-month">Bulan ini</button></div></div></div></div><button class="period-step" data-period-step="1" type="button" aria-label="Periode berikutnya">›</button></div><div class="grid3 report-summary"><article class="mini-box"><span>Pemasukan</span><strong id="reportIncome">Rp 0</strong></article><article class="mini-box"><span>Pengeluaran</span><strong id="reportExpense">Rp 0</strong></article><article class="mini-box"><span>Saldo</span><strong id="reportNet">Rp 0</strong></article></div></section><section class="card report-chart-card clean-report-card"><div class="report-header-row"><div><h3 style="margin:0">Laporan Arus Kas</h3><p class="muted" id="reportLabel" style="margin:2px 0 0;font-size:12px">Hari ini</p></div><div class="seg report-type-seg" id="reportTypeSeg"><button class="active" data-rtype="expense" type="button">Pengeluaran</button><button data-rtype="income" type="button">Pemasukan</button></div></div><div class="report-controls-row"><div class="tx-source-chips" id="reportSourceFilter"><button class="active" data-rsource="all" type="button">Semua</button><button data-rsource="personal" type="button">💵 Pribadi</button><button data-rsource="st" type="button">📋 ST</button></div></div><div class="chart-stage" id="chartStage"></div><p class="muted chart-hint" style="font-size:11.5px">Sentuh bagian donat atau rincian kategori untuk melihat transaksi.</p><button id="shareWaBtn" class="primary" type="button" style="width:100%;margin-top:10px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);font-size:13.5px;font-weight:800;border:0;border-radius:999px;box-shadow:0 8px 20px rgba(37,211,102,.28)"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 18.15c-1.52 0-3-.41-4.3-1.18l-.31-.18-3.19.84.85-3.11-.2-.32a8.163 8.163 0 0 1-1.25-4.29c0-4.52 3.68-8.2 8.2-8.2 2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.52-3.68 8.24-8.2 8.24zm4.49-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.45 1.03 2.61.12.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg><span>Kirim Laporan Keluarga via WhatsApp</span></button><button id="workReportBtn" class="ghost" type="button" style="width:100%;margin-top:8px;min-height:46px">📋 Unduh Laporan Kerja + Nota</button></section><div class="section-head"><div><h3>Rincian Kategori</h3><p>Berdasarkan periode aktif</p></div></div><section class="breakdown" id="breakdown"></section></section>
       <section class="page" data-page="settings" data-legacy-page="shortcut">
+        <section class="card settings-card" id="accountSettingsCard">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf8f4;color:var(--green)">☁️</span>
+            <div style="flex:1;min-width:0"><strong style="font-size:14px;color:var(--ink);display:block">Akun & Sinkronisasi</strong><small class="muted" id="accountStatusLabel" style="font-size:11.5px">Belum masuk</small></div>
+          </div>
+          <p id="accountMessage" class="muted" data-tone="muted" style="font-size:12px;line-height:1.45;margin:9px 0 12px">Masuk agar transaksi dan pengaturan akun tersimpan di server dan tersinkron ke perangkat lain. Foto nota tetap tersimpan di HP ini.</p>
+          <div id="accountSignedOut">
+            <form id="accountLoginForm" style="display:grid;gap:8px">
+              <label>Email<input name="email" type="email" autocomplete="username" required maxlength="254" placeholder="nama@email.com"></label>
+              <label>Kata sandi<input name="password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Minimal 10 karakter"></label>
+              <button class="primary" type="submit" style="min-height:42px">Masuk</button>
+            </form>
+            <button id="accountShowSignup" class="text-btn" type="button" style="margin-top:8px">Buat akun baru</button>
+            <button id="accountShowRecover" class="text-btn" type="button" style="margin-top:8px">Lupa kata sandi?</button>
+            <form id="accountSignupForm" hidden style="display:grid;gap:8px;margin-top:8px">
+              <strong style="font-size:13px">Daftar akun</strong>
+              <label>Email<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="nama@email.com"></label>
+              <label>Kata sandi baru<input name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="128" placeholder="Minimal 10 karakter"></label>
+              <button class="primary" type="submit" style="min-height:42px">Kirim tautan verifikasi</button>
+              <button id="accountResendVerification" class="text-btn" type="button">Kirim ulang tautan verifikasi</button>
+            </form>
+            <form id="accountRecoverForm" hidden style="display:grid;gap:8px;margin-top:8px">
+              <strong style="font-size:13px">Pulihkan kata sandi</strong>
+              <label>Email akun<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="nama@email.com"></label>
+              <button class="ghost" type="submit" style="min-height:40px">Kirim tautan pemulihan</button>
+            </form>
+            <form id="accountResetForm" hidden style="display:grid;gap:8px;margin-top:8px">
+              <strong style="font-size:13px">Buat kata sandi baru</strong>
+              <label>Kata sandi baru<input name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="128" placeholder="Minimal 10 karakter"></label>
+              <button class="primary" type="submit" style="min-height:42px">Simpan kata sandi</button>
+            </form>
+          </div>
+          <div id="accountSignedIn" hidden>
+            <strong id="accountEmail" style="font-size:13px;overflow-wrap:anywhere"></strong>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px">
+              <button id="accountSyncNow" class="primary" type="button" style="min-height:40px">Sinkronkan</button>
+              <button id="accountLogout" class="ghost" type="button" style="min-height:40px">Keluar</button>
+            </div>
+            <button id="accountLogoutAll" class="text-btn" type="button" style="margin-top:8px;color:var(--danger)">Keluar dari semua perangkat</button>
+          </div>
+          <div id="accountOnboarding" hidden style="margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)">
+            <strong style="font-size:13px">Pilih data yang digunakan</strong>
+            <p class="muted" style="font-size:11.5px;line-height:1.4;margin:5px 0 10px">HP ini dan akun sudah memiliki data. Gabungkan catatan transaksi dan pengaturan, atau muat data dari akun ke HP ini.</p>
+            <div style="display:grid;gap:7px"><button id="accountMergeLocal" class="primary" type="button" style="min-height:40px">Gabungkan data HP dan akun</button><button id="accountUseCloud" class="ghost" type="button" style="min-height:40px">Ganti data HP dengan data akun</button></div>
+          </div>
+        </section>
         <section class="card settings-card receipt-destination-card">
           <div class="receipt-destination-title"><span class="settings-card-icon">🧾</span><strong>Tujuan Nota</strong></div>
           <label class="receipt-destination-field">Simpan ke<select id="receiptDestinationSetting"><option value="st">ST</option><option value="personal">Pribadi</option></select></label>
@@ -1033,7 +1080,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v10.5 · Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v10.7 · Akun dan sinkronisasi data antarperangkat.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1561,13 +1608,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./receipt-analysis.js?v=20261021.1"></script>
 <script src="./work-report.js?v=20261023.1"></script>
 <script src="./shortcut-date.js?v=20261023.2"></script>
+<script src="./account-client.js?v=20261024.1"></script>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.103').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.110').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1591,7 +1639,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.5', APP_RELEASE_NOTE='Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.';
+const APP_VERSION='10.7', APP_RELEASE_NOTE='Akun dan sinkronisasi data antarperangkat.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1652,6 +1700,29 @@ function savePockets(list){
 }
 function getPocketTransfers(){try{const rows=JSON.parse(localStorage.getItem(KEY_POCKET_TRANSFERS)||'[]');return Array.isArray(rows)?rows.filter(item=>item&&item.id&&item.fromPocketId&&item.toPocketId&&item.fromPocketId!==item.toPocketId&&Number.isSafeInteger(Number(item.amount))&&Number(item.amount)>0&&/^\d{4}-\d{2}-\d{2}$/.test(String(item.date||''))).map(item=>({...item,amount:Number(item.amount),date:String(item.date),note:String(item.note||'').slice(0,280)})):[]}catch{return[]}}
 function savePocketTransfers(rows){try{localStorage.setItem(KEY_POCKET_TRANSFERS,JSON.stringify(Array.isArray(rows)?rows:[]));return getPocketTransfers()}catch(e){console.error('[ArusKas] Error saving pocket transfers',e);throw new Error('Penyimpanan perangkat penuh. Cadangkan atau kosongkan ruang lalu coba lagi.')}}
+function makePocketTransfer(fromPocketId,toPocketId,amount,note,targetDate=new Date(),kind='manual'){
+  const value=Number(amount)||0;
+  if(!Number.isSafeInteger(value)||value<=0)return null;
+  return {id:id(),fromPocketId,toPocketId,amount:value,date:dateInput(targetDate),note:String(note||'').slice(0,280),kind,createdAt:new Date().toISOString()};
+}
+function persistPocketFinance(pockets,transfers){
+  const previousPockets=localStorage.getItem(KEY_POCKETS),previousTransfers=localStorage.getItem(KEY_POCKET_TRANSFERS);
+  try{
+    const cleanPockets=ensureFreePocket(Array.isArray(pockets)?pockets:[]);
+    cleanPockets.forEach(p=>{if(p&&typeof p.isActive!=='boolean')p.isActive=typeof p.active==='boolean'?p.active:true});
+    const pocketIds=new Set(cleanPockets.map(p=>p?.id).filter(Boolean));pocketIds.add('bebas');
+    const cleanTransfers=(Array.isArray(transfers)?transfers:[]).filter(item=>pocketIds.has(item.fromPocketId)&&pocketIds.has(item.toPocketId));
+    savePocketTransfers(cleanTransfers);
+    savePockets(cleanPockets);
+    if(localStorage.getItem(KEY_POCKETS)!==JSON.stringify(cleanPockets))throw new Error('Perubahan pos belum tersimpan di perangkat ini.');
+    const savedIds=new Set(getPocketTransfers().map(item=>item.id));
+    if(cleanTransfers.some(item=>!savedIds.has(item.id))||savedIds.size!==cleanTransfers.length)throw new Error('Riwayat alokasi belum tersimpan lengkap.');
+    return true;
+  }catch(error){
+    try{previousPockets===null?localStorage.removeItem(KEY_POCKETS):localStorage.setItem(KEY_POCKETS,previousPockets);previousTransfers===null?localStorage.removeItem(KEY_POCKET_TRANSFERS):localStorage.setItem(KEY_POCKET_TRANSFERS,previousTransfers)}catch(rollbackError){console.error('[ArusKas] Gagal memulihkan data pos setelah penyimpanan gagal',rollbackError)}
+    throw error;
+  }
+}
 function getPocketTransferTotals(pocketId,targetDate=new Date()){
   const cycle=getPaydayCycle(targetDate,getPaydaySetting()),start=dateInput(cycle.start),end=dateInput(cycle.end);
   return getPocketTransfers().reduce((totals,item)=>{if(item.date<start||item.date>end)return totals;if(item.fromPocketId===pocketId)totals.outgoing+=item.amount;if(item.toPocketId===pocketId)totals.incoming+=item.amount;return totals},{incoming:0,outgoing:0});
@@ -1691,26 +1762,45 @@ function setPocketActive(pocketId, active){
   const idx = list.findIndex(p => p.id === pocketId);
   if(idx >= 0&&pocketId!=='bebas'){
     const pocket=list[idx];
-    list[idx].isActive = !!active;
-    list[idx].updatedAt = new Date().toISOString();
-    savePockets(list);
-    const saved=getPockets().find(p=>p.id===pocketId);
-    if(!saved||saved.isActive!==!!active){
-      list[idx].isActive=!active;
-      render();
-      toast('Status pos belum tersimpan. Periksa ruang penyimpanan perangkat lalu coba lagi.');
-      return;
+    const nextActive=!!active;
+    if(isPocketActive(pocket)===nextActive)return;
+    const now=new Date(),transfers=getPocketTransfers(),txList=getTX();
+    let refundAmount=0;
+    if(!isDedicatedSTPocket(pocket)){
+      if(nextActive){
+        const activatingPocket={...pocket,isActive:true},calculationPockets=list.map(item=>item.id===pocketId?activatingPocket:item),usage=calculatePocketUsage(activatingPocket,now,txList,calculationPockets);
+        const cycle=getPaydayCycle(now,getPaydaySetting()),cycleStart=dateInput(cycle.start),cycleEnd=dateInput(cycle.end);
+        const cycleTransfers=transfers.filter(item=>(item.fromPocketId===pocketId||item.toPocketId===pocketId)&&item.date>=cycleStart&&item.date<=cycleEnd);
+        const deactivationReturned=cycleTransfers.filter(item=>item.fromPocketId===pocketId&&item.toPocketId==='bebas'&&item.kind==='deactivation-return').reduce((total,item)=>total+item.amount,0);
+        const reactivated=cycleTransfers.filter(item=>item.fromPocketId==='bebas'&&item.toPocketId===pocketId&&item.kind==='budget-reactivation').reduce((total,item)=>total+item.amount,0);
+        const otherReturn=cycleTransfers.some(item=>item.fromPocketId===pocketId&&item.toPocketId==='bebas'&&item.kind!=='deactivation-return');
+        const pendingReturn=Math.max(0,deactivationReturned-reactivated);
+        const targetRemaining=Math.max(0,(Number(pocket.amount)||0)-usage.spent-usage.allocated-cycleTransfers.filter(item=>item.fromPocketId===pocketId&&item.toPocketId!=='bebas').reduce((total,item)=>total+item.amount,0));
+        const hasEarlierFunding=cycleTransfers.some(item=>item.toPocketId===pocketId);
+        const needed=otherReturn?0:pendingReturn>0?Math.min(pendingReturn,targetRemaining):hasEarlierFunding?0:Math.max(0,Number(pocket.amount)||0);
+        const free=calculateSafeDailySpend(txList,list,getSavings(),now,getPaydaySetting()).freeMoneyRemaining;
+        const netCost=Math.max(0,needed-Math.min(needed,usage.cashGap));
+        if(netCost>Math.max(0,free)){render();toast('Uang Bebas tersedia '+money(Math.max(0,free))+'. Pos belum diaktifkan karena dananya belum cukup.');return}
+        const transfer=makePocketTransfer('bebas',pocketId,needed,'Alokasi budget saat pos diaktifkan',now,'budget-reactivation');if(transfer)transfers.push(transfer);
+      }else{
+        const usage=calculatePocketUsage(pocket,now,txList,list);
+        refundAmount=Math.max(0,usage.remaining);
+        const transfer=makePocketTransfer(pocketId,'bebas',refundAmount,'Sisa dana kembali saat pos dinonaktifkan',now,'deactivation-return');if(transfer)transfers.push(transfer);
+      }
     }
+    list[idx].isActive=nextActive;
+    list[idx].updatedAt=new Date().toISOString();
+    try{persistPocketFinance(list,transfers)}catch(error){render();toast(error.message||'Perubahan pos belum tersimpan.');return}
     render();
-    toast(`Pos "${list[idx].name}" ${active ? 'diaktifkan' : 'dinonaktifkan'}.`);
+    toast(nextActive?`Pos "${list[idx].name}" diaktifkan.`:`Pos "${list[idx].name}" dinonaktifkan${refundAmount>0?' dan '+short(refundAmount)+' dikembalikan ke Uang Bebas.':'.'}`);
   }
 }
-function calculatePocketUsage(pocket,targetDate,txList){
+function calculatePocketUsage(pocket,targetDate,txList,pocketList=getPockets()){
   const date=targetDate?new Date(targetDate):new Date();
   const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(date,getPaydaySetting()):{start:startMonth(date),end:endMonth(date)};
   const startTs=cycle.start.getTime(),endTs=cycle.end.getTime();
   if(pocket?.id==='bebas'){
-    const safe=calculateSafeDailySpend(txList||getTX(),getPockets(),getSavings(),date,getPaydaySetting());
+    const safe=calculateSafeDailySpend(txList||getTX(),pocketList,getSavings(),date,getPaydaySetting());
     const amount=safe.freeMoneyInitial,remaining=safe.freeMoneyRemaining,spent=safe.freeMoneySpent;
     const percent=amount>0?Math.round(Math.max(0,spent)/amount*100):0;
     return {pocket,spent:safe.freeMoneySpent,allocated:safe.savingsAllocated,moved:safe.freeMoneyMoved,income:safe.cycleIncome,incoming:safe.freeMoneyIncoming,outgoing:safe.freeMoneyOutgoing,amount,effectiveAmount:amount,remaining,percent,isOver:remaining<0,overAmount:Math.max(0,-remaining),count:safe.freeExpenseCount};
@@ -1719,13 +1809,13 @@ function calculatePocketUsage(pocket,targetDate,txList){
     if(t.type!=='expense')return false;
     const tTime=new Date(t.createdAt||Date.now()).getTime();
     if(tTime<startTs||tTime>endTs)return false;
-    if(t.source==='st')return (t.pocketId||getSTPocket(getPockets())?.id)===pocket.id;
+    if(t.source==='st')return (t.pocketId||getSTPocket(pocketList)?.id)===pocket.id;
     if(isDedicatedSTPocket(pocket))return false;
     if(t.pocketId==='bebas')return false;
     if(t.pocketId&&t.pocketId!==pocket.id)return false;
     if(t.pocketId&&t.pocketId===pocket.id)return true;
     if(!isPocketActive(pocket,txList))return false;
-    return inferPocket(t.category,t.title,getPockets())===pocket.id;
+    return inferPocket(t.category,t.title,pocketList)===pocket.id;
   });
   const spent=matchingTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
   const savings=getSavings();
@@ -2002,7 +2092,7 @@ function title(x){return String(x||'').trim().replace(/\s+/g,' ').split(' ').fil
 function icon(cat,type){const rec=findCatRecord(cat);if(rec&&rec.icon)return rec.icon;if(catMeta[cat])return catMeta[cat][0];const n=String(cat||'').toLowerCase();if(type==='income')return '＋';const emojiMap=[['dapur','🛒'],['pasar','🛒'],['makan','🍽️'],['food','🍽️'],['jajan','☕'],['nongkrong','☕'],['snack','🍿'],['kopi','☕'],['coffee','☕'],['teh','🍵'],['transport','⛽'],['transportasi','⛽'],['bensin','⛽'],['ojol','🛵'],['grab','🛵'],['gojek','🛵'],['taxi','🚕'],['belanja','🛍️'],['pakaian','🛍️'],['baju','👕'],['rumah','🏠'],['kos','🏠'],['kost','🏠'],['utilitas','💡'],['tagihan','💡'],['listrik','💡'],['air','💧'],['gas','🔥'],['internet','🌐'],['wifi','📶'],['digital','🌐'],['anak','🎓'],['pendidikan','🎓'],['sekolah','🏫'],['spp','🎓'],['kesehatan','💊'],['dokter','🩺'],['obat','💊'],['sosial','🤲'],['sedekah','🤲'],['infaq','🤲'],['zakat','🤲'],['hiburan','🎟️'],['hobi','🎟️'],['nonton','🎬'],['game','🎮'],['cicilan','💳'],['finansial','💳'],['kredit','💳'],['investasi','📈'],['saham','📊'],['crypto','🪙'],['emas','🥇'],['gaji','💼'],['usaha','🏪'],['jualan','🏪'],['pemasukan','💰'],['bonus','🎁'],['thr','🧧'],['honor','💵'],['masuk','+'],['income','+'],['lainnya','📦']];for(const[key,emoji]of emojiMap){if(n.includes(key))return emoji}return '•'}
 function renderIcon(icon,cls=''){const asset=window.AruskasIcons?.assetFor(icon);return asset?`<img class="category-svg ${esc(cls)}" src="${asset}" alt="">`:`<span class="${esc(cls)}">${esc(icon||'•')}</span>`}
 function color(cat){const name=String(cat||'').toLowerCase();if(/gaji|pemasukan|honor|bonus|fee|masuk/.test(name))return '#e6eddf';const tones=['#f8e1d2','#fbebd6','#e8ecdf','#f4dfd8','#f6e8dc'];return tones[Array.from(name).reduce((a,c)=>a+c.charCodeAt(0),0)%tones.length]}
-function getTX(){try{const raw=localStorage.getItem(KEY_TX);const arr=raw?JSON.parse(raw):[];if(!arr.length){const old=localStorage.getItem('aruskas_transactions_v3_fixed');const oldArr=old?JSON.parse(old):[];if(oldArr.length){console.log('[ArusKas] Migrating '+oldArr.length+' transactions from v3');const migrated=oldArr.map(o=>tx({...o,source:'personal',reimburseStatus:null,stSessionId:null,updFlag:false}));saveTX(migrated);return migrated}console.log('[ArusKas] No transactions found');return[]}console.log('[ArusKas] Loaded '+arr.length+' transactions');return arr.map(tx)}catch(e){console.error('[ArusKas] getTX error:',e);return[]}} function saveTX(a){try{localStorage.setItem(KEY_TX,JSON.stringify(a));console.log('[ArusKas] Saved '+a.length+' transactions');return true}catch(e){console.error('[ArusKas] saveTX error:',e);return false}}
+function getTX(){try{const raw=localStorage.getItem(KEY_TX);const arr=raw?JSON.parse(raw):[];if(!arr.length){const old=localStorage.getItem('aruskas_transactions_v3_fixed');const oldArr=old?JSON.parse(old):[];if(oldArr.length){console.log('[ArusKas] Migrating '+oldArr.length+' transactions from v3');const migrated=oldArr.map(o=>tx({...o,source:'personal',reimburseStatus:null,stSessionId:null,updFlag:false}));saveTX(migrated);return migrated}console.log('[ArusKas] No transactions found');return[]}console.log('[ArusKas] Loaded '+arr.length+' transactions');return arr.map(tx)}catch(e){console.error('[ArusKas] getTX error:',e);return[]}} function saveTX(a){try{localStorage.setItem(KEY_TX,JSON.stringify(a));console.log('[ArusKas] Saved '+a.length+' transactions');window.AccountSync?.transactionsChanged();return true}catch(e){console.error('[ArusKas] saveTX error:',e);return false}}
 function getSTBalance(){const arr=getTX(),st=arr.filter(t=>t.source==='st');const deposit=st.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);const expense=st.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);const pending=st.filter(t=>t.type==='expense'&&t.reimburseStatus==='pending').reduce((s,t)=>s+t.amount,0);const reimbursed=st.filter(t=>t.type==='expense'&&t.reimburseStatus==='reimbursed').reduce((s,t)=>s+t.amount,0);return{deposit,expense,pending,reimbursed,sisa:deposit-expense,hasST:st.length>0}}
 function markReimbursed(tid,unmark=false){const arr=getTX(),i=arr.findIndex(t=>t.id===tid);if(i<0)return;arr[i].reimburseStatus=unmark?'pending':'reimbursed';arr[i].updatedAt=new Date().toISOString();saveTX(arr);render();openTx(tid,false)}function resetKeyword(rawInput,oldCategory){const clean=rawInput.toLowerCase().trim().replace(/^st\s+/,'');const words=clean.split(/\s+/).filter(w=>w.length>1&&!/^\d+$/.test(w)&&!['rb','ribu','jt','juta','k','m'].includes(w));if(!words.length)return;const mem=getCatMem();let removed=[];words.forEach(w=>{if(mem[w]===oldCategory){delete mem[w];removed.push(w)}});localStorage.setItem(KEY_CATMEM,JSON.stringify(mem));FUZZY_CACHE=null;render()}window.markReimbursed=markReimbursed;window.resetKeyword=resetKeyword;
 function quickMoveTxPocket(tid,newPocketId){
@@ -2452,7 +2542,7 @@ function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=ne
   const freeTransfers=getPocketTransferTotals('bebas',targetDate);
   const balanceAdjustments=getFreeBalanceAdjustments().filter(item=>item.date>=start&&item.date<=end);
   const balanceAdjustmentTotal=balanceAdjustments.reduce((total,item)=>total+item.amount,0);
-  const personalUsage=allPersonalPockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx)}));
+  const personalUsage=allPersonalPockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx,pockets)}));
   const overBudgetPockets=personalUsage.filter(row=>isPocketActive(row.pocket,txList)&&row.usage.budgetOverAmount>0);
   const overBudgetTotal=overBudgetPockets.reduce((total,row)=>total+row.usage.budgetOverAmount,0);
   const cashGapTotal=personalUsage.reduce((total,row)=>total+row.usage.cashGap,0);
@@ -2460,11 +2550,30 @@ function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=ne
   const directFreeSpent=freeExpenseTx.reduce((total,item)=>total+(Number(item.amount)||0),0);
   const freeMoneySpent=directFreeSpent+cashGapTotal;
   const freeMoneyRemaining=freeMoneyInitial-freeMoneySpent;
-  const targetDateStr=dateInput(targetDate);
-  const todaySpent=freeExpenseTx.filter(item=>dateInput(new Date(item.createdAt||Date.now()))===targetDateStr).reduce((total,item)=>total+(Number(item.amount)||0),0);
   const baseDailyPace=Math.max(0,Math.floor(freeMoneyRemaining/cycle.daysRemaining));
-  const todayRemaining=baseDailyPace-todaySpent;
-  return {cycle,cycleIncome,balanceAdjustmentTotal,committedBudget,savingsAllocated,savingsWithdrawn,freeMoneyInitial,freeMoneySpent,freeMoneyRemaining,freeMoneyMoved:savingsAllocated-savingsWithdrawn+freeTransfers.outgoing-freeTransfers.incoming,freeMoneyIncoming:freeTransfers.incoming,freeMoneyOutgoing:freeTransfers.outgoing,freeExpenseCount:freeExpenseTx.length,overBudgetPockets,overBudgetTotal,cashGapTotal,daysRemaining:cycle.daysRemaining,baseDailyPace,safeDailyAmount:Math.max(0,todayRemaining),todaySpent,todayRemaining,isOverspent:todayRemaining<0,hasIncome:cycleIncome>0};
+  const todayRemaining=baseDailyPace;
+  return {cycle,cycleIncome,balanceAdjustmentTotal,committedBudget,savingsAllocated,savingsWithdrawn,freeMoneyInitial,freeMoneySpent,freeMoneyRemaining,freeMoneyMoved:savingsAllocated-savingsWithdrawn+freeTransfers.outgoing-freeTransfers.incoming,freeMoneyIncoming:freeTransfers.incoming,freeMoneyOutgoing:freeTransfers.outgoing,freeExpenseCount:freeExpenseTx.length,overBudgetPockets,overBudgetTotal,cashGapTotal,daysRemaining:cycle.daysRemaining,baseDailyPace,safeDailyAmount:Math.max(0,todayRemaining),todayRemaining,isOverspent:todayRemaining<0,hasIncome:cycleIncome>0};
+}
+function ensureCurrentBudgetAllocations(targetDate=new Date()){
+  const date=new Date(targetDate),cycle=getPaydayCycle(date,getPaydaySetting()),cycleKey=dateInput(cycle.start),cycleStart=dateInput(cycle.start),cycleEnd=dateInput(cycle.end);
+  const pockets=getPockets(),txList=getTX(),savings=getSavings(),transfers=getPocketTransfers();
+  let freeAvailable=calculateSafeDailySpend(txList,pockets,savings,date,getPaydaySetting()).freeMoneyRemaining,changed=false;
+  for(const pocket of pockets){
+    if(pocket.id==='bebas'||!isPocketActive(pocket)||isDedicatedSTPocket(pocket)||pocket.budgetFundedCycle===cycleKey)continue;
+    if(transfers.some(item=>item.fromPocketId===pocket.id&&item.toPocketId==='bebas'&&item.date>=cycleStart&&item.date<=cycleEnd)){
+      pocket.budgetFundedCycle=cycleKey;changed=true;continue;
+    }
+    const usage=calculatePocketUsage(pocket,date,txList,pockets);
+    const needed=Math.max(0,(Number(pocket.amount)||0)-usage.effectiveAmount);
+    if(needed<=0){pocket.budgetFundedCycle=cycleKey;changed=true;continue}
+    const netCost=Math.max(0,needed-Math.min(needed,usage.cashGap));
+    if(freeAvailable<netCost)continue;
+    const transfer=makePocketTransfer('bebas',pocket.id,needed,'Alokasi budget dari Uang Bebas',date,'budget-cycle');
+    if(transfer){transfers.push(transfer);freeAvailable-=netCost;pocket.budgetFundedCycle=cycleKey;changed=true}
+  }
+  if(!changed)return false;
+  try{persistPocketFinance(pockets,transfers);return true}
+  catch(error){console.error('[ArusKas] Gagal mencatat alokasi awal budget',error);return false}
 }
 function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function range(){const o=reportOffset,n=new Date();if(reportPeriod==='daily'){const d=new Date(n);d.setDate(d.getDate()+o);return{start:startDay(d),end:endDay(d),label:d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}}if(reportPeriod==='weekly'){const d=new Date(n);d.setDate(d.getDate()+o*7);return{start:startWeek(d),end:endWeek(d),label:'Minggu ke-'+weekNum(d)+' ('+startWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+endWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+')'}}if(reportPeriod==='yearly'){const y=n.getFullYear()+o;return{start:startYear(new Date(y,0)),end:endYear(new Date(y,0)),label:String(y)}}if(reportPeriod==='range'){const s=$('rangeStart').value?startDay(new Date($('rangeStart').value)):startMonth(n), e=$('rangeEnd').value?endDay(new Date($('rangeEnd').value)):endDay(n);return{start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}}const d=new Date(n.getFullYear(),n.getMonth()+o,1);return{start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}}
@@ -2707,7 +2816,8 @@ function savePocketEdit(e){
     toast('Pos Uang Bebas dikelola otomatis dan tidak dapat diubah.');
     return;
   }
-      const updatedPocket={
+  const updatedPocket={
+    ...(existingPocket||{}),
     id,
     name,
     icon,
@@ -2715,17 +2825,37 @@ function savePocketEdit(e){
     categories,
     color:existingIdx>=0?list[existingIdx].color:'#1f8a5b',
     isActive:existingIdx>=0?isPocketActive(existingPocket):true,
+    createdAt:existingPocket?.createdAt||new Date().toISOString(),
     updatedAt:new Date().toISOString()
   };
   const oldAllocation=existingPocket&&isPocketActive(existingPocket)&&!isDedicatedSTPocket(existingPocket)?Number(existingPocket.amount)||0:0;
   const nextAllocation=isPocketActive(updatedPocket)&&!isDedicatedSTPocket(updatedPocket)?Number(updatedPocket.amount)||0:0;
   const addedAllocation=nextAllocation-oldAllocation;
+  let allocationRecorded=0,refundRecorded=0;
+  const now=new Date(),transfers=getPocketTransfers();
+  const candidateList=existingIdx>=0?list.map(item=>item.id===id?updatedPocket:item):[...list,updatedPocket];
   if(addedAllocation>0){
-    const available=calculateSafeDailySpend(getTX(),list,getSavings(),new Date(),getPaydaySetting()).freeMoneyRemaining;
-    if(addedAllocation>Math.max(0,available)){
+    const txList=getTX(),cycle=getPaydayCycle(now,getPaydaySetting()),cycleStart=dateInput(cycle.start),cycleEnd=dateInput(cycle.end);
+    const usage=calculatePocketUsage(updatedPocket,now,txList,candidateList);
+    const returnedToFree=transfers.filter(item=>item.fromPocketId===id&&item.toPocketId==='bebas'&&item.date>=cycleStart&&item.date<=cycleEnd).reduce((total,item)=>total+item.amount,0);
+    const fundedNet=Math.max(0,usage.effectiveAmount-returnedToFree);
+    const allocationNeeded=Math.max(0,nextAllocation-fundedNet);
+    const available=calculateSafeDailySpend(txList,candidateList,getSavings(),now,getPaydaySetting()).freeMoneyRemaining;
+    const netCost=Math.max(0,allocationNeeded-Math.min(allocationNeeded,usage.cashGap));
+    if(netCost>Math.max(0,available)){
       toast('Uang Bebas tersedia hanya '+money(Math.max(0,available))+'. Kurangi jatah atau alokasikan setelah ada pemasukan.');
       return;
     }
+    const transfer=makePocketTransfer('bebas',id,allocationNeeded,'Alokasi budget saat jatah dibuat atau dinaikkan',now,'budget-edit');if(transfer)transfers.push(transfer);
+    allocationRecorded=allocationNeeded;
+    updatedPocket.budgetFundedCycle=dateInput(cycle.start);
+  }else if(addedAllocation<0&&existingPocket&&isPocketActive(existingPocket)&&!isDedicatedSTPocket(existingPocket)){
+    const usage=calculatePocketUsage(updatedPocket,now,getTX(),candidateList),cycle=getPaydayCycle(now,getPaydaySetting()),cycleStart=dateInput(cycle.start),cycleEnd=dateInput(cycle.end);
+    const transfersOut=transfers.filter(item=>item.fromPocketId===id&&item.toPocketId!=='bebas'&&item.date>=cycleStart&&item.date<=cycleEnd).reduce((total,item)=>total+item.amount,0);
+    const targetRemaining=Math.max(0,amount-usage.spent-usage.allocated-transfersOut);
+    const refund=Math.min(Math.max(0,usage.remaining-targetRemaining),Math.max(0,usage.remaining));
+    const transfer=makePocketTransfer(id,'bebas',refund,'Sisa budget dikembalikan setelah jatah dikurangi',now,'budget-reduction-return');if(transfer)transfers.push(transfer);
+    refundRecorded=refund;
   }
   if(existingIdx>=0){
     list[existingIdx]=updatedPocket;
@@ -2733,15 +2863,17 @@ function savePocketEdit(e){
     updatedPocket.createdAt=new Date().toISOString();
     list.push(updatedPocket);
   }
-  savePockets(list);
+  try{persistPocketFinance(list,transfers)}catch(error){toast(error.message||'Pos anggaran belum tersimpan.');return}
   closePocketEdit();
   render();
-  toast('Pos anggaran berhasil disimpan.');
+  toast(allocationRecorded>0?'Pos tersimpan dan '+short(allocationRecorded)+' dialihkan dari Uang Bebas.':refundRecorded>0?'Pos tersimpan. '+short(refundRecorded)+' dikembalikan ke Uang Bebas.':addedAllocation>0?'Budget berubah; dana pos yang tersedia sudah mencukupi.':addedAllocation<0?'Budget berubah; tidak ada sisa dana yang dapat dikembalikan.':'Pos anggaran berhasil disimpan.');
 }
 
 async function deletePocket(id){
   const p=getPockets().find(x=>x.id===id);
   if(p?.id==='bebas'){toast('Pos Uang Bebas selalu tersedia.');return}
+  const pockets=getPockets(),txList=getTX(),hasTransfer=getPocketTransfers().some(item=>item.fromPocketId===id||item.toPocketId===id),hasTransaction=txList.some(item=>item.pocketId===id||item.type==='expense'&&!item.pocketId&&inferPocket(item.category,item.title,pockets)===id),hasSavings=getSavings().entries.some(item=>item.sourcePocketId===id);
+  if(hasTransfer||hasTransaction||hasSavings){toast('Pos ini sudah memiliki riwayat dana. Nonaktifkan pos agar sisanya kembali ke Uang Bebas; riwayatnya tetap tersimpan.');return}
   const ok=await confirmBox({
     title:'Hapus Pos Anggaran?',
     message:`Pos "${p?p.name:'ini'}" akan dihapus. Transaksi belanja Anda tidak akan terhapus.`,
@@ -2769,7 +2901,7 @@ function renderBudgetPockets(){
       totalPlafond+=usage.amount;
       totalRemaining+=Math.max(0,usage.remaining);
       totalAllocated+=usage.allocated;
-    }else if(p.id==='bebas')totalRemaining+=Math.max(0,usage.remaining);
+     }else if(p.id==='bebas')totalRemaining+=usage.remaining;
     return { pocket: p, usage };
   });
 
@@ -2794,12 +2926,12 @@ function renderBudgetPockets(){
 
   const summary=$('budgetSummaryText');
   if(summary){
-    summary.innerHTML=`Jatah: <strong>${short(totalPlafond)}</strong> · Ke tabungan: <strong>${short(totalAllocated)}</strong> · Sisa pos: <strong style="color:${totalRemaining<0?'#ef4444':'var(--green)'}">${short(totalRemaining)}</strong>`;
+     summary.innerHTML=`Jatah: <strong>${short(totalPlafond)}</strong> · Ke tabungan: <strong>${short(totalAllocated)}</strong> · Sisa dana: <strong style="color:${totalRemaining<0?'#ef4444':'var(--green)'}">${totalRemaining<0?'−':''}${short(Math.abs(totalRemaining))}</strong>`;
   }
 }
 
 function syncAppVersionInfo(){const badge=$('appVersionBadge');if(badge)badge.textContent='v'+APP_VERSION;const updateButton=$('settingsUpdateButton');if(updateButton)updateButton.setAttribute('aria-label','Perbarui aplikasi versi '+APP_VERSION);const note=$('appReleaseNote');if(note)note.textContent='v'+APP_VERSION+' · '+APP_RELEASE_NOTE}
-function render(){syncAppVersionInfo();const arr=sorted(getTX());renderHome(arr);renderSavings();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
+function render(){ensureCurrentBudgetAllocations(new Date());syncAppVersionInfo();const arr=sorted(getTX());renderHome(arr);renderSavings();renderBudgetPockets();renderDestinationChips();renderTX(arr);renderWarmTxSummary(arr);renderReport(arr);renderSC();renderExamples();renderCatManager();renderPocketManager();buildCatOptions();refreshFancySelects();renderWarmPageCopy();}
 function renderWarmPageCopy(){const subtitles={home:new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}),transactions:'Riwayat uang masuk & keluar',add:'Tulis, bicara, atau foto struk',report:'Arus kas dan anggaran bulanan',shortcut:'Yang sering dicatat, lebih cepat',savings:'Rencana yang ingin kamu capai'};if(subtitles[page])$('pageSubtitle').textContent=subtitles[page]}
 function getPocketOrder(){
   try{
@@ -6876,6 +7008,8 @@ if(typeof window!=='undefined'){
   window.setInputDestination=setInputDestination;
   window.renderDestinationChips=renderDestinationChips;
   window.getTX=getTX;
+  window.saveAruskasTransactions=saveTX;
+  window.refreshAruskas=()=>render();
   window.navPocket=navPocket;
   window.quickMoveTxPocket=quickMoveTxPocket;
   window.renderTX=renderTX;
