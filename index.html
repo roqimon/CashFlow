@@ -1730,13 +1730,31 @@ function calculatePocketUsage(pocket,targetDate,txList){
   const isOver=spent+moved>effectiveAmount,overAmount=Math.max(0,spent+moved-effectiveAmount);
   return {pocket,spent,allocated,moved,incoming:transferTotals.incoming,outgoing:transferTotals.outgoing,amount,effectiveAmount,remaining,percent,isOver,overAmount,count:matchingTx.length};
 }
-function getSTPocket(pockets){
+function getSTPocket(pockets,targetName=''){
   const pList=pockets&&pockets.length?pockets:getPockets();
-  return pList.find(p=>{
+  const isST=p=>{
     const name=String(p.name||'').toLowerCase();
     const cats=(p.categories||[]).map(c=>String(c).toLowerCase().trim());
     return name.includes('st')||name.includes('dinas')||name.includes('tugas')||cats.some(c=>c==='st'||c==='dinas'||c==='surat tugas');
-  })||null;
+  };
+  if(targetName){
+    const target=String(targetName).toLowerCase().replace(/\s+/g,' ').trim();
+    const exact=pList.find(p=>String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim()===target);
+    if(exact)return exact;
+    const named=pList.find(p=>isST(p)&&String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim().startsWith(target));
+    if(named)return named;
+  }
+  return pList.find(isST)||null;
+}
+function getOrCreateSTPocket(label){
+  const name=String(label||'').trim();
+  const existing=getSTPocket(getPockets(),name);
+  if(existing)return existing;
+  const pockets=getPockets();
+  const pocket={id:'pocket-st-'+norm(name).replace(/[^a-z0-9]+/g,'-')+'-'+Date.now().toString(36),name,icon:'📋',amount:0,color:'#64748b',categories:['Deklarasi'],isActive:true};
+  pockets.unshift(pocket);
+  savePockets(pockets);
+  return getPockets().find(p=>p.id===pocket.id)||pocket;
 }
 function inferPocket(category,title,pockets){
   const pList=pockets&&pockets.length?pockets:getPockets();
@@ -1978,6 +1996,20 @@ function getSTSessions(){try{return JSON.parse(localStorage.getItem(KEY_STSESS)|
 function saveSTSessions(a){localStorage.setItem(KEY_STSESS,JSON.stringify(a.map(stSession)))}
 function createSTSession(label){const arr=getSTSessions();const s=stSession({label});arr.unshift(s);saveSTSessions(arr);return s.id}
 function getActiveSTSession(){return getSTSessions().find(s=>s.status==='active')||null}
+function getOrCreateSTDepositSession(label){
+  const sessions=getSTSessions();
+  const base=String(label||'Sesi ST').trim();
+  const matching=sessions.filter(s=>{
+    const label=String(s.label||'').toLowerCase();
+    if(label===base.toLowerCase())return true;
+    const suffix=label.startsWith(base.toLowerCase()+' ')?label.slice(base.length+1):'';
+    return /^\d+$/.test(suffix);
+  });
+  const available=matching.find(s=>s.status==='active'&&!getTX().some(t=>t.source==='st'&&t.stSessionId===s.id&&t.type==='income'&&!t.updFlag));
+  if(available)return available.id;
+  const ordinal=matching.length+1;
+  return createSTSession(ordinal>1?base+' '+ordinal:base);
+}
 function closeSTSession(id){const arr=getSTSessions();const i=arr.findIndex(s=>s.id===id);if(i<0)return;arr[i].status='closed';arr[i].closedAt=new Date().toISOString();saveSTSessions(arr)}
 let settleSessionId=null;
 function openSettleModal(sid){settleSessionId=sid;const sess=getSTSessions().find(s=>s.id===sid);if(!sess)return;const b=getSessionBalance(sid);$('settleContent').innerHTML=`<div class="st-settlement-box"><div class="st-settlement-row"><span>Deposit ST</span><strong>${money(b.deposit)}</strong></div><div class="st-settlement-row"><span>Akomodasi (nota)</span><strong>${money(b.akomodasi)}</strong></div><div class="st-settlement-row"><span>Pending reimbursement</span><strong>${money(b.pending)}</strong></div><hr style="border:0;border-top:1px solid var(--line);margin:6px 0"><div class="upd-calc"><label>Hari dinas<input type="number" id="settleDays" value="1" min="1" inputmode="numeric"></label><label>Tipe<select id="settleOvernight"><option value="0">Tidak menginap (79.500)</option><option value="1">Menginap (132.500)</option></select></label></div><div class="st-settlement-row" style="margin-top:8px"><span>UPD</span><strong id="settleUPD">${money(79500)}</strong></div><div id="settleResult"></div></div>`;$('settleDays').addEventListener('input',updateSettlePreview);$('settleDays').addEventListener('keydown',e=>{if(e.key==='Enter'){$('settleConfirm')?.click()}});$('settleOvernight').addEventListener('change',updateSettlePreview);updateSettlePreview();openModalLayer('settleModal')}
@@ -2203,16 +2235,25 @@ function parseCsvDateValue(dateStr, timeStr){
 function parseInput(input){
   const raw=String(input||'').trim();
   if(!raw)return{ok:false,msg:'Input masih kosong.'};
-  let isExplicitPersonal=false, isExplicitST=false, rawWork=raw;
+  let isExplicitPersonal=false, isExplicitST=false, rawWork=raw, stMonthLabel='';
   if(/^pribadi\s+/i.test(rawWork)){
     isExplicitPersonal=true;
     rawWork=rawWork.replace(/^pribadi\s+/i,'').trim();
+  }else if(/^uang\s+(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i.test(rawWork)){
+    isExplicitST=true;
+    rawWork=rawWork.replace(/^uang\s+(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i,'').trim();
   }else if(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i.test(rawWork)){
     isExplicitST=true;
     rawWork=rawWork.replace(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i,'').trim();
   }
-  const stPocket=getSTPocket();
-  if(isExplicitST && !stPocket){
+  const stMonthMatch=rawWork.match(/\b(januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\b/i);
+  if(isExplicitST&&stMonthMatch){
+    const monthNames={jan:'Januari',januari:'Januari',feb:'Februari',februari:'Februari',mar:'Maret',maret:'Maret',apr:'April',april:'April',mei:'Mei',may:'Mei',jun:'Juni',juni:'Juni',jul:'Juli',juli:'Juli',agu:'Agustus',agt:'Agustus',ags:'Agustus',agustus:'Agustus',sep:'September',september:'September',okt:'Oktober',oktober:'Oktober',nov:'November',november:'November',des:'Desember',desember:'Desember'};
+    stMonthLabel='ST '+monthNames[stMonthMatch[1].toLowerCase()];
+  }
+  const depositIntent=isExplicitST&&!!stMonthLabel&&/^\s*(?:uang\s+)?(?:januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\s*$/i.test(rawWork.replace(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/i,'').trim());
+  let stPocket=getSTPocket(null,stMonthLabel);
+  if(isExplicitST && !stPocket&&!stMonthLabel){
     return {ok:false, msg:'Pos Anggaran ST belum dibuat. Buat pos ST di Pengaturan Pos Anggaran.'};
   }
   let isST=false;
@@ -2225,7 +2266,7 @@ function parseInput(input){
   let parsedDate=dateInfo.hasDate?dateInfo.date:null;
   let parsedDateNote=dateInfo.note||'';
   if(dateInfo.hasDate){rawWork=dateInfo.cleanText}
-  const targetPocketId = isST && stPocket ? stPocket.id : (isExplicitPersonal ? null : undefined);
+  const matchingSTSession=isST&&stMonthLabel?getSTSessions().find(s=>s.status==='active'&&String(s.label||'').toLowerCase().startsWith(stMonthLabel.toLowerCase())):null;
   const scMatch=matchShortcut(rawWork,getSC());
   if(scMatch){
     const s=scMatch.shortcut,rem=scMatch.remainder;
@@ -2234,6 +2275,8 @@ function parseInput(input){
     const typedAmount=amMatch?parseAmount(amMatch[0]):null;
     const amount=typedAmount||Number(s.amount)||0;
     if(!amount)return{ok:false,msg:'Tambahkan nominal. Contoh: '+s.code+' 25, atau isi nilai nominal di menu Pintasan.'};
+    if(isST&&stMonthLabel&&!stPocket)stPocket=getOrCreateSTPocket(stMonthLabel);
+    const targetPocketId=isST&&stPocket?stPocket.id:(isExplicitPersonal?null:undefined);
     const noteExtra=(amMatch?(rem.slice(0,amMatch.index)+' '+rem.slice(amMatch.index+amMatch[0].length)):rem).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();
     const note=[s.note,noteExtra,parsedDateNote].filter(Boolean).join(' · ');
     let scSource=isST?'st':'personal';
@@ -2243,7 +2286,7 @@ function parseInput(input){
       if(fixedTarget===null){scSource='personal';scPocketId=null}
       else{const targetPocket=getPockets().find(p=>p.id===fixedTarget);if(!targetPocket)return{ok:false,msg:'Pos yang dipilih pada pintasan sudah tidak tersedia. Perbarui tujuan pos pintasan.'};scPocketId=targetPocket.id;scSource=stPocket&&targetPocket.id===stPocket.id?'st':'personal'}
     }
-    const item=tx({title:s.title,amount,type:s.type,category:s.category,icon:s.icon,note,rawInput:raw,shortcutCode:s.code,source:scSource,pocketId:scPocketId,reimburseStatus:(scSource==='st'&&s.type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
+    const item=tx({title:s.title,amount,type:s.type,category:s.category,icon:s.icon,note,rawInput:raw,shortcutCode:s.code,source:scSource,pocketId:scPocketId,stSessionId:depositIntent?getOrCreateSTDepositSession(stMonthLabel):matchingSTSession?.id,reimburseStatus:(scSource==='st'&&s.type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
     return{ok:true,item,msg:fmt(item,true)};
   }
   const matches=[...rawWork.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];
@@ -2251,6 +2294,9 @@ function parseInput(input){
   if(!am)return{ok:false,msg:'Tambahkan nominal. Contoh: kopi 25 atau makan 30.'};
   const amount=typedAmount;
   if(!amount)return{ok:false,msg:'Nominal belum terbaca. Coba tulis 25, 50rb, atau 5jt.'};
+  if(isST&&stMonthLabel&&!stPocket)stPocket=getOrCreateSTPocket(stMonthLabel);
+  const targetPocketId=isST&&stPocket?stPocket.id:(isExplicitPersonal?null:undefined);
+  const stDepositSessionId=depositIntent?getOrCreateSTDepositSession(stMonthLabel):matchingSTSession?.id;
   const without=(rawWork.slice(0,am.index)+' '+rawWork.slice(am.index+am[0].length)).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();
   const userTitle=title(without||'Transaksi');
   let first=norm((without.split(' ')[0]||''));
@@ -2259,10 +2305,10 @@ function parseInput(input){
     const tail=without.split(' ').slice(1).join(' ').trim();
     const note=[catShortcut.note,tail,parsedDateNote].filter(Boolean).join(' · ');
     const catPocketId = targetPocketId !== undefined ? targetPocketId : (isST && stPocket ? stPocket.id : null);
-    const item=tx({title:tail?title(tail):catShortcut.name,amount,type:catShortcut.type,category:catShortcut.name,icon:catShortcut.icon,note,rawInput:raw,shortcutCode:catShortcut.code,source:isST?'st':'personal',pocketId:catPocketId,reimburseStatus:(isST&&catShortcut.type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
+    const item=tx({title:tail?title(tail):catShortcut.name,amount,type:catShortcut.type,category:catShortcut.name,icon:catShortcut.icon,note,rawInput:raw,shortcutCode:catShortcut.code,source:isST?'st':'personal',pocketId:catPocketId,stSessionId:stDepositSessionId,reimburseStatus:(isST&&catShortcut.type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
     return{ok:true,item,msg:fmt(item,true)};
   }
-  const type=inferType(rawWork);
+  const type=depositIntent?'income':inferType(rawWork);
   const memCat=getCatMem();
   const fullKey=without.toLowerCase().trim();
   let category=null;
@@ -2271,8 +2317,9 @@ function parseInput(input){
   else if(memCat[fullKey]&&memCat[fullKey]!=="Lainnya"){category=memCat[fullKey];}
   else if(first&&!INDONESIAN_STOPWORDS.has(first)&&memCat[first]&&memCat[first]!=="Lainnya"){category=memCat[first];}
   else{category=inferredCat||memCat[fullKey]||(!INDONESIAN_STOPWORDS.has(first)&&memCat[first])||"Lainnya";}
+  if(depositIntent)category='Deklarasi';
   const finalPocketId = targetPocketId !== undefined ? targetPocketId : (isST && stPocket ? stPocket.id : null);
-  const item=tx({title:userTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',pocketId:finalPocketId,reimburseStatus:(isST&&type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
+  const item=tx({title:depositIntent?stMonthLabel:userTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',pocketId:finalPocketId,stSessionId:stDepositSessionId,reimburseStatus:(isST&&type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
   return{ok:true,item,msg:fmt(item,false)};
 }
 function applyFuzzy(input,suggestion){const raw=input.trim();const m=[...raw.matchAll(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/gi)];const am=m[0];const without=(raw.slice(0,am.index)+' '+raw.slice(am.index+am[0].length)).replace(/[+\-]/g,' ').replace(/\s+/g,' ').trim();const tail=without.split(' ').slice(1).join(' ').trim();const correctedInput=`${suggestion} ${am[0]}${tail?' '+tail:''}`;const el=page==='add'?$('focusInput'):$('quickInput');el.value=correctedInput;pratinjau(el.id,el.id==='quickInput'?'quickPreview':'focusPreview')}window.applyFuzzy=applyFuzzy;
