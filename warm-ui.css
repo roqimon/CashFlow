@@ -199,6 +199,7 @@ body { background: var(--app-bg) !important; }
 .sweep-preview { margin: 14px 0 2px; padding: 10px 12px; border-radius: 13px; background: var(--surface2); color: var(--muted); font-size: 11.5px; line-height: 1.45; }
 .pocket-action-choice { display: grid; gap: 10px; margin-top: 16px; }
 .pocket-action-choice button { width: 100%; min-height: 66px; padding: 11px 15px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 16px; text-align: left; }
+.pocket-action-choice button[hidden] { display: none !important; }
 .pocket-action-choice button span { font-size: 12px; font-weight: 650; opacity: .8; }
 .pocket-action-choice button strong { font-size: 13px; white-space: nowrap; }
 .pocket-action-choice button:disabled { opacity: .48; cursor: not-allowed; }
