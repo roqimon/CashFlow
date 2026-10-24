@@ -135,6 +135,16 @@
     return { goals, entries: data.entries };
   }
 
+  function deleteGoal(savings, goalId) {
+    const data = normalizeSavings(savings);
+    const id = String(goalId || '').trim();
+    if (!data.goals.some((goal) => goal.id === id)) throw new Error('Tujuan tabungan tidak ditemukan.');
+    return {
+      goals: data.goals.filter((goal) => goal.id !== id),
+      entries: data.entries.filter((entry) => entry.goalId !== id),
+    };
+  }
+
   function addEntry(savings, input) {
     const data = normalizeSavings(savings);
     const goal = data.goals.find((item) => item.id === input?.goalId);
@@ -181,5 +191,5 @@
       total + (entry.type === 'deposit' && entry.sourcePocketId === pocketId && entry.date.startsWith(month) ? entry.amount : 0), 0);
   }
 
-  return { emptySavings, validDate, calendarDays, normalizeSavings, goalBalance, goalStats, upsertGoal, addEntry, mergeSavings, pocketAllocated };
+  return { emptySavings, validDate, calendarDays, normalizeSavings, goalBalance, goalStats, upsertGoal, deleteGoal, addEntry, mergeSavings, pocketAllocated };
 });
