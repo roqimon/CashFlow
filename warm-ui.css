@@ -1334,7 +1334,15 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .page[data-page="home"] .home-quick .quick-input-icon img { filter: grayscale(1) opacity(.48) !important; }
 .page[data-page="home"] .home-quick .input-row > .primary { flex-direction: row; gap: 7px; background: #bb4e2e !important; font-size: 13px; }
 .page[data-page="home"] #budgetContainer, .page[data-page="home"] .home-savings, .page[data-page="home"] .home-recent-transactions { background: #fffdfb !important; }
-.page[data-page="home"] #budgetContainer { margin-bottom: 10px; padding: 7px 13px 1px !important; }
+.page[data-page="home"] #budgetContainer { margin: 0 0 8px; padding: 0 !important; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: #fffdfb !important; }
+.page[data-page="home"] #budgetContainer > summary { display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 13px; color: var(--ink); cursor: pointer; list-style: none; }
+.page[data-page="home"] #budgetContainer > summary::-webkit-details-marker { display: none; }
+.page[data-page="home"] #budgetContainer > summary > span:first-child { display: grid; gap: 3px; }
+.page[data-page="home"] #budgetContainer > summary strong { color: #281c1d; font-size: 16px; font-weight: 850; }
+.page[data-page="home"] #budgetContainer > summary small { color: var(--muted); font-size: 10px; }
+.page[data-page="home"] .home-active-pockets-chevron { color: #bb4e2e; font-size: 18px; font-weight: 700; transition: transform .18s ease; }
+.page[data-page="home"] #budgetContainer[open] .home-active-pockets-chevron { transform: rotate(45deg); }
+.page[data-page="home"] .home-active-pockets-content { padding: 0 13px 12px; }
 .page[data-page="home"] .budget-home-head { margin: 0 0 2px; }
 .page[data-page="home"] #budgetContainer .budget-home-head strong, .page[data-page="home"] .home-savings-heading h3 { color: #281c1d; font-size: 16px !important; font-weight: 850; }
 .page[data-page="home"] #budgetContainer .budget-home-head .text-btn, .page[data-page="home"] .home-recent-head .text-btn { color: #bb4e2e !important; font-size: 11px; }

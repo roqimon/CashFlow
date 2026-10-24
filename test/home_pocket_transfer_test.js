@@ -130,7 +130,7 @@ test('home keeps Pos aktif visible with an activation hint when no user budget i
   const source=html.slice(start,end);
   const functionSource=source.match(/function renderBudgetPockets\(\)\{[\s\S]*?^\}/m)?.[0];
   assert.ok(functionSource,'renderBudgetPockets should be available for a no-active-pocket check');
-  const elements={budgetPocketList:{innerHTML:'',hidden:false},budgetContainer:{hidden:true},budgetSummaryText:{innerHTML:''}};
+  const elements={budgetPocketList:{innerHTML:'',hidden:false},budgetContainer:{hidden:true},budgetSummaryText:{innerHTML:''},homeActivePocketsStatus:{textContent:''}};
   const context={
     $:id=>elements[id]||null,
     getPockets:()=>[{id:'bebas',name:'Uang Bebas',amount:0,color:'#64748b',isSystem:true}],
@@ -144,5 +144,6 @@ test('home keeps Pos aktif visible with an activation hint when no user budget i
   vm.createContext(context);
   vm.runInContext(functionSource+'; renderBudgetPockets();',context);
   assert.equal(elements.budgetContainer.hidden,false,'the Pos aktif section should remain visible');
+  assert.equal(elements.homeActivePocketsStatus.textContent,'Belum ada pos anggaran aktif');
   assert.match(elements.budgetPocketList.innerHTML,/Belum ada pos anggaran aktif/);
 });
