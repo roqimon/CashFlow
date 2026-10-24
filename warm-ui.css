@@ -107,9 +107,9 @@ body { background: var(--app-bg) !important; }
 .nav .add { width: 58px !important; height: 58px !important; min-height: 58px !important; border-radius: 50% !important; background: linear-gradient(150deg,#c76543,#9d402a) !important; box-shadow: 0 8px 19px rgba(147, 63, 38, .26) !important; color: #fff !important; transform: translateY(-16px) !important; }
 .nav .add .nav-add-svg { width: 29px; height: 29px; }
 
-/* The balance card keeps the only stitched edge in the interface. */
-.balance { position: relative; overflow: hidden; margin-top: 15px; padding: 27px 25px 24px !important; border: 0 !important; border-radius: 24px !important; color: #fff; background: linear-gradient(140deg, #c76b49, #a5462e 84%) !important; box-shadow: 0 14px 30px rgba(139, 58, 35, .17) !important; }
-.balance::after { content: ""; position: absolute; inset: 10px; border: 1.5px dashed rgba(255, 240, 224, .72); border-radius: 17px; pointer-events: none; }
+/* Warm terracotta card anchors the home dashboard. */
+.balance { position: relative; overflow: hidden; margin-top: 12px; padding: 17px 18px 16px !important; border: 0 !important; border-radius: 23px !important; color: #fff; background: linear-gradient(145deg, #783f32, #a75037 88%) !important; box-shadow: 0 12px 26px rgba(115, 54, 39, .17) !important; }
+.balance::after { content: ""; position: absolute; inset: 1px; border: 1px solid rgba(255, 244, 231, .12); border-radius: 22px; pointer-events: none; }
 .balance > * { position: relative; z-index: 1; }
 .balance .row { font-size: 13px; color: #fff8f0; }
 .balance #homePeriod { opacity: .86; font-size: 11px; }
@@ -590,7 +590,7 @@ html[data-theme="dark"] #catManager .shortcut-actions button[data-del-cat] {
 }
 @media (max-width: 430px) {
   .screen { padding-left: 13px !important; padding-right: 13px !important; padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)) !important; }
-  .balance { padding: 25px 22px 22px !important; }
+  .balance { padding: 16px 15px 14px !important; }
   .balance .grid2 strong { font-size: 13.5px; }
   .nav {
     position: fixed !important;
@@ -807,18 +807,17 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   .savings-calendar-empty { min-height: 34px; }
 }
 
-/* Bring the home icons in line with the approved filled, high-contrast artwork. */
+/* Soft highlight echoes the warm dashboard concept without competing with its figures. */
 .balance::before {
   content: "";
   position: absolute;
   z-index: 0;
-  top: 59px;
-  right: 29px;
-  width: 38px;
-  height: 38px;
-  background: url("./icons/category/leaf.svg") center / contain no-repeat;
-  filter: brightness(0) invert(1);
-  opacity: .2;
+  top: -92px;
+  right: -72px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 222, 177, .2), rgba(255, 222, 177, .055) 48%, transparent 72%);
   pointer-events: none;
 }
 .home-quick .quick-tool img {
@@ -1262,3 +1261,17 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
   color: #5f6368;
 }
 
+
+/* Compact dashboard hero: retain the warm card while reducing its vertical footprint. */
+.balance #homePeriod { opacity: .9; font-size: 10px; white-space: nowrap; }
+.balance .daily-guidance-label { display: inline-flex; align-items: center; width: max-content; margin-top: 5px; padding: 4px 8px; border: 1px solid rgba(255,244,231,.24); border-radius: 999px; background: rgba(255,244,231,.1); color: rgba(255,250,244,.96); font-size: 10px; font-weight: 800; letter-spacing: .025em; }
+.balance #dailySafeAmount { margin: 6px 0 3px; font-size: clamp(28px, 7.4vw, 35px); line-height: 1.06; letter-spacing: -.045em; }
+.balance .daily-guidance-note { display: block; color: rgba(255,255,255,.82); font-size: 10px; line-height: 1.25; }
+.balance .grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); margin-top: 10px !important; border-top: 1px solid rgba(255,255,255,.22); padding-top: 10px; gap: 7px 8px; }
+.balance .grid2 > div { min-width: 0; padding: 7px 9px !important; border: 1px solid rgba(255,255,255,.1) !important; border-radius: 13px; background: rgba(255,255,255,.08); }
+.balance .grid2 small { color: #f8e8df; font-size: 9.5px; line-height: 1.15; letter-spacing: .025em; text-transform: uppercase; }
+.balance .grid2 strong { display: block; min-width: 0; margin-top: 3px; overflow: hidden; color: #fffaf5; font-size: clamp(12px, 3.65vw, 15px); line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
+.balance .grid2 #committedStatus { font-size: clamp(11px, 3.25vw, 13px); }
+.balance .grid2 > div:nth-child(n+3) { grid-column: auto !important; }
+@media (max-width: 430px) { .balance .grid2 strong { font-size: clamp(12px, 3.6vw, 14px); } }
+.balance .grid2 small::before { display: none !important; content: none !important; }
