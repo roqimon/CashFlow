@@ -813,15 +813,15 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       color: var(--green, #1f8a5b);
     }
   </style>
-  <link rel="stylesheet" href="./warm-ui.css?v=20261024.91" />
+  <link rel="stylesheet" href="./warm-ui.css?v=20261024.92" />
 </head>
 <body>
 <div class="shell">
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.7" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.7</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.7 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pencatatan pemasukan dan tujuan Uang Bebas diperbaiki.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.8" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.8</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.8 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -838,8 +838,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <strong id="freeMoneyTotal" style="display:block">Rp 0</strong>
             </div>
             <div>
-              <small style="opacity:.9">Pos Komitmen</small>
-              <strong id="committedStatus" style="display:block">Aman 🛡️</strong>
+              <small style="opacity:.9">Anggaran</small>
+              <strong id="committedStatus" class="commitment-status" data-state="ok">Semua sesuai jatah</strong>
             </div>
           </div>
           <!-- Hidden fallback elements for legacy compatibility -->
@@ -1025,7 +1025,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v9.7 · Pemasukan seperti gaji masuk ke Uang Bebas kecuali pos tujuan disebutkan.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v9.8 · Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1578,7 +1578,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='9.7', APP_RELEASE_NOTE='Pemasukan seperti gaji masuk ke Uang Bebas kecuali pos tujuan disebutkan.';
+const APP_VERSION='9.8', APP_RELEASE_NOTE='Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1639,7 +1639,10 @@ function savePockets(list){
 }
 function getPocketTransfers(){try{const rows=JSON.parse(localStorage.getItem(KEY_POCKET_TRANSFERS)||'[]');return Array.isArray(rows)?rows.filter(item=>item&&item.id&&item.fromPocketId&&item.toPocketId&&item.fromPocketId!==item.toPocketId&&Number.isSafeInteger(Number(item.amount))&&Number(item.amount)>0&&/^\d{4}-\d{2}-\d{2}$/.test(String(item.date||''))).map(item=>({...item,amount:Number(item.amount),date:String(item.date),note:String(item.note||'').slice(0,280)})):[]}catch{return[]}}
 function savePocketTransfers(rows){try{localStorage.setItem(KEY_POCKET_TRANSFERS,JSON.stringify(Array.isArray(rows)?rows:[]));return getPocketTransfers()}catch(e){console.error('[ArusKas] Error saving pocket transfers',e);throw new Error('Penyimpanan perangkat penuh. Cadangkan atau kosongkan ruang lalu coba lagi.')}}
-function getPocketTransferTotals(pocketId,targetDate=new Date()){const date=targetDate instanceof Date?targetDate:new Date(targetDate),month=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;return getPocketTransfers().reduce((totals,item)=>{if(!item.date.startsWith(month))return totals;if(item.fromPocketId===pocketId)totals.outgoing+=item.amount;if(item.toPocketId===pocketId)totals.incoming+=item.amount;return totals},{incoming:0,outgoing:0})}
+function getPocketTransferTotals(pocketId,targetDate=new Date()){
+  const cycle=getPaydayCycle(targetDate,getPaydaySetting()),start=dateInput(cycle.start),end=dateInput(cycle.end);
+  return getPocketTransfers().reduce((totals,item)=>{if(item.date<start||item.date>end)return totals;if(item.fromPocketId===pocketId)totals.outgoing+=item.amount;if(item.toPocketId===pocketId)totals.incoming+=item.amount;return totals},{incoming:0,outgoing:0});
+}
 function getSavings(){
   try{return savingsCore.normalizeSavings(JSON.parse(localStorage.getItem(KEY_SAVINGS)||'null'))}
   catch(e){return savingsCore.emptySavings()}
@@ -1656,6 +1659,12 @@ function isPocketActive(pocket, txList = []){
   if(typeof pocket.active === 'boolean') return pocket.active;
   return true;
 }
+function isDedicatedSTPocket(pocket){
+  if(!pocket||pocket.id==='bebas')return false;
+  const name=String(pocket.name||'').toLowerCase();
+  const categories=(pocket.categories||[]).map(value=>String(value||'').toLowerCase().trim());
+  return /(?:^|\s)st\b|surat\s*tugas|\bdinas\b/.test(name)||categories.some(value=>['st','surat tugas','dinas'].includes(value));
+}
 function manualTransactionPocket(item,pockets=getPockets()){
   if(!item)return 'bebas';
   if(item.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
@@ -1666,6 +1675,14 @@ function setPocketActive(pocketId, active){
   const list = getPockets();
   const idx = list.findIndex(p => p.id === pocketId);
   if(idx >= 0&&pocketId!=='bebas'){
+    const pocket=list[idx];
+    if(active&&!isPocketActive(pocket)&&!isDedicatedSTPocket(pocket)){
+      const available=calculateSafeDailySpend(getTX(),list,getSavings(),new Date(),getPaydaySetting()).freeMoneyRemaining;
+      if(Number(pocket.amount||0)>Math.max(0,available)){
+        toast('Uang Bebas belum cukup untuk mengaktifkan pos ini.');
+        return;
+      }
+    }
     list[idx].isActive = !!active;
     list[idx].updatedAt = new Date().toISOString();
     savePockets(list);
@@ -1681,22 +1698,15 @@ function setPocketActive(pocketId, active){
   }
 }
 function calculatePocketUsage(pocket,targetDate,txList){
+  const date=targetDate?new Date(targetDate):new Date();
+  const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(date,getPaydaySetting()):{start:startMonth(date),end:endMonth(date)};
+  const startTs=cycle.start.getTime(),endTs=cycle.end.getTime();
   if(pocket?.id==='bebas'){
-    const date=targetDate?new Date(targetDate):new Date();
-    const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(date,getPaydaySetting()):{start:startMonth(date),end:endMonth(date)};
-    const from=cycle.start.getTime(),to=cycle.end.getTime();
-    const cycleRows=(txList||[]).filter(t=>{const at=new Date(t.createdAt||Date.now()).getTime();return at>=from&&at<=to&&t.source!=='st'});
-    const income=cycleRows.filter(t=>t.type==='income').reduce((total,t)=>total+(Number(t.amount)||0),0);
-    const committed=getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)).reduce((total,p)=>total+(Number(p.amount)||0),0);
-    const allocated=savingsCore.pocketAllocated(getSavings(),'bebas',date);
-    const activeIds=new Set(getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)).map(p=>p.id));
-    const spent=cycleRows.filter(t=>t.type==='expense'&&(t.pocketId==='bebas'||(t.pocketId&&!activeIds.has(t.pocketId))||(!t.pocketId&&!getPockets().some(p=>p.id!=='bebas'&&isPocketActive(p)&&(p.categories||[]).some(c=>String(t.category||'').toLowerCase().includes(String(c).toLowerCase())||String(t.title||'').toLowerCase().includes(String(c).toLowerCase())))))).reduce((total,t)=>total+(Number(t.amount)||0),0);
-    const amount=Math.max(0,income-committed-allocated),remaining=amount-spent,percent=amount>0?Math.round(spent/amount*100):0;
-    return {pocket,spent,allocated,moved:allocated,incoming:0,outgoing:0,amount,effectiveAmount:amount,remaining,percent,isOver:spent>amount,overAmount:Math.max(0,spent-amount),count:cycleRows.filter(t=>t.type==='expense'&&t.pocketId==='bebas').length};
+    const safe=calculateSafeDailySpend(txList||getTX(),getPockets(),getSavings(),date,getPaydaySetting());
+    const amount=safe.freeMoneyInitial,remaining=safe.freeMoneyRemaining,spent=safe.freeMoneySpent;
+    const percent=amount>0?Math.round(Math.max(0,spent)/amount*100):0;
+    return {pocket,spent,allocated:safe.savingsAllocated,moved:safe.freeMoneyMoved,incoming:safe.freeMoneyIncoming,outgoing:safe.freeMoneyOutgoing,amount,effectiveAmount:amount,remaining,percent,isOver:remaining<0,overAmount:Math.max(0,-remaining),count:safe.freeExpenseCount};
   }
-  const d=targetDate?new Date(targetDate):new Date();
-  const cycle=(typeof getPaydayCycle==='function')?getPaydayCycle(d,getPaydaySetting()):{start:startMonth(d),end:endMonth(d)};
-  const startTs=cycle.start.getTime(), endTs=cycle.end.getTime();
   const cats=(pocket.categories||[]).map(c=>String(c).toLowerCase().trim());
   const matchingTx=(txList||[]).filter(t=>{
     if(t.type!=='expense')return false;
@@ -1711,9 +1721,11 @@ function calculatePocketUsage(pocket,targetDate,txList){
     return cats.some(c=>tCat.includes(c)||tTitle.includes(c));
   });
   const spent=matchingTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const allocated=savingsCore.pocketAllocated(getSavings(),pocket.id,d);
-  const transferTotals=getPocketTransferTotals(pocket.id,d);
-  const amount=Number(pocket.amount)||0;
+  const savings=getSavings();
+  const allocated=getSavingsAllocationsBySource(savings,pocket.id,cycle,txList||getTX());
+  const transferTotals=getPocketTransferTotals(pocket.id,date);
+  const stIncome=isDedicatedSTPocket(pocket)?(txList||[]).filter(t=>t.type==='income'&&t.source==='st'&&t.pocketId===pocket.id&&new Date(t.createdAt||Date.now()).getTime()>=startTs&&new Date(t.createdAt||Date.now()).getTime()<=endTs).reduce((total,t)=>total+(Number(t.amount)||0),0):0;
+  const amount=stIncome>0?stIncome:(Number(pocket.amount)||0);
   const effectiveAmount=amount+transferTotals.incoming,moved=allocated+transferTotals.outgoing;
   const remaining=effectiveAmount-spent-moved;
   const percent=effectiveAmount>0?Math.round(((spent+moved)/effectiveAmount)*100):0;
@@ -1725,13 +1737,14 @@ function getSTPocket(pockets,targetName=''){
   const isST=p=>{
     const name=String(p.name||'').toLowerCase();
     const cats=(p.categories||[]).map(c=>String(c).toLowerCase().trim());
-    return name.includes('st')||name.includes('dinas')||name.includes('tugas')||cats.some(c=>c==='st'||c==='dinas'||c==='surat tugas');
+    return /(?:^|\s)st\b|surat\s*tugas|\bdinas\b/.test(name)||cats.some(c=>c==='st'||c==='dinas'||c==='surat tugas');
   };
   if(targetName){
     const target=String(targetName).toLowerCase().replace(/\s+/g,' ').trim();
     const exact=pList.find(p=>String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim()===target);
     if(exact)return exact;
-    const named=pList.find(p=>isST(p)&&String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim().startsWith(target));
+    const hasYear=/\b20\d{2}\b/.test(target);
+    const named=pList.find(p=>isST(p)&&String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim().startsWith(target)&&(!hasYear||String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim().includes(target)));
     if(named)return named;
   }
   return pList.find(isST)||null;
@@ -1943,7 +1956,7 @@ const defaultShortcuts=[sc({code:'kopi',title:'Kopi Kenangan',category:'Makan',t
 function id(){return (crypto.randomUUID&&crypto.randomUUID())||Date.now()+'-'+Math.random().toString(16).slice(2)}
 function at(days,h,m){const d=new Date();d.setDate(d.getDate()+days);d.setHours(h,m,0,0);return d.toISOString()}
 function sc(o={}){const amt=parseAmount(o.amount)||Number(o.amount)||0;return {id:o.id||id(),code:norm(o.code),title:o.title||'Transaksi',category:o.category||'Lainnya',type:o.type||'expense',icon:o.icon||icon(o.category,o.type),amount:amt,note:o.note||o.comment||'',targetPocketId:Object.hasOwn(o,'targetPocketId')?o.targetPocketId:'auto',showHome:o.showHome!==false}}
-function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const workType=o.workType||o.declarationType||'';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;const pocketId=o.pocketId!==undefined?o.pocketId:null;return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,pocketId,receiptId:o.receiptId||null,workType,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
+function tx(o){const type=o.type||'expense', category=o.category||(type==='income'?'Pemasukan':'Lainnya'), source=o.source||'personal';const workType=o.workType||o.declarationType||'';const reimburseStatus=(source==='st'&&type==='expense')?(o.reimburseStatus||'pending'):(o.reimburseStatus||null);const stSessionId=o.stSessionId||(source==='st'?getActiveSTSession()?.id:null);const updFlag=o.updFlag||false;const pocketId=source==='st'?(o.pocketId!==undefined?o.pocketId:null):(type==='income'?'bebas':(o.pocketId!==undefined?o.pocketId:null));return {id:o.id||id(),title:o.title||'Transaksi',amount:Number(o.amount)||0,type,category,icon:o.icon||icon(category,type),note:o.note||'',rawInput:o.rawInput||'',shortcutCode:o.shortcutCode||'',source,reimburseStatus,stSessionId,pocketId,receiptId:o.receiptId||null,workType,updFlag,createdAt:o.createdAt||new Date().toISOString(),updatedAt:o.updatedAt||null}}
 const sample=[tx({title:'Kopi Kenangan',amount:25000,type:'expense',category:'Makan',icon:'☕',rawInput:'kopi 25',shortcutCode:'kopi',createdAt:at(0,9,15)}),tx({title:'Nasi Padang',amount:25000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'nasi padang 25',createdAt:at(0,12,30)}),tx({title:'Gaji Bulanan',amount:5000000,type:'income',category:'Pemasukan',icon:'💰',rawInput:'gaji 5jt',shortcutCode:'gaji',createdAt:at(-1,8,0)}),tx({title:'GoFood',amount:23000,type:'expense',category:'Makan',icon:'🍽️',rawInput:'gofood 23',createdAt:at(-1,13,45)}),tx({title:'Gojek',amount:18000,type:'expense',category:'Transport',icon:'🚙',rawInput:'gojek 18',createdAt:at(-1,17,12)}),tx({title:'Beli Bensin',amount:50000,type:'expense',category:'Transport',icon:'⛽',rawInput:'bensin 50',shortcutCode:'bensin',createdAt:at(-5,10,20)}),tx({title:'Belanja Bulanan',amount:320000,type:'expense',category:'Belanja',icon:'🛍️',rawInput:'belanja bulanan 320',createdAt:at(-8,15,20)})];
 function boot(){const curSc=getSC();const legacyCodes=['api','server','jurnal','honor'];const hasLegacySc=curSc.some(s=>legacyCodes.includes(norm(s.code))||/honor/i.test(s.title));if(localStorage.getItem(KEY_SC)===null&&!localStorage.getItem('aruskas_cleared'))saveSC(defaultShortcuts);else if(hasLegacySc){const cleaned=curSc.filter(s=>!legacyCodes.includes(norm(s.code))&&!/honor/i.test(s.title));saveSC(cleaned);}const curTx=getTX();if(!curTx.length&&!localStorage.getItem('aruskas_cleared'))saveTX(sample);else if(curTx.some(t=>['honor','api','server','jurnal'].includes(t.shortcutCode)||/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)||/honor proyek/i.test(t.title))){const cleanedTx=curTx.filter(t=>!['honor','api','server','jurnal'].includes(t.shortcutCode)&&!/honor 3jt|api 50|server 120|jurnal 250/i.test(t.rawInput)&&!/honor proyek/i.test(t.title));saveTX(cleanedTx.length?cleanedTx:sample);}const memT=getTitleMem();if(memT&&memT['siang']&&/udang/i.test(memT['siang'])){delete memT['siang'];localStorage.setItem(KEY_TITLEMEM,JSON.stringify(memT))}const curTxns=getTX();let txDirty=false;curTxns.forEach(t=>{if(/siang/i.test(t.rawInput)&&/udang/i.test(t.title)){t.title='Siang';t.category='Makan';t.icon='🍽️';txDirty=true}});if(txDirty)saveTX(curTxns);if($('rangeStart'))$('rangeStart').value=dateInput(startMonth(new Date()));if($('rangeEnd'))$('rangeEnd').value=dateInput(new Date());if($('txRangeStart'))$('txRangeStart').value=dateInput(startMonth(new Date()));if($('txRangeEnd'))$('txRangeEnd').value=dateInput(new Date());try{const cm=getCatMem();let d=false;Object.keys(cm).forEach(k=>{if(cm[k]==="Lainnya"||INDONESIAN_STOPWORDS.has(k)){delete cm[k];d=true}});if(d)localStorage.setItem(KEY_CATMEM,JSON.stringify(cm));}catch(e){};buildFuzzyCache();bootFixCatMem();try{const cm2=getCatMem();let d2=false;Object.keys(cm2).forEach(k=>{if(cm2[k]==="Lainnya"||INDONESIAN_STOPWORDS.has(k)){delete cm2[k];d2=true}});if(d2)localStorage.setItem(KEY_CATMEM,JSON.stringify(cm2));}catch(e){};buildCatOptions();populateCatSelect($('manCategory'));populateCatSelect($('scCategory'));initCatSelect($('manCategory'),'manCategoryNew','manType','manIcon');initCatSelect($('scCategory'),'scCategoryNew','scType','scIcon');}
 function getDeletedCats(){try{return new Set(JSON.parse(localStorage.getItem(KEY_CATDEL)||'[]'))}catch{return new Set}}
@@ -2262,9 +2275,9 @@ function parseInput(input){
   const stMonthMatch=rawWork.match(/\b(januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\b/i);
   if(isExplicitST&&stMonthMatch){
     const monthNames={jan:'Januari',januari:'Januari',feb:'Februari',februari:'Februari',mar:'Maret',maret:'Maret',apr:'April',april:'April',mei:'Mei',may:'Mei',jun:'Juni',juni:'Juni',jul:'Juli',juli:'Juli',agu:'Agustus',agt:'Agustus',ags:'Agustus',agustus:'Agustus',sep:'September',september:'September',okt:'Oktober',oktober:'Oktober',nov:'November',november:'November',des:'Desember',desember:'Desember'};
-    stMonthLabel='ST '+monthNames[stMonthMatch[1].toLowerCase()];
+    const yearMatch=rawWork.match(/\b(20\d{2})\b/);stMonthLabel='ST '+monthNames[stMonthMatch[1].toLowerCase()]+(yearMatch?' '+yearMatch[1]:'');
   }
-  const depositIntent=isExplicitST&&!!stMonthLabel&&/^\s*(?:uang\s+)?(?:januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\s*$/i.test(rawWork.replace(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/i,'').trim());
+  const depositIntent=isExplicitST&&!!stMonthLabel&&/^(?:uang\s+)?(?:januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)(?:\s+20\d{2})?$/i.test(rawWork.replace(/(?:rp\s*)?\d+(?:[,.]\d+)?\s*(?:juta|jt|m|ribu|rb|k)?/i,'').trim());
   let stPocket=getSTPocket(null,stMonthLabel);
   if(isExplicitST && !stPocket&&!stMonthLabel){
     return {ok:false, msg:'Pos Anggaran ST belum dibuat. Buat pos ST di Pengaturan Pos Anggaran.'};
@@ -2381,67 +2394,62 @@ function getPaydayCycle(targetDate=new Date(),payday=getPaydaySetting()){
   const label=`${start.getDate()} ${start.toLocaleDateString('id-ID',{month:'short'})} – ${end.getDate()} ${end.toLocaleDateString('id-ID',{month:'short'})}`;
   return {start,end,daysRemaining,label};
 }
-function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=new Date(),payday=getPaydaySetting()){
-  const cycle=getPaydayCycle(targetDate,payday);
-  const startTs=cycle.start.getTime(), endTs=cycle.end.getTime();
-  const cycleTx=(txList||[]).filter(t=>{
-    const time=new Date(t.createdAt||Date.now()).getTime();
-    return time>=startTs&&time<=endTs;
+function getSavingsEntrySource(entry,savings,txList){
+  if(entry?.sourcePocketId)return entry.sourcePocketId;
+  if(entry?.type!=='deposit')return '';
+  const internalGoalTransfer=String(entry.note||'').startsWith('Dari tabungan ')&&(savings?.entries||[]).some(other=>other.type==='withdrawal'&&other.goalId!==entry.goalId&&other.date===entry.date&&Number(other.amount)===Number(entry.amount));
+  if(internalGoalTransfer)return 'internal-savings';
+  const goal=(savings?.goals||[]).find(item=>item.id===entry.goalId);
+  const expectedTitle=`Alokasi ke ${goal?.name||'Tabungan'}`;
+  const legacyTx=(txList||[]).find(item=>{
+    if(item.type!=='expense'||item.source==='st'||!item.pocketId||item.pocketId==='bebas'||item.title!==expectedTitle||Number(item.amount)!==Number(entry.amount)||dateInput(new Date(item.createdAt||Date.now()))!==entry.date)return false;
+    const pocket=getPockets().find(candidate=>candidate.id===item.pocketId);
+    return !!pocket&&(String(entry.note||'').startsWith(`Dari pos ${pocket.name}`)||String(entry.note||'').startsWith(`Dari sisa pos ${pocket.name}`));
   });
-  const allRegularPockets=(pockets||[]).filter(p=>p.id!=='bebas');
-  const activePockets=allRegularPockets.filter(p=>isPocketActive(p,txList));
-  const activePocketIds=new Set(activePockets.map(p=>p.id));
-  const inactivePocketIds=new Set(allRegularPockets.filter(p=>!isPocketActive(p,txList)).map(p=>p.id));
-  const legacyFreeExpenses=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&!t.pocketId&&!activePockets.some(p=>(p.categories||[]).some(c=>{const clean=String(c).toLowerCase().trim();return String(t.category||'').toLowerCase().includes(clean)||String(t.title||'').toLowerCase().includes(clean)}))).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const legacyIncome=cycleTx.filter(t=>t.type==='income'&&t.source!=='st'&&t.pocketId!=='bebas').reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const cycleIncome=cycleTx.filter(t=>t.type==='income'&&t.source!=='st').reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const routedFreeExpenses=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&(t.pocketId==='bebas'||(t.pocketId&&!activePocketIds.has(t.pocketId)))).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
-  const freePocketIncome=cycleIncome;
-  const committedBudget=activePockets.reduce((sum,p)=>sum+(Number(p.amount)||0),0);
-  let savingsAllocated=0;
-  if(savings&&Array.isArray(savings.entries)){
-    savingsAllocated=savings.entries.filter(e=>{
-      if(e.type!=='deposit')return false;
-      const eTime=new Date(e.date||Date.now()).getTime();
-      return eTime>=startTs&&eTime<=endTs;
-    }).reduce((sum,e)=>sum+(Number(e.amount)||0),0);
-  }
-  let sweepToBebas=0,sweepFromBebas=0;
-  try{
-    for(const tr of getPocketTransfers()){
-      if(tr.toPocketId!=='bebas'&&tr.fromPocketId!=='bebas')continue;
-      const tTime=new Date(tr.date||Date.now()).getTime();
-      if(tTime<startTs||tTime>endTs)continue;
-      if(tr.toPocketId==='bebas')sweepToBebas+=Number(tr.amount)||0;
-      if(tr.fromPocketId==='bebas')sweepFromBebas+=Number(tr.amount)||0;
-    }
-  }catch(e){}
-  const freeMoneyInitial=Math.max(0,cycleIncome-committedBudget-savingsAllocated)+sweepToBebas-sweepFromBebas;
-
-  const freeMoneyTx=cycleTx.filter(t=>t.type==='expense'&&t.source!=='st'&&(t.pocketId==='bebas'||!t.pocketId||inactivePocketIds.has(t.pocketId)));
-  const freeMoneySpent=freeMoneyTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  return legacyTx?'legacy-expense:'+legacyTx.pocketId:'bebas';
+}
+function getSavingsAllocationsBySource(savings,pocketId,cycle,txList){
+  const start=dateInput(cycle.start),end=dateInput(cycle.end);
+  return (savings?.entries||[]).filter(entry=>entry.type==='deposit'&&entry.date>=start&&entry.date<=end&&getSavingsEntrySource(entry,savings,txList)===pocketId).reduce((total,entry)=>total+(Number(entry.amount)||0),0);
+}
+function getSavingsWithdrawalsToFree(savings,cycle){
+  const start=dateInput(cycle.start),end=dateInput(cycle.end),entries=savings?.entries||[];
+  return entries.filter(entry=>{
+    if(entry.type!=='withdrawal'||entry.date<start||entry.date>end)return false;
+    const paired=entries.some(other=>other.type==='deposit'&&other.goalId!==entry.goalId&&other.date===entry.date&&Number(other.amount)===Number(entry.amount)&&String(other.note||'').startsWith('Dari tabungan '));
+    return !paired;
+  }).reduce((total,entry)=>total+(Number(entry.amount)||0),0);
+}
+function getExpensePocketId(item,pockets){
+  if(item?.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
+  if(item?.pocketId==='bebas')return 'bebas';
+  if(item?.pocketId){const target=pockets.find(p=>p.id===item.pocketId);return target&&isPocketActive(target)&&!isDedicatedSTPocket(target)?target.id:'bebas'}
+  return inferPocket(item?.category,item?.title,pockets)||'bebas';
+}
+function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=new Date(),payday=getPaydaySetting()){
+  const cycle=getPaydayCycle(targetDate,payday),start=dateInput(cycle.start),end=dateInput(cycle.end);
+  const cycleTx=(txList||[]).filter(item=>{const day=dateInput(new Date(item.createdAt||Date.now()));return day>=start&&day<=end});
+  const activePockets=(pockets||[]).filter(p=>p.id!=='bebas'&&isPocketActive(p,txList)&&!isDedicatedSTPocket(p));
+  const cycleExpenses=cycleTx.filter(item=>item.type==='expense'&&item.source!=='st');
+  const freeExpenseTx=cycleExpenses.filter(item=>getExpensePocketId(item,pockets)==='bebas');
+  const cycleIncome=cycleTx.filter(item=>item.type==='income'&&item.source!=='st').reduce((total,item)=>total+(Number(item.amount)||0),0);
+  const committedBudget=activePockets.reduce((total,pocket)=>total+(Number(pocket.amount)||0),0);
+  const savingsAllocated=getSavingsAllocationsBySource(savings,'bebas',cycle,cycleTx);
+  const savingsWithdrawn=getSavingsWithdrawalsToFree(savings,cycle);
+  const freeTransfers=getPocketTransferTotals('bebas',targetDate);
+  const overBudgetPockets=activePockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx)})).filter(row=>row.usage.overAmount>0);
+  const overBudgetTotal=overBudgetPockets.reduce((total,row)=>total+row.usage.overAmount,0);
+  const freeMoneyInitial=cycleIncome-committedBudget-savingsAllocated+savingsWithdrawn+freeTransfers.incoming-freeTransfers.outgoing;
+  const directFreeSpent=freeExpenseTx.reduce((total,item)=>total+(Number(item.amount)||0),0);
+  const freeMoneySpent=directFreeSpent+overBudgetTotal;
   const freeMoneyRemaining=freeMoneyInitial-freeMoneySpent;
   const targetDateStr=dateInput(targetDate);
-  const todaySpent=freeMoneyTx.filter(t=>dateInput(new Date(t.createdAt||Date.now()))===targetDateStr).reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+  const todaySpent=freeExpenseTx.filter(item=>dateInput(new Date(item.createdAt||Date.now()))===targetDateStr).reduce((total,item)=>total+(Number(item.amount)||0),0);
   const baseDailyPace=Math.max(0,Math.floor(freeMoneyRemaining/cycle.daysRemaining));
   const todayRemaining=baseDailyPace-todaySpent;
-  const isOverspent=todayRemaining<0;
-  return {
-    cycle,
-    cycleIncome,
-    committedBudget,
-    freeMoneyInitial,
-    freeMoneySpent,
-    freeMoneyRemaining,
-    daysRemaining:cycle.daysRemaining,
-    baseDailyPace,
-    safeDailyAmount:Math.max(0,todayRemaining),
-    todaySpent,
-    todayRemaining,
-    isOverspent,
-    hasIncome:cycleIncome>0
-  };
-} function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+  return {cycle,cycleIncome,committedBudget,savingsAllocated,savingsWithdrawn,freeMoneyInitial,freeMoneySpent,freeMoneyRemaining,freeMoneyMoved:savingsAllocated-savingsWithdrawn+freeTransfers.outgoing-freeTransfers.incoming,freeMoneyIncoming:freeTransfers.incoming,freeMoneyOutgoing:freeTransfers.outgoing,freeExpenseCount:freeExpenseTx.length,overBudgetPockets,overBudgetTotal,daysRemaining:cycle.daysRemaining,baseDailyPace,safeDailyAmount:Math.max(0,todayRemaining),todaySpent,todayRemaining,isOverspent:todayRemaining<0,hasIncome:cycleIncome>0};
+}
+function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function range(){const o=reportOffset,n=new Date();if(reportPeriod==='daily'){const d=new Date(n);d.setDate(d.getDate()+o);return{start:startDay(d),end:endDay(d),label:d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}}if(reportPeriod==='weekly'){const d=new Date(n);d.setDate(d.getDate()+o*7);return{start:startWeek(d),end:endWeek(d),label:'Minggu ke-'+weekNum(d)+' ('+startWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+endWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+')'}}if(reportPeriod==='yearly'){const y=n.getFullYear()+o;return{start:startYear(new Date(y,0)),end:endYear(new Date(y,0)),label:String(y)}}if(reportPeriod==='range'){const s=$('rangeStart').value?startDay(new Date($('rangeStart').value)):startMonth(n), e=$('rangeEnd').value?endDay(new Date($('rangeEnd').value)):endDay(n);return{start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}}const d=new Date(n.getFullYear(),n.getMonth()+o,1);return{start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}}
 let reportCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1),reportRangeSelecting=false;
 function updateReportCalendar(){
@@ -2638,6 +2646,16 @@ function savePocketEdit(e){
     isActive:existingIdx>=0?isPocketActive(existingPocket):true,
     updatedAt:new Date().toISOString()
   };
+  const oldAllocation=existingPocket&&isPocketActive(existingPocket)&&!isDedicatedSTPocket(existingPocket)?Number(existingPocket.amount)||0:0;
+  const nextAllocation=isPocketActive(updatedPocket)&&!isDedicatedSTPocket(updatedPocket)?Number(updatedPocket.amount)||0:0;
+  const addedAllocation=nextAllocation-oldAllocation;
+  if(addedAllocation>0){
+    const available=calculateSafeDailySpend(getTX(),list,getSavings(),new Date(),getPaydaySetting()).freeMoneyRemaining;
+    if(addedAllocation>Math.max(0,available)){
+      toast('Uang Bebas tersedia hanya '+money(Math.max(0,available))+'. Kurangi jatah atau alokasikan setelah ada pemasukan.');
+      return;
+    }
+  }
   if(existingIdx>=0){
     list[existingIdx]=updatedPocket;
   }else{
@@ -2676,9 +2694,11 @@ function renderBudgetPockets(){
   let totalPlafond=0,totalRemaining=0,totalAllocated=0;
   const pocketsWithUsage = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
-    if(p.id!=='bebas')totalPlafond+=usage.amount;
-    totalRemaining+=usage.remaining;
-    totalAllocated+=usage.allocated;
+    if(p.id!=='bebas'&&!isDedicatedSTPocket(p)){
+      totalPlafond+=usage.amount;
+      totalRemaining+=Math.max(0,usage.remaining);
+      totalAllocated+=usage.allocated;
+    }else if(p.id==='bebas')totalRemaining+=Math.max(0,usage.remaining);
     return { pocket: p, usage };
   });
 
@@ -2687,10 +2707,10 @@ function renderBudgetPockets(){
 
   let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
     const safePercent=Math.max(0,Math.min(100,usage.percent));
-    if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-pocket-actions="${esc(p.id)}" aria-label="Uang Bebas tersisa ${short(Math.max(0,usage.remaining))}">
+    if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-pocket-actions="${esc(p.id)}" aria-label="Uang Bebas ${usage.remaining<0?'minus '+short(Math.abs(usage.remaining)):'tersisa '+short(usage.remaining)}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Dana umum tersedia ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
       <span class="home-pocket-progress" role="progressbar" aria-label="Uang Bebas terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span>
-      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>Sisa</span><strong>${short(Math.max(0,usage.remaining))}</strong></span></span>
+      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>${usage.remaining<0?'Minus':'Sisa'}</span><strong>${usage.remaining<0?'−'+short(Math.abs(usage.remaining)):short(usage.remaining)}</strong></span></span>
     </button>`;
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Sisa ${short(Math.max(0,usage.remaining))}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
@@ -2790,6 +2810,12 @@ function renderHome(arr){
     if(!safeData.hasIncome){
       badgeEl.textContent='💡 Catat Gaji';
       badgeEl.style.background='rgba(255,255,255,.22)';
+    }else if(safeData.overBudgetPockets.length){
+      badgeEl.textContent='⚠️ Pos melewati jatah';
+      badgeEl.style.background='rgba(150,38,30,.34)';
+    }else if(safeData.freeMoneyRemaining<0){
+      badgeEl.textContent='⚠️ Uang Bebas minus';
+      badgeEl.style.background='rgba(150,38,30,.34)';
     }else if(safeData.isOverspent){
       badgeEl.textContent=`⚠️ Lebih ${money(Math.abs(safeData.todayRemaining))}`;
       badgeEl.style.background='rgba(235,90,70,.4)';
@@ -2800,8 +2826,11 @@ function renderHome(arr){
   }
   const statusEl=$('committedStatus');
   if(statusEl){
-    const hasOverPocket=pockets.some(p=>p.id!=='bebas'&&isPocketActive(p)&&calculatePocketUsage(p,new Date(),arr).isOver);
-    statusEl.textContent=hasOverPocket?'Perlu Hemat ⚠️':'Aman 🛡️';
+    const overCount=safeData.overBudgetPockets.length;
+    statusEl.dataset.state=overCount||safeData.freeMoneyRemaining<0?'over':'ok';
+    if(overCount)statusEl.textContent=overCount+' pos lewat · '+money(safeData.overBudgetTotal);
+    else if(safeData.freeMoneyRemaining<0)statusEl.textContent='Uang Bebas minus · '+money(Math.abs(safeData.freeMoneyRemaining));
+    else statusEl.textContent='Semua sesuai jatah';
   }
   const r=safeData.cycle;
   const a=arr.filter(t=>inRange(t,r.start,r.end)),s=sum(a);
@@ -3203,7 +3232,7 @@ function updateSavingsSourceUI(){
 function refreshSavingsPocketSelect(){
   const sel = $('savingsPocketSelect');
   if(!sel) return;
-  const pockets = getPockets();
+  const pockets = getPockets().filter(p=>p.id!=='bebas'&&isPocketActive(p)&&!isDedicatedSTPocket(p));
   const tx = getTX();
   const now = new Date();
   
@@ -3314,43 +3343,14 @@ function saveSavingsEntry(event){
     if(kind === 'deposit' && savingsActiveSource === 'pocket'){
       const pocketId = $('savingsPocketSelect')?.value;
       const pockets = getPockets();
-      const pocket = pockets.find(p => p.id === pocketId);
+      const pocket = pockets.find(item => item.id === pocketId);
       if(!pocket) throw new Error('Pilih pos anggaran sumber dana.');
-
+      if(!isPocketActive(pocket)||isDedicatedSTPocket(pocket))throw new Error('Pilih pos pribadi yang aktif sebagai sumber dana.');
       const usage = calculatePocketUsage(pocket, new Date(dateVal), getTX());
-      if(usage.remaining < amount){
-        const ok = confirm(`Sisa jatah pos ${pocket.name} hanya ${money(usage.remaining)}. Lanjutkan alokasi ${money(amount)} (pos akan overbudget)?`);
-        if(!ok) return;
-      }
-
-      // 1. Simpan transaksi pengeluaran pos
-      const expTitle = `Alokasi ke ${goal?goal.name:'Tabungan'}`;
-      const txItemData = tx({
-        title: expTitle,
-        amount: amount,
-        type: 'expense',
-        category: (pocket.categories && pocket.categories[0]) ? pocket.categories[0] : 'Lainnya',
-        icon: pocket.icon || '🏦',
-        note: noteVal || `Alokasi sisa jatah pos ${pocket.name}`,
-        source: 'personal',
-        pocketId: pocket.id,
-        createdAt: new Date(dateVal + 'T12:00:00').toISOString()
-      });
-      const curTx = getTX();
-      curTx.unshift(txItemData);
-      saveTX(curTx);
-
-      // 2. Setor ke tabungan
-      const updatedSavings = savingsCore.addEntry(getSavings(), {
-        id: id(),
-        goalId: goalId,
-        type: 'deposit',
-        amount: amount,
-        date: dateVal,
-        note: noteVal ? `Dari pos ${pocket.name} · ${noteVal}` : `Dari sisa pos ${pocket.name}`
-      });
+      if(usage.remaining < amount)throw new Error('Dana tersedia di pos '+pocket.name+' hanya '+money(Math.max(0,usage.remaining))+'.');
+      const updatedSavings = savingsCore.addEntry(getSavings(), {id:id(),goalId:goalId,type:'deposit',amount:amount,date:dateVal,note:noteVal ? 'Dari pos '+pocket.name+' · '+noteVal : 'Dari sisa pos '+pocket.name,sourcePocketId:pocket.id});
       saveSavings(updatedSavings);
-      toast(`Alokasi ${short(amount)} dari pos ${pocket.name} berhasil!`);
+      toast('Alokasi '+short(amount)+' dari pos '+pocket.name+' berhasil!');
 
     } else if(kind === 'deposit' && savingsActiveSource === 'goal'){
       const srcGoalId = $('savingsGoalSourceSelect')?.value;
@@ -3387,14 +3387,19 @@ function saveSavingsEntry(event){
       toast(`Pindah saldo ${short(amount)} dari ${srcGoal.name} berhasil!`);
 
     } else {
-      // Setor biasa / Tarik biasa
+      // Setoran pribadi berasal dari Uang Bebas dan divalidasi sebelum disimpan.
+      if(kind==='deposit'&&savingsActiveSource==='free'){
+        const freeAvailable=calculateSafeDailySpend(getTX(),getPockets(),getSavings(),new Date(dateVal),getPaydaySetting()).freeMoneyRemaining;
+        if(amount>Math.max(0,freeAvailable))throw new Error('Uang Bebas tersedia hanya '+money(Math.max(0,freeAvailable))+'.');
+      }
       const updated = savingsCore.addEntry(getSavings(), {
         id: id(),
         goalId: goalId,
         type: kind,
         amount: amount,
         date: dateVal,
-        note: noteVal
+        note: noteVal,
+        sourcePocketId:kind==='deposit'?'bebas':''
       });
       saveSavings(updated);
     }

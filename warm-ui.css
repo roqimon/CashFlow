@@ -172,6 +172,8 @@ body { background: var(--app-bg) !important; }
 .home-pocket-name small { color: var(--muted); font-size: 11px; }
 .home-pocket-percent { flex: none; font-size: 12px; font-weight: 850; color: var(--green2); }
 .home-pocket-card.is-over .home-pocket-percent { color: var(--danger); }
+.commitment-status { display: inline-block; width: fit-content; max-width: 100%; margin-top: 4px; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.16); font-size: 11px; line-height: 1.25; font-weight: 750; }
+.commitment-status[data-state="over"] { color: #fff7f4; background: rgba(151,42,31,.34); }
 .home-pocket-progress { height: 7px; margin: 12px 0; overflow: hidden; border-radius: 999px; background: var(--line); }
 .home-pocket-progress span { display: block; height: 100%; border-radius: inherit; background: var(--pocket-accent); }
 .home-pocket-card.is-over .home-pocket-progress span { background: var(--danger); }
