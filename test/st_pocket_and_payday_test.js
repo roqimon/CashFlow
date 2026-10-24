@@ -233,3 +233,26 @@ test('legacy personal income in Lainnya is repaired without changing ST income',
     ['Lainnya', '📦']
   ]);
 });
+
+test('Uang Bebas home card shows gross income and current usable balance', () => {
+  const { ctx } = setupEnv();
+  ctx.localStorage.setItem('aruskas_cleared', '1');
+  const now = new Date();
+  const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  ctx.localStorage.setItem('aruskas_transactions_v4_st', JSON.stringify([{
+    id: 'income-for-free-card', title: 'Masuk', amount: 5000000,
+    type: 'income', category: 'Pemasukan', source: 'personal',
+    pocketId: 'bebas', createdAt: now.toISOString()
+  }]));
+  ctx.localStorage.setItem('aruskas_budget_transfers_v1', JSON.stringify([{
+    id: 'oversized-allocation', fromPocketId: 'bebas', toPocketId: 'pocket-bbm',
+    amount: 5450000, date: today
+  }]));
+
+  const freePocket = ctx.getPockets().find(pocket => pocket.id === 'bebas');
+  const usage = ctx.calculatePocketUsage(freePocket, now, ctx.getTX());
+  assert.equal(usage.income, 5000000);
+  assert.equal(usage.remaining, -450000);
+  assert.match(html, /Pemasukan siklus/);
+  assert.match(html, /Bisa dipakai/);
+});
