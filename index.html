@@ -820,8 +820,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Offline & sinkron</strong><small>Data tetap di HP saat offline; akun menyinkronkan antarperangkat.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.7" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.7</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.7 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Akun dan sinkronisasi data antarperangkat.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.8" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.8</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.8 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Alokasi budget tercatat dari Uang Bebas; sisa pos kembali saat dinonaktifkan.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1080,7 +1080,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v10.7 · Akun dan sinkronisasi data antarperangkat.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v10.8 · Alokasi budget dan pengembalian sisa pos tercatat otomatis.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1615,7 +1615,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.110').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.111').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1639,7 +1639,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.7', APP_RELEASE_NOTE='Akun dan sinkronisasi data antarperangkat.';
+const APP_VERSION='10.8', APP_RELEASE_NOTE='Alokasi budget dan pengembalian sisa pos tercatat otomatis.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
