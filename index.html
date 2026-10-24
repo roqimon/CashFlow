@@ -820,8 +820,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.4" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.4</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.4 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pemasukan pribadi selalu menambah Uang Bebas.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.5" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.5</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.5 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -838,7 +838,11 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <strong id="homeCycleIncome" style="display:block">Rp 0</strong>
             </div>
             <div>
-              <small style="opacity:.9">Uang Bebas bisa dipakai</small>
+              <small style="opacity:.9">Sudah dibelanjakan</small>
+              <strong id="homeFreeMoneySpent" style="display:block">Rp 0</strong>
+            </div>
+            <div style="grid-column:1/-1">
+              <small style="opacity:.9">Sisa Uang Bebas</small>
               <strong id="freeMoneyTotal" style="display:block">Rp 0</strong>
             </div>
             <div style="grid-column:1/-1">
@@ -1029,7 +1033,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v10.4 · Pemasukan pribadi selalu menambah Uang Bebas.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v10.5 · Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1057,16 +1061,18 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         </section>
         <!-- Pintasan Cepat -->
         <section class="card settings-card">
-          <div class="settings-card-head">
+          <button class="settings-collapse-trigger" type="button" data-settings-toggle="shortcuts" aria-expanded="false" aria-controls="settingsShortcutsPanel">
             <span class="settings-card-icon" style="background:#edf5ff;color:#2d74da">⚡</span>
-            <div style="flex:1;min-width:0">
+            <span style="flex:1;min-width:0;text-align:left">
               <strong style="font-size:14px;color:var(--ink);display:block">Pintasan Cepat</strong>
               <small class="muted" style="font-size:11.5px" id="scCount">0 pintasan</small>
-            </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-              <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
-              <button class="text-btn" data-action="open-shortcut-editor" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Buat Baru</button>
-            </div>
+            </span>
+            <span class="settings-collapse-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div id="settingsShortcutsPanel" hidden>
+          <div style="display:flex;justify-content:flex-end;gap:6px;align-items:center;margin-top:10px">
+            <button class="text-btn" id="scToggleSelectBtn" type="button" style="font-size:12px;font-weight:800;color:var(--green);padding:4px 8px;min-height:30px">Pilih</button>
+            <button class="text-btn" data-action="open-shortcut-editor" type="button" style="color:var(--green);font-weight:800;font-size:12px;padding:4px 8px;min-height:30px">＋ Buat Baru</button>
           </div>
           <div class="shortcut-editor-box" id="shortcutEditor" style="margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface)">
             <div class="row">
@@ -1100,6 +1106,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
               <button class="ghost" data-exit-sc-select type="button" style="min-height:36px;font-size:12px;padding:0 12px;font-weight:700">Batal</button>
               <button class="danger" id="scBulkDelete" type="button" style="border:0;border-radius:999px;background:#fff1ef;color:var(--danger);font-weight:800;padding:0 14px;min-height:36px">Hapus</button>
             </div>
+          </div>
           </div>
         </section>
         <section class="card settings-card settings-backup-card">
@@ -1560,7 +1567,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.102').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.103').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1584,7 +1591,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.4', APP_RELEASE_NOTE='Pemasukan pribadi selalu menambah Uang Bebas.';
+const APP_VERSION='10.5', APP_RELEASE_NOTE='Ringkasan Uang Bebas dan Pintasan Cepat lebih rapi.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1706,7 +1713,7 @@ function calculatePocketUsage(pocket,targetDate,txList){
     const safe=calculateSafeDailySpend(txList||getTX(),getPockets(),getSavings(),date,getPaydaySetting());
     const amount=safe.freeMoneyInitial,remaining=safe.freeMoneyRemaining,spent=safe.freeMoneySpent;
     const percent=amount>0?Math.round(Math.max(0,spent)/amount*100):0;
-    return {pocket,spent,allocated:safe.savingsAllocated,moved:safe.freeMoneyMoved,income:safe.cycleIncome,incoming:safe.freeMoneyIncoming,outgoing:safe.freeMoneyOutgoing,amount,effectiveAmount:amount,remaining,percent,isOver:remaining<0,overAmount:Math.max(0,-remaining),count:safe.freeExpenseCount};
+    return {pocket,spent:safe.freeMoneySpent,allocated:safe.savingsAllocated,moved:safe.freeMoneyMoved,income:safe.cycleIncome,incoming:safe.freeMoneyIncoming,outgoing:safe.freeMoneyOutgoing,amount,effectiveAmount:amount,remaining,percent,isOver:remaining<0,overAmount:Math.max(0,-remaining),count:safe.freeExpenseCount};
   }
   const matchingTx=(txList||[]).filter(t=>{
     if(t.type!=='expense')return false;
@@ -2772,9 +2779,9 @@ function renderBudgetPockets(){
   let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
     const safePercent=Math.max(0,Math.min(100,usage.percent));
     if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-pocket-actions="${esc(p.id)}" aria-label="Uang Bebas ${usage.remaining<0?'minus '+short(Math.abs(usage.remaining)):'tersisa '+short(usage.remaining)}">
-      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Pemasukan siklus ${money(usage.income)}</small><small>Bisa dipakai ${money(usage.remaining)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
+      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Pemasukan siklus ${money(usage.income)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
       <span class="home-pocket-progress" role="progressbar" aria-label="Uang Bebas terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span>
-      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>${usage.remaining<0?'Minus':'Sisa'}</span><strong>${usage.remaining<0?'−'+short(Math.abs(usage.remaining)):short(usage.remaining)}</strong></span></span>
+      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved)}</strong></span><span><span>${usage.remaining<0?'Minus':'Sisa'}</span><strong>${usage.remaining<0?'−'+short(Math.abs(usage.remaining)):short(usage.remaining)}</strong></span></span>
     </button>`;
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Dana pos tersisa ${short(Math.max(0,usage.remaining))}">
       <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.budgetAmount??usage.amount)} · Dana ${money(Math.max(0,usage.remaining))}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
@@ -2869,6 +2876,8 @@ function renderHome(arr){
   if(dailyEl)dailyEl.textContent=money(safeData.safeDailyAmount);
   const incomeEl=$('homeCycleIncome');
   if(incomeEl)incomeEl.textContent=money(safeData.cycleIncome);
+  const freeSpentEl=$('homeFreeMoneySpent');
+  if(freeSpentEl)freeSpentEl.textContent=money(safeData.freeMoneySpent);
   const freeEl=$('freeMoneyTotal');
   if(freeEl)freeEl.textContent=money(safeData.freeMoneyRemaining);
   const badgeEl=$('safeStatusBadge');
