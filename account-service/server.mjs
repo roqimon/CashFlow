@@ -255,7 +255,7 @@ async function handle(req, res) {
     if (route === 'signup') {
       const email = String(data.email || '').trim().toLowerCase();
       const password = String(data.password || '');
-      if (!emailOk(email) || password.length < 10 || password.length > 128) return json(res, 400, { error: 'Gunakan email valid dan kata sandi 10–128 karakter.' });
+      if (!emailOk(email) || !password || password.length > 128) return json(res, 400, { error: 'Gunakan email valid dan isi kata sandi (maksimal 128 karakter).' });
       if (!await limitRequest(req, 'signup', email)) return json(res, 429, { error: 'Terlalu banyak permintaan. Coba lagi nanti.' });
       configuredMailer();
       const id = randomUUID();
@@ -322,7 +322,7 @@ async function handle(req, res) {
     }
     if (route === 'reset') {
       const password = String(data.password || '');
-      if (password.length < 10 || password.length > 128) return json(res, 400, { error: 'Kata sandi baru harus 10–128 karakter.' });
+      if (!password || password.length > 128) return json(res, 400, { error: 'Isi kata sandi baru (maksimal 128 karakter).' });
       const client = await pool.connect();
       let accountId;
       try {

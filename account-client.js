@@ -99,6 +99,8 @@
     if(el('accountSyncNow'))el('accountSyncNow').disabled=!signedIn||busy;
     if(el('accountLogout'))el('accountLogout').disabled=!signedIn||busy;
     if(el('accountLogoutAll'))el('accountLogoutAll').disabled=!signedIn||busy;
+    const trigger=el('accountOpenBtn');
+    if(trigger){const state=!signedIn?'signed-out':!navigator.onLine?'offline':busy?'syncing':'signed-in';trigger.dataset.state=state;trigger.title=state==='offline'?'Offline · perubahan menunggu koneksi':signedIn?'Akun tersambung':'Akun dan sinkronisasi';trigger.setAttribute('aria-label',trigger.title)}
   }
   function hasLocalData(){return localTransactions().length>0||currentDocs().length>0}
   function snapshotMeaningful(snapshot){return !!(snapshot&&(snapshot.transactions?.length||snapshot.docs?.length))}
@@ -116,7 +118,7 @@
   function setOnboarding(remote){
     const box=el('accountOnboarding');if(!box)return false;
     const localHas=hasLocalData(),remoteHas=!!(remote.transactions?.length||remote.documents?.length||remote.deletedIds?.length||remote.deletedDocumentKeys?.length);
-    if(localHas&&remoteHas){box.hidden=false;setMessage('Data sudah ada di HP dan akun. Pilih cara menyatukannya sebelum sinkronisasi pertama.','warning');return true}
+    if(localHas&&remoteHas){box.hidden=false;setMessage('Data sudah ada di HP dan akun. Pilih cara menyatukannya sebelum sinkronisasi pertama.','warning');root.openAccountModal?.();return true}
     box.hidden=true;return false;
   }
   function mergeById(local,remote){
@@ -213,6 +215,9 @@
   }
   async function start(){
     observeStorage();
+    el('accountOpenBtn')?.addEventListener('click',()=>root.openAccountModal?.());
+    el('accountModalClose')?.addEventListener('click',()=>root.closeAccountModal?.());
+    el('accountModal')?.addEventListener('click',event=>{if(event.target===event.currentTarget)root.closeAccountModal?.()});
     el('accountLoginForm')?.addEventListener('submit',event=>{event.preventDefault();submitForm(event.currentTarget,'login')});
     el('accountSignupForm')?.addEventListener('submit',event=>{event.preventDefault();submitForm(event.currentTarget,'signup')});
     el('accountResendVerification')?.addEventListener('click',async()=>{const email=String(new FormData(el('accountSignupForm')).get('email')||'').trim();if(!email)return setMessage('Isi email akun terlebih dahulu.','warning');try{const result=await serverCall('resend-verification',{method:'POST',body:{email}});setMessage(result.message,'success')}catch(error){setMessage(error.message,'error')}});
@@ -223,8 +228,8 @@
     el('accountSyncNow')?.addEventListener('click',()=>syncNow().catch(error=>setMessage(`${error.message} Perubahan tetap tersimpan di HP.`,'error')));
     el('accountLogout')?.addEventListener('click',()=>logout('logout'));
     el('accountLogoutAll')?.addEventListener('click',()=>logout('logout-all'));
-    root.addEventListener('online',()=>{if(user)syncNow().catch(()=>{})});
-    root.addEventListener('offline',()=>{if(user)setMessage('Offline · perubahan tersimpan di HP dan menunggu koneksi.','warning')});
+    root.addEventListener('online',()=>{renderUser();if(user)syncNow().catch(()=>{})});
+    root.addEventListener('offline',()=>{renderUser();if(user)setMessage('Offline · perubahan tersimpan di HP dan menunggu koneksi.','warning')});
     setInterval(()=>{if(user&&navigator.onLine)syncNow().catch(()=>{})},300000);
     const params=new URL(location.href).searchParams;
     const token=params.get('account_token'), action=params.get('account_action');
@@ -233,6 +238,7 @@
       params.delete('account_token');params.delete('account_action');history.replaceState({},'',`${location.pathname}${params.toString()?`?${params}`:''}${location.hash}`);
     }else if(token&&action==='reset_password'){
       el('accountResetForm').hidden=false;
+      root.openAccountModal?.();
     }
     renderUser();
     let serverAnswered=false;
