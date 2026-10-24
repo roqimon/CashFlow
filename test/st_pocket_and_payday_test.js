@@ -26,6 +26,7 @@ function setupEnv() {
         toggle(c, f) { if (f ?? !this._set.has(c)) this._set.add(c); else this._set.delete(c); }
       },
       setAttribute: () => {},
+      toggleAttribute: () => {},
       removeAttribute: () => {},
       getAttribute: () => null,
       addEventListener: (type, fn) => { (listeners[id+':'+type] ||= []).push(fn); },
@@ -189,4 +190,46 @@ test('free pocket is always available and income and unmatched spending use it',
   assert.ok(pockets.some(p => p.id === 'bebas'), 'Uang Bebas should exist even after all regular budgets are removed');
   assert.equal(ctx.manualTransactionPocket({ type: 'income', category: 'Pemasukan' }, pockets), 'bebas');
   assert.equal(ctx.manualTransactionPocket({ type: 'expense', category: 'Lainnya', title: 'Belanja umum' }, pockets), 'bebas');
+});
+
+test('personal income remains categorized as Pemasukan when that category is hidden', () => {
+  const fn = html.match(/function activeCategory\(cat,type\)\{[^}]+\}/)?.[0];
+  assert.ok(fn, 'activeCategory must be present');
+  const categoryCtx = { isCatDeleted: category => category === 'Pemasukan' };
+  vm.createContext(categoryCtx);
+  vm.runInContext(fn, categoryCtx);
+  const result = vm.runInContext(`[
+    activeCategory('Pemasukan', 'income'),
+    activeCategory('Lainnya', 'income'),
+    activeCategory('Deklarasi', 'income'),
+    activeCategory('Deklarasi', 'expense')
+  ]`, categoryCtx);
+  assert.deepEqual(Array.from(result), ['Pemasukan', 'Pemasukan', 'Deklarasi', 'Deklarasi']);
+});
+
+test('legacy personal income in Lainnya is repaired without changing ST income', () => {
+  const helper = html.match(/function normalizePersonalIncomeCategories\(txns\)\{[^\n]+/)?.[0];
+  assert.ok(helper, 'normalizePersonalIncomeCategories must be present');
+  const rows = [
+    { type: 'income', source: 'personal', category: 'Lainnya', icon: '📦' },
+    { type: 'income', source: 'personal', category: 'Honor Lama', icon: '💵' },
+    { type: 'income', source: 'st', category: 'Lainnya', icon: '📦' },
+    { type: 'expense', source: 'personal', category: 'Lainnya', icon: '📦' }
+  ];
+  const migrationCtx = {
+    isCatDeleted: category => ['Pemasukan', 'Honor Lama'].includes(category),
+    icon: (category, type) => `${category}:${type}`
+  };
+  vm.createContext(migrationCtx);
+  vm.runInContext(html.match(/function activeCategory\(cat,type\)\{[^\n]+/)?.[0], migrationCtx);
+  vm.runInContext(helper, migrationCtx);
+  migrationCtx.rows = rows;
+  const changed = vm.runInContext('normalizePersonalIncomeCategories(rows)', migrationCtx);
+  assert.equal(changed, true);
+  assert.deepEqual(rows.map(row => [row.category, row.icon]), [
+    ['Pemasukan', 'Pemasukan:income'],
+    ['Pemasukan', 'Pemasukan:income'],
+    ['Lainnya', '📦'],
+    ['Lainnya', '📦']
+  ]);
 });

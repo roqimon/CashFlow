@@ -820,8 +820,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.9" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.9</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.9 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.0" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.0</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.0 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pemasukan pribadi masuk ke Uang Bebas dengan kategori yang sesuai.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1025,7 +1025,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v9.9 · Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v10.0 · Pemasukan pribadi masuk ke Uang Bebas dengan kategori yang sesuai.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1579,7 +1579,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='9.9', APP_RELEASE_NOTE='Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.';
+const APP_VERSION='10.0', APP_RELEASE_NOTE='Pemasukan pribadi masuk ke Uang Bebas dengan kategori yang sesuai.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1961,7 +1961,8 @@ function saveDeletedCats(set){localStorage.setItem(KEY_CATDEL,JSON.stringify([..
 function isCatDeleted(cat){return getDeletedCats().has(String(cat||'').trim())}
 function restoreCategory(cat){cat=String(cat||'').trim();if(!cat)return;const del=getDeletedCats();if(del.delete(cat))saveDeletedCats(del)}
 function hideCategory(cat){cat=String(cat||'').trim();if(!cat||cat==='Lainnya')return;const del=getDeletedCats();del.add(cat);saveDeletedCats(del)}
-function activeCategory(cat,type){cat=String(cat||'').trim()||'Lainnya';if(cat!=='Lainnya'&&isCatDeleted(cat))return 'Lainnya';return cat}
+function activeCategory(cat,type){cat=String(cat||'').trim()||'Lainnya';if(type==='income')return cat==='Lainnya'||isCatDeleted(cat)?'Pemasukan':cat;if(cat!=='Lainnya'&&isCatDeleted(cat))return 'Lainnya';return cat}
+function normalizePersonalIncomeCategories(txns){let changed=false;for(const item of txns||[]){if(item?.type!=='income'||item?.source==='st')continue;const category=activeCategory(item.category,'income');if(category!==item.category){item.category=category;item.icon=icon(category,'income');changed=true}}return changed}
 function buildCatOptions(){const dl=document.getElementById('catOptions');if(!dl)return;const del=getDeletedCats();const cats=new Set(Object.keys(catMeta).filter(c=>!del.has(c)));getCatRecords().forEach(c=>{if(c.name&&!del.has(c.name))cats.add(c.name)});getTX().forEach(t=>{if(t.category&&!del.has(t.category))cats.add(t.category)});getSC().forEach(s=>{if(s.category&&!del.has(s.category))cats.add(s.category)});Object.values(getCatMem()).forEach(c=>{if(c&&!del.has(c))cats.add(c)});dl.innerHTML=[...cats].sort().map(c=>`<option value="${esc(c)}">`).join('')}
 function getCatList(){const del=getDeletedCats();const cats=new Set(Object.keys(catMeta).filter(c=>!del.has(c)));getCatRecords().forEach(c=>{if(c.name&&!del.has(c.name))cats.add(c.name)});getTX().forEach(t=>{if(t.category&&!del.has(t.category))cats.add(t.category)});getSC().forEach(s=>{if(s.category&&!del.has(s.category))cats.add(s.category)});Object.values(getCatMem()).forEach(c=>{if(c&&!del.has(c))cats.add(c)});return[...cats].sort()}
 function populateCatSelect(sel,selected){const cats=getCatList();let opts=cats.map(c=>`<option value="${esc(c)}"${c===selected?' selected':''}>${esc(c)}</option>`).join('');if(!cats.includes(selected)&&selected){opts+=`<option value="${esc(selected)}" selected>${esc(selected)}</option>`}opts+=`<option value="__new__">+ Tambah baru...</option>`;sel.innerHTML=opts}
@@ -6750,7 +6751,7 @@ document.addEventListener('change',e=>{
   }
 });
 
-boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
+boot();const startupTransactions=getTX();if(normalizePersonalIncomeCategories(startupTransactions))saveTX(startupTransactions);const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
 function renderPaydayControls(){
   const curDay=getPaydaySetting();
   const gridEl=$('paydayCalendarGrid');
