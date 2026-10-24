@@ -123,3 +123,26 @@ test('home pocket cards open their transaction details and all-pockets view has 
   assert.match(manager,/data-edit-pocket="\$\{esc\(p\.id\)\}"/);
   assert.match(manager,/data-action="sweep-pocket-modal" data-pocket-id="\$\{esc\(p\.id\)\}"/);
 });
+
+test('home keeps Pos aktif visible with an activation hint when no user budget is active', () => {
+  const start=html.indexOf('function renderBudgetPockets()');
+  const end=html.indexOf('\nfunction syncAppVersionInfo()',start);
+  const source=html.slice(start,end);
+  const functionSource=source.match(/function renderBudgetPockets\(\)\{[\s\S]*?^\}/m)?.[0];
+  assert.ok(functionSource,'renderBudgetPockets should be available for a no-active-pocket check');
+  const elements={budgetPocketList:{innerHTML:'',hidden:false},budgetContainer:{hidden:true},budgetSummaryText:{innerHTML:''}};
+  const context={
+    $:id=>elements[id]||null,
+    getPockets:()=>[{id:'bebas',name:'Uang Bebas',amount:0,color:'#64748b',isSystem:true}],
+    getTX:()=>[],
+    isPocketActive:pocket=>pocket.id==='bebas',
+    calculatePocketUsage:()=>({amount:0,budgetAmount:0,allocated:0,remaining:0,moved:0,spent:0,percent:0,isOver:false,cashGap:0,budgetOverAmount:0,budgetRemaining:0}),
+    summarizeHomeBudgetPockets:()=>({totalPlafond:0,totalRemaining:0,totalAllocated:0}),
+    isDedicatedSTPocket:()=>false,
+    esc:String,short:String,money:String,renderIcon:()=>''
+  };
+  vm.createContext(context);
+  vm.runInContext(functionSource+'; renderBudgetPockets();',context);
+  assert.equal(elements.budgetContainer.hidden,false,'the Pos aktif section should remain visible');
+  assert.match(elements.budgetPocketList.innerHTML,/Belum ada pos anggaran aktif/);
+});

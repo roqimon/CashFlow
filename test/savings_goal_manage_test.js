@@ -67,7 +67,8 @@ test('Settings has a collapsed savings manager and Home only renders active savi
   assert.match(html, /data-toggle-savings-home/);
   assert.match(html, /goal\.status==='active'&&goal\.isActive!==false/);
   assert.match(html, /homeSavingsGoals'\);\s*if\(section\)section\.hidden=!active\.length/);
-  assert.match(html, /budgetContainer'\);[\s\S]*?if\(section\)section\.hidden=visibleBudgetPockets\.length===0/);
+  assert.match(html, /budgetContainer'\);[\s\S]*?if\(section\)section\.hidden=false/);
+  assert.match(html, /Belum ada pos anggaran aktif/);
 });
 
 test('home daily amount explains that it is a record-based suggestion, not a spending requirement', () => {
