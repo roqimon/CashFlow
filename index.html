@@ -770,7 +770,6 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       border: 1px solid var(--line, #e2e8e3);
       border-radius: 16px;
     }
-    .payday-day-select { margin-top: 4px; }
     .payday-day-btn {
       aspect-ratio: 1;
       display: flex;
@@ -1242,9 +1241,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         <span id="paydayModalCycleText" style="font-size:12.5px;font-weight:850;color:var(--green)">-</span>
       </div>
 
-      <label class="payday-day-select">Tanggal
-        <select id="paydayDaySelect" aria-label="Tanggal gajian"></select>
-      </label>
+      <div class="payday-calendar-grid" id="paydayCalendarGrid" role="radiogroup" aria-label="Pilih tanggal gajian 1 sampai 31"></div>
     </div>
 
     <div class="dialog-actions" style="margin-top:16px">
@@ -6589,7 +6586,7 @@ document.addEventListener('change',e=>{
 boot();const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
 function renderPaydayControls(){
   const curDay=getPaydaySetting();
-  const selectEl=$('paydayDaySelect');
+  const gridEl=$('paydayCalendarGrid');
   const badgeEl=$('paydayCycleBadge');
   const btnTextEl=$('paydayBtnText');
   const modalCycleEl=$('paydayModalCycleText');
@@ -6597,9 +6594,13 @@ function renderPaydayControls(){
   if(badgeEl) badgeEl.textContent=cycle.label;
   if(btnTextEl) btnTextEl.textContent=`Tgl ${curDay}`;
   if(modalCycleEl) modalCycleEl.textContent=cycle.label;
-  if(selectEl){
-    if(!selectEl.options.length)selectEl.innerHTML=Array.from({length:31},(_,index)=>`<option value="${index+1}">${index+1}</option>`).join('');
-    selectEl.value=String(curDay);
+  if(gridEl){
+    let daysHtml='';
+    for(let i=1;i<=31;i++){
+      const isActive=i===curDay;
+      daysHtml+=`<button type="button" class="payday-day-btn${isActive?' active':''}" data-payday-val="${i}" aria-label="Tanggal ${i}" aria-checked="${isActive}">${i}</button>`;
+    }
+    gridEl.innerHTML=daysHtml;
   }
 }
 window.renderPaydayControls=renderPaydayControls;
@@ -6625,7 +6626,10 @@ function onPaydayChanged(newVal){
   toast(`Tanggal gajian diubah ke tanggal ${val}. Anggaran & jatah harian diperbarui.`);
 }
 
-document.getElementById('paydayDaySelect')?.addEventListener('change',e=>onPaydayChanged(e.target.value));
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-payday-val]');
+  if(btn)onPaydayChanged(btn.dataset.paydayVal);
+});
 renderPaydayControls();
 if(typeof window!=='undefined'){
   window.getPaydaySetting=getPaydaySetting;
