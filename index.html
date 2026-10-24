@@ -828,8 +828,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Offline & sinkron</strong><small>Data tetap di HP saat offline; akun menyinkronkan antarperangkat.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button id="accountOpenBtn" class="account-trigger" type="button" aria-label="Akun dan sinkronisasi" aria-haspopup="dialog" aria-controls="accountModal" title="Akun dan sinkronisasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 18.2a4.2 4.2 0 0 1-.4-8.38A6.2 6.2 0 0 1 19 11.5h.3a3.35 3.35 0 0 1 0 6.7H7.5Z"/><path d="M9 14.5h6m-2-2 2 2-2 2"/></svg><span id="accountStatusDot" class="account-trigger-status" aria-hidden="true"></span></button><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.12" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.12</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.12 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Uang Bebas hanya menghitung alokasi aktif.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button id="accountOpenBtn" class="account-trigger" type="button" aria-label="Akun dan sinkronisasi" aria-haspopup="dialog" aria-controls="accountModal" title="Akun dan sinkronisasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 18.2a4.2 4.2 0 0 1-.4-8.38A6.2 6.2 0 0 1 19 11.5h.3a3.35 3.35 0 0 1 0 6.7H7.5Z"/><path d="M9 14.5h6m-2-2 2 2-2 2"/></svg><span id="accountStatusDot" class="account-trigger-status" aria-hidden="true"></span></button><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 10.13" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v10.13</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v10.13 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Ringkasan saldo dan sinkronisasi diperbaiki.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1621,14 +1621,14 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <script src="./receipt-analysis.js?v=20261021.1"></script>
 <script src="./work-report.js?v=20261023.1"></script>
 <script src="./shortcut-date.js?v=20261023.2"></script>
-<script src="./account-client.js?v=20261024.4"></script>
+<script src="./account-client.js?v=20261024.5"></script>
 <script>
 (function(){
 'use strict';
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.113').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.114').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1652,7 +1652,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.12', APP_RELEASE_NOTE='Uang Bebas hanya menghitung alokasi aktif.';
+const APP_VERSION='10.13', APP_RELEASE_NOTE='Ringkasan saldo dan sinkronisasi diperbaiki.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -2950,6 +2950,18 @@ async function deletePocket(id){
   }
 }
 
+function summarizeHomeBudgetPockets(pocketsWithUsage){
+  let totalPlafond=0,totalRemaining=0,totalAllocated=0;
+  for(const {pocket,usage} of pocketsWithUsage){
+    if(pocket.id!=='bebas'){
+      totalPlafond+=usage.amount;
+      if(!isDedicatedSTPocket(pocket))totalRemaining+=Math.max(0,usage.remaining);
+      totalAllocated+=usage.allocated;
+    }else totalRemaining+=usage.remaining;
+  }
+  return {totalPlafond,totalRemaining,totalAllocated};
+}
+
 function renderBudgetPockets(){
   const container=$('budgetPocketList');
   if(!container)return;
@@ -2957,16 +2969,11 @@ function renderBudgetPockets(){
   const tx=getTX();
   const activePockets=allPockets.filter(p=>p.id==='bebas'||isPocketActive(p,tx));
   const now=new Date();
-  let totalPlafond=0,totalRemaining=0,totalAllocated=0;
   const pocketsWithUsage = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
-    if(p.id!=='bebas'){
-      totalPlafond+=usage.amount;
-      totalRemaining+=Math.max(0,usage.remaining);
-      totalAllocated+=usage.allocated;
-     }else if(p.id==='bebas')totalRemaining+=usage.remaining;
     return { pocket: p, usage };
   });
+  const {totalPlafond,totalRemaining,totalAllocated}=summarizeHomeBudgetPockets(pocketsWithUsage);
 
   // Urutkan pos berdasarkan persentase terpakai tertinggi ke terendah
   pocketsWithUsage.sort((a,b)=>b.usage.percent - a.usage.percent);

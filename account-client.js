@@ -235,6 +235,7 @@
     el('accountLogoutAll')?.addEventListener('click',()=>logout('logout-all'));
     root.addEventListener('online',()=>{renderUser();if(user)syncNow().catch(()=>{})});
     root.addEventListener('offline',()=>{renderUser();if(user)setMessage('Offline · perubahan tersimpan di HP dan menunggu koneksi.','warning')});
+    root.document.addEventListener('visibilitychange',()=>{if(root.document.visibilityState==='visible'&&user&&navigator.onLine)syncNow().catch(()=>{})});
     setInterval(()=>{if(user&&navigator.onLine)syncNow().catch(()=>{})},300000);
     const params=new URL(location.href).searchParams;
     const token=params.get('account_token'), action=params.get('account_action');
