@@ -34,8 +34,9 @@ test('active positions and a single recent transaction match the compact mockup 
   const transactionSectionIndex = html.indexOf('class="card home-recent-transactions"');
   const transactionIndex = html.indexOf('id="homeTxList"');
   assert.equal((html.match(/id="homeTxList"/g) || []).length, 1, 'recent transaction list must have one unique home target');
-  assert.ok(quickEntryIndex < budgetIndex, 'quick input should precede active budget data');
-  assert.ok(budgetIndex < categoryIndex, 'active positions should follow quick entry and precede the spending chart');
+  assert.ok(quickEntryIndex < categoryIndex, 'the spending chart should immediately follow quick entry');
+  assert.ok(categoryIndex < budgetIndex, 'active positions should follow the spending chart');
+  assert.match(html, /id="home-quick">[\s\S]*?<\/section>\s*<details class="home-spending-details" open>/);
   assert.ok(categoryIndex < savingsIndex, 'the spending chart should appear before savings');
   assert.ok(categoryIndex < transactionSectionIndex, 'the spending chart should be visible before recent transactions');
   assert.match(html, /budget-home-head"><strong>Pos aktif<\/strong>/);
