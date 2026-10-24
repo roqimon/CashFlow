@@ -820,8 +820,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
   <aside class="panel"><h1>Arus Kas<br>Sesederhana Itu.</h1><p>Catat pemasukan dan pengeluaran semudah mengetik. Pintasan membuat input makin cepat.</p><div class="feature"><span>⚡</span><div><strong>Input cepat</strong><small>Catat transaksi secara instan.</small></div></div><div class="feature"><span>◎</span><div><strong>Laporan interaktif</strong><small>Klik kategori untuk melihat transaksi terkait.</small></div></div><div class="feature"><span>🔒</span><div><strong>Privasi lokal</strong><small>Data tersimpan di perangkatmu.</small></div></div></aside>
   <main class="phone">
     <section class="screen">
-      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.8" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.8</span></button></header>
-      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.8 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
+      <header class="topbar home-topbar"><button id="backBtn" class="back-btn" type="button">←</button><div class="topbar-title-wrap"><p class="title" id="pageTitle">Beranda</p><span class="subtitle" id="pageSubtitle">Ringkasan dan input cepat</span></div><button class="settings-update-button" id="settingsUpdateButton" data-action="force-update" type="button" aria-label="Perbarui aplikasi versi 9.9" title="Perbarui aplikasi" hidden><span aria-hidden="true">↻</span><span id="appVersionBadge">v9.9</span></button></header>
+      <div id="updateSuccessBanner" style="display:none;margin-bottom:14px;background:var(--card-glass);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);transition:opacity .35s ease,transform .35s ease"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:20px;line-height:1;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--surface2);color:var(--green)">✨</span><div><strong id="updateSuccessTitle" style="display:block;font-size:13.5px;font-weight:900;color:var(--ink)">Pembaruan v9.9 berhasil</strong><span id="updateSuccessCopy" style="font-size:12px;color:var(--muted)">Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.</span></div></div><button type="button" id="closeUpdateBanner" style="border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap">Tutup</button></div></div>
       <section class="page active" data-page="home">
         <section class="card balance">
           <div class="row">
@@ -1025,7 +1025,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
             <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
             <div style="flex:1;min-width:0">
               <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v9.8 · Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.</small>
+              <small class="muted settings-release-note" id="appReleaseNote">v9.9 · Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.</small>
             </div>
           </div>
           <span id="updateStatusText" style="display:none"></span>
@@ -1207,7 +1207,8 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
     </div>
   </div>
 </div><label class="wide">Catatan <span class="muted">(opsional)</span><input id="savingsEntryNote" maxlength="280" placeholder="Contoh: dari uang belanja minggu ini"></label></div><p class="savings-inline-error" id="savingsEntryError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-savings-entry" type="button">Batal</button><button class="primary" type="submit" id="savingsEntrySave">Simpan setoran</button></div></form></div></div>
-<div class="modal" id="pocketActionsModal" aria-hidden="true"><div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="pocketActionsTitle"><div class="row"><div><h3 id="pocketActionsTitle" style="margin:0">Pos Anggaran</h3><p class="muted" id="pocketActionsSubtitle" style="margin:3px 0 0;font-size:12px">Pilih yang ingin dilakukan.</p></div><button class="icon-btn" data-action="close-pocket-actions" type="button" aria-label="Tutup">×</button></div><div class="sweep-summary-card"><span>Sisa pos bulan ini</span><strong id="pocketActionsRemaining">Rp 0</strong></div><div class="pocket-action-choice"><button class="primary" id="pocketActionViewTx" data-action="view-pocket-tx" type="button" style="grid-column:1/-1;background:var(--accent,#b65337);color:#fff"><span>Lihat transaksi pos ini</span><strong>Rincian Transaksi ›</strong></button><button class="ghost" id="pocketActionEdit" data-action="edit-pocket-action" type="button"><span>Ubah jatah atau kategori</span><strong>Ubah pos ›</strong></button><button class="ghost" id="pocketActionTransfer" data-action="transfer-pocket-action" type="button"><span>Pindahkan dana ke tujuan lain</span><strong>Pindahkan sisa ›</strong></button></div></div></div>
+<div class="modal" id="pocketActionsModal" aria-hidden="true"><div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="pocketActionsTitle"><div class="row"><div><h3 id="pocketActionsTitle" style="margin:0">Pos Anggaran</h3><p class="muted" id="pocketActionsSubtitle" style="margin:3px 0 0;font-size:12px">Pilih yang ingin dilakukan.</p></div><button class="icon-btn" data-action="close-pocket-actions" type="button" aria-label="Tutup">×</button></div><div class="sweep-summary-card"><span>Sisa dana pos</span><strong id="pocketActionsRemaining">Rp 0</strong></div><div class="pocket-action-choice"><button class="primary" id="pocketActionViewTx" data-action="view-pocket-tx" type="button" style="grid-column:1/-1;background:var(--accent,#b65337);color:#fff"><span>Lihat transaksi pos ini</span><strong>Rincian Transaksi ›</strong></button><button class="ghost" id="pocketActionAllocate" data-action="allocate-pocket-action" type="button"><span>Tambah dana dari Uang Bebas</span><strong>Alokasikan ›</strong></button><button class="ghost" id="pocketActionEdit" data-action="edit-pocket-action" type="button"><span>Ubah jatah atau kategori</span><strong>Ubah pos ›</strong></button><button class="ghost" id="pocketActionTransfer" data-action="transfer-pocket-action" type="button"><span>Pindahkan dana ke tujuan lain</span><strong>Pindahkan sisa ›</strong></button></div></div></div>
+<div class="modal" id="allocatePocketModal" aria-hidden="true"><div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="allocatePocketTitle"><div class="row"><div><h3 id="allocatePocketTitle" style="margin:0">Alokasikan ke pos</h3><p class="muted" id="allocatePocketSubtitle" style="margin:3px 0 0;font-size:12px">Dana dipindahkan dari Uang Bebas ke pos yang dipilih.</p></div><button class="icon-btn" data-action="close-allocate-pocket" type="button" aria-label="Tutup">×</button></div><div class="sweep-summary-card"><span>Uang Bebas tersedia</span><strong id="allocatePocketAvailable">Rp 0</strong></div><form id="allocatePocketForm" autocomplete="off"><input type="hidden" id="allocatePocketId"><label>Nominal alokasi<input id="allocatePocketAmount" inputmode="numeric" required placeholder="Contoh: 500.000"></label><label>Catatan <span class="muted">(opsional)</span><input id="allocatePocketNote" maxlength="280" placeholder="Contoh: jatah BBM bulan ini"></label><p class="savings-inline-error" id="allocatePocketError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-allocate-pocket" type="button">Batal</button><button class="primary" type="submit">Alokasikan dana</button></div></form></div></div>
 <div class="modal" id="sweepPocketModal" aria-hidden="true"><div class="sheet savings-sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="sweepPocketModalTitle"><div class="row"><div><h3 id="sweepPocketModalTitle" style="margin:0">Pindahkan Sisa Pos</h3><p class="muted" style="margin:3px 0 0;font-size:12px">Pindahkan seluruh sisa atau sebagian ke tabungan atau pos lain.</p></div><button class="icon-btn" data-action="close-sweep-modal" type="button" aria-label="Tutup">×</button></div><div class="sweep-summary-card"><span>Sisa pos bulan ini</span><strong id="sweepTotalSurplusAmount">Rp 0</strong></div><form id="sweepPocketForm" autocomplete="off"><div class="sweep-form-fields"><label>1. Dari pos anggaran<select id="sweepPocketSelect"></select></label><button type="button" id="sweepPocketAvailableHint" class="sweep-available" aria-label="Isi nominal dengan seluruh sisa yang bisa dipindahkan"><span>Sisa yang bisa dipindahkan: <strong>Rp 0</strong></span><span class="sweep-available-action" aria-hidden="true">Ketuk untuk gunakan semua ›</span></button><label>2. Pindahkan ke<select id="sweepDestinationType"><option value="savings">Tujuan tabungan</option><option value="pocket">Pos anggaran lain</option><option value="bebas">⚪ Uang Bebas (Tanpa Pos)</option></select></label><label id="sweepGoalField">Tujuan tabungan<select id="sweepGoalSelect"></select></label><label id="sweepDestinationPocketField" hidden>Pos anggaran tujuan<select id="sweepDestinationPocketSelect"></select></label><label>3. Nominal yang dipindahkan<div class="sweep-amount-row"><input id="sweepAmount" inputmode="numeric" required placeholder="Contoh: 100.000"><button type="button" class="ghost" id="sweepMaxBtn">Sisa seluruh</button></div></label><label>Catatan <span class="muted">(opsional)</span><input id="sweepNote" maxlength="280" placeholder="Contoh: pindah sisa belanja bulan ini"></label></div><p id="sweepPreview" class="sweep-preview">Isi nominal atau pilih “Sisa seluruh” untuk mengisi jumlah maksimal.</p><p class="savings-inline-error" id="sweepError" role="alert" hidden></p><div class="dialog-actions"><button class="ghost" data-action="close-sweep-modal" type="button">Batal</button><button class="primary" type="submit" id="sweepSaveBtn">Pindahkan dana</button></div></form></div></div>
 <div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txModalTitle" style="margin:0">Rincian Transaksi</h3><button class="icon-btn" data-action="close-modal" type="button">×</button></div><div id="txDetail"></div><div id="txEdit" style="display:none" class="form-grid"></div><div class="dialog-actions" id="detailActions"><button class="ghost danger" data-action="delete-tx" type="button">Hapus</button><button class="ghost" data-action="edit-tx" type="button">Edit</button><button class="ghost" data-action="close-modal" type="button">Back</button></div><div class="dialog-actions" id="editActions" style="display:none"><button class="ghost danger" data-action="cancel-edit" type="button">Batal</button><button class="primary" data-action="save-edit" type="button">Simpan</button></div></div></div>
 <div class="modal" id="manualModal"><div class="sheet"><div class="row"><h3 style="margin:0">Input Manual</h3><button class="icon-btn" data-action="close-manual" type="button">×</button></div><div class="wide" style="margin-bottom:6px"><label style="display:grid;gap:4px;font-size:12px;font-weight:750">Pos Anggaran / Budget<select id="manPocketSelect" style="width:100%"></select></label></div><div class="source-seg" id="manSourceSeg" style="display:none"><button data-source="personal" class="active" type="button">💵 Pribadi</button><button data-source="st" type="button">📋 ST</button></div><div class="form-grid" style="margin-top:8px"><label>Nama<input id="manTitle" placeholder="Nama transaksi" autocomplete="off"></label><label>Nominal<input id="manAmount" inputmode="numeric" placeholder="Contoh: 50.000" autocomplete="off"></label><label>Tipe<select id="manType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label>Kategori<select id="manCategory" style="margin-bottom:4px"></select><input id="manCategoryNew" style="display:none" placeholder="Nama kategori baru" autocomplete="off"></label><label>Ikon<input id="manIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Catatan<input id="manNote" placeholder="Opsional" autocomplete="off"></label></div><div class="dialog-actions"><button class="ghost" data-action="close-manual" type="button">Batal</button><button class="primary" data-action="save-manual" type="button">Simpan</button></div></div></div>
@@ -1578,7 +1579,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='9.8', APP_RELEASE_NOTE='Alokasi Uang Bebas, pos ST, dan pengingat anggaran lebih akurat.';
+const APP_VERSION='9.9', APP_RELEASE_NOTE='Pemasukan masuk ke Uang Bebas dan alokasi pos dilakukan manual.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -1676,13 +1677,6 @@ function setPocketActive(pocketId, active){
   const idx = list.findIndex(p => p.id === pocketId);
   if(idx >= 0&&pocketId!=='bebas'){
     const pocket=list[idx];
-    if(active&&!isPocketActive(pocket)&&!isDedicatedSTPocket(pocket)){
-      const available=calculateSafeDailySpend(getTX(),list,getSavings(),new Date(),getPaydaySetting()).freeMoneyRemaining;
-      if(Number(pocket.amount||0)>Math.max(0,available)){
-        toast('Uang Bebas belum cukup untuk mengaktifkan pos ini.');
-        return;
-      }
-    }
     list[idx].isActive = !!active;
     list[idx].updatedAt = new Date().toISOString();
     savePockets(list);
@@ -1707,30 +1701,33 @@ function calculatePocketUsage(pocket,targetDate,txList){
     const percent=amount>0?Math.round(Math.max(0,spent)/amount*100):0;
     return {pocket,spent,allocated:safe.savingsAllocated,moved:safe.freeMoneyMoved,incoming:safe.freeMoneyIncoming,outgoing:safe.freeMoneyOutgoing,amount,effectiveAmount:amount,remaining,percent,isOver:remaining<0,overAmount:Math.max(0,-remaining),count:safe.freeExpenseCount};
   }
-  const cats=(pocket.categories||[]).map(c=>String(c).toLowerCase().trim());
   const matchingTx=(txList||[]).filter(t=>{
     if(t.type!=='expense')return false;
-    if(t.source==='st' && t.pocketId!==pocket.id)return false;
     const tTime=new Date(t.createdAt||Date.now()).getTime();
     if(tTime<startTs||tTime>endTs)return false;
+    if(t.source==='st')return (t.pocketId||getSTPocket(getPockets())?.id)===pocket.id;
+    if(isDedicatedSTPocket(pocket))return false;
     if(t.pocketId==='bebas')return false;
     if(t.pocketId&&t.pocketId!==pocket.id)return false;
     if(t.pocketId&&t.pocketId===pocket.id)return true;
-    const tCat=String(t.category||'').toLowerCase().trim();
-    const tTitle=String(t.title||'').toLowerCase().trim();
-    return cats.some(c=>tCat.includes(c)||tTitle.includes(c));
+    if(!isPocketActive(pocket,txList))return false;
+    return inferPocket(t.category,t.title,getPockets())===pocket.id;
   });
   const spent=matchingTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
   const savings=getSavings();
   const allocated=getSavingsAllocationsBySource(savings,pocket.id,cycle,txList||getTX());
   const transferTotals=getPocketTransferTotals(pocket.id,date);
   const stIncome=isDedicatedSTPocket(pocket)?(txList||[]).filter(t=>t.type==='income'&&t.source==='st'&&t.pocketId===pocket.id&&new Date(t.createdAt||Date.now()).getTime()>=startTs&&new Date(t.createdAt||Date.now()).getTime()<=endTs).reduce((total,t)=>total+(Number(t.amount)||0),0):0;
-  const amount=stIncome>0?stIncome:(Number(pocket.amount)||0);
-  const effectiveAmount=amount+transferTotals.incoming,moved=allocated+transferTotals.outgoing;
+  const budgetAmount=isDedicatedSTPocket(pocket)?stIncome:(Number(pocket.amount)||0);
+  const amount=budgetAmount;
+  const effectiveAmount=(isDedicatedSTPocket(pocket)?stIncome:0)+transferTotals.incoming,moved=allocated+transferTotals.outgoing;
   const remaining=effectiveAmount-spent-moved;
-  const percent=effectiveAmount>0?Math.round(((spent+moved)/effectiveAmount)*100):0;
-  const isOver=spent+moved>effectiveAmount,overAmount=Math.max(0,spent+moved-effectiveAmount);
-  return {pocket,spent,allocated,moved,incoming:transferTotals.incoming,outgoing:transferTotals.outgoing,amount,effectiveAmount,remaining,percent,isOver,overAmount,count:matchingTx.length};
+  const budgetRemaining=budgetAmount-spent;
+  const percent=budgetAmount>0?Math.round((spent/budgetAmount)*100):(spent>0?100:0);
+  const cashGap=Math.max(0,spent+moved-effectiveAmount);
+  const budgetOverAmount=Math.max(0,spent-budgetAmount);
+  const isOver=budgetOverAmount>0,overAmount=budgetOverAmount;
+  return {pocket,spent,allocated,moved,incoming:transferTotals.incoming,outgoing:transferTotals.outgoing,amount,effectiveAmount,remaining,budgetAmount,budgetRemaining,percent,isOver,overAmount,budgetOverAmount,cashGap,count:matchingTx.length};
 }
 function getSTPocket(pockets,targetName=''){
   const pList=pockets&&pockets.length?pockets:getPockets();
@@ -2423,31 +2420,34 @@ function getSavingsWithdrawalsToFree(savings,cycle){
 function getExpensePocketId(item,pockets){
   if(item?.source==='st')return item.pocketId||getSTPocket(pockets)?.id||'bebas';
   if(item?.pocketId==='bebas')return 'bebas';
-  if(item?.pocketId){const target=pockets.find(p=>p.id===item.pocketId);return target&&isPocketActive(target)&&!isDedicatedSTPocket(target)?target.id:'bebas'}
+  if(item?.pocketId){const target=pockets.find(p=>p.id===item.pocketId);return target&&!isDedicatedSTPocket(target)?target.id:'bebas'}
   return inferPocket(item?.category,item?.title,pockets)||'bebas';
 }
 function calculateSafeDailySpend(txList=[],pockets=[],savings=null,targetDate=new Date(),payday=getPaydaySetting()){
   const cycle=getPaydayCycle(targetDate,payday),start=dateInput(cycle.start),end=dateInput(cycle.end);
   const cycleTx=(txList||[]).filter(item=>{const day=dateInput(new Date(item.createdAt||Date.now()));return day>=start&&day<=end});
-  const activePockets=(pockets||[]).filter(p=>p.id!=='bebas'&&isPocketActive(p,txList)&&!isDedicatedSTPocket(p));
+  const allPersonalPockets=(pockets||[]).filter(p=>p.id!=='bebas'&&!isDedicatedSTPocket(p));
+  const activePockets=allPersonalPockets.filter(p=>isPocketActive(p,txList));
   const cycleExpenses=cycleTx.filter(item=>item.type==='expense'&&item.source!=='st');
   const freeExpenseTx=cycleExpenses.filter(item=>getExpensePocketId(item,pockets)==='bebas');
   const cycleIncome=cycleTx.filter(item=>item.type==='income'&&item.source!=='st').reduce((total,item)=>total+(Number(item.amount)||0),0);
-  const committedBudget=activePockets.reduce((total,pocket)=>total+(Number(pocket.amount)||0),0);
+  const committedBudget=0;
   const savingsAllocated=getSavingsAllocationsBySource(savings,'bebas',cycle,cycleTx);
   const savingsWithdrawn=getSavingsWithdrawalsToFree(savings,cycle);
   const freeTransfers=getPocketTransferTotals('bebas',targetDate);
-  const overBudgetPockets=activePockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx)})).filter(row=>row.usage.overAmount>0);
-  const overBudgetTotal=overBudgetPockets.reduce((total,row)=>total+row.usage.overAmount,0);
-  const freeMoneyInitial=cycleIncome-committedBudget-savingsAllocated+savingsWithdrawn+freeTransfers.incoming-freeTransfers.outgoing;
+  const personalUsage=allPersonalPockets.map(pocket=>({pocket,usage:calculatePocketUsage(pocket,targetDate,cycleTx)}));
+  const overBudgetPockets=personalUsage.filter(row=>isPocketActive(row.pocket,txList)&&row.usage.budgetOverAmount>0);
+  const overBudgetTotal=overBudgetPockets.reduce((total,row)=>total+row.usage.budgetOverAmount,0);
+  const cashGapTotal=personalUsage.reduce((total,row)=>total+row.usage.cashGap,0);
+  const freeMoneyInitial=cycleIncome-savingsAllocated+savingsWithdrawn+freeTransfers.incoming-freeTransfers.outgoing;
   const directFreeSpent=freeExpenseTx.reduce((total,item)=>total+(Number(item.amount)||0),0);
-  const freeMoneySpent=directFreeSpent+overBudgetTotal;
+  const freeMoneySpent=directFreeSpent+cashGapTotal;
   const freeMoneyRemaining=freeMoneyInitial-freeMoneySpent;
   const targetDateStr=dateInput(targetDate);
   const todaySpent=freeExpenseTx.filter(item=>dateInput(new Date(item.createdAt||Date.now()))===targetDateStr).reduce((total,item)=>total+(Number(item.amount)||0),0);
   const baseDailyPace=Math.max(0,Math.floor(freeMoneyRemaining/cycle.daysRemaining));
   const todayRemaining=baseDailyPace-todaySpent;
-  return {cycle,cycleIncome,committedBudget,savingsAllocated,savingsWithdrawn,freeMoneyInitial,freeMoneySpent,freeMoneyRemaining,freeMoneyMoved:savingsAllocated-savingsWithdrawn+freeTransfers.outgoing-freeTransfers.incoming,freeMoneyIncoming:freeTransfers.incoming,freeMoneyOutgoing:freeTransfers.outgoing,freeExpenseCount:freeExpenseTx.length,overBudgetPockets,overBudgetTotal,daysRemaining:cycle.daysRemaining,baseDailyPace,safeDailyAmount:Math.max(0,todayRemaining),todaySpent,todayRemaining,isOverspent:todayRemaining<0,hasIncome:cycleIncome>0};
+  return {cycle,cycleIncome,committedBudget,savingsAllocated,savingsWithdrawn,freeMoneyInitial,freeMoneySpent,freeMoneyRemaining,freeMoneyMoved:savingsAllocated-savingsWithdrawn+freeTransfers.outgoing-freeTransfers.incoming,freeMoneyIncoming:freeTransfers.incoming,freeMoneyOutgoing:freeTransfers.outgoing,freeExpenseCount:freeExpenseTx.length,overBudgetPockets,overBudgetTotal,cashGapTotal,daysRemaining:cycle.daysRemaining,baseDailyPace,safeDailyAmount:Math.max(0,todayRemaining),todaySpent,todayRemaining,isOverspent:todayRemaining<0,hasIncome:cycleIncome>0};
 }
 function startYear(d){d=new Date(d);d.setMonth(0,1);d.setHours(0,0,0,0);return d} function endYear(d){d=new Date(d);d.setMonth(11,31);d.setHours(23,59,59,999);return d} function startWeek(d){d=startDay(d);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);return d} function endWeek(d){d=startWeek(d);d.setDate(d.getDate()+6);d.setHours(23,59,59,999);return d} function dateInput(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function range(){const o=reportOffset,n=new Date();if(reportPeriod==='daily'){const d=new Date(n);d.setDate(d.getDate()+o);return{start:startDay(d),end:endDay(d),label:d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}}if(reportPeriod==='weekly'){const d=new Date(n);d.setDate(d.getDate()+o*7);return{start:startWeek(d),end:endWeek(d),label:'Minggu ke-'+weekNum(d)+' ('+startWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+endWeek(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+')'}}if(reportPeriod==='yearly'){const y=n.getFullYear()+o;return{start:startYear(new Date(y,0)),end:endYear(new Date(y,0)),label:String(y)}}if(reportPeriod==='range'){const s=$('rangeStart').value?startDay(new Date($('rangeStart').value)):startMonth(n), e=$('rangeEnd').value?endDay(new Date($('rangeEnd').value)):endDay(n);return{start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}}const d=new Date(n.getFullYear(),n.getMonth()+o,1);return{start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}}
@@ -2551,7 +2551,7 @@ function renderPocketManager(){
                 <strong style="font-size:14px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</strong>
                 <span class="pocket-status-pill ${active?'active':'inactive'}">${active?'Aktif':'Nonaktif'}</span>
               </div>
-              <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Jatah: <strong>${short(p.amount)}</strong> / bln · Terpakai ${usage.percent}% · Sisa: <strong>${short(Math.max(0,usage.remaining))}</strong></span>
+              <span class="muted" style="font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Jatah: <strong>${short(usage.budgetAmount??p.amount)}</strong> / bln · Dana pos: <strong>${short(Math.max(0,usage.remaining))}</strong>${usage.cashGap>0?` · ${short(usage.cashGap)} dari Uang Bebas`:''} · Terpakai ${usage.percent}%</span>
             </div>
           </div>
           ${!pocketSelectMode ? `<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
@@ -2585,7 +2585,28 @@ function renderPocketManager(){
     pmlEl.innerHTML = buildListHtml(pockets.filter(p=>p.id==='bebas'||!isPocketActive(p,tx)), true)+buildListHtml(activeList, true);
   }
 }
-function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=pocket.id==='bebas'?`Dana umum · Terpakai ${usage.percent}%`:`Jatah ${money(usage.effectiveAmount||usage.amount)} · Terpakai ${usage.percent}%`;$('pocketActionsRemaining').textContent=money(Math.max(0,usage.remaining));$('pocketActionViewTx').dataset.pocketId=pocketId;$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0;if(pocket.id==='bebas'){$('pocketActionEdit').hidden=true;$('pocketActionTransfer').hidden=true}else{$('pocketActionEdit').hidden=false;$('pocketActionTransfer').hidden=false}openModalLayer('pocketActionsModal')}
+function openPocketActions(pocketId){const pocket=getPockets().find(item=>item.id===pocketId);if(!pocket)return;const usage=calculatePocketUsage(pocket,new Date(),getTX()),safe=calculateSafeDailySpend(getTX(),getPockets(),getSavings(),new Date(),getPaydaySetting());$('pocketActionsTitle').textContent=pocket.name;$('pocketActionsSubtitle').textContent=pocket.id==='bebas'?`Dana umum · Terpakai ${usage.percent}%`:`Batas ${money(usage.budgetAmount||usage.amount)} · Dana pos ${money(Math.max(0,usage.remaining))}`;$('pocketActionsRemaining').textContent=usage.remaining<0?'−'+money(Math.abs(usage.remaining)):money(usage.remaining);$('pocketActionViewTx').dataset.pocketId=pocketId;$('pocketActionEdit').dataset.pocketId=pocketId;$('pocketActionTransfer').dataset.pocketId=pocketId;$('pocketActionTransfer').disabled=usage.remaining<=0;$('pocketActionAllocate').dataset.pocketId=pocketId;$('pocketActionAllocate').hidden=pocket.id==='bebas'||!isPocketActive(pocket)||isDedicatedSTPocket(pocket);$('pocketActionAllocate').disabled=safe.freeMoneyRemaining<=0;if(pocket.id==='bebas'){$('pocketActionEdit').hidden=true;$('pocketActionTransfer').hidden=true}else{$('pocketActionEdit').hidden=false;$('pocketActionTransfer').hidden=false}openModalLayer('pocketActionsModal')}
+function openBudgetAllocationModal(pocketId){
+  const pocket=getPockets().find(item=>item.id===pocketId),error=$('allocatePocketError');
+  if(!pocket||pocket.id==='bebas'||isDedicatedSTPocket(pocket)||!isPocketActive(pocket)){toast('Pilih pos pribadi yang aktif.');return}
+  const safe=calculateSafeDailySpend(getTX(),getPockets(),getSavings(),new Date(),getPaydaySetting());
+  if(safe.freeMoneyRemaining<=0){toast('Uang Bebas belum memiliki saldo yang bisa dialokasikan.');return}
+  $('allocatePocketId').value=pocket.id;$('allocatePocketTitle').textContent='Alokasikan ke '+pocket.name;$('allocatePocketAvailable').textContent=money(safe.freeMoneyRemaining);$('allocatePocketAmount').value='';$('allocatePocketNote').value='';error.hidden=true;openModalLayer('allocatePocketModal');setTimeout(()=>$('allocatePocketAmount')?.focus(),80);
+}
+function saveBudgetAllocation(event){
+  event.preventDefault();
+  const pocketId=$('allocatePocketId').value,pocket=getPockets().find(item=>item.id===pocketId),raw=$('allocatePocketAmount').value.trim(),amount=Number(raw.replace(/\D/g,''))||parseAmount(raw)||0,error=$('allocatePocketError');
+  error.hidden=true;
+  if(!pocket||!isPocketActive(pocket)||isDedicatedSTPocket(pocket)){error.textContent='Pos anggaran ini tidak dapat menerima alokasi pribadi.';error.hidden=false;return}
+  if(!Number.isSafeInteger(amount)||amount<=0){error.textContent='Masukkan nominal alokasi yang valid.';error.hidden=false;return}
+  const safe=calculateSafeDailySpend(getTX(),getPockets(),getSavings(),new Date(),getPaydaySetting());
+  if(amount>safe.freeMoneyRemaining){error.textContent='Uang Bebas tersedia '+money(Math.max(0,safe.freeMoneyRemaining))+'.';error.hidden=false;return}
+  try{
+    const transfers=getPocketTransfers();
+    transfers.push({id:id(),fromPocketId:'bebas',toPocketId:pocket.id,amount,date:dateInput(new Date()),note:$('allocatePocketNote').value.trim()||'Alokasi dari Uang Bebas',createdAt:new Date().toISOString()});
+    savePocketTransfers(transfers);closeModalLayer('allocatePocketModal');closeModalLayer('pocketActionsModal');render();toast(short(amount)+' dialokasikan ke '+pocket.name+'.');
+  }catch(err){error.textContent=err.message||'Alokasi dana gagal disimpan.';error.hidden=false}
+}
 
 function updatePocketIconPreview(){
   const preview=$('pocketIconPreview'),iconValue=$('pocketFormIcon')?.value||'🛒';
@@ -2712,10 +2733,10 @@ function renderBudgetPockets(){
       <span class="home-pocket-progress" role="progressbar" aria-label="Uang Bebas terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span>
       <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>${usage.remaining<0?'Minus':'Sisa'}</span><strong>${usage.remaining<0?'−'+short(Math.abs(usage.remaining)):short(usage.remaining)}</strong></span></span>
     </button>`;
-    return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Sisa ${short(Math.max(0,usage.remaining))}">
-      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.effectiveAmount||usage.amount)}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
+    return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-pocket-actions="${esc(p.id)}" aria-label="Buka pilihan ${esc(p.name)}. Dana pos tersisa ${short(Math.max(0,usage.remaining))}">
+      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Jatah ${money(usage.budgetAmount??usage.amount)} · Dana ${money(Math.max(0,usage.remaining))}</small></span><span class="home-pocket-percent">${usage.percent}%</span></span>
       <span class="home-pocket-progress" role="progressbar" aria-label="Jatah ${esc(p.name)} yang dipakai atau dialokasikan" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%"></span></span>
-      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Dialihkan</span><strong>${short(usage.moved||usage.allocated)}</strong></span><span><span>${usage.isOver?'Lebih':'Sisa'}</span><strong>${short(usage.isOver?usage.overAmount:usage.remaining)}</strong></span></span>
+      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Ditanggung bebas</span><strong>${short(usage.cashGap)}</strong></span><span><span>${usage.isOver?'Lebih dari jatah':'Sisa jatah'}</span><strong>${short(usage.isOver?usage.budgetOverAmount:Math.max(0,usage.budgetRemaining))}</strong></span></span>
     </button>`;
   }).join('');
 
@@ -5885,12 +5906,12 @@ document.addEventListener('click',async e=>{
     const dp=e.target.closest('[data-del-pocket]');
     if(dp){deletePocket(dp.dataset.delPocket);return}
     if(e.target.closest('[data-toggle-pocket]'))return;
-    const pocketCard=e.target.closest('[data-pocket-actions]');if(pocketCard&&!e.target.closest('[data-action],[data-edit-pocket],[data-del-pocket],.pocket-toggle-label')){navPocket(pocketCard.dataset.pocketActions);return}
+    const pocketCard=e.target.closest('[data-pocket-actions]');if(pocketCard&&!e.target.closest('[data-action],[data-edit-pocket],[data-del-pocket],.pocket-toggle-label')){openPocketActions(pocketCard.dataset.pocketActions);return}
 const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',pocket:null,start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,pocket:null,start:null,end:null,source:'all',session:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='pocket')txFilter.pocket=null;if(cf.dataset.clearFilter==='pocket-settings'){if(txFilter.pocket)openPocketActions(txFilter.pocket);return;}if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
     if(a==='sweep-pocket-modal'){openSweepPocketModal(escBtn.dataset.pocketId||'');return}
-if(a==='close-pocket-actions'){closeModalLayer('pocketActionsModal');return}if(a==='view-pocket-tx'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');navPocket(pocketId);return}if(a==='edit-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openPocketEdit(pocketId);return}if(a==='transfer-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openSweepPocketModal(pocketId);return}
+if(a==='close-pocket-actions'){closeModalLayer('pocketActionsModal');return}if(a==='view-pocket-tx'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');navPocket(pocketId);return}if(a==='edit-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openPocketEdit(pocketId);return}if(a==='transfer-pocket-action'){const pocketId=escBtn.dataset.pocketId;closeModalLayer('pocketActionsModal');openSweepPocketModal(pocketId);return}if(a==='allocate-pocket-action'){closeModalLayer('pocketActionsModal');openBudgetAllocationModal(escBtn.dataset.pocketId||'');return}if(a==='close-allocate-pocket'){closeModalLayer('allocatePocketModal');return}
 if(a==='pocket-banner-edit'){const pocketId=escBtn.dataset.pocketId||txFilter.pocket;if(pocketId)openPocketEdit(pocketId);return}
 if(a==='pocket-banner-sweep'){const pocketId=escBtn.dataset.pocketId||txFilter.pocket;if(pocketId)openSweepPocketModal(pocketId);return}
 if(a==='close-sweep-modal'){closeModalLayer('sweepPocketModal');return}
@@ -6101,6 +6122,7 @@ $('sweepGoalSelect')?.addEventListener('change',updateSweepPreview);
 $('sweepAmount')?.addEventListener('input',updateSweepPreview);
 $('sweepMaxBtn')?.addEventListener('click',useAllSweepRemainder);
 $('sweepPocketForm')?.addEventListener('submit',saveSweepPocket);
+$('allocatePocketForm')?.addEventListener('submit',saveBudgetAllocation);
 ['cameraDirectInput','galleryFileInput'].forEach(id=>{
   $(id)?.addEventListener('change', e=>{
     if(e.target.files&&e.target.files[0]){

@@ -1,28 +1,51 @@
-# Rancangan: Alokasi pos dan saldo Uang Bebas
+# Spesifikasi: Saldo Uang Bebas dan alokasi pos manual
 
 Tanggal: 2026-10-24
-Status: Disetujui untuk implementasi lewat percakapan 2026-10-24
+
+Status: Disetujui pengguna; implementasi v9.9
+
+## Tujuan
+
+Pemasukan pribadi harus menambah saldo Uang Bebas secara utuh. Dana hanya berpindah ke pos anggaran atau tabungan saat pengguna melakukan alokasi. Dengan demikian, pos yang sudah aktif tidak otomatis mengambil pemasukan baru.
 
 ## Aturan yang disepakati
 
-- Pemasukan pribadi, termasuk gaji/uang masuk, masuk ke Uang Bebas. Pemasukan ST masuk hanya ke pos/sesi ST.
-- Jatah bulanan pos aktif adalah alokasi yang bersumber dari Uang Bebas. Total alokasi pos dan tabungan mengurangi Uang Bebas pada siklus gajian yang sama; nominal pos tidak boleh ikut mengurangi Uang Bebas pada tampilan lain secara ganda.
-- Pengeluaran yang cocok dengan pos aktif mengurangi saldo pos. Pengeluaran yang tidak cocok atau diarahkan ke Uang Bebas mengurangi Uang Bebas.
-- Jika belanja pos melampaui jatahnya, saldo uang nyata tetap berkurang: bagian sampai jatah dibebankan ke pos, sedangkan kelebihannya mengurangi Uang Bebas satu kali. Pos menampilkan pelampauan sebagai informasi (contoh: “Melewati jatah Rp500 ribu”), bukan saldo negatif yang dihitung lagi sebagai utang.
-- Setoran tabungan pribadi hanya berasal dari Uang Bebas atau pos dengan dana tersedia. Setiap setoran mencatat sumber dan mengurangi sumber itu satu kali. Pindah antar tujuan tabungan tidak menambah pengeluaran.
-- Pos nonaktif tetap nonaktif. Pengeluaran baru tidak otomatis diarahkan kepadanya. Riwayat tetap terkait pos asal.
-- Tampilan beranda menyampaikan jumlah pos yang melampaui jatah dan total kelebihannya dengan penanda merah lembut, ringkas, dan tidak mengganggu.
+- Semua pemasukan pribadi, termasuk gaji dan input “uang masuk”, masuk ke Uang Bebas. Pengecualian dana ST tetap masuk ke sesi/pos ST yang sesuai.
+- Pos anggaran menyimpan batas/jatah dan aturan kategori untuk mencocokkan pengeluaran. Status aktif menentukan apakah pos boleh menerima pencocokan transaksi; status nonaktif tetap persisten.
+- Pembuatan atau pengaktifan pos tidak otomatis mendanainya. Alokasi dana ke pos adalah tindakan terpisah yang memindahkan nominal dari Uang Bebas ke pos.
+- Pengeluaran yang cocok dengan pos aktif mengurangi dana yang sudah dialokasikan ke pos tersebut. Bila dana pos kurang, kekurangannya dibebankan ke Uang Bebas satu kali; riwayat pos dapat menampilkan saldo minus/kekurangan sebagai informasi tanpa mengurangi saldo total untuk kedua kalinya.
+- Pengeluaran yang tidak cocok dengan pos aktif atau secara eksplisit ditujukan ke Uang Bebas langsung mengurangi Uang Bebas.
+- Setoran tabungan pribadi hanya berasal dari Uang Bebas atau saldo pos yang tersedia. Sumber dana dicatat dan dikurangi tepat satu kali. Perpindahan antar tujuan tabungan tidak menambah pengeluaran.
+- Dana ST tetap terpisah dari Uang Bebas dan tidak dapat dialokasikan ke pos pribadi secara otomatis.
+- Transfer/alokasi menggunakan siklus tanggal gajian yang sama dengan pemasukan dan pengeluaran.
 
-## Perhitungan dan kompatibilitas
+## Aturan saldo
 
-Saldo operasional memakai siklus tanggal gajian yang sama untuk pemasukan, anggaran, tabungan, belanja, dan transfer. ST dikecualikan dari uang pribadi termasuk alokasi pos ST. Pencocokan kategori tetap menjadi jalur kompatibilitas untuk transaksi historis tanpa tujuan; transaksi baru menyimpan tujuan secara eksplisit.
+- Saldo Uang Bebas = saldo awal yang tersedia + seluruh pemasukan pribadi pada siklus + dana yang kembali ke Uang Bebas − alokasi aktual ke pos/tabungan − pengeluaran langsung dari Uang Bebas − kekurangan belanja pos yang melampaui dana pos tersedia.
+- Saldo pos = alokasi aktual yang diterima pada siklus − pengeluaran yang dicocokkan ke pos − alokasi keluar dari pos. Batas anggaran pos tidak dihitung sebagai dana.
+- Belanja pos yang melebihi dana tersedia mengurangi Uang Bebas sebesar bagian yang tidak tertutup alokasi. Jika juga melewati batas anggaran, beranda memberi penanda ringkas berapa pos yang melewati batas dan total kelebihannya.
+- Contoh: pemasukan pribadi Rp5 juta tanpa alokasi, tabungan, atau belanja membuat Uang Bebas Rp5 juta. Setelah Rp500 ribu dialokasikan ke BBM dan Rp1 juta ke jajan, Uang Bebas menjadi Rp3,5 juta. Belanja BBM Rp300 ribu hanya mengurangi saldo pos BBM. Belanja BBM kumulatif Rp700 ribu menghabiskan alokasi BBM dan membebankan kekurangan Rp200 ribu ke Uang Bebas satu kali.
 
-Data tabungan lama tanpa sumber ditafsirkan sebagai Uang Bebas kecuali ada transaksi lama yang jelas merupakan alokasi dari pos (judul alokasi, tujuan tabungan, jumlah, dan tanggal cocok). Data tidak dihapus dan format ekspor/impor tetap dipertahankan. Jika sumber lama tetap ambigu, jangan membuat potongan kedua.
+## Data lama dan kompatibilitas
 
-## Ruang lingkup
+- Jangan menghapus atau menulis ulang transaksi pengguna, sumber pemasukan, data ST, transfer, tabungan, maupun format ekspor/impor.
+- Saldo pos lama yang tidak mempunyai catatan transfer/alokasi tidak dianggap sebagai dana baru. Pengeluaran lama yang tercatat pada pos tetap dipakai untuk menghitung pemakaian dan selisihnya hanya dibebankan sekali pada Uang Bebas.
+- Catatan tabungan lama tanpa sumber ditafsirkan sebagai Uang Bebas kecuali transaksi lama membuktikan setoran berasal dari pos. Jika sumber tetap ambigu, jangan membuat potongan kedua.
+- Input pemasukan pribadi harus tetap diklasifikasikan sebagai pemasukan, disimpan dengan tujuan Uang Bebas, dan masuk ke saldo siklus yang benar.
 
-Satukan perhitungan di `index.html`, perbaiki pencatatan sumber di alur tabungan pada `index.html`, pertahankan normalisasi sumber di `savings-core.js`, tambah ringkasan pelampauan yang bersih pada beranda, dan naikkan versi aplikasi ke 9.8. Tanpa perubahan desain lain atau migrasi destruktif.
+## Dampak antarmuka
+
+- Sediakan tindakan yang jelas untuk mengalokasikan sejumlah dana dari Uang Bebas ke pos anggaran aktif, dengan pemeriksaan agar alokasi tidak melebihi dana tersedia.
+- Ringkasan Uang Bebas di beranda menunjukkan saldo yang belum dialokasikan dan benar-benar dapat digunakan; dana pada pos dan tabungan tidak dihitung ganda.
+- Pertahankan tampilan bersih. Informasi kekurangan/alokasi ditampilkan ringkas dan tidak mengganggu.
 
 ## Verifikasi penerimaan
 
-Dengan pemasukan pribadi Rp5 juta dan jatah BBM Rp500 ribu serta jajan Rp1 juta, Uang Bebas menampilkan Rp3,5 juta sebelum pengeluaran lain. Belanja BBM Rp300 ribu mengurangi pos BBM saja. Belanja BBM kumulatif Rp1,5 juta membuat sisa Uang Bebas berkurang Rp500 ribu dan beranda menampilkan satu pos melewati jatah sebesar Rp500 ribu. Pengeluaran tidak cocok mengurangi Uang Bebas. Setoran tabungan mengurangi hanya sumber yang dipilih. Pemasukan/biaya ST tidak mengubah Uang Bebas. Pos nonaktif tetap nonaktif setelah navigasi/muat ulang.
+- Pemasukan pribadi Rp5 juta tanpa alokasi mengubah Uang Bebas sebesar tepat Rp5 juta.
+- Pos aktif yang sudah dibuat tidak mengurangi Uang Bebas sampai ada alokasi aktual.
+- Alokasi ke pos mengurangi Uang Bebas dan menambah saldo pos dengan jumlah yang sama.
+- Belanja pos mengurangi dana pos; hanya kekurangan dana pos yang mengurangi Uang Bebas.
+- Pengeluaran bebas, setoran tabungan, penarikan tabungan, dan transfer antar-pos tidak dihitung ganda.
+- Dana ST tidak menambah atau mengurangi saldo Uang Bebas.
+- Pos nonaktif tetap nonaktif setelah navigasi dan pemuatan ulang.
+- Setelah deployment, aplikasi menampilkan versi rilis baru dan saldo di beranda mengikuti aturan di atas.
