@@ -1074,38 +1074,6 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
-        <!-- Pembaruan aplikasi -->
-        <section class="card settings-card">
-          <div class="settings-card-head">
-            <span class="settings-card-icon" style="background:var(--surface2);color:var(--ink)">📱</span>
-            <div style="flex:1;min-width:0">
-              <strong style="font-size:14px;color:var(--ink);display:block">Pembaruan Aplikasi</strong>
-              <small class="muted settings-release-note" id="appReleaseNote">v10.8 · Alokasi budget dan pengembalian sisa pos tercatat otomatis.</small>
-            </div>
-          </div>
-          <span id="updateStatusText" style="display:none"></span>
-          <div id="nativeHint" style="display:none"></div>
-          <button id="installBtn" data-action="install-pwa" type="button" style="display:none"></button>
-          <textarea id="exportText" readonly style="display:none"></textarea>
-          <!-- Hidden compatibility elements: API key input hidden so user never sees it -->
-          <!-- Digunakan untuk scan foto struk otomatis, koreksi salah ketik (typo) -->
-          <input type="hidden" id="geminiApiKeyInput">
-        </section>
-
-        <!-- Pengaturan Lanjutan -->
-        <section class="card settings-card" style="margin-bottom:28px;border-color:#ffdcd8">
-          <div class="settings-card-head">
-            <span class="settings-card-icon" style="background:#fff1ef;color:var(--danger)">⚠️</span>
-            <div style="flex:1;min-width:0">
-              <strong style="font-size:13.5px;color:var(--danger);display:block">Pengaturan Lanjutan</strong>
-              <small class="muted" style="font-size:11.5px">Muat data contoh atau reset seluruh data peramban</small>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:12px">
-            <button class="ghost" data-action="reload-sample" type="button" style="flex:1;min-height:38px;font-size:11.5px;font-weight:750">Muat Data Contoh</button>
-            <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:38px;font-size:11.5px;border:0;border-radius:12px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
-          </div>
-        </section>
         <!-- Pintasan Cepat -->
         <section class="card settings-card">
           <button class="settings-collapse-trigger" type="button" data-settings-toggle="shortcuts" aria-expanded="false" aria-controls="settingsShortcutsPanel">
@@ -1167,6 +1135,21 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <div class="settings-backup-actions">
             <button class="primary" data-action="export-csv" type="button">Unduh CSV</button>
             <button class="ghost" data-action="import-csv" type="button">Pulihkan CSV</button>
+          </div>
+        </section>
+
+        <!-- Pengaturan Lanjutan -->
+        <section class="card settings-card" style="margin-bottom:28px;border-color:#ffdcd8">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#fff1ef;color:var(--danger)">⚠️</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:13.5px;color:var(--danger);display:block">Pengaturan Lanjutan</strong>
+              <small class="muted" style="font-size:11.5px">Muat data contoh atau reset seluruh data peramban</small>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="ghost" data-action="reload-sample" type="button" style="flex:1;min-height:38px;font-size:11.5px;font-weight:750">Muat Data Contoh</button>
+            <button class="danger" data-action="clear-data" type="button" style="flex:1;min-height:38px;font-size:11.5px;border:0;border-radius:12px;background:#fff1ef;color:var(--danger);font-weight:800">Hapus Semua Data</button>
           </div>
         </section>
       </section>
