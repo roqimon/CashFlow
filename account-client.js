@@ -125,6 +125,18 @@
     if(localHas&&remoteHas){box.hidden=false;setMessage('Data sudah ada di HP dan akun. Pilih cara menyatukannya sebelum sinkronisasi pertama.','warning');root.openAccountModal?.();return true}
     box.hidden=true;return false;
   }
+  function setNewUserOnboarding(remote){
+    const box=el('accountNewUserOnboarding');if(!box)return false;
+    const localTx=localTransactions();
+    const remoteHas=!!(remote.transactions?.length||remote.documents?.length||remote.deletedIds?.length||remote.deletedDocumentKeys?.length);
+    if(!remoteHas&&localTx.length>0){
+      box.hidden=false;
+      setMessage('Akun baru siap. Pilih untuk mulai dari nol atau simpan data saat ini.','warning');
+      root.openAccountModal?.();
+      return true;
+    }
+    box.hidden=true;return false;
+  }
   function mergeById(local,remote){
     if(Array.isArray(local)&&Array.isArray(remote)){
       const result=new Map();
@@ -154,6 +166,7 @@
     const removedDocs=new Set(remote.deletedDocumentKeys||[]);
     for(const key of KEYS){if(preserveDocs.includes(key))continue;if(cloudDocs.has(key))localStorage.setItem(key,JSON.stringify(cloudDocs.get(key)));else if(removedDocs.has(key)||(replace&&!merge))localStorage.removeItem(key)}
     root.saveAruskasTransactions?.(transactions);
+    if(!transactions.length)localStorage.setItem('aruskas_cleared','1');
     writeJson(KNOWN_IDS,[...new Set([...transactions.map(item=>String(item.id)),...(remote.transactions||[]).map(row=>String(row.id))])]);
     if(replace&&!merge){writeJson(PENDING_DELETED,[]);writeJson(PENDING_TX,false);writeJson(PENDING_DOCS,{})}
     }finally{setApply(false)}
@@ -193,6 +206,47 @@
     if(setOnboarding(remote)){
       el('accountMergeLocal').onclick=async()=>{el('accountOnboarding').hidden=true;busy=true;renderUser();try{setApply(true);try{const cloud=new Map((remote.documents||[]).map(item=>[item.key,item.value]));for(const key of KEYS){const raw=localStorage.getItem(key);if(raw===null)continue;let local;try{local=JSON.parse(raw)}catch{continue}if(cloud.has(key))localStorage.setItem(key,JSON.stringify(mergeById(local,cloud.get(key))))}writeJson(PENDING_DOCS,Object.fromEntries(currentDocs().map(doc=>[doc.key,new Date().toISOString()])));writeJson(PENDING_TX,true)}finally{setApply(false)}const result=await pushLocal();applyRemote(result,{replace:true});markAccountReady(user.id);setMessage('Data perangkat dan akun sudah digabung.','success')}finally{busy=false;renderUser()}};
       el('accountUseCloud').onclick=()=>{el('accountOnboarding').hidden=true;applyRemote(remote,{replace:true});markAccountReady(user.id);setMessage('Data akun dimuat di perangkat ini.','success')};
+      return;
+    }
+    if(setNewUserOnboarding(remote)){
+      el('accountStartFresh').onclick=async()=>{
+        el('accountNewUserOnboarding').hidden=true;
+        busy=true;renderUser();
+        try{
+          setApply(true);
+          try{
+            root.saveAruskasTransactions?.([]);
+            localStorage.setItem('aruskas_cleared','1');
+            writeJson(PENDING_TX,false);
+            writeJson(PENDING_DELETED,[]);
+            writeJson(KNOWN_IDS,[]);
+            writeJson(PENDING_DOCS,Object.fromEntries(KEYS.filter(key=>localStorage.getItem(key)!==null).map(key=>[key,new Date().toISOString()])));
+          }finally{
+            setApply(false);
+          }
+          const result=await pushLocal();
+          applyRemote(result,{replace:true});
+          markAccountReady(user.id);
+          root.refreshAruskas?.();
+          setMessage('Buku kas baru Anda siap dari nol.','success');
+        }finally{
+          busy=false;renderUser();
+        }
+      };
+      el('accountKeepLocal').onclick=async()=>{
+        el('accountNewUserOnboarding').hidden=true;
+        busy=true;renderUser();
+        try{
+          writeJson(PENDING_DOCS,Object.fromEntries(KEYS.filter(key=>localStorage.getItem(key)!==null).map(key=>[key,new Date().toISOString()])));
+          writeJson(PENDING_TX,true);
+          const result=await pushLocal();
+          applyRemote(result,{replace:true});
+          markAccountReady(user.id);
+          setMessage('Data saat ini berhasil disimpan ke akun Anda.','success');
+        }finally{
+          busy=false;renderUser();
+        }
+      };
       return;
     }
     if(remote.transactions?.length||remote.documents?.length||remote.deletedIds?.length){applyRemote(remote,{replace:true});await syncNow();markAccountReady(user.id);return}
@@ -255,7 +309,7 @@
     if(cached&&localStorage.getItem(OWNER_KEY)===cached.id){user=cached;renderUser();setMessage('Offline · data tersimpan di HP dan menunggu koneksi untuk sinkron.','warning')}
   }
   async function submitFormWithToken(form,route,extra){const body={...Object.fromEntries(new FormData(form).entries()),...extra};busy=true;renderUser();try{const result=await serverCall(route,{method:'POST',body});setMessage(result.message,'success');form.reset();form.hidden=true;if(route==='reset')setAccountFormMode('login');const url=new URL(location.href);url.searchParams.delete('account_token');url.searchParams.delete('account_action');history.replaceState({},'',url.pathname+url.search+url.hash)}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
-  async function logout(route){if(!user)return;busy=true;renderUser();try{await serverCall(route,{method:'POST',body:{}});user=null;localStorage.removeItem(USER_KEY);if(el('accountOnboarding'))el('accountOnboarding').hidden=true;setMessage('Keluar berhasil. Data yang sudah tersimpan di HP tetap tersedia di perangkat ini.','success')}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
+  async function logout(route){if(!user)return;busy=true;renderUser();try{await serverCall(route,{method:'POST',body:{}});user=null;localStorage.removeItem(USER_KEY);if(el('accountOnboarding'))el('accountOnboarding').hidden=true;if(el('accountNewUserOnboarding'))el('accountNewUserOnboarding').hidden=true;setMessage('Keluar berhasil. Data yang sudah tersimpan di HP tetap tersedia di perangkat ini.','success')}catch(error){setMessage(error.message,'error')}finally{busy=false;renderUser()}}
   function storageDataChanged(){if(user){queueSync();saveCacheSoon()}}
   root.AccountSync={start,transactionsChanged:noteTransactionChanges,storageDataChanged,syncNow};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>start().catch(error=>setMessage(error.message,'error')),{once:true});else start().catch(error=>setMessage(error.message,'error'));
