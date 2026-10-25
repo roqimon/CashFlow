@@ -1805,8 +1805,10 @@ function setPocketActive(pocketId, active){
         const needed=otherReturn?0:pendingReturn>0?Math.min(pendingReturn,targetRemaining):hasEarlierFunding?0:Math.max(0,Number(pocket.amount)||0);
         const free=calculateSafeDailySpend(txList,list,getSavings(),now,getPaydaySetting()).freeMoneyRemaining;
         const netCost=Math.max(0,needed-Math.min(needed,usage.cashGap));
-        if(netCost>Math.max(0,free)){render();toast('Uang Bebas tersedia '+money(Math.max(0,free))+'. Pos belum diaktifkan karena dananya belum cukup.');return}
-        const transfer=makePocketTransfer('bebas',pocketId,needed,'Alokasi budget saat pos diaktifkan',now,'budget-reactivation');if(transfer)transfers.push(transfer);
+        const allocatable=Math.max(0,Math.min(needed,free));
+        if(allocatable>0){
+          const transfer=makePocketTransfer('bebas',pocketId,allocatable,'Alokasi budget saat pos diaktifkan',now,'budget-reactivation');if(transfer)transfers.push(transfer);
+        }
       }else{
         const usage=calculatePocketUsage(pocket,now,txList,list);
         refundAmount=Math.max(0,usage.remaining);
@@ -2911,13 +2913,12 @@ function savePocketEdit(e){
     const allocationNeeded=Math.max(0,nextAllocation-fundedNet);
     const available=calculateSafeDailySpend(txList,candidateList,getSavings(),now,getPaydaySetting()).freeMoneyRemaining;
     const netCost=Math.max(0,allocationNeeded-Math.min(allocationNeeded,usage.cashGap));
-    if(netCost>Math.max(0,available)){
-      toast('Uang Bebas tersedia hanya '+money(Math.max(0,available))+'. Kurangi jatah atau alokasikan setelah ada pemasukan.');
-      return;
+    const allocatable=Math.max(0,Math.min(allocationNeeded,available));
+    if(allocatable>0){
+      const transfer=makePocketTransfer('bebas',id,allocatable,'Alokasi budget saat jatah dibuat atau dinaikkan',now,'budget-edit');if(transfer)transfers.push(transfer);
+      allocationRecorded=allocatable;
+      if(allocatable>=allocationNeeded)updatedPocket.budgetFundedCycle=dateInput(cycle.start);
     }
-    const transfer=makePocketTransfer('bebas',id,allocationNeeded,'Alokasi budget saat jatah dibuat atau dinaikkan',now,'budget-edit');if(transfer)transfers.push(transfer);
-    allocationRecorded=allocationNeeded;
-    updatedPocket.budgetFundedCycle=dateInput(cycle.start);
   }else if(addedAllocation<0&&existingPocket&&isPocketActive(existingPocket)&&!isDedicatedSTPocket(existingPocket)){
     const usage=calculatePocketUsage(updatedPocket,now,getTX(),candidateList),cycle=getPaydayCycle(now,getPaydaySetting()),cycleStart=dateInput(cycle.start),cycleEnd=dateInput(cycle.end);
     const transfersOut=transfers.filter(item=>item.fromPocketId===id&&item.toPocketId!=='bebas'&&item.date>=cycleStart&&item.date<=cycleEnd).reduce((total,item)=>total+item.amount,0);
