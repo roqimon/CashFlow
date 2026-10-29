@@ -5379,10 +5379,6 @@ async function executeReceiptAiScan(file, apiKey){
     });
 
     if(countSaved>0){
-      const preview=pendingItems.map(item=>`${item.title} · ${item.category} · ${money(item.amount)}`).join('\n');
-      const approved=await confirmBox({title:'Periksa hasil nota',message:`${analysis.merchant} · ${dateInput(nowIso)}\n${analysis.mode==='items'?'Rincian produk':'Total nota (rincian tidak lengkap)'} · ${money(parsed.total)}\n\n${preview}\n\nPeriksa kembali foto dan kategori sebelum menyimpan.`,okText:'Simpan transaksi',cancelText:'Batal',tone:'safe'});
-      if(selectionToken!==receiptSelectionToken||file!==currentReceiptFile)return;
-      if(!approved){statusBox.textContent='Hasil nota belum disimpan. Isi transaksi secara manual jika perlu.';return}
       const saved=await saveReceiptWithChoice(pendingItems,file,analysis.merchant);
       if(selectionToken!==receiptSelectionToken)return;
       currentReceiptFile=null;
@@ -5394,12 +5390,8 @@ async function executeReceiptAiScan(file, apiKey){
         if($('scanManualAmount')) $('scanManualAmount').value=formatThousands(firstSaved.amount);
         if($('scanManualCategory')) $('scanManualCategory').value=firstSaved.category;
       }
-      if(statusBox){
-        statusBox.className='pratinjau';
-        statusBox.innerHTML=`✅ <strong>${countSaved} transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}!</strong><span class="muted" style="display:block;margin-top:2px">${esc(analysis.merchant)} · ${money(parsed.total)} · ${esc(dateInput(nowIso))}</span>`;
-      }
-      toast(`✅ Berhasil dicatat: ${firstSaved.title} (${money(firstSaved.amount)})`);
-      setTimeout(()=>{if(selectionToken===receiptSelectionToken)closeModalLayer('scanModal')}, 1100);
+      toast(`✅ Berhasil dicatat: ${firstSaved.title} (${money(parsed.total || firstSaved.amount)})`);
+      closeModalLayer('scanModal');
     } else {
       throw new Error('Nominal transaksi dalam struk tidak terbaca.');
     }
