@@ -1464,6 +1464,12 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
         </label>
       </div>
 
+      <label style="display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--ink)">
+        <span>Label Pintasan Chip (Opsional)</span>
+        <input id="pocketFormShortName" maxlength="15" placeholder="Contoh: Dapur, ST Okt" autocomplete="off">
+        <small class="muted" style="font-size:11px;line-height:1.35;font-weight:normal">💡 Nama singkat yang tampil di tombol chip Beranda (maksimal 15 karakter). Jika kosong, menggunakan nama pos.</small>
+      </label>
+
       <div class="emoji-picker pocket-icon-picker" id="pocketIconPicker" style="display:none;width:100%"></div>
 
       <label style="display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--ink)">
@@ -1912,10 +1918,39 @@ function defaultTransactionPocket(item,pockets=getPockets()){
   if(item.type==='income')return 'bebas';
   return inferPocket(item.category,item.title,pockets)||'bebas';
 }
+function matchPocketPrefix(text, pockets=getPockets()){
+  if(!text) return null;
+  const raw = String(text).trim();
+  const candidates = [];
+  for(const p of (pockets || [])){
+    if(!p || p.id === 'bebas' || !isPocketActive(p)) continue;
+    const isST = (p.categories||[]).some(c=>['st','dinas','surat tugas'].includes(String(c).toLowerCase().trim())) || /(?:\bst\b|dinas|surat\s*tugas)/i.test(p.name);
+    if(isST) continue; // ST handled by explicitST logic
+    const names = [p.shortName, p.name].filter(Boolean);
+    for(const rawName of names){
+      const clean = String(rawName).toLowerCase().trim().replace(/[\&,\/]/g, ' ').replace(/\s+/g, ' ');
+      if(clean && clean.length >= 2){
+        candidates.push({ pocket: p, phrase: clean });
+      }
+    }
+  }
+  candidates.sort((a,b) => b.phrase.length - a.phrase.length);
+  for(const cand of candidates){
+    const escWord = cand.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const reg = new RegExp('^(?:pos\\s+|anggaran\\s+)?' + escWord + '\\s+', 'i');
+    if(reg.test(raw)){
+      return { pocket: cand.pocket, remainder: raw.replace(reg, '').trim() };
+    }
+  }
+  return null;
+}
+
 function explicitBudgetPocket(input,pockets=getPockets()){
   const text=String(input||'').toLowerCase().trim().replace(/\s+/g,' ');
   if(/^pribadi\b/.test(text))return null;
   if(!text)return null;
+  const pfx = matchPocketPrefix(text, pockets);
+  if(pfx) return pfx.pocket.id;
   const candidates=(pockets||[]).filter(p=>p&&p.id!=='bebas'&&isPocketActive(p)&&!/(?:\bst\b|dinas|surat tugas)/i.test(String(p.name||''))).sort((a,b)=>String(b.name||'').length-String(a.name||'').length);
   for(const pocket of candidates){
     const name=String(pocket.name||'').toLowerCase().trim().replace(/\s+/g,' ');
@@ -2401,7 +2436,7 @@ function parseCsvDateValue(dateStr, timeStr){
 function parseInput(input){
   const raw=String(input||'').trim();
   if(!raw)return{ok:false,msg:'Input masih kosong.'};
-  let isExplicitPersonal=false, isExplicitST=false, rawWork=raw, stMonthLabel='';
+  let isExplicitPersonal=false, isExplicitST=false, rawWork=raw, stMonthLabel='', prefixPocketId=null;
   if(/^pribadi\s+/i.test(rawWork)){
     isExplicitPersonal=true;
     rawWork=rawWork.replace(/^pribadi\s+/i,'').trim();
@@ -2411,6 +2446,12 @@ function parseInput(input){
   }else if(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i.test(rawWork)){
     isExplicitST=true;
     rawWork=rawWork.replace(/^(?:st|es\s*te|este|surat\s*tugas|dinas)\s+/i,'').trim();
+  }else{
+    const pfxMatch=matchPocketPrefix(rawWork);
+    if(pfxMatch){
+      prefixPocketId=pfxMatch.pocket.id;
+      rawWork=pfxMatch.remainder;
+    }
   }
   const stMonthMatch=rawWork.match(/\b(januari|jan|februari|feb|maret|mar|april|apr|mei|may|juni|jun|juli|jul|agustus|agu|agt|ags|september|sep|oktober|okt|november|nov|desember|des)\b/i);
   if(isExplicitST&&stMonthMatch){
@@ -2487,7 +2528,7 @@ function parseInput(input){
   else if(first&&!INDONESIAN_STOPWORDS.has(first)&&memCat[first]&&memCat[first]!=="Lainnya"){category=memCat[first];}
   else{category=inferredCat||memCat[fullKey]||(!INDONESIAN_STOPWORDS.has(first)&&memCat[first])||"Lainnya";}
   if(depositIntent)category='Deklarasi';
-  const mentionedPocketId=!isST&&!isExplicitPersonal?explicitBudgetPocket(rawWork):null;
+  const mentionedPocketId=!isST&&!isExplicitPersonal?(prefixPocketId||explicitBudgetPocket(rawWork)):null;
   const finalPocketId = targetPocketId !== undefined ? targetPocketId : (isST && stPocket ? stPocket.id : (mentionedPocketId||null));
   const item=tx({title:depositIntent?stMonthLabel:userTitle,amount,type,category,icon:icon(category,type),rawInput:raw,note:parsedDateNote,source:isST?'st':'personal',pocketId:finalPocketId,stSessionId:stDepositSessionId,reimburseStatus:(isST&&type==='expense')?'pending':null,createdAt:parsedDate||new Date().toISOString()});
   return{ok:true,item,msg:fmt(item,false)};
@@ -2848,6 +2889,7 @@ function openPocketEdit(id){
   const p=getPockets().find(x=>x.id===id);
   $('pocketFormId').value=p?p.id:'';
   $('pocketFormName').value=p?p.name:'';
+  if($('pocketFormShortName')) $('pocketFormShortName').value=p?(p.shortName||''):'';
   $('pocketFormIcon').value=p?p.icon:'🛒';
   updatePocketIconPreview();
   $('pocketFormAmount').value=p?formatThousands(p.amount):'';
@@ -2887,10 +2929,12 @@ function savePocketEdit(e){
     toast('Pos Uang Bebas dikelola otomatis dan tidak dapat diubah.');
     return;
   }
+  const shortName=($('pocketFormShortName')?.value||'').trim();
   const updatedPocket={
     ...(existingPocket||{}),
     id,
     name,
+    shortName:shortName||undefined,
     icon,
     amount,
     categories,
@@ -3054,12 +3098,11 @@ function renderDestinationChips(){
   pockets.forEach(p=>{
     const sel=activeInputDestination===p.id;
     const isST = (p.categories||[]).some(c=>['st','dinas','surat tugas'].includes(String(c).toLowerCase().trim())) || /st|dinas|tugas/i.test(p.name);
-    const iconHtml = isST ? renderIcon('📋') : renderIcon(p.icon||'•');
+    const iconHtml = renderIcon(p.icon || (isST ? '📋' : '•'));
     const chipTitle = isST ? `Pos Dinas / ST: ${esc(p.name)} (Tahan untuk geser)` : `${esc(p.name)} · Jatah: ${short(p.amount)} (Tahan untuk geser)`;
-    const label = esc(shortPocketName(p.name));
+    const label = esc(p.shortName ? p.shortName.trim() : shortPocketName(p.name));
     html+=`<button type="button" class="destination-chip${sel?' active':''}" data-dest="${esc(p.id)}" draggable="true" title="${chipTitle}"><span class="chip-icon-box">${iconHtml}</span><span>${label}</span><span class="chip-drag-handle" aria-hidden="true">⋮⋮</span></button>`;
   });
-  html+=`<button type="button" class="destination-chip${activeInputDestination==='bebas'?' active':''}" data-dest="bebas" title="Uang Bebas"><span class="chip-icon-box">${renderIcon('⚪')}</span><span>Uang Bebas</span></button>`;
   containers.forEach(c=>{c.innerHTML=html;});
 }
 function setInputDestination(destId){
@@ -4406,7 +4449,6 @@ async function addFrom(inputId,overrideValue){
       const saved=saveTX([...shortcutDateBatch.items,...getTX()]);
       if(saved===false){showShortcutDateError(inputId,'Transaksi belum berhasil disimpan. Coba lagi.');return}
       if(el)el.value='';
-      setInputDestination('auto');
       pratinjau(inputId,inputId==='quickInput'?'quickPreview':'focusPreview');
       render();
       return;
@@ -4488,7 +4530,6 @@ async function addFrom(inputId,overrideValue){
     learnCategory(val,r.item.category);
     learnTitle(val,r.item.title);
     if(el) el.value='';
-    setInputDestination('auto');
     pratinjau(inputId,inputId==='quickInput'?'quickPreview':'focusPreview');
     render();
   } catch(err) {
@@ -4530,11 +4571,18 @@ function pratinjau(inputId,boxId){
   const item=r.item;
   let destBadge='';
   const stPocket=getSTPocket();
-  const isTargetST = activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id);
+  const mentionedPocketId=item.pocketId||explicitBudgetPocket(v);
+  const isExplicitAction = item.source==='st' || !!mentionedPocketId;
+  const isTargetST = !isExplicitAction && (activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id));
+
   if(item.source==='st' || (item.type!=='income'&&isTargetST)){
     destBadge=` · 📋 [ST / Dinas: ${stPocket?esc(stPocket.name):'ST'}]`;
   }else if(item.type==='income'&&item.source!=='st'){
     destBadge=' · ⚪ Uang Bebas';
+  }else if(mentionedPocketId){
+    const p=getPockets().find(x=>x.id===mentionedPocketId);
+    if(p) destBadge=` · 🎯 Pos: ${esc(p.name)}`;
+    else if(mentionedPocketId==='bebas') destBadge=' · ⚪ Uang Bebas';
   }else if(activeInputDestination==='bebas'){
     destBadge=' · ⚪ Uang Bebas';
   }else if(activeInputDestination!=='auto'){
