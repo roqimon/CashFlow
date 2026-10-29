@@ -5200,18 +5200,30 @@ async function handleReceiptFileSelected(file){
   openModalLayer('scanModal');
 
   const statusBox=$('scanStatusBox');
-  if(apiKey&&!isPdf&&getReceiptDestination()!=='st'){
+  if(apiKey&&!isPdf){
     executeReceiptAiScan(file, apiKey);
   } else {
-    if(apiKey&&!isPdf&&getReceiptDestination()==='st'){
-      const analyze=$('scanAnalyzeBtn');if(analyze){analyze.style.display='block';analyze.textContent='Baca Nota';}
-    }
     if(statusBox){
       statusBox.className='pratinjau';
       statusBox.innerHTML=isPdf?'📄 <strong>PDF nota terpasang.</strong> Isi nominal, tanggal, dan jenis pengeluaran di bawah:':'📷 <strong>Foto nota terpasang.</strong> Silakan isi nominal di bawah untuk mencatat transaksi:';
     }
     setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 200);
   }
+}
+
+function inferWorkTypeFromText(text){
+  const label = String(text || '');
+  if(/\b(spbu|pertamina|shell|bp\s*akr|bensin|bbm|solar|pertalite|pertamax|dexlite|fuel)\b/i.test(label)) return 'Fuel';
+  if(/\b(tol|toll|etoll|e-toll|marga)\b/i.test(label)) return 'Tol';
+  if(/\b(hotel|penginapan|inn|resort|hostel|room)\b/i.test(label)) return 'Hotel';
+  if(/\b(laundry|cuci\s+(?:baju|pakaian))\b/i.test(label)) return 'Laundry';
+  if(/\b(tiket|ticket|pesawat|kereta|kai|flight|boarding)\b/i.test(label)) return 'Tiket';
+  if(/\b(wrapping|wrap)\b/i.test(label)) return 'Wrapping';
+  if(/cuci\s+mobil/i.test(label)) return 'Cuci Mobil';
+  if(/\b(taxi|taksi|grab|gojek|gocar|bluebird|maxim)\b/i.test(label)) return 'Taxi';
+  if(/\b(parkir|parking)\b/i.test(label)) return 'Parkir';
+  if(/\b(upd|uang harian|perjalanan dinas)\b/i.test(label)) return 'UPD';
+  return '';
 }
 
 async function executeReceiptAiScan(file, apiKey){
@@ -5226,10 +5238,6 @@ async function executeReceiptAiScan(file, apiKey){
     }
     setTimeout(()=>{ $('scanManualAmount')?.focus(); }, 150);
     return;
-  }
-  if(getReceiptDestination()==='st'&&!$('scanManualWorkType')?.value){
-    const statusBox=$('scanStatusBox');if(statusBox){statusBox.className='pratinjau';statusBox.innerHTML='📋 <strong>Pilih jenis pengeluaran kerja terlebih dahulu</strong>, lalu ketuk Baca Nota.';}
-    $('scanManualWorkType')?.focus();return;
   }
   setGeminiApiKey(apiKey);
   setScanningState(true);
@@ -5298,6 +5306,10 @@ async function executeReceiptAiScan(file, apiKey){
       const itemNote='Foto Struk · '+analysis.merchant;
       const itemPocketId=src==='personal'?defaultTransactionPocket({type,category:cat,title:cleanTitle,source:'personal'}):null;
 
+      const detectedWorkType = src==='st' ? ($('scanManualWorkType')?.value || inferWorkTypeFromText(cleanTitle + ' ' + analysis.merchant + ' ' + (it.category || '')) || 'Fuel') : '';
+      if(src==='st' && $('scanManualWorkType') && !$('scanManualWorkType').value && detectedWorkType){
+        $('scanManualWorkType').value = detectedWorkType;
+      }
       const newItem=tx({
         title:cleanTitle||'Transaksi',
         amount:amount,
@@ -5306,7 +5318,7 @@ async function executeReceiptAiScan(file, apiKey){
         icon:catIcon,
         note:itemNote,
         source:src,
-        workType:src==='st'?($('scanManualWorkType')?.value||''):'',
+        workType:detectedWorkType,
         stSessionId:sessId,
         reimburseStatus:reimb,
         pocketId:itemPocketId,
