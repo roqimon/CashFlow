@@ -865,7 +865,16 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <div id="quickPreview" class="pratinjau" style="display:none"></div>
         </section>
         <details class="home-spending-details" open>
-          <summary><span><strong>Pengeluaran bulan ini</strong><small>Lihat ringkasan berdasarkan kategori</small></span><span class="home-spending-chevron" aria-hidden="true">＋</span></summary>
+          <summary>
+            <span>
+              <span style="display:flex;align-items:center;gap:6px">
+                <strong id="homeSpendingTitle">Pengeluaran (30 Hari Terakhir)</strong>
+                <button type="button" class="icon-btn" data-action="open-home-donut-range" title="Ubah rentang diagram" aria-label="Ubah rentang diagram" style="width:26px;height:26px;min-height:26px;border-radius:50%;font-size:12px;background:var(--accent-soft);color:var(--green);border:1px solid rgba(31,138,91,0.2);display:inline-flex;align-items:center;justify-content:center;padding:0">⚙️</button>
+              </span>
+              <small id="homeSpendingSub">Lihat ringkasan kategori sesuai rentang pilihan</small>
+            </span>
+            <span class="home-spending-chevron" aria-hidden="true">＋</span>
+          </summary>
           <div class="home-spending-content"><button class="text-btn" data-nav="report" type="button">Lihat laporan lengkap ›</button><div id="homeCategories"></div></div>
         </details>
         <section class="card" id="budgetContainer">
@@ -1305,6 +1314,38 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <input type="file" id="receiptFileInput" accept="image/*,application/pdf" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
 <input type="file" id="importCsvFileInput" accept=".csv,text/csv,application/vnd.ms-excel" style="display:none">
 <div class="modal" id="categoryModal" aria-hidden="true"><div class="sheet category-sheet" role="dialog" aria-modal="true" aria-labelledby="categoryEditTitle"><div class="row"><div><h3 id="categoryEditTitle" style="margin:0">Kategori</h3><p id="categoryEditSubtitle" class="muted" style="margin:3px 0 0;font-size:12px">Isi nama kategori, ikon, tipe, kode, dan catatan.</p></div><button class="icon-btn" id="categoryEditClose" type="button">×</button></div><input type="hidden" id="catEditOld"><div class="form-grid" style="margin-top:12px"><label>Kode<input id="catEditCode" placeholder="Kode pintasan (opsional)" autocomplete="off"></label><label>Nama kategori<input id="catEditName" placeholder="Nama kategori" autocomplete="off"></label><label>Ikon<input id="catEditIcon" maxlength="3" placeholder="🔑" autocomplete="off"></label><label>Tipe<select id="catEditType"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></label><label class="wide">Catatan<input id="catEditNote" placeholder="Opsional" autocomplete="off"></label></div><div class="emoji-picker cat-edit-picker" id="catEditIconPicker"></div><div class="dialog-actions"><button class="ghost" id="categoryEditCancel" type="button">Batal</button><button class="primary" id="categoryEditSave" type="button">Simpan</button></div></div></div>
+
+<div class="modal" id="homeDonutRangeModal" aria-hidden="true">
+  <div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="homeDonutRangeModalTitle" style="max-width:390px">
+    <div class="row">
+      <div>
+        <h3 id="homeDonutRangeModalTitle" style="margin:0">Rentang Diagram Beranda</h3>
+        <p class="muted" style="margin:4px 0 0;font-size:11.5px">Pengaturan akan tersimpan otomatis dan konsisten.</p>
+      </div>
+      <button class="icon-btn" data-action="close-home-donut-range" type="button" aria-label="Tutup">✕</button>
+    </div>
+
+    <div style="margin-top:14px;display:grid;gap:12px">
+      <div class="seg compact-action-seg" id="homeDonutRangeSeg" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+        <button data-donut-range="30d" type="button" class="active" style="font-size:11.5px;min-height:38px;padding:0 4px">30 Hari</button>
+        <button data-donut-range="monthly" type="button" style="font-size:11.5px;min-height:38px;padding:0 4px">Bulan Ini</button>
+        <button data-donut-range="yearly" type="button" style="font-size:11.5px;min-height:38px;padding:0 4px">Tahun Ini</button>
+        <button data-donut-range="range" type="button" style="font-size:11.5px;min-height:38px;padding:0 4px">Manual</button>
+      </div>
+
+      <div id="homeDonutCustomRangeBox" class="range-box" style="display:none;grid-template-columns:1fr 1fr;gap:8px">
+        <label style="font-size:12px">Dari<input type="date" id="homeDonutRangeStart" style="margin-top:4px;width:100%"></label>
+        <label style="font-size:12px">Sampai<input type="date" id="homeDonutRangeEnd" style="margin-top:4px;width:100%"></label>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="ghost" data-action="close-home-donut-range" type="button" style="flex:1;min-height:42px">Batal</button>
+        <button class="primary" id="homeDonutRangeSaveBtn" type="button" style="flex:1.2;min-height:42px">Simpan Rentang</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="paydayModal" aria-hidden="true">
   <div class="sheet sweep-sheet" role="dialog" aria-modal="true" aria-labelledby="paydayModalTitle" style="max-width:400px">
     <div class="row">
@@ -1675,7 +1716,7 @@ document.addEventListener('focusout',e=>{
   }
 }); 
 const APP_VERSION='10.21', APP_RELEASE_NOTE='Tampilan beranda dikembalikan ke susunan sebelumnya.';
-const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1';
+const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1', KEY_HOME_DONUT_RANGE='aruskas_home_donut_range_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
 let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -3196,8 +3237,12 @@ function renderHome(arr){
   const homeLimit=getHomeTxLimit();
   $('txCount').textContent=`${Math.min(arr.length,homeLimit)} dari ${arr.length} transaksi`;
   $('homeTxList').innerHTML=arr.slice(0,homeLimit).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
-  const totals=catTotals(a,'expense');
-  renderHomeDonut(totals, s.expense);
+  const donutRange=calculateHomeDonutRange();
+  const donutTx=arr.filter(t=>inRange(t,donutRange.start,donutRange.end));
+  const donutTotals=catTotals(donutTx,'expense');
+  const donutExpenseSum=sum(donutTx).expense;
+  if($('homeSpendingTitle')) $('homeSpendingTitle').textContent='Pengeluaran ('+donutRange.label+')';
+  renderHomeDonut(donutTotals, donutExpenseSum, donutRange.label);
   const ec=$('exampleChips');if(ec){ec.innerHTML='';ec.style.display='none'}
 }
 let homeDonutExpanded = false;
@@ -3205,12 +3250,13 @@ function toggleHomeDonutExpand(){
   homeDonutExpanded = !homeDonutExpanded;
   renderHome(sorted(getTX()));
 }
-function renderHomeDonut(totals, totalExpense){
+function renderHomeDonut(totals, totalExpense, rangeLabel=''){
   const container = $('homeCategories');
   if(!container) return;
   const filteredTotals = (totals || []).filter(item => item && item.total > 0);
   if(!filteredTotals.length){
-    container.innerHTML = '<div class="home-donut-card"><div class="empty" style="padding:16px 8px;font-size:12.5px">Belum ada pengeluaran pada siklus bulan ini.</div></div>';
+    const emptyMsg = rangeLabel ? ('Belum ada pengeluaran pada ' + esc(rangeLabel).toLowerCase() + '.') : 'Belum ada pengeluaran pada periode ini.';
+    container.innerHTML = '<div class="home-donut-card"><div class="empty" style="padding:16px 8px;font-size:12.5px">' + emptyMsg + '</div></div>';
     return;
   }
   const grandTotal = totalExpense || filteredTotals.reduce((sum, item) => sum + item.total, 0) || 1;
@@ -5592,6 +5638,61 @@ async function importCsvData(file){
   }
 }
 
+
+function getHomeDonutRangeConfig(){
+  try{
+    const raw=localStorage.getItem(KEY_HOME_DONUT_RANGE);
+    if(raw){
+      const parsed=JSON.parse(raw);
+      if(parsed&&['30d','monthly','yearly','range'].includes(parsed.type)) return parsed;
+    }
+  }catch(e){}
+  return {type:'30d',customStart:'',customEnd:''};
+}
+
+function calculateHomeDonutRange(now=new Date()){
+  const cfg=getHomeDonutRangeConfig();
+  const d=new Date(now);
+  if(cfg.type==='monthly'){
+    return {type:'monthly',start:startMonth(d),end:endMonth(d),label:d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})};
+  }
+  if(cfg.type==='yearly'){
+    return {type:'yearly',start:startYear(d),end:endYear(d),label:'Tahun '+d.getFullYear()};
+  }
+  if(cfg.type==='range'){
+    const s=cfg.customStart?startDay(new Date(cfg.customStart)):startDay(new Date(Date.now()-29*86400000));
+    const e=cfg.customEnd?endDay(new Date(cfg.customEnd)):endDay(d);
+    return {type:'range',start:s,end:e,label:s.toLocaleDateString('id-ID',{day:'numeric',month:'short'})+' - '+e.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+  }
+  // Default: 30 hari terakhir
+  const s=startDay(new Date(d.getTime()-29*86400000));
+  const e=endDay(d);
+  return {type:'30d',start:s,end:e,label:'30 Hari Terakhir'};
+}
+
+function setHomeDonutRange(type, customStart='', customEnd=''){
+  const safeType=['30d','monthly','yearly','range'].includes(type)?type:'30d';
+  const cfg={type:safeType,customStart:customStart||'',customEnd:customEnd||''};
+  localStorage.setItem(KEY_HOME_DONUT_RANGE,JSON.stringify(cfg));
+  renderHome(sorted(getTX()));
+  const r=calculateHomeDonutRange();
+  toast('Rentang diagram: '+r.label);
+}
+
+function openHomeDonutRangeModal(){
+  const cfg=getHomeDonutRangeConfig();
+  const modal=$('homeDonutRangeModal');
+  if(!modal) return;
+  document.querySelectorAll('#homeDonutRangeSeg button').forEach(b=>{
+    b.classList.toggle('active',b.dataset.donutRange===cfg.type);
+  });
+  const customBox=$('homeDonutCustomRangeBox');
+  if(customBox) customBox.style.display=cfg.type==='range'?'grid':'none';
+  if($('homeDonutRangeStart')) $('homeDonutRangeStart').value=cfg.customStart||dateInput(new Date(Date.now()-29*86400000));
+  if($('homeDonutRangeEnd')) $('homeDonutRangeEnd').value=cfg.customEnd||dateInput(new Date());
+  openModalLayer('homeDonutRangeModal');
+}
+
 function getHomeTxLimit(){
   const val=parseInt(localStorage.getItem(KEY_HOME_TX_LIMIT),10);
   return [1,3,5,10,20].includes(val)?val:5;
@@ -6416,7 +6517,7 @@ document.addEventListener('click',async e=>{
     if(dp){deletePocket(dp.dataset.delPocket);return}
     if(e.target.closest('[data-toggle-pocket]'))return;
     const pocketCard=e.target.closest('[data-pocket-actions]');if(pocketCard&&!e.target.closest('[data-action],[data-edit-pocket],[data-del-pocket],.pocket-toggle-label')){openPocketActions(pocketCard.dataset.pocketActions);return}
-const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',pocket:null,start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const s=startMonth(new Date()),en=endMonth(new Date());setTxRange(s,en);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,pocket:null,start:null,end:null,source:'all',session:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
+const confCancel=e.target.closest('#confirmCancel');if(confCancel){resolveConfirm(false);return}const confOk=e.target.closest('#confirmOk');if(confOk){resolveConfirm(true);return}if(e.target.id==='confirmModal'){resolveConfirm(false);return}const tps=e.target.closest('[data-tx-period-step]');if(tps){txOffset+=Number(tps.dataset.txPeriodStep);render();return}const ps=e.target.closest('[data-period-step]');if(ps){reportOffset+=Number(ps.dataset.periodStep);render();return}if(!e.target.closest('.select-shell'))closeFancySelects();const nav=e.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='add'&&nav.classList.contains('add')){if(suppressAddClick)return;triggerAddAction();return}if(nav.dataset.nav==='transactions'){txFilter={type:'all',search:'',category:'',pocket:null,start:null,end:null,source:'all',session:null};document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='all'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));}navigate(nav.dataset.nav);return}const ex=e.target.closest('[data-example]');if(ex){const exVal=ex.dataset.example;if(/\d/.test(exVal)){addFrom('quickInput',exVal);ex.style.transform='scale(0.92)';setTimeout(()=>{ex.style.transform=''},140);return}const input=page==='add'?$('focusInput'):$('quickInput');input.value=exVal+' ';input.focus();pratinjau(input.id,input.id==='quickInput'?'quickPreview':'focusPreview');return}const txBtn=e.target.closest('[data-tx-id]');if(txBtn){if(suppressTxClick){e.preventDefault();e.stopPropagation();return}if(selectMode){e.preventDefault();const tid=txBtn.dataset.txId;if(selectSet.has(tid))selectSet.delete(tid);else selectSet.add(tid);updateSelectUI();return}openTx(txBtn.dataset.txId);return}const hc=e.target.closest('[data-home-category]');if(hc){const dr=calculateHomeDonutRange();setTxRange(dr.start,dr.end);txFilter={type:'expense',search:'',category:hc.dataset.homeCategory,pocket:null,start:null,end:null,source:'all',session:null};$('txSearch').value='';document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type==='expense'));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'));navigate('transactions');return}const rc=e.target.closest('[data-report-category]');if(rc){navCategory(rc.dataset.reportCategory);return}const ss=e.target.closest('[data-settle-session]');if(ss){openSettleModal(ss.dataset.settleSession);return}
 const ed=e.target.closest('[data-edit-session]');if(ed){const sid=ed.dataset.editSession;const deposits=getTX().filter(t=>t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag);const total=deposits.reduce((s,t)=>s+t.amount,0);$('editSessionId').value=sid;$('editSessionDepositOld').value=total;const displayVal=total>=1e6?(total/1e6).toLocaleString('id-ID',{maximumFractionDigits:1})+'jt':String(total);$('editSessionDeposit').value=displayVal;$('editSessionLabel').textContent=esc(getSessionLabel(sid));openModalLayer('editDepositModal');}const sd=e.target.closest('[data-session-detail]');if(sd){const sid=sd.dataset.sessionDetail;txFilter={...txFilter,source:'st',session:sid};document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='st'));navigate('transactions');return}const cf=e.target.closest('[data-clear-filter]');if(cf){if(cf.dataset.clearFilter==='category')txFilter.category='';if(cf.dataset.clearFilter==='pocket')txFilter.pocket=null;if(cf.dataset.clearFilter==='pocket-settings'){if(txFilter.pocket)openPocketActions(txFilter.pocket);return;}if(cf.dataset.clearFilter==='source'){txFilter.source='all';document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source==='all'))}if(cf.dataset.clearFilter==='session'){txFilter.session=null}if(cf.dataset.clearFilter==='period'){txFilter.start=null;txFilter.end=null}render();return}const escBtn=e.target.closest('[data-action]');if(!escBtn)return;const a=escBtn.dataset.action;
 if(a==='toggle-savings-icon-picker'){const picker=$('savingsCustomIconPicker');if(!picker)return;picker.classList.toggle('open');if(picker.classList.contains('open'))picker.querySelector('.icon-search')?.focus();return}if(a==='open-savings'){navigate('savings');return}if(a==='new-savings-goal'){openSavingsGoalForm();return}if(a==='quick-savings-entry'){openSavingsEntry(escBtn.dataset.goalId,escBtn.dataset.entryType);return}if(a==='close-savings-goal'){const returnGoalId=editingSavingsGoalReturn;closeModalLayer('savingsGoalModal');editingSavingsGoalId='';editingSavingsGoalReturn='';if(returnGoalId)openSavingsDetail(returnGoalId);return}if(a==='close-savings-entry'){closeModalLayer('savingsEntryModal');return}if(a==='close-savings-detail'){selectedSavingsGoalId='';closeModalLayer('savingsDetailModal');return}if(a==='edit-savings-goal'){const goalId=escBtn.dataset.goalId;closeModalLayer('savingsDetailModal');openSavingsGoalForm(goalId);return}if(a==='delete-savings-goal'){await deleteSavingsGoal(escBtn.dataset.goalId);return}if(a==='archive-savings-goal'||a==='activate-savings-goal'){const goal=getSavings().goals.find(item=>item.id===escBtn.dataset.goalId);if(!goal)return;const nextStatus=a==='archive-savings-goal'?'archived':'active';if(nextStatus==='archived'){const ok=await confirmBox({title:'Arsipkan tujuan?',message:`${goal.name} akan dipindahkan ke Arsip. Saldo dan riwayatnya tetap tersimpan.`,okText:'Arsipkan',tone:'safe'});if(!ok)return}saveSavings(savingsCore.upsertGoal(getSavings(),{...goal,status:nextStatus}));render();renderSavingsDetail();return}
     if(a==='sweep-pocket-modal'){openSweepPocketModal(escBtn.dataset.pocketId||'');return}
@@ -6468,6 +6569,8 @@ if(a==='force-update'){
   window.location.replace(u.toString());
   return;
 }if(a==='manual'){populatePocketOptions($('manPocketSelect'),'');refreshFancySelect($('manPocketSelect'));openModalLayer('manualModal');}if(a==='close-manual'){closeModalLayer('manualModal');}if(a==='save-manual')saveManual();if(a==='close-modal'){closeModalLayer('txModal');}if(a==='edit-tx')editMode();if(a==='cancel-edit')closeEditLayer();if(a==='save-edit')saveEdit();if(a==='duplicate-tx')duplicateTx();if(a==='delete-tx')deleteTx();if(a==='mark-reimbursed'){markReimbursed(escBtn.dataset.txId,false)}if(a==='unmark-reimbursed'){markReimbursed(escBtn.dataset.txId,true)}if(a==='reset-keyword'){const t=getTX().find(x=>x.id===escBtn.dataset.txId);if(t)resetKeyword(t.rawInput,t.category)}if(a==='close-edit-deposit'||a==='cancel-edit-deposit'){closeModalLayer('editDepositModal')}if(a==='save-edit-deposit'){const sid=$('editSessionId').value;const oldVal=Number($('editSessionDepositOld').value);const newRaw=$('editSessionDeposit').value.trim();const newVal=parseAmount(newRaw)||Number(newRaw.replace(/[^0-9]/g,''));if(!newVal||newVal<=0){return}if(newVal!==oldVal){const arr=getTX().filter(t=>!(t.source==='st'&&t.stSessionId===sid&&t.type==='income'&&!t.updFlag));const label=getSessionLabel(sid);arr.unshift(tx({title:'Deposit ST '+label,amount:newVal,type:'income',category:'Pemasukan',icon:'💰',note:'Deposit dari perusahaan',source:'st',stSessionId:sid}));saveTX(arr)}closeModalLayer('editDepositModal');render()}if(a==='new-session'){$('stNewSessionForm').style.display=$('stNewSessionForm').style.display==='none'?'flex':'none';if($('stNewSessionForm').style.display==='flex')$('stNewSessionInput').focus()}
+if(a==='open-home-donut-range'){openHomeDonutRangeModal();return}
+if(a==='close-home-donut-range'){closeModalLayer('homeDonutRangeModal');return}
 if(a==='toggle-home-donut'){toggleHomeDonutExpand();return}
 if(a==='new-shortcut')clearShortcutForm();if(a==='new-category')openCategoryEdit('');if(a==='toggle-report-type'){reportType=reportType==='expense'?'income':'expense';render()}if(a==='export-json')exportData('json');if(a==='export-csv')exportData('csv');if(a==='copy-export'){navigator.clipboard?.writeText($('exportText').value)}if(a==='reload-sample'){const ok=await confirmBox({title:'Muat data contoh?',message:'Data saat ini akan diganti dengan data contoh bawaan.',okText:'Muat ulang',tone:'danger'});if(ok){const now=new Date().toISOString(),today=dateInput(new Date());saveTX(sample);saveSC(defaultShortcuts);saveCatRecords([]);savePockets(defaultPockets);savePocketTransfers([]);saveFreeBalanceAdjustments([]);saveSavings({goals:[{id:'sample-qurban-2027',name:'Qurban 2027',targetAmount:3500000,targetDate:'2027-05-17',iconKey:'qurban',status:'active',createdAt:now},{id:'sample-education',name:'Pendidikan',targetAmount:10000000,targetDate:null,iconKey:'education',status:'active',createdAt:now}],entries:[{id:'sample-qurban-entry',goalId:'sample-qurban-2027',type:'deposit',amount:1250000,date:today,note:'Contoh setoran',createdAt:now},{id:'sample-school-entry',goalId:'sample-education',type:'deposit',amount:4200000,date:today,note:'Contoh setoran',createdAt:now}]});localStorage.removeItem('aruskas_pockets_cleared');render()}}
 if(a==='clear-data'){
@@ -6553,6 +6656,21 @@ document.getElementById('catManager').addEventListener('click',async e=>{if(catS
 $('categoryEditClose').addEventListener('click',closeCategoryEdit);$('categoryEditCancel').addEventListener('click',closeCategoryEdit);$('categoryEditSave').addEventListener('click',saveCategoryEdit);$('categoryModal').addEventListener('click',e=>{if(e.target.id==='categoryModal')closeCategoryEdit()});['catEditCode','catEditName','catEditIcon','catEditNote'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')saveCategoryEdit()}));$('catEditType').addEventListener('change',()=>{if(!$('catEditIcon').value.trim())$('catEditIcon').value=icon($('catEditName').value,$('catEditType').value);refreshFancySelect($('catEditType'))});$('catEditIcon').addEventListener('click',()=>{$('catEditIconPicker').classList.toggle('open');renderCategoryIconPicker($('catEditIcon').value||'•')});$('catEditIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-cat-icon]');if(!b)return;$('catEditIcon').value=b.dataset.catIcon;renderCategoryIconPicker(b.dataset.catIcon);$('catEditIconPicker').classList.remove('open')});
 $('themeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-theme-mode]');if(!b)return;setThemeMode(b.dataset.themeMode)});
 const receiptDestinationSetting=$('receiptDestinationSetting');if(receiptDestinationSetting){receiptDestinationSetting.value=getReceiptDestination();receiptDestinationSetting.addEventListener('change',()=>{localStorage.setItem(RECEIPT_DEST_KEY,receiptDestinationSetting.value);toast('Tujuan nota disimpan.')})}
+$('homeDonutRangeSeg')?.addEventListener('click',e=>{
+  const b=e.target.closest('[data-donut-range]');
+  if(!b)return;
+  document.querySelectorAll('#homeDonutRangeSeg button').forEach(x=>x.classList.toggle('active',x===b));
+  const isCustom=b.dataset.donutRange==='range';
+  if($('homeDonutCustomRangeBox')) $('homeDonutCustomRangeBox').style.display=isCustom?'grid':'none';
+});
+$('homeDonutRangeSaveBtn')?.addEventListener('click',()=>{
+  const activeBtn=document.querySelector('#homeDonutRangeSeg button.active');
+  const type=activeBtn?.dataset?.donutRange||'30d';
+  const customStart=$('homeDonutRangeStart')?.value||'';
+  const customEnd=$('homeDonutRangeEnd')?.value||'';
+  setHomeDonutRange(type, customStart, customEnd);
+  closeModalLayer('homeDonutRangeModal');
+});
 $('homeTxLimitSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-home-limit]');if(!b)return;setHomeTxLimit(b.dataset.homeLimit)});
 $('addActionModeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-add-action-mode]');if(!b)return;setAddClickAction(b.dataset.addActionMode)});
 $('txBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
