@@ -1290,8 +1290,11 @@ html[data-theme="dark"] .savings-date-icon img { filter: brightness(0) invert(94
 .home-settings-btn { display: grid; width: 27px; height: 27px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #4a2b20; cursor: pointer; }
 .home-settings-btn svg { width: 22px; height: 22px; }
 .home-settings-btn:active { transform: scale(.94); }
-.home-cycle-pill { display: inline-flex; max-width: 180px; min-height: 27px; align-items: center; gap: 7px; padding: 4px 9px; border-radius: 11px; background: #f8eee4; color: #573b2e; font-size: 11px; font-weight: 750; line-height: 1.1; white-space: nowrap; transform: translateY(-6px); }
-.home-cycle-pill svg { width: 15px; height: 15px; flex: none; }
+.home-cycle-pill { display: inline-flex; max-width: 195px; min-height: 28px; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 12px; background: #f8eee4; color: #573b2e; font-size: 11px; font-weight: 750; line-height: 1.1; white-space: nowrap; transform: translateY(-6px); border: 1px solid rgba(87,59,46,0.15); cursor: pointer; transition: all .15s ease; user-select: none; }
+.home-cycle-pill:hover { background: #f1e2d4; border-color: rgba(87,59,46,0.3); }
+.home-cycle-pill:active { transform: translateY(-5px) scale(0.97); }
+.home-cycle-pill svg { width: 14px; height: 14px; flex: none; }
+.home-cycle-chevron { font-size: 10px; opacity: 0.7; margin-left: 2px; }
 .page[data-page="home"] .balance { margin: 3px 0 9px; padding: 16px 16px 20px !important; overflow: hidden; border: 0 !important; border-radius: 22px !important; background: linear-gradient(137deg,#c75a32 0%,#b94a2d 100%) !important; box-shadow: 0 7px 18px rgba(157,67,37,.12) !important; color: #fffaf5; }
 .page[data-page="home"] .balance::after { display: none; }
 .page[data-page="home"] .balance #committedStatus { display: none !important; }

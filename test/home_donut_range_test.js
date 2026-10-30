@@ -27,18 +27,18 @@ console.log('✔ Home spending summary includes small settings button and dynami
 // Test 4: Modal Dialog for Donut Range
 console.log('--- Test 4: Modal Dialog for Changing Range ---');
 assert.ok(html.includes('id="homeDonutRangeModal"'), 'homeDonutRangeModal must exist in DOM');
-assert.ok(html.includes('data-donut-range="30d"'), '30d option must exist');
+assert.ok(html.includes('data-donut-range="payday"'), 'payday option must exist');
 assert.ok(html.includes('data-donut-range="monthly"'), 'monthly option must exist');
 assert.ok(html.includes('data-donut-range="yearly"'), 'yearly option must exist');
 assert.ok(html.includes('data-donut-range="range"'), 'manual range option must exist');
 assert.ok(html.includes('id="homeDonutRangeStart"'), 'Manual start date input must exist');
 assert.ok(html.includes('id="homeDonutRangeEnd"'), 'Manual end date input must exist');
-console.log('✔ Modal dialog supports 30 Days, Monthly, Yearly, and Custom Range.');
+console.log('✔ Modal dialog supports Payday Cycle, Monthly, Yearly, and Custom Range.');
 
 // Test 5: renderHome applies calculateHomeDonutRange
-console.log('--- Test 5: renderHome Feeds Donut with Configured Range ---');
-assert.ok(html.includes('const donutRange=calculateHomeDonutRange();'), 'renderHome must calculate donutRange');
-assert.ok(html.includes('const donutTx=arr.filter(t=>inRange(t,donutRange.start,donutRange.end));'), 'renderHome must filter transactions using donutRange');
+console.log('--- Test 5: renderHome Feeds Donut and Dashboard with Configured Range ---');
+assert.ok(html.includes('const activeRange=calculateHomeDonutRange();'), 'renderHome must calculate activeRange');
+assert.ok(html.includes('arr.filter(t=>inRange(t,activeRange.start,activeRange.end))'), 'renderHome must filter transactions using activeRange');
 console.log('✔ renderHome filters donut transactions correctly with persistent range.');
 
 // Test 6: Category Click syncs with active range
