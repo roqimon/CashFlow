@@ -928,6 +928,25 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           </div>
         </section>
 
+        <!-- Histori Beranda -->
+        <section class="card settings-card">
+          <div class="settings-card-head">
+            <span class="settings-card-icon" style="background:#eaf4ed;color:var(--green)">📋</span>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:14px;color:var(--ink);display:block">Histori di Beranda</strong>
+              <small class="muted" style="font-size:11.5px">Jumlah transaksi terbaru yang tampil di layar depan</small>
+            </div>
+            <span class="theme-badge" id="homeTxLimitLabel" style="font-size:10.5px">5 Transaksi</span>
+          </div>
+          <div class="seg compact-action-seg" id="homeTxLimitSeg" style="margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
+            <button data-home-limit="1" type="button" style="font-size:12px;min-height:36px">1</button>
+            <button data-home-limit="3" type="button" style="font-size:12px;min-height:36px">3</button>
+            <button data-home-limit="5" type="button" class="active" style="font-size:12px;min-height:36px">5</button>
+            <button data-home-limit="10" type="button" style="font-size:12px;min-height:36px">10</button>
+            <button data-home-limit="20" type="button" style="font-size:12px;min-height:36px">20</button>
+          </div>
+        </section>
+
         <!-- Aksi Tombol Catat (+) -->
         <section class="card settings-card">
           <div class="settings-card-head">
@@ -1656,7 +1675,7 @@ document.addEventListener('focusout',e=>{
   }
 }); 
 const APP_VERSION='10.21', APP_RELEASE_NOTE='Tampilan beranda dikembalikan ke susunan sebelumnya.';
-const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1';
+const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
 let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -2701,7 +2720,7 @@ function weekNum(d){const s=startWeek(d);const y=new Date(s.getFullYear(),0,1);r
 function inRange(t,s,e){const x=new Date(t.createdAt).getTime();return x>=s.getTime()&&x<=e.getTime()} function sorted(a){return [...a].sort((x,y)=>new Date(y.createdAt)-new Date(x.createdAt))}
 function appHash(p=page,layer=''){return '#'+(p||'home')+(layer?'/'+layer:'')}
 function parseAppHash(){const raw=location.hash.replace(/^#/,'');const parts=raw.split('/').filter(Boolean);return{page:parts[0]||'home',layer:parts[1]||''}}
-function navigate(p,updateHistory=true){const prevPage=page;if(selectMode)exitSelectMode();if(pocketSelectMode)exitPocketSelectMode();if(scSelectMode)exitScSelectMode();if(typeof catSelectMode !== 'undefined' && catSelectMode) exitCatSelectMode();if(p==='shortcut')p='settings';if(!document.querySelector(`[data-page="${p}"]`))p='home';page=p;try{localStorage.setItem('aruskas_active_page',p)}catch(e){}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.dataset.page===p));const activeNav=(p==='savings'||p==='home')?'home':p;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===activeNav||(b.dataset.nav==='settings'&&(p==='settings'||p==='shortcut'))));const meta={home:['Beranda','Ringkasan dan input cepat'],transactions:['Transaksi','Daftar lengkap, rincian, ubah, dan saring'],add:['Tambah','Input fokus satu baris'],report:['Laporan','Diagram porsi dan tren arus kas'],settings:['Setting',''],shortcut:['Setting',''],savings:['Tabungan','Pantau tujuan dan setoranmu']}[p]||['Beranda','Ringkasan'];document.querySelector('.topbar')?.classList.toggle('report-centered',p==='report'||p==='transactions'||p==='settings');document.querySelector('.topbar')?.classList.toggle('home-topbar',p==='home');$('pageTitle').textContent=meta[0];$('pageSubtitle').textContent=meta[1];$('settingsUpdateButton')?.toggleAttribute('hidden',p!=='settings');if(p==='home'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null};}if(p==='settings'){renderThemeControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type===txFilter.type));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source===txFilter.source));render();if(p==='add')setTimeout(()=>$('focusInput').focus(),80);if(updateHistory&&prevPage!==p){pageStack.push(prevPage);try{if(p==='home')history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));else history.pushState({app:true,page:p},'',appHash(p))}catch{}}updateBackButton()}
+function navigate(p,updateHistory=true){const prevPage=page;if(selectMode)exitSelectMode();if(pocketSelectMode)exitPocketSelectMode();if(scSelectMode)exitScSelectMode();if(typeof catSelectMode !== 'undefined' && catSelectMode) exitCatSelectMode();if(p==='shortcut')p='settings';if(!document.querySelector(`[data-page="${p}"]`))p='home';page=p;try{localStorage.setItem('aruskas_active_page',p)}catch(e){}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.dataset.page===p));const activeNav=(p==='savings'||p==='home')?'home':p;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===activeNav||(b.dataset.nav==='settings'&&(p==='settings'||p==='shortcut'))));const meta={home:['Beranda','Ringkasan dan input cepat'],transactions:['Transaksi','Daftar lengkap, rincian, ubah, dan saring'],add:['Tambah','Input fokus satu baris'],report:['Laporan','Diagram porsi dan tren arus kas'],settings:['Setting',''],shortcut:['Setting',''],savings:['Tabungan','Pantau tujuan dan setoranmu']}[p]||['Beranda','Ringkasan'];document.querySelector('.topbar')?.classList.toggle('report-centered',p==='report'||p==='transactions'||p==='settings');document.querySelector('.topbar')?.classList.toggle('home-topbar',p==='home');$('pageTitle').textContent=meta[0];$('pageSubtitle').textContent=meta[1];$('settingsUpdateButton')?.toggleAttribute('hidden',p!=='settings');if(p==='home'){txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null};}if(p==='settings'){renderThemeControls();renderAddClickActionControls();renderHomeTxLimitControls();updateNativeHint();if($('geminiApiKeyInput'))$('geminiApiKeyInput').value=getGeminiApiKey();}document.querySelectorAll('#typeFilter button').forEach(b=>b.classList.toggle('active',b.dataset.type===txFilter.type));document.querySelectorAll('#sourceFilter button').forEach(b=>b.classList.toggle('active',b.dataset.source===txFilter.source));render();if(p==='add')setTimeout(()=>$('focusInput').focus(),80);if(updateHistory&&prevPage!==p){pageStack.push(prevPage);try{if(p==='home')history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));else history.pushState({app:true,page:p},'',appHash(p))}catch{}}updateBackButton()}
 function currentHistoryPage(){return page||'home'}
 function ensureHomeHistoryGuard(){if(page!=='home')return;try{const st=history.state||{};if(st.app&&st.page==='home'&&st.guard&&!st.layer)return;if(st.page!=='home'||st.layer){history.replaceState({app:true,page:'home',root:true},'',appHash('home'))}history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'))}catch(e){}}
 function initHistoryGuard(){try{const cur=page||'home';if(cur==='home'){history.replaceState({app:true,page:'home',root:true},'',appHash('home'));history.pushState({app:true,page:'home',guard:true},'',appHash('home','guard'));}else{history.replaceState({app:true,page:cur},'',appHash(cur));}}catch(e){}}
@@ -3174,8 +3193,9 @@ function renderHome(arr){
   if($('netBalance'))$('netBalance').textContent=money(s.income-s.expense);
   if($('incomeTotal'))$('incomeTotal').textContent=money(s.income);
   if($('expenseTotal'))$('expenseTotal').textContent=money(s.expense);
-  $('txCount').textContent=`${Math.min(arr.length,5)} dari ${arr.length} transaksi`;
-  $('homeTxList').innerHTML=arr.slice(0,1).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
+  const homeLimit=getHomeTxLimit();
+  $('txCount').textContent=`${Math.min(arr.length,homeLimit)} dari ${arr.length} transaksi`;
+  $('homeTxList').innerHTML=arr.slice(0,homeLimit).map(homeTxItem).join('')||'<div class="empty">Belum ada transaksi.</div>';
   const totals=catTotals(a,'expense');
   renderHomeDonut(totals, s.expense);
   const ec=$('exampleChips');if(ec){ec.innerHTML='';ec.style.display='none'}
@@ -5448,7 +5468,7 @@ async function saveScanManualTransaction(){
     receiptSelectionToken++;
     render();
     closeModalLayer('scanModal');
-    alert(`Transaksi berhasil dicatat${saved.receiptId?' dengan foto nota':' tanpa foto nota'}: ${item.title} - ${money(item.amount)}`);
+    toast(`✅ Berhasil dicatat: ${item.title} (${money(item.amount)})`);
   }catch(error){
     alert(error.message||'Transaksi belum berhasil disimpan.');
   }finally{
@@ -5572,6 +5592,26 @@ async function importCsvData(file){
   }
 }
 
+function getHomeTxLimit(){
+  const val=parseInt(localStorage.getItem(KEY_HOME_TX_LIMIT),10);
+  return [1,3,5,10,20].includes(val)?val:5;
+}
+function setHomeTxLimit(limit){
+  const num=parseInt(limit,10);
+  const safe=[1,3,5,10,20].includes(num)?num:5;
+  localStorage.setItem(KEY_HOME_TX_LIMIT,safe);
+  renderHomeTxLimitControls();
+  renderHome(sorted(getTX()));
+  toast('Jumlah histori beranda: '+safe+' transaksi');
+}
+function renderHomeTxLimitControls(){
+  const limit=getHomeTxLimit();
+  document.querySelectorAll('[data-home-limit]').forEach(b=>{
+    b.classList.toggle('active',parseInt(b.dataset.homeLimit,10)===limit);
+  });
+  const label=$('homeTxLimitLabel');
+  if(label) label.textContent=limit+' Transaksi';
+}
 function getAddClickAction(){
   const a=localStorage.getItem(KEY_ADD_ACTION)||'chat';
   return ['chat','voice','foto'].includes(a)?a:'chat';
@@ -6513,6 +6553,7 @@ document.getElementById('catManager').addEventListener('click',async e=>{if(catS
 $('categoryEditClose').addEventListener('click',closeCategoryEdit);$('categoryEditCancel').addEventListener('click',closeCategoryEdit);$('categoryEditSave').addEventListener('click',saveCategoryEdit);$('categoryModal').addEventListener('click',e=>{if(e.target.id==='categoryModal')closeCategoryEdit()});['catEditCode','catEditName','catEditIcon','catEditNote'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')saveCategoryEdit()}));$('catEditType').addEventListener('change',()=>{if(!$('catEditIcon').value.trim())$('catEditIcon').value=icon($('catEditName').value,$('catEditType').value);refreshFancySelect($('catEditType'))});$('catEditIcon').addEventListener('click',()=>{$('catEditIconPicker').classList.toggle('open');renderCategoryIconPicker($('catEditIcon').value||'•')});$('catEditIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-cat-icon]');if(!b)return;$('catEditIcon').value=b.dataset.catIcon;renderCategoryIconPicker(b.dataset.catIcon);$('catEditIconPicker').classList.remove('open')});
 $('themeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-theme-mode]');if(!b)return;setThemeMode(b.dataset.themeMode)});
 const receiptDestinationSetting=$('receiptDestinationSetting');if(receiptDestinationSetting){receiptDestinationSetting.value=getReceiptDestination();receiptDestinationSetting.addEventListener('change',()=>{localStorage.setItem(RECEIPT_DEST_KEY,receiptDestinationSetting.value);toast('Tujuan nota disimpan.')})}
+$('homeTxLimitSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-home-limit]');if(!b)return;setHomeTxLimit(b.dataset.homeLimit)});
 $('addActionModeSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-add-action-mode]');if(!b)return;setAddClickAction(b.dataset.addActionMode)});
 $('txBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
 $('homeBulkDelete')?.addEventListener('click',e=>{e.preventDefault();bulkDelete()});
@@ -7234,7 +7275,7 @@ document.addEventListener('change',e=>{
   }
 });
 
-boot();const startupTransactions=getTX();if(normalizePersonalIncomeCategories(startupTransactions))saveTX(startupTransactions);const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
+boot();initQuickAddRadialGesture();const startupTransactions=getTX();if(normalizePersonalIncomeCategories(startupTransactions))saveTX(startupTransactions);const initialPage=(location.hash?parseAppHash().page:null)||localStorage.getItem('aruskas_active_page')||'home';navigate(initialPage);render();checkUpdateNotice();initHistoryGuard();updateNativeHint();pratinjau('quickInput','quickPreview');pratinjau('focusInput','focusPreview');initThousandsFormatter();
 function renderPaydayControls(){
   const curDay=getPaydaySetting();
   const gridEl=$('paydayCalendarGrid');
