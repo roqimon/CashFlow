@@ -557,7 +557,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       transition: transform .14s cubic-bezier(0.2, 0, 0.1, 1), background .14s ease, border-color .14s ease, box-shadow .14s ease, color .14s ease;
       touch-action: none;
     }
-    .quick-add-radial-item[data-radial-action="foto"] {
+    .quick-add-radial-item[data-radial-action="voice"] {
       transform: translateY(-14px);
     }
     .quick-add-radial-item .radial-item-icon {
@@ -579,7 +579,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       color: #ffffff !important;
       box-shadow: 0 16px 36px rgba(31, 138, 91, 0.5) !important;
     }
-    .quick-add-radial-item[data-radial-action="foto"].hovered {
+    .quick-add-radial-item[data-radial-action="voice"].hovered {
       transform: scale(1.22) translateY(-18px) !important;
     }
     .quick-add-radial-item.hovered .radial-item-label {
@@ -1198,6 +1198,10 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
       <div class="quick-add-radial-bubble-wrap">
         <div class="quick-add-radial-hint">Geser jari ke opsi yang diinginkan</div>
         <div class="quick-add-radial-items">
+          <button type="button" class="quick-add-radial-item" data-radial-action="chat" aria-label="Mode Tulis / Chat">
+            <span class="radial-item-icon">⌨️</span>
+            <span class="radial-item-label">Ketik</span>
+          </button>
           <button type="button" class="quick-add-radial-item" data-radial-action="voice" aria-label="Catat dengan Suara">
             <span class="radial-item-icon">🎙️</span>
             <span class="radial-item-label">Suara</span>
@@ -1205,10 +1209,6 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
           <button type="button" class="quick-add-radial-item" data-radial-action="foto" aria-label="Catat dari Foto Struk">
             <span class="radial-item-icon">📸</span>
             <span class="radial-item-label">Foto Struk</span>
-          </button>
-          <button type="button" class="quick-add-radial-item" data-radial-action="chat" aria-label="Mode Tulis / Chat">
-            <span class="radial-item-icon">⌨️</span>
-            <span class="radial-item-label">Ketik</span>
           </button>
         </div>
       </div>
@@ -5849,7 +5849,7 @@ function initQuickAddRadialGesture(){
     suppressAddClick=false;
     try{addBtn.setPointerCapture(e.pointerId)}catch(err){}
     if(longPressTimer)clearTimeout(longPressTimer);
-    longPressTimer=setTimeout(()=>{openRadial(e)},380);
+    longPressTimer=setTimeout(()=>{openRadial(e)},150);
   });
 
   addBtn.addEventListener('pointermove', e=>{
@@ -6303,7 +6303,7 @@ document.addEventListener('touchstart', e => {
     if(navigator.vibrate) {
       try { navigator.vibrate(40); } catch(err){}
     }
-  }, 350);
+  }, 150);
 }, {passive: true});
 
 document.addEventListener('touchmove', e => {
