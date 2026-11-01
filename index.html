@@ -5766,52 +5766,59 @@ function renderAddClickActionControls(){
     label.textContent=labels[action]||'Mode Tulis';
   }
 }
-let lastAddClickTime=0;
-let lastAddClickAction=null;
 let addClickPrevPage='home';
 
+function isAddActionActive(action){
+  const target=action||getAddClickAction();
+  if(target==='voice'){
+    return typeof isListening!=='undefined'&&isListening;
+  }
+  if(target==='foto'){
+    return Boolean($('photoChoiceModal')?.classList.contains('active') || $('scanModal')?.classList.contains('active'));
+  }
+  return page==='add';
+}
+
 function cancelAddAction(currentAction){
-  if(currentAction==='voice'||(typeof isListening!=='undefined'&&isListening)){
+  const target=currentAction||getAddClickAction();
+  if(target==='voice'||(typeof isListening!=='undefined'&&isListening)){
     if(typeof recognition!=='undefined'&&recognition){
       try{recognition.stop();}catch(e){}
     }
-    toast('Mode suara dibatalkan.');
+    toast('Mode suara dinonaktifkan.');
     return;
   }
-  if(currentAction==='foto'){
+  if(target==='foto'||$('photoChoiceModal')?.classList.contains('active')||$('scanModal')?.classList.contains('active')){
     if($('photoChoiceModal')?.classList.contains('active')){
       closeModalLayer('photoChoiceModal');
-      toast('Mode foto dibatalkan.');
-      return;
     }
     if($('scanModal')?.classList.contains('active')){
       cancelReceiptScan();
-      toast('Mode foto dibatalkan.');
-      return;
     }
+    toast('Mode foto dinonaktifkan.');
+    return;
   }
   if(page==='add'){
-    navigate(addClickPrevPage||'home');
-    toast('Mode input dibatalkan.');
+    const prev=pageStack.length?pageStack[pageStack.length-1]:(addClickPrevPage||'home');
+    navigate(prev==='add'?'home':prev);
+    toast('Mode input dinonaktifkan.');
     return;
   }
 }
 
 function triggerAddAction(action){
-  const now=Date.now();
   const target=action||getAddClickAction();
 
-  // Jika diklik ke-2 dalam waktu singkat (< 900ms), batalkan mode input
-  if(now-lastAddClickTime<900){
-    lastAddClickTime=0;
-    cancelAddAction(lastAddClickAction||target);
-    lastAddClickAction=null;
+  // Jika aksi input sedang aktif, maka klik berikutnya menonaktifkan
+  if(isAddActionActive(target)){
+    cancelAddAction(target);
     return;
   }
 
-  lastAddClickTime=now;
-  lastAddClickAction=target;
-  addClickPrevPage=page==='add'?(pageStack[pageStack.length-1]||'home'):page;
+  // Jika belum aktif, aktifkan mode input sesuai settingan/pilihan
+  if(page!=='add'){
+    addClickPrevPage=page;
+  }
 
   if(target==='voice'){
     if(page!=='home'&&page!=='add'){
@@ -5821,12 +5828,8 @@ function triggerAddAction(action){
   }else if(target==='foto'){
     openPhotoChoice();
   }else{
-    if(page==='add'){
-      navigate(addClickPrevPage||'home');
-    }else{
-      navigate('add');
-      setTimeout(()=>$('focusInput')?.focus(),80);
-    }
+    navigate('add');
+    setTimeout(()=>$('focusInput')?.focus(),80);
   }
 }
 let suppressAddClick=false;
