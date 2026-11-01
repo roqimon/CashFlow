@@ -3081,24 +3081,27 @@ function renderBudgetPockets(){
   const now=new Date();
   const pocketsWithUsage = activePockets.map(p=>{
     const usage=calculatePocketUsage(p,now,tx);
-    return { pocket: p, usage };
+    const totalCap=usage.budgetAmount??usage.amount??0;
+    const rem=usage.remaining;
+    const remainingPercent=totalCap>0?Math.round((rem/totalCap)*100):(rem<0?-100:0);
+    return { pocket: p, usage, remainingPercent };
   });
   const {totalPlafond,totalRemaining,totalAllocated}=summarizeHomeBudgetPockets(pocketsWithUsage);
 
-  // Urutkan pos berdasarkan persentase terpakai tertinggi ke terendah
-  pocketsWithUsage.sort((a,b)=>b.usage.percent - a.usage.percent);
+  // Urutkan pos berdasarkan persentase sisa terendah ke tertinggi (yang paling tipis/habis tampil di atas)
+  pocketsWithUsage.sort((a,b)=>a.remainingPercent - b.remainingPercent);
 
-  let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage})=>{
-    const safePercent=Math.max(0,Math.min(100,usage.percent));
+  let pocketCardsHtml = pocketsWithUsage.map(({pocket: p, usage, remainingPercent})=>{
+    const safeRemainingPercent=Math.max(0,Math.min(100,remainingPercent));
     if(p.id==='bebas')return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#64748b')}" data-home-pocket-transactions="${esc(p.id)}" aria-label="Uang Bebas ${usage.remaining<0?'minus '+short(Math.abs(usage.remaining)):'tersisa '+short(usage.remaining)}">
-      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Sisa ${usage.remaining<0?'−':''}${money(Math.abs(usage.remaining))}</small></span><span class="home-pocket-chevron" aria-hidden="true">›</span></span>
-      <span class="home-pocket-progress-row"><span class="home-pocket-progress" role="progressbar" aria-label="Uang Bebas terpakai" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span><span class="home-pocket-percent">${usage.percent}%</span></span>
+      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon('⚪')}</span><span class="home-pocket-name"><strong>Uang Bebas</strong><small>Sisa uang ${usage.remaining<0?'−':''}${money(Math.abs(usage.remaining))}</small></span><span class="home-pocket-chevron" aria-hidden="true">›</span></span>
+      <span class="home-pocket-progress-row"><span class="home-pocket-progress" role="progressbar" aria-label="Sisa Uang Bebas" aria-valuenow="${safeRemainingPercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safeRemainingPercent}%;background:${usage.isOver?'#ef4444':'#64748b'}"></span></span><span class="home-pocket-percent">${remainingPercent}% sisa</span></span>
       <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span title="Alokasi dari Uang Bebas ke pos anggaran dan tabungan dalam siklus ini"><span>Alokasi</span><strong>${short(usage.moved)}</strong></span><span><span>${usage.remaining<0?'Minus':'Sisa'}</span><strong>${usage.remaining<0?'−'+short(Math.abs(usage.remaining)):short(usage.remaining)}</strong></span></span>
     </button>`;
     return `<button type="button" class="home-pocket-card${usage.isOver?' is-over':''}" style="--pocket-accent:${esc(p.color||'#1f8a5b')}" data-home-pocket-transactions="${esc(p.id)}" aria-label="Lihat transaksi ${esc(p.name)}. Dana pos tersisa ${short(Math.max(0,usage.remaining))}">
-      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Dana pos ${money(usage.budgetAmount??usage.amount)}</small></span><span class="home-pocket-chevron" aria-hidden="true">›</span></span>
-      <span class="home-pocket-progress-row"><span class="home-pocket-progress" role="progressbar" aria-label="Jatah ${esc(p.name)} yang dipakai atau dialokasikan" aria-valuenow="${safePercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safePercent}%"></span></span><span class="home-pocket-percent">${usage.percent}%</span></span>
-      <span class="home-pocket-numbers"><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>Ditanggung bebas</span><strong>${short(usage.cashGap)}</strong></span><span><span>${usage.isOver?'Lebih dari jatah':'Sisa jatah'}</span><strong>${short(usage.isOver?usage.budgetOverAmount:Math.max(0,usage.budgetRemaining))}</strong></span></span>
+      <span class="home-pocket-head"><span class="pocket-icon">${renderIcon(p.icon||'❓')}</span><span class="home-pocket-name"><strong>${esc(p.name)}</strong><small>Sisa uang ${usage.remaining<0?'−':''}${money(Math.abs(usage.remaining))}</small></span><span class="home-pocket-chevron" aria-hidden="true">›</span></span>
+      <span class="home-pocket-progress-row"><span class="home-pocket-progress" role="progressbar" aria-label="Sisa dana pos ${esc(p.name)}" aria-valuenow="${safeRemainingPercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${safeRemainingPercent}%"></span></span><span class="home-pocket-percent">${remainingPercent}% sisa</span></span>
+      <span class="home-pocket-numbers"><span><span>Jatah pos</span><strong>${short(usage.budgetAmount??usage.amount)}</strong></span><span><span>Belanja</span><strong>${short(usage.spent)}</strong></span><span><span>${usage.isOver?'Lebih jatah':'Sisa'}</span><strong>${short(usage.isOver?usage.budgetOverAmount:Math.max(0,usage.budgetRemaining))}</strong></span></span>
     </button>`;
   }).join('');
 
