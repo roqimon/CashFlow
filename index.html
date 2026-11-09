@@ -1690,7 +1690,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261109.1').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261109.2').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1714,8 +1714,8 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.22', APP_RELEASE_NOTE='Penambahan chip pos anggaran ST dan Uang Bebas di bawah kolom catat cepat.';
-const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1', KEY_HOME_DONUT_RANGE='aruskas_home_donut_range_v1';
+const APP_VERSION='10.23', APP_RELEASE_NOTE='Penyempurnaan chip pos anggaran dan opsi ubah nama serta ikon Uang Bebas.';
+const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_FREE_CUSTOM_CONFIG='aruskas_free_custom_config_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1', KEY_HOME_DONUT_RANGE='aruskas_home_donut_range_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
 let savingsCalendarCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -1725,11 +1725,33 @@ const defaultPockets=[
   {id:'pocket-keluarga',name:'Keluarga & Anak',icon:'🎓',amount:1200000,color:'#3094d4',categories:['anak & pendidikan','anak','pendidikan','sekolah','spp','les','bimbel','buku','susu','pampers','popok','sosial & sedekah','kirim ortu','transfer ibu','transfer mama','transfer bapak','uang belanja ortu','bantu keluarga']},
   {id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true}
 ];
+function getFreePocketCustomConfig(){
+  try{
+    const raw=localStorage.getItem(KEY_FREE_CUSTOM_CONFIG);
+    return raw?JSON.parse(raw):{};
+  }catch{return{};}
+}
+function saveFreePocketCustomConfig(cfg){
+  try{localStorage.setItem(KEY_FREE_CUSTOM_CONFIG,JSON.stringify(cfg||{}));}catch{}
+}
 function ensureFreePocket(list){
   const pockets=Array.isArray(list)?list:[];
+  const custom=getFreePocketCustomConfig();
+  const customName=custom.name||'Uang Bebas';
+  const customIcon=custom.icon||'⚪';
+  const customShortName=custom.shortName||undefined;
   const free=pockets.find(p=>p&&p.id==='bebas');
-  if(free){free.name='Uang Bebas';free.icon='⚪';free.amount=0;free.categories=[];free.isSystem=true;if(typeof free.isActive!=='boolean')free.isActive=true;return pockets}
-  pockets.push({id:'bebas',name:'Uang Bebas',icon:'⚪',amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true});
+  if(free){
+    free.name=customName;
+    free.icon=customIcon;
+    free.shortName=customShortName;
+    free.amount=0;
+    free.categories=[];
+    free.isSystem=true;
+    if(typeof free.isActive!=='boolean')free.isActive=true;
+    return pockets;
+  }
+  pockets.push({id:'bebas',name:customName,shortName:customShortName,icon:customIcon,amount:0,color:'#64748b',categories:[],isSystem:true,isActive:true});
   return pockets;
 }
 function getPockets(){
@@ -2858,7 +2880,7 @@ function renderPocketManager(){
               <input type="checkbox" class="pocket-toggle-input" data-toggle-pocket="${esc(p.id)}" ${active?'checked':''}>
               <span class="pocket-toggle-slider"></span>
             </label>` : ''}
-            ${p.id!=='bebas'?`<button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>`:''}
+            <button class="ghost" data-edit-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Ubah</button>
             ${usage.remaining>0?`<button class="primary" data-action="sweep-pocket-modal" data-pocket-id="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Pindahkan sisa</button>`:''}
             ${p.id!=='bebas'?`<button class="ghost danger" data-del-pocket="${esc(p.id)}" type="button" style="min-height:34px;padding:0 10px;font-size:11.5px;font-weight:800">Hapus</button>`:''}
           </div>` : ''}
@@ -2986,9 +3008,13 @@ function openPocketEdit(id){
   updatePocketIconPreview();
   $('pocketFormAmount').value=p?formatThousands(p.amount):'';
   $('pocketFormCategories').value=p?(p.categories||[]).join(', '):'';
-  $('pocketModalTitle').textContent=p?'Ubah Pos Anggaran':'Pos Anggaran Baru';
+  $('pocketModalTitle').textContent=p?(p.id==='bebas'?'Ubah Nama & Ikon Uang Bebas':'Ubah Pos Anggaran'):'Pos Anggaran Baru';
   const presetBox=$('pocketPresetBox');
   if(presetBox)presetBox.style.display=p?'none':'block';
+  const amountField=$('pocketFormAmount')?.closest('label');
+  const catField=$('pocketFormCategories')?.closest('label');
+  if(amountField) amountField.style.display=p?.id==='bebas'?'none':'grid';
+  if(catField) catField.style.display=p?.id==='bebas'?'none':'grid';
   const iconPicker=$('pocketIconPicker');
   if(iconPicker)iconPicker.classList.remove('open');
   $('pocketIconTrigger')?.setAttribute('aria-expanded','false');
@@ -2999,6 +3025,10 @@ function closePocketEdit(){
   const iconPicker=$('pocketIconPicker');
   if(iconPicker)iconPicker.classList.remove('open');
   $('pocketIconTrigger')?.setAttribute('aria-expanded','false');
+  const amountField=$('pocketFormAmount')?.closest('label');
+  const catField=$('pocketFormCategories')?.closest('label');
+  if(amountField) amountField.style.display='grid';
+  if(catField) catField.style.display='grid';
   closeModalLayer('pocketModal');
 }
 
@@ -3008,19 +3038,25 @@ function savePocketEdit(e){
   const name=$('pocketFormName').value.trim();
   if(!name){toast('Nama pos anggaran wajib diisi');return}
   const icon=$('pocketFormIcon').value.trim()||'📦';
-  const rawAmt=$('pocketFormAmount').value.trim();
-  const amount=rawAmt==='0'||rawAmt==='Rp 0'?0:(Number(rawAmt.replace(/\D/g,''))||parseAmount(rawAmt)||0);
-  if(amount<0){toast('Nominal jatah tidak boleh negatif');return}
-  const rawCats=$('pocketFormCategories').value.trim();
-  const categories=rawCats?rawCats.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean):[name.toLowerCase()];
+  const shortName=($('pocketFormShortName')?.value||'').trim();
 
   const list=getPockets();
   const existingIdx=list.findIndex(x=>x.id===id);
   const existingPocket=existingIdx>=0?list[existingIdx]:null;
   if(existingPocket?.id==='bebas'){
-    toast('Pos Uang Bebas dikelola otomatis dan tidak dapat diubah.');
+    saveFreePocketCustomConfig({name,icon,shortName:shortName||undefined});
+    savePockets(list);
+    closePocketEdit();
+    render();
+    toast('Pengaturan Uang Bebas berhasil disimpan.');
     return;
   }
+
+  const rawAmt=$('pocketFormAmount').value.trim();
+  const amount=rawAmt==='0'||rawAmt==='Rp 0'?0:(Number(rawAmt.replace(/\D/g,''))||parseAmount(rawAmt)||0);
+  if(amount<0){toast('Nominal jatah tidak boleh negatif');return}
+  const rawCats=$('pocketFormCategories').value.trim();
+  const categories=rawCats?rawCats.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean):[name.toLowerCase()];
   const shortName=($('pocketFormShortName')?.value||'').trim();
   const updatedPocket={
     ...(existingPocket||{}),
