@@ -1671,7 +1671,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 <div class="modal" id="receiptShareFallbackModal" aria-hidden="true"><div class="sheet receipt-share-fallback-sheet" role="dialog" aria-modal="true" aria-labelledby="receiptShareFallbackTitle"><div class="row"><h3 id="receiptShareFallbackTitle" style="margin:0">Simpan foto untuk WhatsApp</h3><button class="icon-btn" id="receiptShareFallbackClose" type="button" aria-label="Tutup">×</button></div><p class="muted">Perangkat ini belum bisa membagikan semua foto langsung. Unduh tiap foto, lalu lampirkan dari WhatsApp.</p><div id="receiptShareFallbackList"></div><label class="receipt-share-fallback-text">Pesan yang akan dikirim<textarea id="receiptShareFallbackText" readonly rows="4"></textarea></label><button class="primary" id="receiptShareFallbackWhatsApp" type="button">Buka WhatsApp dengan pesan</button></div></div>
 <div class="modal" id="photoChoiceModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:380px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">📷</div><h3 style="margin:0 0 6px;font-size:18px">Pilih Sumber Foto</h3><p class="muted" style="margin:0 0 18px;font-size:12.5px;line-height:1.4">Ambil foto struk langsung dengan kamera HP atau pilih dari galeri.</p><div style="display:grid;gap:10px"><button class="primary" id="btnTakePhoto" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><span>📸</span><span>Ambil Foto (Kamera Langsung)</span></button><button class="ghost" id="btnPickGallery" type="button" style="min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface2);border:1px solid var(--line)"><span>🖼️</span><span>Pilih dari Galeri / File</span></button><button class="ghost" id="btnCancelPhotoChoice" type="button" style="min-height:42px;font-size:13px;font-weight:700">Batal</button></div></div></div>
 <div class="modal" id="voiceNoticeModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:390px;text-align:center;border-radius:26px;padding:22px 18px"><div style="width:52px;height:52px;border-radius:50%;background:#eaf6ef;color:var(--green);font-size:26px;display:grid;place-items:center;margin:0 auto 12px">🎙️</div><h3 style="margin:0 0 6px;font-size:18px">Fitur Suara di HP</h3><p class="muted" style="margin:0 0 16px;font-size:12.5px;line-height:1.45">Browser HP membatasi akses mikrofon web pada jaringan <strong>HTTP lokal</strong>. Untuk mencatat dengan suara:</p><div style="display:grid;gap:10px;text-align:left"><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">1. Gunakan Dikte Keyboard HP (Paling Praktis)</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Ketuk kotak input teks, lalu tekan tombol <strong>Mikrofon (🎙️)</strong> pada keyboard bawaan HP Anda.</span></div><div style="background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px"><strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:3px">2. Buka Versi Resmi HTTPS</strong><span class="muted" style="font-size:12px;line-height:1.35;display:block">Buka web resmi ber-HTTPS di mana izin mikrofon diizinkan penuh oleh Google Chrome.</span><a href="https://kas.bisabaca.web.id/" target="_blank" rel="noopener" class="primary" style="display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:8px 14px;border-radius:999px;font-size:12px;text-decoration:none">Buka https://kas.bisabaca.web.id/ ↗</a></div></div><div class="dialog-actions" style="margin-top:16px"><button class="primary" id="voiceNoticeClose" type="button" style="width:100%;min-height:44px">Saya Mengerti</button></div></div></div>
-<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Tanggal nota<input id="scanManualDate" type="date"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label><label class="wide">Jenis pengeluaran kerja<select id="scanManualWorkType"><option value="">Pilih jenis deklarasi</option><option value="Fuel">Fuel</option><option value="Tol">Tol</option><option value="Parkir">Parkir</option><option value="Hotel">Hotel</option><option value="Laundry">Laundry</option><option value="Tiket">Tiket</option><option value="UPD">UPD</option><option value="Wrapping">Wrapping</option><option value="Cuci Mobil">Cuci Mobil</option><option value="Taxi">Taxi</option></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
+<div class="modal" id="scanModal" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" style="max-width:440px"><div class="row"><h3 style="margin:0">Catat dari Nota</h3><button class="icon-btn" data-action="close-scan-modal" type="button">×</button></div><div style="margin:10px 0;text-align:center"><img id="scanPreviewImg" src="" alt="Pratinjau Nota" style="max-height:160px;max-width:100%;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:var(--surface2)"></div><div id="scanStatusBox" class="pratinjau" style="margin-bottom:12px;display:block"></div><input type="hidden" id="scanApiKeyInput"><button type="button" id="scanAnalyzeBtn" style="display:none"></button><div class="form-grid" id="scanManualSection"><label class="wide">Tujuan & Pos Anggaran<select id="scanManualPocketSelect" style="width:100%"></select></label><label>Keterangan / Toko<input id="scanManualTitle" placeholder="Contoh: Indomaret, Makan Siang" autocomplete="off"></label><label>Nominal<input id="scanManualAmount" inputmode="numeric" placeholder="Contoh: 45.000" autocomplete="off"></label><label class="wide">Tanggal nota<input id="scanManualDate" type="date"></label><label class="wide">Kategori<select id="scanManualCategory"></select></label><label class="wide" id="scanManualWorkTypeWrap">Jenis pengeluaran kerja<select id="scanManualWorkType"><option value="">Pilih jenis deklarasi</option><option value="Fuel">Fuel</option><option value="Tol">Tol</option><option value="Parkir">Parkir</option><option value="Hotel">Hotel</option><option value="Laundry">Laundry</option><option value="Tiket">Tiket</option><option value="UPD">UPD</option><option value="Wrapping">Wrapping</option><option value="Cuci Mobil">Cuci Mobil</option><option value="Taxi">Taxi</option></select></label></div><div class="dialog-actions" style="margin-top:14px"><button class="ghost" data-action="close-scan-modal" type="button">Batal</button><button class="primary" id="scanManualSaveBtn" type="button">Simpan Transaksi</button></div></div></div>
 <div class="toast" id="toast"></div>
 <datalist id="catOptions"></datalist>
 <script src="./ui-icons.js?v=20261023.1"></script>
@@ -1690,7 +1690,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261024.115').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261109.1').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1714,7 +1714,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.21', APP_RELEASE_NOTE='Tampilan beranda dikembalikan ke susunan sebelumnya.';
+const APP_VERSION='10.22', APP_RELEASE_NOTE='Penambahan chip pos anggaran ST dan Uang Bebas di bawah kolom catat cepat.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1', KEY_HOME_DONUT_RANGE='aruskas_home_donut_range_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -2170,7 +2170,40 @@ function saveShareWaPrefs(prefs){
 }
 let activeInputDestination = 'auto';
 const RECEIPT_DEST_KEY='aruskas_receipt_destination';
-function getReceiptDestination(){return localStorage.getItem(RECEIPT_DEST_KEY)||'st'}
+function getReceiptDestination(){
+  if(activeInputDestination&&activeInputDestination!=='auto'){
+    return activeInputDestination==='st'?'st':'personal';
+  }
+  return localStorage.getItem(RECEIPT_DEST_KEY)||'st';
+}
+function getEffectiveReceiptPocketId(){
+  if(activeInputDestination&&activeInputDestination!=='auto'&&activeInputDestination!=='st'){
+    return activeInputDestination;
+  }
+  return null;
+}
+function populateScanPocketOptions(selectedVal='auto'){
+  const sel=$('scanManualPocketSelect');
+  if(!sel)return;
+  const pockets=getPockets().filter(p=>isPocketActive(p)||p.id===selectedVal);
+  let html='<option value="st" '+(selectedVal==='st'||selectedVal==='auto'?'selected':'')+'>📋 Pos ST (Dinas Perusahaan)</option>';
+  html+='<option value="bebas" '+(selectedVal==='bebas'?'selected':'')+'>⚪ Uang Bebas (Pribadi)</option>';
+  pockets.forEach(p=>{
+    if(p.id==='bebas')return;
+    const isST=(p.categories||[]).some(c=>['st','dinas','surat tugas'].includes(String(c).toLowerCase().trim()))||/st|dinas|tugas/i.test(p.name);
+    const label=p.name||'Pos Anggaran';
+    const isSel=selectedVal===p.id?'selected':'';
+    html+=`<option value="${esc(p.id)}" ${isSel}>${renderIcon(p.icon||'📦')} ${esc(label)}</option>`;
+  });
+  sel.innerHTML=html;
+}
+function syncScanModalWorkTypeVisibility(){
+  const sel=$('scanManualPocketSelect');
+  const wrap=$('scanManualWorkTypeWrap');
+  if(!wrap)return;
+  const val=sel?sel.value:'st';
+  wrap.style.display=(val==='st')?'':'none';
+}
 let page='home', txFilter={type:'all',search:'',category:'',start:null,end:null,source:'all',session:null,pocket:null}, txPeriod='monthly', txOffset=0, reportPeriod='monthly', reportOffset=0, chartType='donut', reportType='expense', reportSource='all', manualSource='personal', selectedId='', selectMode=false, selectSet=new Set(), pageStack=[], lastHomeSwipeAt=0, exitSwipeRequested=false;
 const palette=['#bd6041','#e3a34c','#82906a','#d78565','#aa785d','#d1a46c','#8f7365','#b9a181'];
 const incomePalette=['#4d7a58','#75a475','#9fc29a','#396a50','#b6d3a9','#6c9581','#8bb3a4','#c5d9b8'];
@@ -3157,11 +3190,29 @@ function renderDestinationChips(){
   if(!containers.length)return;
   const pockets=getSortedPockets().filter(p => p.id!=='bebas'&&isPocketActive(p));
   let html='';
+
+  // 1. Chip ST (Surat Tugas / Dinas)
+  const stPocket = getSTPocket();
+  const stDestId = stPocket ? stPocket.id : 'st';
+  const selST = activeInputDestination==='st' || (stPocket && activeInputDestination===stPocket.id);
+  const stLabel = stPocket ? (stPocket.shortName ? stPocket.shortName.trim() : shortPocketName(stPocket.name)) : 'ST';
+  const stIcon = renderIcon(stPocket ? (stPocket.icon || '📋') : '📋');
+  html+=`<button type="button" class="destination-chip${selST?' active':''}" data-dest="${esc(stDestId)}" draggable="false" title="Pos Dinas / ST Perusahaan"><span class="chip-icon-box">${stIcon}</span><span>${esc(stLabel)}</span></button>`;
+
+  // 2. Chip Uang Bebas
+  const bebasPocket = getPockets().find(p=>p.id==='bebas');
+  const selBebas = activeInputDestination==='bebas';
+  const bebasLabel = bebasPocket ? (bebasPocket.shortName ? bebasPocket.shortName.trim() : 'Uang Bebas') : 'Uang Bebas';
+  const bebasIcon = renderIcon(bebasPocket ? (bebasPocket.icon || '⚪') : '⚪');
+  html+=`<button type="button" class="destination-chip${selBebas?' active':''}" data-dest="bebas" draggable="false" title="Uang Bebas / Tanpa Pos Khusus"><span class="chip-icon-box">${bebasIcon}</span><span>${esc(bebasLabel)}</span></button>`;
+
+  // 3. Chip Pos-pos Anggaran Lainnya yang Aktif
   pockets.forEach(p=>{
+    if(stPocket && p.id === stPocket.id) return; // jangan duplikat ST
     const sel=activeInputDestination===p.id;
     const isST = (p.categories||[]).some(c=>['st','dinas','surat tugas'].includes(String(c).toLowerCase().trim())) || /st|dinas|tugas/i.test(p.name);
     const iconHtml = renderIcon(p.icon || (isST ? '📋' : '•'));
-    const chipTitle = isST ? `Pos Dinas / ST: ${esc(p.name)} (Tahan untuk geser)` : `${esc(p.name)} · Jatah: ${short(p.amount)} (Tahan untuk geser)`;
+    const chipTitle = `${esc(p.name)} · Jatah: ${short(p.amount)} (Tahan untuk geser)`;
     const label = esc(p.shortName ? p.shortName.trim() : shortPocketName(p.name));
     html+=`<button type="button" class="destination-chip${sel?' active':''}" data-dest="${esc(p.id)}" draggable="true" title="${chipTitle}"><span class="chip-icon-box">${iconHtml}</span><span>${label}</span><span class="chip-drag-handle" aria-hidden="true">⋮⋮</span></button>`;
   });
@@ -4732,7 +4783,25 @@ function openTx(idv,pushHistory=true){selectedId=idv;const t=getTX().find(x=>x.i
   return '<p><b>Pos Anggaran</b><br>'+esc(pName)+(t.type==='expense'?`<br><select class="quick-move-pocket-select" data-tx-id="${esc(t.id)}" style="margin-top:6px;font-size:12px;padding:6px 10px;border-radius:10px;background:var(--surface);border:1px solid var(--line);width:100%"><option value="" disabled selected>⇄ Pindahkan ke pos lain...</option><option value="bebas">⚪ Uang Bebas</option>${pockets.filter(p=>isPocketActive(p)).map(p=>`<option value="${esc(p.id)}">${esc(p.icon||'📦')} ${esc(p.name)}</option>`).join('')}</select>`:'')+'</p>';
 })()}<p><b>Kategori</b><br>${esc(t.category)}</p><p><b>Tanggal</b><br>${new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}, ${new Date(t.createdAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</p><p><b>Catatan</b><br>${esc(t.note||'-')}</p><p><b>Pintasan</b><br>${esc(t.shortcutCode||'-')}</p>${reimbBadge}</div>${reimbBtn}${resetBtn}`;if(pushHistory)openModalLayer('txModal');else updateBackButton()}
 function editMode(){const t=getTX().find(x=>x.id===selectedId);if(!t)return;$('txModalTitle').textContent='Ubah Transaksi';$('txDetail').style.display='none';$('txEdit').style.display='grid';$('detailActions').style.display='none';$('editActions').style.display='flex';const d=new Date(t.createdAt);const hasCat=getCatList().includes(t.category);$('txEdit').innerHTML=`<div class="wide" style="margin-bottom:8px"><label style="display:grid;gap:4px;font-size:12px;font-weight:750">Pos Anggaran / Budget<select id="editPocketSelect" style="width:100%"></select></label></div><div class="wide source-seg" id="editSourceSeg" style="display:none"><button data-esource="personal" class="${t.source!=='st'?'active':''}" type="button">💵 Pribadi</button><button data-esource="st" class="${t.source==='st'?'active':''}" type="button">📋 ST</button></div><label>Nama<input id="editTitle" value="${esc(t.title)}" autocomplete="off"></label><label>Nominal<input id="editAmount" inputmode="numeric" placeholder="Contoh: 50.000" value="${formatThousands(t.amount)}" autocomplete="off"></label><label class="wide">Keyword<input id="editKeyword" value="${esc(t.rawInput||t.title)}" placeholder="Keyword pintasan" autocomplete="off"></label><label>Tipe<select id="editType"><option value="expense" ${t.type==='expense'?'selected':''}>Pengeluaran</option><option value="income" ${t.type==='income'?'selected':''}>Pemasukan</option></select></label><label>Kategori<select id="editCategory" style="margin-bottom:4px"></select><input id="editCategoryNew" style="display:none" placeholder="Nama kategori baru" value="${esc(t.category)}" autocomplete="off"></label><label>Ikon<input id="editIcon" maxlength="3" value="${esc(t.icon)}" placeholder="Pilih ikon" autocomplete="off"></label><label>Tanggal<input type="date" id="editDate" value="${dateInput(d)}"></label><label>Waktu<input type="time" id="editTime" value="${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}"></label><label>Catatan<input id="editNote" value="${esc(t.note)}" autocomplete="off"></label><div class="wide" id="editReimburseWrap" style="${t.source==='st'&&t.type==='expense'?'':'display:none'}"><label>Reimbursement<select id="editReimburse"><option value="pending" ${t.reimburseStatus!=='reimbursed'?'selected':''}>⏳ Pending</option><option value="reimbursed" ${t.reimburseStatus==='reimbursed'?'selected':''}>✓ Reimbursed</option></select></label></div><div class="wide"><div class="emoji-picker edit-icon-picker" id="editIconPicker"></div></div>`;
-populateCatSelect($('editCategory'),hasCat?t.category:null);populatePocketOptions($('editPocketSelect'),t.pocketId||'');refreshFancySelect($('editType'));refreshFancySelect($('editCategory'));refreshFancySelect($('editPocketSelect'));const oldIcon=t.icon,oldCat=t.category;let iconTouched=false;const currentEditCategory=()=>getCatVal($('editCategory'),'editCategoryNew')||t.category;const syncEditIcon=(force=false)=>{const cat=currentEditCategory();const newIcon=icon(cat,$('editType').value);const oldDefault=icon(oldCat,t.type);if(force||!iconTouched||$('editIcon').value===oldIcon||$('editIcon').value===oldDefault||!$('editIcon').value)$('editIcon').value=newIcon};const updateReimburseVisibility=()=>{const src=$('editSourceSeg')?.querySelector('.active')?.dataset.esource||'personal';const type=$('editType').value;$('editReimburseWrap').style.display=(src==='st'&&type==='expense')?'':'none'};$('editCategory').addEventListener('change',()=>{const v=$('editCategory').value;if(v==='__new__'){$('editCategoryNew').style.display='block';$('editCategoryNew').focus()}else{$('editCategoryNew').style.display='none';$('editCategoryNew').value=''}syncEditIcon(true);refreshFancySelect($('editCategory'))});$('editCategoryNew').addEventListener('input',()=>syncEditIcon(true));$('editType').addEventListener('change',()=>{syncEditIcon(true);updateReimburseVisibility()});$('editIcon').addEventListener('input',()=>{iconTouched=true});$('editIcon').addEventListener('click',()=>{const picker=$('editIconPicker');picker.classList.toggle('open');renderEditIconPicker($('editIcon').value||icon(currentEditCategory(),$('editType').value)||'•')});$('editIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-edit-icon]');if(!b)return;iconTouched=true;$('editIcon').value=b.dataset.editIcon;renderEditIconPicker(b.dataset.editIcon);$('editIconPicker').classList.remove('open')});$('editSourceSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-esource]');if(!b)return;document.querySelectorAll('#editSourceSeg button').forEach(x=>x.classList.toggle('active',x===b));updateReimburseVisibility()});syncEditIcon(false);updateReimburseVisibility();pushLayerHistory('txEdit');updateBackButton()}
+populateCatSelect($('editCategory'),hasCat?t.category:null);populatePocketOptions($('editPocketSelect'),t.pocketId||'');refreshFancySelect($('editType'));refreshFancySelect($('editCategory'));refreshFancySelect($('editPocketSelect'));const oldIcon=t.icon,oldCat=t.category;let iconTouched=false;const currentEditCategory=()=>getCatVal($('editCategory'),'editCategoryNew')||t.category;const syncEditIcon=(force=false)=>{const cat=currentEditCategory();const newIcon=icon(cat,$('editType').value);const oldDefault=icon(oldCat,t.type);if(force||!iconTouched||$('editIcon').value===oldIcon||$('editIcon').value===oldDefault||!$('editIcon').value)$('editIcon').value=newIcon};const updateReimburseVisibility=()=>{const src=$('editSourceSeg')?.querySelector('.active')?.dataset.esource||'personal';const type=$('editType').value;$('editReimburseWrap').style.display=(src==='st'&&type==='expense')?'':'none'};$('editCategory').addEventListener('change',()=>{const v=$('editCategory').value;if(v==='__new__'){$('editCategoryNew').style.display='block';$('editCategoryNew').focus()}else{$('editCategoryNew').style.display='none';$('editCategoryNew').value=''}syncEditIcon(true);refreshFancySelect($('editCategory'))});$('editCategoryNew').addEventListener('input',()=>syncEditIcon(true));$('editType').addEventListener('change',()=>{syncEditIcon(true);updateReimburseVisibility()});$('editIcon').addEventListener('input',()=>{iconTouched=true});$('editIcon').addEventListener('click',()=>{const picker=$('editIconPicker');picker.classList.toggle('open');renderEditIconPicker($('editIcon').value||icon(currentEditCategory(),$('editType').value)||'•')});$('editIconPicker').addEventListener('click',e=>{const b=e.target.closest('[data-edit-icon]');if(!b)return;iconTouched=true;$('editIcon').value=b.dataset.editIcon;renderEditIconPicker(b.dataset.editIcon);$('editIconPicker').classList.remove('open')});$('editPocketSelect')?.addEventListener('change',()=>{
+  const val=$('editPocketSelect').value;
+  if(val&&val!=='bebas'){
+    const p=getPockets().find(x=>x.id===val);
+    if(p&&p.categories&&p.categories.length){
+      const activeCats=getCatList();
+      const firstFound=p.categories.find(c=>activeCats.some(ac=>ac.toLowerCase()===c.toLowerCase()));
+      if(firstFound){
+        const realName=activeCats.find(ac=>ac.toLowerCase()===firstFound.toLowerCase());
+        if(realName){
+          $('editCategory').value=realName;
+          syncEditIcon(true);
+          refreshFancySelect($('editCategory'));
+        }
+      }
+    }
+  }
+});
+$('editSourceSeg')?.addEventListener('click',e=>{const b=e.target.closest('[data-esource]');if(!b)return;document.querySelectorAll('#editSourceSeg button').forEach(x=>x.classList.toggle('active',x===b));updateReimburseVisibility()});syncEditIcon(false);updateReimburseVisibility();pushLayerHistory('txEdit');updateBackButton()}
 function saveEdit(){let arr=getTX();const i=arr.findIndex(t=>t.id===selectedId);if(i<0)return;const date=$('editDate').value||dateInput(new Date()), time=$('editTime').value||'00:00';const createdAt=new Date(date+'T'+time+':00').toISOString();const old=arr[i];const catVal=getCatVal($('editCategory'),'editCategoryNew')||old.category;restoreCategory(catVal);const editSource=$('editSourceSeg')?.querySelector('.active')?.dataset.esource||old.source||'personal';const editReimburse=$('editReimburse')?.value||'pending';const keywordRaw=$('editKeyword').value.trim();const editPocketVal=$('editPocketSelect')?.value||null;arr[i]=tx({...old,title:$('editTitle').value,amount:Number($('editAmount').value.replace(/\D/g,''))||parseAmount($('editAmount').value)||old.amount,type:$('editType').value,category:catVal,icon:$('editIcon').value,note:$('editNote').value,source:editSource,pocketId:editPocketVal,reimburseStatus:editReimburse,rawInput:keywordRaw||old.rawInput,createdAt,updatedAt:new Date().toISOString()});saveTX(arr);const rawSrc=keywordRaw||old.rawInput||old.title;const newTitle=$('editTitle').value.trim();// Belajar kata kunci dari input asli → kategori + title baru
 learnCategory(rawSrc,catVal);
 learnTitle(rawSrc,newTitle||arr[i].title);
@@ -5360,8 +5429,24 @@ async function handleReceiptFileSelected(file){
   const preview=$('scanPreviewImg');
   if(preview){preview.hidden=isPdf;if(!isPdf){const reader=new FileReader();reader.onload=e=>{preview.src=e.target.result};reader.readAsDataURL(file)}}
 
+  const defaultScanPocket = activeInputDestination && activeInputDestination !== 'auto' ? activeInputDestination : 'st';
+  populateScanPocketOptions(defaultScanPocket);
+  syncScanModalWorkTypeVisibility();
+
   const catSel=$('scanManualCategory');
-  if(catSel) populateCatSelect(catSel,'Makan');
+  let defaultScanCategory = 'Makan';
+  if(activeInputDestination && activeInputDestination !== 'auto' && activeInputDestination !== 'st'){
+    const matchedPocket = getPockets().find(p=>p.id===activeInputDestination);
+    if(matchedPocket && matchedPocket.categories && matchedPocket.categories.length){
+      const activeCats = getCatList();
+      const firstFound = matchedPocket.categories.find(c=>activeCats.some(ac=>ac.toLowerCase()===c.toLowerCase()));
+      if(firstFound){
+        const realName = activeCats.find(ac=>ac.toLowerCase()===firstFound.toLowerCase());
+        if(realName) defaultScanCategory = realName;
+      }
+    }
+  }
+  if(catSel) populateCatSelect(catSel,defaultScanCategory);
   if($('scanManualWorkType'))$('scanManualWorkType').value='';
 
   const apiKey=getGeminiApiKey();
@@ -5471,11 +5556,12 @@ async function executeReceiptAiScan(file, apiKey){
       if(!cat) cat=analysis.mode==='total'?(type==='income'?'Pemasukan':'Belanja'):smartInferCat(cleanTitle, type, activeCategories, getTX());
       cat=activeCategory(cat, type);
       const catIcon=icon(cat, type);
-      const src=getReceiptDestination();
+      const chosenPocketId=$('scanManualPocketSelect')?.value||(activeInputDestination&&activeInputDestination!=='auto'?activeInputDestination:'st');
+      const src=chosenPocketId==='st'?'st':'personal';
       const sessId=src==='st'?(it.stSessionId||getActiveSTSession()?.id||null):null;
       const reimb=(src==='st'&&type==='expense')?'pending':null;
       const itemNote='Foto Struk · '+analysis.merchant;
-      const itemPocketId=src==='personal'?defaultTransactionPocket({type,category:cat,title:cleanTitle,source:'personal'}):null;
+      const itemPocketId=src==='personal'?(chosenPocketId!=='personal'&&chosenPocketId!=='bebas'?chosenPocketId:defaultTransactionPocket({type,category:cat,title:cleanTitle,source:'personal'})):null;
 
       const detectedWorkType = src==='st' ? ($('scanManualWorkType')?.value || inferWorkTypeFromText(cleanTitle + ' ' + analysis.merchant + ' ' + (it.category || '')) || 'Fuel') : '';
       if(src==='st' && $('scanManualWorkType') && !$('scanManualWorkType').value && detectedWorkType){
@@ -5544,10 +5630,12 @@ async function saveScanManualTransaction(){
     return;
   }
   const type=inferType(titleVal);
-  const src=getReceiptDestination();
+  const chosenPocketId=$('scanManualPocketSelect')?.value||(activeInputDestination&&activeInputDestination!=='auto'?activeInputDestination:'st');
+  const src=chosenPocketId==='st'?'st':'personal';
   if(src==='st'&&!$('scanManualWorkType')?.value){alert('Pilih jenis pengeluaran kerja.');$('scanManualWorkType')?.focus();return;}
   const sessId=src==='st'?getActiveSTSession()?.id:null;
   const reimb=(src==='st'&&type==='expense')?'pending':null;
+  const targetPocketId=src==='personal'?(chosenPocketId!=='personal'&&chosenPocketId!=='bebas'?chosenPocketId:defaultTransactionPocket({type,category:catVal,title:titleVal,source:'personal'})):null;
   const item=tx({
     title:titleVal,
     amount:amountVal,
@@ -5556,6 +5644,7 @@ async function saveScanManualTransaction(){
     icon:icon(catVal,type),
     note:'Foto Struk',
     source:src,
+    pocketId:targetPocketId,
     stSessionId:sessId,
     reimburseStatus:reimb,
     rawInput:'foto: '+titleVal,
@@ -6881,6 +6970,21 @@ $('freeBalanceCorrectionForm')?.addEventListener('submit',saveFreeBalanceCorrect
   });
 });
 $('scanAnalyzeBtn')?.addEventListener('click', ()=>{const k=$('scanApiKeyInput')?.value.trim();if(k)setGeminiApiKey(k);executeReceiptAiScan(currentReceiptFile,k);});
+$('scanManualPocketSelect')?.addEventListener('change', ()=>{
+  syncScanModalWorkTypeVisibility();
+  const pocketVal = $('scanManualPocketSelect')?.value;
+  if(pocketVal && pocketVal !== 'st' && pocketVal !== 'bebas'){
+    const p = getPockets().find(item=>item.id===pocketVal);
+    if(p && p.categories && p.categories.length){
+      const activeCats = getCatList();
+      const firstFound = p.categories.find(c=>activeCats.some(ac=>ac.toLowerCase()===c.toLowerCase()));
+      if(firstFound){
+        const realName = activeCats.find(ac=>ac.toLowerCase()===firstFound.toLowerCase());
+        if(realName && $('scanManualCategory')) $('scanManualCategory').value = realName;
+      }
+    }
+  }
+});
 $('scanManualSaveBtn')?.addEventListener('click', saveScanManualTransaction);
 $('importCsvFileInput')?.addEventListener('change', e=>{if(e.target.files&&e.target.files[0]){importCsvData(e.target.files[0]);e.target.value='';}});
 $('geminiApiKeyInput')?.addEventListener('input', e=>setGeminiApiKey(e.target.value));
