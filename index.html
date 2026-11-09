@@ -1690,7 +1690,7 @@ body.keyboard-open .nav{opacity:0!important;pointer-events:none!important;transf
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none';toast('ArusKas sudah dipasang di HP.')});
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{/* do not auto reload on background controller change */});
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261109.2').then(reg=>{reg.update()}).catch(()=>{})});
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js?v=20261109.3').then(reg=>{reg.update()}).catch(()=>{})});
 }
 if(window.visualViewport){
   const onVPChange=()=>{
@@ -1714,7 +1714,7 @@ document.addEventListener('focusout',e=>{
     },100);
   }
 }); 
-const APP_VERSION='10.23', APP_RELEASE_NOTE='Penyempurnaan chip pos anggaran dan opsi ubah nama serta ikon Uang Bebas.';
+const APP_VERSION='10.24', APP_RELEASE_NOTE='Perbaikan inisialisasi script dan kestabilan navigasi tombol.';
 const KEY_TX='aruskas_transactions_v4_st', KEY_SC='aruskas_shortcuts_v3_fixed', KEY_CATMEM='aruskas_catmem_v1', KEY_TITLEMEM='aruskas_titlemem_v1', KEY_THEME='aruskas_theme_mode_v1', KEY_CATDEL='aruskas_deleted_categories_v1', KEY_CATREC='aruskas_category_records_v1', KEY_GEMINI_API='aruskas_gemini_api_key', KEY_POCKETS='aruskas_budget_pockets_v1', KEY_POCKET_TRANSFERS='aruskas_budget_transfers_v1', KEY_FREE_BALANCE_ADJUSTMENTS='aruskas_free_balance_adjustments_v1', KEY_SAVINGS='aruskas_savings_goals_v1', KEY_SHARE_WA='aruskas_share_wa_prefs_v1', KEY_ADD_ACTION='aruskas_add_action_v1', KEY_POCKET_ORDER='aruskas_pocket_order_v1', KEY_FREE_CUSTOM_CONFIG='aruskas_free_custom_config_v1', KEY_HOME_TX_LIMIT='aruskas_home_tx_limit_v1', KEY_HOME_DONUT_RANGE='aruskas_home_donut_range_v1';
 const savingsCore=window.AruskasSavings;
 let savingsFilter='active', selectedSavingsGoalId='', editingSavingsGoalId='', editingSavingsGoalReturn='';
@@ -3057,7 +3057,6 @@ function savePocketEdit(e){
   if(amount<0){toast('Nominal jatah tidak boleh negatif');return}
   const rawCats=$('pocketFormCategories').value.trim();
   const categories=rawCats?rawCats.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean):[name.toLowerCase()];
-  const shortName=($('pocketFormShortName')?.value||'').trim();
   const updatedPocket={
     ...(existingPocket||{}),
     id,
